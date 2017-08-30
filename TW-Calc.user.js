@@ -2691,13 +2691,13 @@ window.TWCalc_inject = function () {
                 wman.getById('wear').bringToTop();
             }
 
-            if (typeof (wman.getById('inventory')) !== undefined) {
+            if (typeof (wman.getById('inventory')) !== "undefined") {
                 wman.getById('inventory').destroy();
             }
 
             TW_Calc.Wardrobe.window.open();
 
-            if (TW_Calc.Wardrobe.Wardrobe.getAll().length !== 0) {
+            if (TW_Calc.Wardrobe.Wardrobe.getAll().length) {
                 TW_Calc.Wardrobe.Wardrobe.show(0);
             }
 
@@ -2720,14 +2720,17 @@ window.TWCalc_inject = function () {
         };
 
         TW_Calc.Wardrobe.window.moveTo = function (x, y) {
-            $('.tw2gui_window.tw2gui_win2.' + TW_Calc.Wardrobe.id).css('left', TW_Calc.Wardrobe.window.getPos('x')).css('top', TW_Calc.Wardrobe.window.getPos('y'));
+            $('.tw2gui_window.tw2gui_win2.' + TW_Calc.Wardrobe.id)
+                .css('left', TW_Calc.Wardrobe.window.getPos('x'))
+                .css('top', TW_Calc.Wardrobe.window.getPos('y'));
         };
 
         TW_Calc.Wardrobe.alert = function () {
 
-            if (TW_Calc.Wardrobe.bannedLocales.indexOf(Game.locale) != -1) {
+            if (TW_Calc.Wardrobe.bannedLocales.indexOf(Game.locale) !== -1) {
                 if (localStorage.getItem("TWCalc_Wardrobe_Status") === null) {
-                    new west.gui.Dialog().setText("TW-Calc Wardrobe is disabled because is not allowed by your game admin in your game locale.").setTitle("TW-Calc Wardrobe is disabled").show().addButton("ok");
+                    new west.gui.Dialog().setText("TW-Calc Wardrobe is disabled because is not allowed by your game admin in your game locale.")
+                        .setTitle("TW-Calc Wardrobe is disabled").show().addButton("ok");
                     localStorage.setItem("TWCalc_Wardrobe_Status", "true");
                 }
             }
@@ -2738,29 +2741,32 @@ window.TWCalc_inject = function () {
 
             var win = wman.open(TW_Calc.Wardrobe.id);
 
-            win.setTitle(TW_Calc.Wardrobe.lang[0]).setMiniTitle(TW_Calc.Wardrobe.lang[0]).setSize(328, 383);
+            win.setTitle(TW_Calc.Wardrobe.lang[0])
+                .setMiniTitle(TW_Calc.Wardrobe.lang[0])
+                .setSize(328, 383);
 
             var tabclick = function (win, id) {
 
                 TW_Calc.Wardrobe.window.showTab(id);
 
-                if (id == 'OwnCalc') TW_Calc.Wardrobe.OwnCalc.launch();
+                if (id === 'OwnCalc') TW_Calc.Wardrobe.OwnCalc.launch();
 
             };
 
-            if (TW_Calc.Wardrobe.bannedLocales.indexOf(Game.locale) == -1) {
+            if (TW_Calc.Wardrobe.bannedLocales.indexOf(Game.locale) === -1) {
                 win.addTab(TW_Calc.Wardrobe.lang[0], 'wardrobe', tabclick);
             }
 
             win.addTab(TW_Calc.Wardrobe.lang[1], 'OwnCalc', tabclick);
 
-            $('.tw2gui_window.tw2gui_win2.' + TW_Calc.Wardrobe.id).addClass("noreload");
+            $('.tw2gui_window.tw2gui_win2.' + TW_Calc.Wardrobe.id)
+                .addClass("noreload");
 
-            win.appendToContentPane($('<div id="wardrobe" class="TW_Calc" style="display:none;margin-top:5px;"></div><div id="OwnCalc" class="TW_Calc" style="display:none;margin-top:5px;"></div><div id="job" class="TW_Calc" style="display:none;margin-top:5px;"></div>'));
+            win.appendToContentPane($('<div id="wardrobe" class="TW_Calc" style="display: none; margin-top: 5px;"></div><div id="OwnCalc" class="TW_Calc" style="display: none; margin-top: 5px;"></div><div id="job" class="TW_Calc" style="display: none; margin-top: 5px;"></div>'));
 
             TW_Calc.Wardrobe.window.moveTo(TW_Calc.Wardrobe.window.getPos('x'), TW_Calc.Wardrobe.window.getPos('y'));
 
-            if (TW_Calc.Wardrobe.bannedLocales.indexOf(Game.locale) != -1) {
+            if (TW_Calc.Wardrobe.bannedLocales.indexOf(Game.locale) !== -1) {
                 TW_Calc.Wardrobe.window.showTab('OwnCalc');
                 TW_Calc.Wardrobe.OwnCalc.launch();
             } else {
@@ -2768,6 +2774,7 @@ window.TWCalc_inject = function () {
             }
 
             $('#TW_Calc_Wardrobe_Head > #TW_Calc_Caption').remove();
+
         };
 
         TW_Calc.Wardrobe.Wardrobe = {};
@@ -2782,35 +2789,28 @@ window.TWCalc_inject = function () {
 
             var s = TW_Calc.Wardrobe.OwnCalc.get(id);
 
-            $('#TW_Calc_Wardrobe_OwnCalc_del').unbind('click');
-
-            $('#TW_Calc_Wardrobe_OwnCalc_del').attr('remove_id', id).click(function () {
+            $('#TW_Calc_Wardrobe_OwnCalc_del').unbind('click').attr('remove_id', id).click(function () {
                 TW_Calc.Wardrobe.OwnCalc.remove($(this).attr('remove_id'));
             });
 
-            $('#TW_Calc_Wardrobe_OwnCalc_config').unbind('click');
-
-            $('#TW_Calc_Wardrobe_OwnCalc_config').attr('config_id', id).click(function () {
+            $('#TW_Calc_Wardrobe_OwnCalc_config').unbind('click').attr('config_id', id).click(function () {
                 TW_Calc.Wardrobe.OwnCalc.seeConfiguration($(this).attr('config_id'));
             });
-
-            var i = 0;
-
-            var name = s.name.toString();
-            if (name == '') name = 'Unnamed';
-            delete s.name;
 
             TW_Calc.Wardrobe.OwnCalc.actualWear = s;
 
             if (Bag.loaded) {
+
                 var items = west.item.Calculator.getBestSet(s).getItems();
 
-                for (i; i < (items.length); i++) {
+                for (var i = 0; i < (items.length); i++) {
+
                     var item = new tw2widget.InventoryItem(ItemManager.get(Number(items[i])));
 
                     $('#TW_Calc_OwnCalc_Items>.tw2gui_groupframe_content_pane').append($(item.getMainDiv()).attr('item_id', items[i]).click(function () {
                         TW_Calc.Wardrobe.Wardrobe.wear($(this).attr('item_id'));
                     }));
+
                 }
 
             } else {
@@ -2820,49 +2820,47 @@ window.TWCalc_inject = function () {
             TW_Calc.Wardrobe.Wardrobe.fadeAll();
 
             $('#TW_Calc_OwnCalc_Head > .tw2gui_groupframe_content_pane > #TW_Calc_Caption').remove();
-            $('#TW_Calc_OwnCalc_Head > .tw2gui_groupframe_content_pane').append('<span id="TW_Calc_Caption" style="font-weight:bold;font-size:18px;">' + name + '</span>');
+            $('#TW_Calc_OwnCalc_Head > .tw2gui_groupframe_content_pane').append('<span id="TW_Calc_Caption" style="font-weight:bold;font-size:18px;">' + (s.name.length ? s.name : 'Unnamed') + '</span>');
 
-            if ((Premium.hasBonus("automation") === true) || (Premium.hasBonus("automation") != true)) {
-
-                $("#TW_Calc_OwnCalc_Items>.tw2gui_groupframe_content_pane").append('<center>');
-                $("#TW_Calc_OwnCalc_Items>.tw2gui_groupframe_content_pane").append(new west.gui.Button().setCaption("Wear all").click(function () {
+            if (Premium.hasBonus("automation") === true || 1) {
+                $("#TW_Calc_OwnCalc_Items>.tw2gui_groupframe_content_pane").append(new west.gui.Button()
+                    .setCaption("Wear all").click(function () {
                     TW_Calc.Wardrobe.OwnCalc.wearAll(TW_Calc.Wardrobe.OwnCalc.actualWear);
                 }).getMainDiv());
-
-                $("#TW_Calc_OwnCalc_Items>.tw2gui_groupframe_content_pane").append('</center>');
             }
+
         };
 
         TW_Calc.Wardrobe.OwnCalc.wearAll = function (id) {
 
-            var items = west.item.Calculator.getBestSet(id).getItems();
-            var i = 0;
-
             if (Bag.loaded) {
 
-                for (i; i < (items.length); i++) {
+                var items = west.item.Calculator.getBestSet(id).getItems();
+
+                for (var i = 0; i < (items.length); i++) {
                     TW_Calc.Wardrobe.Wardrobe.wear(items[i]);
                 }
 
             } else {
                 Bag.loadItems();
             }
+
         };
 
         TW_Calc.Wardrobe.OwnCalc.seeConfiguration = function (id) {
 
             var data = TW_Calc.Wardrobe.OwnCalc.get(Number(id));
-            var dialog = new west.gui.Dialog((data.name == '' ? 'Unnamed' : data.name), '<div id="TW_Calc_Wardrobe_OwnCalc_Dialog_Div"></div>').setId('TW_Calc_Wardrobe_OwnCalc_Dialog');
+            var dialog = new west.gui.Dialog((!data.name.length ? 'Unnamed' : data.name), '<div id="TW_Calc_Wardrobe_OwnCalc_Dialog_Div"></div>')
+                .setId('TW_Calc_Wardrobe_OwnCalc_Dialog');
 
             dialog.addButton(TW_Calc.Wardrobe.lang[3], function () {});
             dialog.show();
 
-            $("div#TW_Calc_Wardrobe_OwnCalc_Dialog_Div").append(new west.gui.Groupframe().appendToContentPane('<div id="Skills" style="width:432px;margin-left:auto;margin-right:auto;text-align:center;"></div><div></div>').getMainDiv());
+            $("div#TW_Calc_Wardrobe_OwnCalc_Dialog_Div").append(new west.gui.Groupframe().appendToContentPane('<div id="Skills" style="width:432px; margin-left: auto; margin-right: auto; text-align: center;"></div><div></div>').getMainDiv());
 
             var skills = CharacterSkills.allSkillKeys;
-            var k = 0;
 
-            for (k; k < skills.length; k++) {
+            for (var k = 0; k < skills.length; k++) {
 
                 $("#Skills").append(CharacterSkills.getSkill(skills[k]).getSkillPMBox("TW_Calc_Wardrobe_OwnCalc_" + skills[k], {}, {
                     id: "TW_Calc_Wardrobe_OwnCalc_" + skills[k] + "_id",
@@ -2877,6 +2875,7 @@ window.TWCalc_inject = function () {
             }
 
             $('#TW_Calc_Wardrobe_OwnCalc_Dialog').css('top', (($('body').height() - $('#TW_Calc_Wardrobe_OwnCalc_Dialog_Div').height()) / 2));
+
         };
 
         TW_Calc.Wardrobe.OwnCalc.launch = function () {
@@ -2896,17 +2895,10 @@ window.TWCalc_inject = function () {
                 TW_Calc.Wardrobe.OwnCalc.Selectbox = new west.gui.Selectbox().setHeader(TW_Calc.Wardrobe.lang[10]);
 
                 var sBox = TW_Calc.Wardrobe.OwnCalc.Selectbox;
-                var i = 0;
                 var s = TW_Calc.Wardrobe.OwnCalc.getAll();
 
-                for (i; i < s.length; i++) {
-
-                    var name = s[i].name;
-                    if (s[i].name == '') {
-                        name = 'Unnamed';
-                    }
-
-                    sBox.addItem(i, name);
+                for (var i = 0; i < s.length; i++) {
+                    sBox.addItem(i, s[i].name.length ? s[i].name : 'Unnamed');
                 }
 
                 sBox.addListener(function (id) {
@@ -2921,7 +2913,7 @@ window.TWCalc_inject = function () {
 
             $('#TW_Calc_OwnCalc_Items').css('height', 220);
 
-            if (TW_Calc.Wardrobe.OwnCalc.getAll().length !== 0) {
+            if (TW_Calc.Wardrobe.OwnCalc.getAll().length) {
                 TW_Calc.Wardrobe.OwnCalc.show(0);
             }
 
@@ -2937,26 +2929,23 @@ window.TWCalc_inject = function () {
 
             TW_Calc.Wardrobe.OwnCalc.launch();
             TW_Calc.Wardrobe.OwnCalc.show((TW_Calc.Wardrobe.OwnCalc.getAll().length - 1));
+
         };
 
         TW_Calc.Wardrobe.OwnCalc.getAll = function () {
 
             var data = '[]';
-            if (TW_Calc.isNotUndefinedNullOrNaN(localStorage.getItem('TWCalc_OwnCalc')) !== false) {
-                data = localStorage.getItem('TWCalc_OwnCalc');
+
+            if (TW_Calc.isNotUndefinedNullOrNaN(TW_Calc.storage.get('OwnCalc')) !== false) {
+                data = TW_Calc.storage.get('OwnCalc');
             }
 
             return $.parseJSON(data);
+
         };
 
         TW_Calc.Wardrobe.OwnCalc.get = function (i) {
-
-            var data = '[]';
-            if (TW_Calc.isNotUndefinedNullOrNaN(localStorage.getItem('TWCalc_OwnCalc')) !== false) {
-                data = localStorage.getItem('TWCalc_OwnCalc');
-            }
-
-            return $.parseJSON(data)[i];
+            return this.getAll()[i];
         };
 
         TW_Calc.Wardrobe.OwnCalc.AddDialog = function () {
@@ -2970,7 +2959,6 @@ window.TWCalc_inject = function () {
             $("div#TW_Calc_Wardrobe_OwnCalc_Dialog_Div").append(new west.gui.Groupframe().appendToContentPane('<div id="Skills" style="width:432px;margin-left:auto;margin-right:auto;text-align:center;"></div><div></div>').getMainDiv());
 
             var skills = CharacterSkills.allSkillKeys;
-            var k = 0;
 
             var logicPlusMinus = function (event) {
 
@@ -2992,9 +2980,10 @@ window.TWCalc_inject = function () {
                     }
 
                 }
+
             };
 
-            for (k; k < skills.length; k++) {
+            for (var k = 0; k < skills.length; k++) {
 
                 $("#Skills").append(CharacterSkills.getSkill(skills[k]).getSkillPMBox("TW_Calc_Wardrobe_OwnCalc_" + skills[k], {}, {
                     id: "TW_Calc_Wardrobe_OwnCalc_" + skills[k] + "_id",
@@ -3008,7 +2997,10 @@ window.TWCalc_inject = function () {
 
             }
 
-            $("#TW_Calc_Wardrobe_OwnCalc_Dialog_Div").append(new west.gui.Textfield().setWidth(440).setPlaceholder(TW_Calc.getTranslation(157)).setId("TW_Calc_Wardrobe_OwnCalc_Name").getMainDiv());
+            $("#TW_Calc_Wardrobe_OwnCalc_Dialog_Div").append(new west.gui.Textfield()
+                .setWidth(440)
+                .setPlaceholder(TW_Calc.getTranslation(157)
+                ).setId("TW_Calc_Wardrobe_OwnCalc_Name").getMainDiv());
 
             $('#TW_Calc_Wardrobe_OwnCalc_Dialog').css('top', (($('body').height() - $('#TW_Calc_Wardrobe_OwnCalc_Dialog_Div').height()) / 2));
         };
@@ -3016,16 +3008,16 @@ window.TWCalc_inject = function () {
         TW_Calc.Wardrobe.OwnCalc.createObject = function () {
 
             var skills = CharacterSkills.allSkillKeys;
-            var i = 0;
             var data = {};
 
-            for (i; i < skills.length; i++) {
-                var t = $("#TW_Calc_Wardrobe_OwnCalc_" + skills[i] + "_id>.displayValue").text();
-                data[skills[i]] = Number(t);
+            for (var i = 0; i < skills.length; i++) {
+                data[skills[i]] = Number($("#TW_Calc_Wardrobe_OwnCalc_" + skills[i] + "_id>.displayValue").text());
             }
 
             data.name = $('#TW_Calc_Wardrobe_OwnCalc_Name').val();
+
             return data;
+
         };
 
         TW_Calc.Wardrobe.OwnCalc.Add = function (k) {
@@ -3039,45 +3031,14 @@ window.TWCalc_inject = function () {
 
         };
 
-        TW_Calc.Wardrobe.OwnCalc.Save = function (s) {
+        TW_Calc.Wardrobe.OwnCalc.Save = function (data) {
 
-            var k = '[';
-            var i = 0;
-
-            for (i; i < s.length; i++) {
-
-                var l = '';
-                if (i != (s.length - 1)) {
-                    l = ',';
-                }
-
-                var skills = CharacterSkills.allSkillKeys.join().split(',');
-                skills.push('name');
-
-                var m = 0;
-                var o = '{';
-
-                for (m; m < skills.length; m++) {
-
-                    var q = '';
-                    if (m != (skills.length - 1)) {
-                        q = ',';
-                    }
-
-                    o += '"' + skills[m] + '":"' + s[i][skills[m]] + '"' + q;
-                }
-
-                o += '}';
-                k += o + l;
-            }
-
-            k += ']';
-
-            localStorage.setItem('TWCalc_OwnCalc', k);
+            TW_Calc.storage.add('OwnCalc', JSON.stringify(data));
 
             new UserMessage(TW_Calc.Wardrobe.lang[6], UserMessage.TYPE_SUCCESS).show();
 
             TW_Calc.Wardrobe.OwnCalc.show(TW_Calc.Wardrobe.OwnCalc.getLength());
+
         };
 
         TW_Calc.Wardrobe.OwnCalc.getLength = function () {
@@ -3085,6 +3046,7 @@ window.TWCalc_inject = function () {
         };
 
         TW_Calc.Wardrobe.Wardrobe.remove = function (id) {
+
             var item = TW_Calc.Wardrobe.Wardrobe.getAll();
 
             item.splice(id, 1);
@@ -3095,6 +3057,7 @@ window.TWCalc_inject = function () {
 
             TW_Calc.Wardrobe.Wardrobe.launch();
             TW_Calc.Wardrobe.Wardrobe.show((TW_Calc.Wardrobe.Wardrobe.getAll().length - 1));
+
         };
 
         TW_Calc.Wardrobe.Wardrobe.show = function (id) {
@@ -3103,23 +3066,19 @@ window.TWCalc_inject = function () {
             $('#TW_Calc_Wardrobe_Items>.tw2gui_groupframe_content_pane').empty();
 
             var s = TW_Calc.Wardrobe.Wardrobe.get(id);
-
             TW_Calc.Wardrobe.Wardrobe.actualWear = id;
 
-            $('#TW_Calc_Wardrobe_Wardrobe_del').unbind('click');
-            $('#TW_Calc_Wardrobe_Wardrobe_del').attr('remove_id', id).click(function () {
+            $('#TW_Calc_Wardrobe_Wardrobe_del').unbind('click').attr('remove_id', id).click(function () {
                 TW_Calc.Wardrobe.Wardrobe.remove($(this).attr('remove_id'));
             });
 
-            var i = 0;
-
             if (Bag.loaded) {
 
-                for (i; i < (s.length - 1); i++) {
-
-                    if (s[i] != null) {
+                for (var i = 0; i < (s.length - 1); i++) {
+                    if (Number(s[i])) {
                         var item = new tw2widget.InventoryItem(ItemManager.get(s[i]));
-                        $('#TW_Calc_Wardrobe_Items>.tw2gui_groupframe_content_pane').append($(item.getMainDiv()).attr('item_id', s[i]).click(function () {
+                        $('#TW_Calc_Wardrobe_Items>.tw2gui_groupframe_content_pane').append($(item.getMainDiv())
+                            .attr('item_id', s[i]).click(function () {
                             TW_Calc.Wardrobe.Wardrobe.wear($(this).attr('item_id'));
                         }));
                     }
@@ -3133,36 +3092,26 @@ window.TWCalc_inject = function () {
 
             $('#TW_Calc_Wardrobe_Head > .tw2gui_groupframe_content_pane > #TW_Calc_Caption').remove();
 
-            $('#TW_Calc_Wardrobe_Head > .tw2gui_groupframe_content_pane').append('<span id="TW_Calc_Caption" style="font-weight:bold;font-size:18px;">' + (s[(s.length - 1)] == '' ? 'Unnamed' : s[(s.length - 1)]) + '</span>');
+            $('#TW_Calc_Wardrobe_Head > .tw2gui_groupframe_content_pane').append('<span id="TW_Calc_Caption" style="font-weight:bold;font-size:18px;">' + (!s[s.length - 1].length ? 'Unnamed' : s[s.length - 1]) + '</span>');
 
-            //WEAR ALL BUTTON
-            if (Premium.hasBonus("automation") === true) {
-
-                $("#TW_Calc_Wardrobe_Items>.tw2gui_groupframe_content_pane").append('<center>');
-
+            if (Premium.hasBonus("automation")) {
                 $("#TW_Calc_Wardrobe_Items>.tw2gui_groupframe_content_pane").append(new west.gui.Button().setCaption("Wear all").click(function () {
                     TW_Calc.Wardrobe.Wardrobe.wearAll(TW_Calc.Wardrobe.Wardrobe.actualWear);
                 }).getMainDiv());
-
-                $("#TW_Calc_Wardrobe_Items>.tw2gui_groupframe_content_pane").append('</center>');
-
             }
 
         };
 
         TW_Calc.Wardrobe.Wardrobe.wearAll = function (id) {
 
-            var s = TW_Calc.Wardrobe.Wardrobe.get(id);
-            var i = 0;
-
             if (Bag.loaded) {
 
-                for (i; i < (s.length - 1); i++) {
+                var s = TW_Calc.Wardrobe.Wardrobe.get(id);
 
+                for (var i = 0; i < s.length - 1; i++) {
                     if (s[i] != null) {
                         TW_Calc.Wardrobe.Wardrobe.wear(s[i]);
                     }
-
                 }
 
             } else {
@@ -3174,9 +3123,7 @@ window.TWCalc_inject = function () {
         TW_Calc.Wardrobe.Wardrobe.wear = function (id) {
 
             if (Bag.getItemByItemId(Number(id)) != null) {
-
                 Wear.carry(Bag.getItemByItemId(Number(id)));
-
             }
 
             $('.item.item_inventory[item_id=' + id + ']').css('opacity', '0.5');
@@ -3186,18 +3133,11 @@ window.TWCalc_inject = function () {
         TW_Calc.Wardrobe.Wardrobe.fadeAll = function () {
 
             if (Bag.loaded) {
-
-                var s = WearSet.setItems;
-
-                var i = 0;
-
-                for (i; i < s.length; i++) {
-
-                    var id = WearSet.setItems[i];
-                    $('.item.item_inventory[item_id=' + id + ']').css('opacity', '0.5');
-
+                for (var i = 0; i < WearSet.setItems.length; i++) {
+                    $('.item.item_inventory[item_id=' + WearSet.setItems[i] + ']').css('opacity', '0.5');
                 }
             }
+
         };
 
         TW_Calc.Wardrobe.Wardrobe.launch = function () {
@@ -3208,21 +3148,25 @@ window.TWCalc_inject = function () {
 
                 var maindiv = '#wardrobe.TW_Calc';
 
-                var c = '<div onclick="TW_Calc.Wardrobe.Wardrobe.AddDialog()" title="' + TW_Calc.Wardrobe.lang[2] + '" style="position:absolute;right:44px;background:url(' + TW_Calc.imgUrl + '/images/tw2gui/iconset.png);width:16px;height:16px;display:inline-block;background-position: -16px 80px;cursor:pointer"></div><div id="TW_Calc_Wardrobe_Wardrobe_del" style="background:url(/images/tw2gui/iconset.png);width:16px;height:16px;display:none;background-position: -48px 0px;cursor:pointer;position:absolute;right:60px;" title="' + TW_Calc.Wardrobe.lang[8] + '"></div><div id="wardrobe_selector" style="position: absolute;right: 14px;top: 14px;background:url(/images/window/character/title_editbtn.jpg) no-repeat;width:24px;height:18px;cursor:pointer;background-position: -2px -1px;border: 1px solid"></div>';
+                var c = '<div onclick="TW_Calc.Wardrobe.Wardrobe.AddDialog()" title="' + TW_Calc.Wardrobe.lang[2] + '" style="position: absolute; right: 44px; background:url(' + TW_Calc.imgUrl + '/images/tw2gui/iconset.png);width:16px;height:16px;display:inline-block;background-position: -16px 80px;cursor:pointer"></div><div id="TW_Calc_Wardrobe_Wardrobe_del" style="background:url(/images/tw2gui/iconset.png);width:16px;height:16px;display:none;background-position: -48px 0px;cursor:pointer;position:absolute;right:60px;" title="' + TW_Calc.Wardrobe.lang[8] + '"></div><div id="wardrobe_selector" style="position: absolute; right: 14px; top: 14px; background:url(/images/window/character/title_editbtn.jpg) no-repeat; width: 24px; height: 18px; cursor: pointer; background-position: -2px -1px; border: 1px solid"></div>';
 
-                $(maindiv).html(new west.gui.Groupframe().setId('TW_Calc_Wardrobe_Head').appendToContentPane(c).getMainDiv());
+                $(maindiv).html(new west.gui.Groupframe()
+                    .setId('TW_Calc_Wardrobe_Head')
+                    .appendToContentPane(c)
+                    .getMainDiv());
 
                 $("#TW_Calc_Wardrobe_Head>.tw2gui_groupframe_content_pane").css("height", "19px");
 
                 $('#wardrobe_selector').click(function (e) {
-                    TW_Calc.Wardrobe.Wardrobe.Selectbox = new west.gui.Selectbox().setHeader(TW_Calc.Wardrobe.lang[0]);
+
+                    TW_Calc.Wardrobe.Wardrobe.Selectbox = new west.gui.Selectbox()
+                        .setHeader(TW_Calc.Wardrobe.lang[0]);
 
                     var sBox = TW_Calc.Wardrobe.Wardrobe.Selectbox;
-                    var i = 0;
                     var s = TW_Calc.Wardrobe.Wardrobe.getAll();
 
-                    for (i; i < s.length; i++) {
-                        sBox.addItem(i, (s[i][10] == '' ? 'Unnamed' : s[i][10]));
+                    for (var i = 0; i < s.length; i++) {
+                        sBox.addItem(i, (!s[i][10].length ? 'Unnamed' : s[i][10]));
                     }
 
                     sBox.addListener(function (id) {
@@ -3230,9 +3174,12 @@ window.TWCalc_inject = function () {
                     });
 
                     TW_Calc.Wardrobe.Wardrobe.Selectbox.show(e);
+
                 });
 
-                $(maindiv).append(new west.gui.Groupframe().setId('TW_Calc_Wardrobe_Items').getMainDiv());
+                $(maindiv).append(new west.gui.Groupframe()
+                    .setId('TW_Calc_Wardrobe_Items')
+                    .getMainDiv());
 
                 $('#TW_Calc_Wardrobe_Items').css('height', 220);
 
@@ -3269,7 +3216,10 @@ window.TWCalc_inject = function () {
                 }).addButton(TW_Calc.Wardrobe.lang[3], function () {}).show();
 
             $('#TW_Calc_Wardrobe_Add>.tw2gui_dialog_content>.tw2gui_dialog_text').append('</br>')
-                .append(new west.gui.Textfield().setWidth("400px").setPlaceholder(TW_Calc.Wardrobe.lang[7]).setId("TW_Calc_Wardrobe_Wardrobe_Add").getMainDiv());
+                .append(new west.gui.Textfield()
+                    .setWidth("400px")
+                    .setPlaceholder(TW_Calc.Wardrobe.lang[7])
+                    .setId("TW_Calc_Wardrobe_Wardrobe_Add").getMainDiv());
 
         };
 
@@ -3299,17 +3249,13 @@ window.TWCalc_inject = function () {
             for (var i = 0; i < slots.length; i++) {
 
                 if (slots[i] !== 'name') {
-
-                    if (typeof Wear.wear[s[i]] !== "undefined") {
-                        data.push(Wear.wear[s[i]].getId());
+                    if (typeof Wear.wear[slots[i]] !== "undefined") {
+                        data.push(Wear.wear[slots[i]].getId());
                     } else {
-                        data.push('null');
+                        data.push(null);
                     }
-
                 } else {
-
                     data.push(name);
-
                 }
 
             }
@@ -3804,11 +3750,7 @@ window.TWCalc_inject = function () {
                 var u = xhr.oplist.pclist;
 
                 for (var i = 0; i < u.length; i++) {
-
-                    var player = u[i];
-
-                    TW_Calc.DuelBar.loadedData.push(player);
-
+                    TW_Calc.DuelBar.loadedData.push(u[i]);
                 }
 
                 if (TW_Calc.DuelBar.loadedData.length !== 0) {
@@ -3845,8 +3787,8 @@ window.TWCalc_inject = function () {
 
                 } else {
 
-                    if (TW_Calc.Settings.get("topBar", "number") != 2)
-                        if ($("#WESTCALC_TOP_BAR>#Westcalc_DuelBar").html() == '') $("#WESTCALC_TOP_BAR").remove();
+                    if (Number(TW_Calc.Settings.get("topBar", "number")) !== 2)
+                        if (!$("#WESTCALC_TOP_BAR>#Westcalc_DuelBar").html().length) $("#WESTCALC_TOP_BAR").remove();
 
                 }
 
