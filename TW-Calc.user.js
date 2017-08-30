@@ -2296,22 +2296,6 @@ window.TWCalc_inject = function () {
 
         TW_Calc.Wardrobe.init = function () {
 
-            TW_Calc.Wardrobe.lang = [
-                TW_Calc.getTranslation(170),
-                TW_Calc.getTranslation(160),
-                TW_Calc.getTranslation(161),
-                TW_Calc.getTranslation(162),
-                TW_Calc.getTranslation(163),
-                TW_Calc.getTranslation(164),
-                TW_Calc.getTranslation(165),
-                TW_Calc.getTranslation(166),
-                TW_Calc.getTranslation(171),
-                TW_Calc.getTranslation(167),
-                TW_Calc.getTranslation(160),
-                TW_Calc.getTranslation(172),
-                TW_Calc.getTranslation(169)
-            ];
-
             TW_Calc.Wardrobe.window.title = {
                 Wardrobe: TW_Calc.getTranslation(170),
                 OwnCalc: TW_Calc.getTranslation(160)
