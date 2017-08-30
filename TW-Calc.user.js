@@ -2481,7 +2481,7 @@ window.TWCalc_inject = function () {
         TW_Calc.Wardrobe.fadeWearItems = function () {
             if (Bag.loaded) {
                 for (var i = 0; i < WearSet.setItems.length; i++) {
-                    $('.TW_Calc_WardrobeContent>.tw2gui_groupframe>.tw2gui_groupframe_content_pane>.item.item_inventory[item_id=' + WearSet.setItems[i] + ']')
+                    $('.TW_Calc_WardrobeContent>.tw2gui_groupframe>.tw2gui_groupframe_content_pane>.item.item_inventory[item_id=' + (WearSet.setItems[i] * 1000) + ']')
                         .css('opacity', '0.5');
                 }
             }
