@@ -598,7 +598,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.window.content.battle_calc = function () {
 
-            var data = JSON.parse(TW_Calc.storage.get("BattleCalc"));
+            var data = JSON.parse(TW_Calc.storage.get("BattleCalc", "{}"));
 
             var checkBoxes = [
                 ["premium", TW_Calc.getTranslation(2)],
@@ -2338,12 +2338,10 @@ window.TWCalc_inject = function () {
 
         TW_Calc.Wardrobe.alert = function () {
 
-            if (TW_Calc.Wardrobe.bannedLocales.indexOf(Game.locale) !== -1) {
-                if (localStorage.getItem("TWCalc_Wardrobe_Status") === null) {
-                    new west.gui.Dialog().setText("TW-Calc Wardrobe is disabled because is not allowed by your game admin in your game locale.")
-                        .setTitle("TW-Calc Wardrobe is disabled").show().addButton("ok");
-                    localStorage.setItem("TWCalc_Wardrobe_Status", "true");
-                }
+            if (TW_Calc.Wardrobe.bannedLocales.indexOf(Game.locale) !== -1 && typeof TW_Calc.storage.get("WardrobeBannedLocaleAlert") === "undefined") {
+                new west.gui.Dialog().setText("TW-Calc Wardrobe is disabled because is not allowed by your game admin in your game locale.")
+                    .setTitle("TW-Calc Wardrobe is disabled").show().addButton("ok");
+                TW_Calc.storage.add("WardrobeBannedLocaleAlert", 1);
             }
 
         };
