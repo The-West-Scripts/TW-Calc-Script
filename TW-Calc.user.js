@@ -11,6 +11,7 @@
 // @downloadURL https://tw-calc.net/script/TW-Calc.user.js
 // @grant none
 // ==/UserScript==
+
 window.TWCalc_inject = function () {
 
     if (document.getElementById('TWCalc_js')) return;
@@ -435,6 +436,11 @@ window.TWCalc_inject = function () {
 
         };
 
+
+        /**
+         * Base TW-Calc window
+         * @type {{}}
+         */
         TW_Calc.window = {};
 
         TW_Calc.window.id = "TWCalc_window";
@@ -740,6 +746,10 @@ window.TWCalc_inject = function () {
         };
 
 
+        /**
+         * AlarmClock
+         * @type {{}}
+         */
         TW_Calc.AlarmClock = {};
 
         TW_Calc.AlarmClock.editNote = function () {
@@ -801,6 +811,11 @@ window.TWCalc_inject = function () {
 
         };
 
+
+        /**
+         * Notepad
+         * @type {{}}
+         */
         TW_Calc.Notepad = {};
 
         TW_Calc.Notepad.save = function () {
@@ -891,6 +906,10 @@ window.TWCalc_inject = function () {
 
         };
 
+        /**
+         * BattleCalc
+         * @type {{}}
+         */
         TW_Calc.BattleCalc = {};
 
         TW_Calc.BattleCalc.getBattleCore = function () {
@@ -942,7 +961,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.functions = {};
 
-        TW_Calc.functions.ComBoxChange = function (id, callback) {
+        TW_Calc.functions.comBoxChange = function (id, callback) {
 
             $("#TWCalc_" + id + "_value").on('change', TW_Calc.Settings.save);
 
@@ -952,25 +971,14 @@ window.TWCalc_inject = function () {
                 });
             });
 
-            if (typeof (callback) != "undefined") callback();
+            if (typeof (callback) === "function") callback();
 
         };
 
-        TW_Calc.functions.isWearing = function (id) {
-
-            var wear = Wear.wear;
-
-            for (var k in wear) {
-                if (wear[k].getId() === id) {
-                    return true;
-                }
-            }
-
-            return false;
-
-        };
-
-
+        /**
+         * Settings
+         * @type {{}}
+         */
         TW_Calc.Settings = {};
 
         TW_Calc.Settings.getCaption = function (id) {
@@ -1017,12 +1025,12 @@ window.TWCalc_inject = function () {
                 $(div).append('<span id="' + comBoxId + '_text">' + TW_Calc.Settings.getCaption(comBoxId) + ':</span> ')
                     .append(comBox);
 
-                TW_Calc.functions.ComBoxChange(comBoxId);
+                TW_Calc.functions.comBoxChange(comBoxId);
 
                 $(div).append('</br>');
 
-                var comBoxId = "duelBar";
-                var comBox = new west.gui.Combobox('TWCalc_' + comBoxId)
+                comBoxId = "duelBar";
+                comBox = new west.gui.Combobox('TWCalc_' + comBoxId)
                     .setWidth(100)
                     .addItem(1, TW_Calc.getTranslation(186))
                     .addItem(2, TW_Calc.getTranslation(187))
@@ -1031,7 +1039,7 @@ window.TWCalc_inject = function () {
                 $(div).append('<span id="' + comBoxId + '_text">' + TW_Calc.Settings.getCaption(comBoxId) + ':</span> ')
                     .append(comBox);
 
-                TW_Calc.functions.ComBoxChange(comBoxId);
+                TW_Calc.functions.comBoxChange(comBoxId);
 
 
                 $(div).append('<p style="text-align:right;margin-bottom:5px">Refresh the page to apply changes. <b>(F5)</b></p>')
@@ -1110,6 +1118,10 @@ window.TWCalc_inject = function () {
 
         };
 
+        /**
+         * DuelCalc
+         * @type {{}}
+         */
         TW_Calc.DuelCalc = {};
 
         TW_Calc.DuelCalc.calculatorLevel = function () {
@@ -1137,6 +1149,52 @@ window.TWCalc_inject = function () {
 
         };
 
+        TW_Calc.buttonLogic = function (event) {
+
+            var butObj = event.data.obj;
+
+            if ($(event.currentTarget).hasClass('butPlus')) {
+
+                if (butObj.current_value + 1 > butObj.max_value) return false;
+                butObj.current_value += 1;
+
+            } else {
+
+                if (butObj.current_value - 1 < butObj.min_value) return false;
+                butObj.current_value -= 1;
+
+            }
+
+            $('#' + butObj.id + ' span.displayValue').text(butObj.current_value);
+
+            return true;
+
+        };
+
+        TW_Calc.wheelLogic = function (ev, delta, button) {
+            var newVal = 0,
+                change = delta > 0 ? 1 : -1;
+            if (change == -1) {
+                newVal = button.current_value - 1;
+                if (button.min_value > newVal) {
+                    return false;
+                }
+            } else {
+                newVal = button.current_value + 1;
+                if (button.max_value < newVal) {
+                    return false;
+                }
+            }
+            button.current_value = newVal;
+            $('#' + button.id + ' span.displayValue').text(button.current_value);
+            return true;
+        };
+
+
+        /**
+         * Craft
+         * @type {{}}
+         */
         TW_Calc.Craft = {};
 
         TW_Calc.Craft.open = function () {
@@ -1149,436 +1207,7 @@ window.TWCalc_inject = function () {
 
         };
 
-        TW_Calc.Craft.professionsCache = [
-            [{
-                "r": "20000000",
-                "o": ["0", "50", "100"]
-            }, {
-                "r": "20001000",
-                "o": ["0", "50", "100"]
-            }, {
-                "r": "20002000",
-                "o": ["0", "50", "100"]
-            }, {
-                "r": "20083000",
-                "o": ["0", "100", "100"]
-            }, {
-                "r": "20084000",
-                "o": ["0", "10", "10"]
-            }, {
-                "r": "20085000",
-                "o": ["10", "20", "20"]
-            }, {
-                "r": "20086000",
-                "o": ["20", "40", "40"]
-            }, {
-                "r": "20003000",
-                "o": ["50", "100", "100"]
-            }, {
-                "r": "20004000",
-                "o": ["50", "100", "100"]
-            }, {
-                "r": "20005000",
-                "o": ["100", "150", "200"]
-            }, {
-                "r": "20006000",
-                "o": ["100", "150", "200"]
-            }, {
-                "r": "20007000",
-                "o": ["100", "150", "200"]
-            }, {
-                "r": "20008000",
-                "o": ["150", "225", "300"]
-            }, {
-                "r": "20009000",
-                "o": ["150", "225", "300"]
-            }, {
-                "r": "20010000",
-                "o": ["150", "225", "300"]
-            }, {
-                "r": "20011000",
-                "o": ["250", "300", "300"]
-            }, {
-                "r": "20012000",
-                "o": ["250", "300", "300"]
-            }, {
-                "r": "20013000",
-                "o": ["250", "300", "300"]
-            }, {
-                "r": "20014000",
-                "o": ["300", "350", "400"]
-            }, {
-                "r": "20015000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20016000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20017000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20116000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20134000",
-                "o": ["450", "475", "500"]
-            }, {
-                "r": "20018000",
-                "o": ["400", "500", "500"]
-            }, {
-                "r": "20019000",
-                "o": ["450", "500", "500"]
-            }, {
-                "r": "20096000",
-                "o": ["500", "525", "550"]
-            }, {
-                "r": "20120000",
-                "o": ["500", "525", "550"]
-            }, {
-                "r": "20124000",
-                "o": ["500", "525", "550"]
-            }, {
-                "r": "20097000",
-                "o": ["525", "550", "575"]
-            }, {
-                "r": "20098000",
-                "o": ["550", "575", "600"]
-            }, {
-                "r": "20135000",
-                "o": ["550", "575", "600"]
-            }, {
-                "r": "20099000",
-                "o": ["600", "625", "650"]
-            }, {
-                "r": "20100000",
-                "o": ["600", "625", "650"]
-            }, {
-                "r": "20136000",
-                "o": ["600", "650", "700"]
-            }],
-            [{
-                "r": "20020000",
-                "o": ["0", "50", "100"]
-            }, {
-                "r": "20021000",
-                "o": ["0", "50", "100"]
-            }, {
-                "r": "20022000",
-                "o": ["0", "100", "100"]
-            }, {
-                "r": "20081000",
-                "o": ["0", "50", "100"]
-            }, {
-                "r": "20087000",
-                "o": ["0", "10", "10"]
-            }, {
-                "r": "20088000",
-                "o": ["10", "20", "20"]
-            }, {
-                "r": "20089000",
-                "o": ["20", "40", "40"]
-            }, {
-                "r": "20023000",
-                "o": ["50", "100", "100"]
-            }, {
-                "r": "20024000",
-                "o": ["50", "100", "100"]
-            }, {
-                "r": "20025000",
-                "o": ["100", "150", "200"]
-            }, {
-                "r": "20026000",
-                "o": ["100", "150", "200"]
-            }, {
-                "r": "20027000",
-                "o": ["100", "150", "200"]
-            }, {
-                "r": "20028000",
-                "o": ["150", "225", "300"]
-            }, {
-                "r": "20029000",
-                "o": ["150", "225", "300"]
-            }, {
-                "r": "20030000",
-                "o": ["150", "225", "300"]
-            }, {
-                "r": "20031000",
-                "o": ["250", "300", "300"]
-            }, {
-                "r": "20032000",
-                "o": ["250", "300", "300"]
-            }, {
-                "r": "20033000",
-                "o": ["250", "300", "300"]
-            }, {
-                "r": "20034000",
-                "o": ["300", "350", "400"]
-            }, {
-                "r": "20035000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20036000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20037000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20119000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20038000",
-                "o": ["400", "500", "500"]
-            }, {
-                "r": "20123000",
-                "o": ["450", "475", "500"]
-            }, {
-                "r": "20128000",
-                "o": ["450", "475", "500"]
-            }, {
-                "r": "20039000",
-                "o": ["450", "500", "500"]
-            }, {
-                "r": "20101000",
-                "o": ["500", "525", "550"]
-            }, {
-                "r": "20127000",
-                "o": ["500", "525", "550"]
-            }, {
-                "r": "20102000",
-                "o": ["525", "550", "575"]
-            }, {
-                "r": "20103000",
-                "o": ["550", "575", "600"]
-            }, {
-                "r": "20129000",
-                "o": ["550", "575", "600"]
-            }, {
-                "r": "20104000",
-                "o": ["600", "625", "650"]
-            }, {
-                "r": "20105000",
-                "o": ["600", "625", "650"]
-            }, {
-                "r": "20130000",
-                "o": ["600", "650", "700"]
-            }],
-            [{
-                "r": "20040000",
-                "o": ["0", "50", "100"]
-            }, {
-                "r": "20041000",
-                "o": ["0", "50", "100"]
-            }, {
-                "r": "20042000",
-                "o": ["0", "100", "100"]
-            }, {
-                "r": "20082000",
-                "o": ["0", "50", "100"]
-            }, {
-                "r": "20090000",
-                "o": ["0", "10", "10"]
-            }, {
-                "r": "20091000",
-                "o": ["10", "20", "20"]
-            }, {
-                "r": "20092000",
-                "o": ["20", "40", "40"]
-            }, {
-                "r": "20043000",
-                "o": ["50", "100", "100"]
-            }, {
-                "r": "20044000",
-                "o": ["50", "100", "100"]
-            }, {
-                "r": "20045000",
-                "o": ["100", "150", "200"]
-            }, {
-                "r": "20046000",
-                "o": ["100", "150", "200"]
-            }, {
-                "r": "20047000",
-                "o": ["100", "150", "200"]
-            }, {
-                "r": "20048000",
-                "o": ["150", "225", "300"]
-            }, {
-                "r": "20049000",
-                "o": ["150", "225", "300"]
-            }, {
-                "r": "20050000",
-                "o": ["150", "225", "300"]
-            }, {
-                "r": "20051000",
-                "o": ["250", "300", "300"]
-            }, {
-                "r": "20052000",
-                "o": ["250", "300", "300"]
-            }, {
-                "r": "20053000",
-                "o": ["250", "300", "300"]
-            }, {
-                "r": "20054000",
-                "o": ["300", "350", "400"]
-            }, {
-                "r": "20055000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20056000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20057000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20118000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20058000",
-                "o": ["400", "500", "500"]
-            }, {
-                "r": "20122000",
-                "o": ["450", "475", "500"]
-            }, {
-                "r": "20131000",
-                "o": ["450", "475", "500"]
-            }, {
-                "r": "20059000",
-                "o": ["450", "500", "500"]
-            }, {
-                "r": "20111000",
-                "o": ["500", "525", "550"]
-            }, {
-                "r": "20126000",
-                "o": ["500", "525", "550"]
-            }, {
-                "r": "20112000",
-                "o": ["525", "550", "575"]
-            }, {
-                "r": "20113000",
-                "o": ["550", "575", "600"]
-            }, {
-                "r": "20132000",
-                "o": ["550", "575", "600"]
-            }, {
-                "r": "20114000",
-                "o": ["600", "625", "650"]
-            }, {
-                "r": "20115000",
-                "o": ["600", "625", "650"]
-            }, {
-                "r": "20133000",
-                "o": ["600", "650", "700"]
-            }],
-            [{
-                "r": "20060000",
-                "o": ["0", "50", "100"]
-            }, {
-                "r": "20061000",
-                "o": ["0", "50", "100"]
-            }, {
-                "r": "20062000",
-                "o": ["0", "100", "100"]
-            }, {
-                "r": "20080000",
-                "o": ["0", "50", "100"]
-            }, {
-                "r": "20093000",
-                "o": ["0", "10", "10"]
-            }, {
-                "r": "20094000",
-                "o": ["10", "20", "20"]
-            }, {
-                "r": "20095000",
-                "o": ["20", "40", "40"]
-            }, {
-                "r": "20063000",
-                "o": ["50", "100", "100"]
-            }, {
-                "r": "20064000",
-                "o": ["50", "100", "100"]
-            }, {
-                "r": "20065000",
-                "o": ["100", "150", "200"]
-            }, {
-                "r": "20066000",
-                "o": ["100", "150", "200"]
-            }, {
-                "r": "20067000",
-                "o": ["100", "150", "200"]
-            }, {
-                "r": "20068000",
-                "o": ["150", "225", "300"]
-            }, {
-                "r": "20069000",
-                "o": ["150", "225", "300"]
-            }, {
-                "r": "20070000",
-                "o": ["150", "225", "300"]
-            }, {
-                "r": "20071000",
-                "o": ["250", "300", "300"]
-            }, {
-                "r": "20072000",
-                "o": ["250", "300", "300"]
-            }, {
-                "r": "20073000",
-                "o": ["250", "300", "300"]
-            }, {
-                "r": "20074000",
-                "o": ["300", "350", "400"]
-            }, {
-                "r": "20075000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20076000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20077000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20117000",
-                "o": ["350", "425", "500"]
-            }, {
-                "r": "20078000",
-                "o": ["400", "500", "500"]
-            }, {
-                "r": "20121000",
-                "o": ["450", "475", "500"]
-            }, {
-                "r": "20137000",
-                "o": ["450", "475", "500"]
-            }, {
-                "r": "20079000",
-                "o": ["450", "500", "500"]
-            }, {
-                "r": "20106000",
-                "o": ["500", "525", "550"]
-            }, {
-                "r": "20125000",
-                "o": ["500", "525", "550"]
-            }, {
-                "r": "20107000",
-                "o": ["525", "550", "575"]
-            }, {
-                "r": "20108000",
-                "o": ["550", "575", "600"]
-            }, {
-                "r": "20138000",
-                "o": ["550", "575", "600"]
-            }, {
-                "r": "20109000",
-                "o": ["600", "625", "650"]
-            }, {
-                "r": "20110000",
-                "o": ["600", "625", "650"]
-            }, {
-                "r": "20139000",
-                "o": ["600", "650", "700"]
-            }],
-            [
-                1855000, 1862000, 1856000, 1940000, 1941000, 1942000, 1943000, 1863000, 1864000, 1865000, 1866000, 1867000, 1868000, 1869000, 1870000, 1871000, 1872000, 1873000, 1874000, 1875000, 1876000, 1877000, 2516000, 2736000, 1878000, 1879000, 1980000, 2517000, 2518000, 1981000, 1982000, 2737000, 1999000, 2001000, 2738000, 1861000, 1881000, 1880000, 1939000, 1944000, 1945000, 1946000, 1882000, 1883000, 1884000, 1885000, 1886000, 1887000, 1888000, 1889000, 1890000, 1891000, 1892000, 1893000, 1894000, 1895000, 1896000, 2525000, 1897000, 2526000, 2730000, 1898000, 1983000, 2527000, 1984000, 1985000, 2731000, 2002000, 2004000, 2732000, 1859000, 1899000, 1858000, 1938000, 1947000, 1948000, 1949000, 1900000, 1901000, 1902000, 1903000, 1904000, 1905000, 1906000, 1907000, 1908000, 1909000, 1910000, 1911000, 1912000, 1913000, 1914000, 2522000, 1915000, 2523000, 2733000, 1916000, 1989000, 2524000, 1990000, 1991000, 2735000, 2008000, 2010000, 2734000, 1857000, 1917000, 1860000, 1937000, 1950000, 1951000, 1952000, 1918000, 1919000, 1920000, 1921000, 1922000, 1923000, 1924000, 1925000, 1926000, 1927000, 1928000, 1929000, 1930000, 1931000, 1932000, 2519000, 1933000, 2520000, 2739000, 1934000, 1986000, 2521000, 1987000, 1988000, 2740000, 2005000, 2007000, 2741000,
-            ],
-            []
-        ];
+        TW_Calc.Craft.professionsCache = [ [{ "r": "20000000", "o": ["0", "50", "100"] }, { "r": "20001000", "o": ["0", "50", "100"] }, { "r": "20002000", "o": ["0", "50", "100"] }, { "r": "20083000", "o": ["0", "100", "100"] }, { "r": "20084000", "o": ["0", "10", "10"] }, { "r": "20085000", "o": ["10", "20", "20"] }, { "r": "20086000", "o": ["20", "40", "40"] }, { "r": "20003000", "o": ["50", "100", "100"] }, { "r": "20004000", "o": ["50", "100", "100"] }, { "r": "20005000", "o": ["100", "150", "200"] }, { "r": "20006000", "o": ["100", "150", "200"] }, { "r": "20007000", "o": ["100", "150", "200"] }, { "r": "20008000", "o": ["150", "225", "300"] }, { "r": "20009000", "o": ["150", "225", "300"] }, { "r": "20010000", "o": ["150", "225", "300"] }, { "r": "20011000", "o": ["250", "300", "300"] }, { "r": "20012000", "o": ["250", "300", "300"] }, { "r": "20013000", "o": ["250", "300", "300"] }, { "r": "20014000", "o": ["300", "350", "400"] }, { "r": "20015000", "o": ["350", "425", "500"] }, { "r": "20016000", "o": ["350", "425", "500"] }, { "r": "20017000", "o": ["350", "425", "500"] }, { "r": "20116000", "o": ["350", "425", "500"] }, { "r": "20134000", "o": ["450", "475", "500"] }, { "r": "20018000", "o": ["400", "500", "500"] }, { "r": "20019000", "o": ["450", "500", "500"] }, { "r": "20096000", "o": ["500", "525", "550"] }, { "r": "20120000", "o": ["500", "525", "550"] }, { "r": "20124000", "o": ["500", "525", "550"] }, { "r": "20097000", "o": ["525", "550", "575"] }, { "r": "20098000", "o": ["550", "575", "600"] }, { "r": "20135000", "o": ["550", "575", "600"] }, { "r": "20099000", "o": ["600", "625", "650"] }, { "r": "20100000", "o": ["600", "625", "650"] }, { "r": "20136000", "o": ["600", "650", "700"] }], [{ "r": "20020000", "o": ["0", "50", "100"] }, { "r": "20021000", "o": ["0", "50", "100"] }, { "r": "20022000", "o": ["0", "100", "100"] }, { "r": "20081000", "o": ["0", "50", "100"] }, { "r": "20087000", "o": ["0", "10", "10"] }, { "r": "20088000", "o": ["10", "20", "20"] }, { "r": "20089000", "o": ["20", "40", "40"] }, { "r": "20023000", "o": ["50", "100", "100"] }, { "r": "20024000", "o": ["50", "100", "100"] }, { "r": "20025000", "o": ["100", "150", "200"] }, { "r": "20026000", "o": ["100", "150", "200"] }, { "r": "20027000", "o": ["100", "150", "200"] }, { "r": "20028000", "o": ["150", "225", "300"] }, { "r": "20029000", "o": ["150", "225", "300"] }, { "r": "20030000", "o": ["150", "225", "300"] }, { "r": "20031000", "o": ["250", "300", "300"] }, { "r": "20032000", "o": ["250", "300", "300"] }, { "r": "20033000", "o": ["250", "300", "300"] }, { "r": "20034000", "o": ["300", "350", "400"] }, { "r": "20035000", "o": ["350", "425", "500"] }, { "r": "20036000", "o": ["350", "425", "500"] }, { "r": "20037000", "o": ["350", "425", "500"] }, { "r": "20119000", "o": ["350", "425", "500"] }, { "r": "20038000", "o": ["400", "500", "500"] }, { "r": "20123000", "o": ["450", "475", "500"] }, { "r": "20128000", "o": ["450", "475", "500"] }, { "r": "20039000", "o": ["450", "500", "500"] }, { "r": "20101000", "o": ["500", "525", "550"] }, { "r": "20127000", "o": ["500", "525", "550"] }, { "r": "20102000", "o": ["525", "550", "575"] }, { "r": "20103000", "o": ["550", "575", "600"] }, { "r": "20129000", "o": ["550", "575", "600"] }, { "r": "20104000", "o": ["600", "625", "650"] }, { "r": "20105000", "o": ["600", "625", "650"] }, { "r": "20130000", "o": ["600", "650", "700"] }], [{ "r": "20040000", "o": ["0", "50", "100"] }, { "r": "20041000", "o": ["0", "50", "100"] }, { "r": "20042000", "o": ["0", "100", "100"] }, { "r": "20082000", "o": ["0", "50", "100"] }, { "r": "20090000", "o": ["0", "10", "10"] }, { "r": "20091000", "o": ["10", "20", "20"] }, { "r": "20092000", "o": ["20", "40", "40"] }, { "r": "20043000", "o": ["50", "100", "100"] }, { "r": "20044000", "o": ["50", "100", "100"] }, { "r": "20045000", "o": ["100", "150", "200"] }, { "r": "20046000", "o": ["100", "150", "200"] }, { "r": "20047000", "o": ["100", "150", "200"] }, { "r": "20048000", "o": ["150", "225", "300"] }, { "r": "20049000", "o": ["150", "225", "300"] }, { "r": "20050000", "o": ["150", "225", "300"] }, { "r": "20051000", "o": ["250", "300", "300"] }, { "r": "20052000", "o": ["250", "300", "300"] }, { "r": "20053000", "o": ["250", "300", "300"] }, { "r": "20054000", "o": ["300", "350", "400"] }, { "r": "20055000", "o": ["350", "425", "500"] }, { "r": "20056000", "o": ["350", "425", "500"] }, { "r": "20057000", "o": ["350", "425", "500"] }, { "r": "20118000", "o": ["350", "425", "500"] }, { "r": "20058000", "o": ["400", "500", "500"] }, { "r": "20122000", "o": ["450", "475", "500"] }, { "r": "20131000", "o": ["450", "475", "500"] }, { "r": "20059000", "o": ["450", "500", "500"] }, { "r": "20111000", "o": ["500", "525", "550"] }, { "r": "20126000", "o": ["500", "525", "550"] }, { "r": "20112000", "o": ["525", "550", "575"] }, { "r": "20113000", "o": ["550", "575", "600"] }, { "r": "20132000", "o": ["550", "575", "600"] }, { "r": "20114000", "o": ["600", "625", "650"] }, { "r": "20115000", "o": ["600", "625", "650"] }, { "r": "20133000", "o": ["600", "650", "700"] }], [{ "r": "20060000", "o": ["0", "50", "100"] }, { "r": "20061000", "o": ["0", "50", "100"] }, { "r": "20062000", "o": ["0", "100", "100"] }, { "r": "20080000", "o": ["0", "50", "100"] }, { "r": "20093000", "o": ["0", "10", "10"] }, { "r": "20094000", "o": ["10", "20", "20"] }, { "r": "20095000", "o": ["20", "40", "40"] }, { "r": "20063000", "o": ["50", "100", "100"] }, { "r": "20064000", "o": ["50", "100", "100"] }, { "r": "20065000", "o": ["100", "150", "200"] }, { "r": "20066000", "o": ["100", "150", "200"] }, { "r": "20067000", "o": ["100", "150", "200"] }, { "r": "20068000", "o": ["150", "225", "300"] }, { "r": "20069000", "o": ["150", "225", "300"] }, { "r": "20070000", "o": ["150", "225", "300"] }, { "r": "20071000", "o": ["250", "300", "300"] }, { "r": "20072000", "o": ["250", "300", "300"] }, { "r": "20073000", "o": ["250", "300", "300"] }, { "r": "20074000", "o": ["300", "350", "400"] }, { "r": "20075000", "o": ["350", "425", "500"] }, { "r": "20076000", "o": ["350", "425", "500"] }, { "r": "20077000", "o": ["350", "425", "500"] }, { "r": "20117000", "o": ["350", "425", "500"] }, { "r": "20078000", "o": ["400", "500", "500"] }, { "r": "20121000", "o": ["450", "475", "500"] }, { "r": "20137000", "o": ["450", "475", "500"] }, { "r": "20079000", "o": ["450", "500", "500"] }, { "r": "20106000", "o": ["500", "525", "550"] }, { "r": "20125000", "o": ["500", "525", "550"] }, { "r": "20107000", "o": ["525", "550", "575"] }, { "r": "20108000", "o": ["550", "575", "600"] }, { "r": "20138000", "o": ["550", "575", "600"] }, { "r": "20109000", "o": ["600", "625", "650"] }, { "r": "20110000", "o": ["600", "625", "650"] }, { "r": "20139000", "o": ["600", "650", "700"] }], [ 1855000, 1862000, 1856000, 1940000, 1941000, 1942000, 1943000, 1863000, 1864000, 1865000, 1866000, 1867000, 1868000, 1869000, 1870000, 1871000, 1872000, 1873000, 1874000, 1875000, 1876000, 1877000, 2516000, 2736000, 1878000, 1879000, 1980000, 2517000, 2518000, 1981000, 1982000, 2737000, 1999000, 2001000, 2738000, 1861000, 1881000, 1880000, 1939000, 1944000, 1945000, 1946000, 1882000, 1883000, 1884000, 1885000, 1886000, 1887000, 1888000, 1889000, 1890000, 1891000, 1892000, 1893000, 1894000, 1895000, 1896000, 2525000, 1897000, 2526000, 2730000, 1898000, 1983000, 2527000, 1984000, 1985000, 2731000, 2002000, 2004000, 2732000, 1859000, 1899000, 1858000, 1938000, 1947000, 1948000, 1949000, 1900000, 1901000, 1902000, 1903000, 1904000, 1905000, 1906000, 1907000, 1908000, 1909000, 1910000, 1911000, 1912000, 1913000, 1914000, 2522000, 1915000, 2523000, 2733000, 1916000, 1989000, 2524000, 1990000, 1991000, 2735000, 2008000, 2010000, 2734000, 1857000, 1917000, 1860000, 1937000, 1950000, 1951000, 1952000, 1918000, 1919000, 1920000, 1921000, 1922000, 1923000, 1924000, 1925000, 1926000, 1927000, 1928000, 1929000, 1930000, 1931000, 1932000, 2519000, 1933000, 2520000, 2739000, 1934000, 1986000, 2521000, 1987000, 1988000, 2740000, 2005000, 2007000, 2741000, ], [] ];
 
         TW_Calc.Craft.reCache = function () {
 
@@ -1590,21 +1219,18 @@ window.TWCalc_inject = function () {
 
         };
 
-        TW_Calc.Craft.toggleReciepes = function (u) {
+        TW_Calc.Craft.toggleRecipes = function (craft) {
 
-            var selector = ".TW-CALC-Craft > div.tw2gui_window_content_pane > #tab_" + u + " > #craft_content > #TWCalc_craft_content.tw2gui_groupframe > .tw2gui_groupframe_content_pane > div > .tw2gui_scrollpane_clipper > div >";
+            var selector = ".TW-CALC-Craft > div.tw2gui_window_content_pane > #tab_" + craft + " > #craft_content > #TWCalc_craft_content.tw2gui_groupframe > .tw2gui_groupframe_content_pane > div > .tw2gui_scrollpane_clipper > div >";
+            var toggle = $(selector + ".recipe_title>.recipe_title_inner>.recipe_collapse");
 
-            if ($(selector + ".recipe_title>.recipe_title_inner>.recipe_collapse").html() == '+') {
-
-                $(selector + ".recipe_title>.recipe_title_inner>.recipe_collapse").html("-");
+            if ($(toggle).html() === '+') {
                 $(selector + ".recipe_content").slideDown();
-
             } else {
-
-                $(selector + ".recipe_title>.recipe_title_inner>.recipe_collapse").html("+");
                 $(selector + ".recipe_content").slideUp();
-
             }
+
+            $(toggle).html($(toggle).html() === "+" ? "-" : "+");
 
         };
 
@@ -1648,8 +1274,11 @@ window.TWCalc_inject = function () {
             var itemObj = ItemManager.get(reciepeId).resources[id];
             var item = {};
 
-            if (typeof (itemObj.item) == "object") item.item = itemObj.item.item_id;
-            else item.item = itemObj.item;
+            if (typeof (itemObj.item) === "object") {
+                item.item = itemObj.item.item_id;
+            } else {
+                item.item = itemObj.item;
+            }
 
             item.count = itemObj.count;
 
@@ -1855,47 +1484,6 @@ window.TWCalc_inject = function () {
 
         };
 
-        TW_Calc.buttonLogic = function (event) {
-
-            var butObj = event.data.obj;
-
-            if ($(event.currentTarget).hasClass('butPlus')) {
-
-                if (butObj.current_value + 1 > butObj.max_value) return false;
-                butObj.current_value += 1;
-
-            } else {
-
-                if (butObj.current_value - 1 < butObj.min_value) return false;
-                butObj.current_value -= 1;
-
-            }
-
-            $('#' + butObj.id + ' span.displayValue').text(butObj.current_value);
-
-            return true;
-
-        };
-
-        TW_Calc.wheelLogic = function (ev, delta, button) {
-            var newVal = 0,
-                change = delta > 0 ? 1 : -1;
-            if (change == -1) {
-                newVal = button.current_value - 1;
-                if (button.min_value > newVal) {
-                    return false;
-                }
-            } else {
-                newVal = button.current_value + 1;
-                if (button.max_value < newVal) {
-                    return false;
-                }
-            }
-            button.current_value = newVal;
-            $('#' + button.id + ' span.displayValue').text(button.current_value);
-            return true;
-        };
-
         TW_Calc.Craft.launch = function (id, input) {
 
             try {
@@ -1968,7 +1556,7 @@ window.TWCalc_inject = function () {
 
                 var selector = ".TW-CALC-Craft > div.tw2gui_window_content_pane > #tab_" + u + " > #craft_content > #TWCalc_craft_content.tw2gui_groupframe > .tw2gui_groupframe_content_pane > div > .tw2gui_scrollpane_clipper > div";
 
-                $(selector).append('<div id="recipe_title_" onclick="TW_Calc.Craft.toggleReciepes(&quot;' + u + '&quot;)" class="recipe_title" style="display:inline-block;text-align:left;"><div class="recipe_title_inner"><div id="recipe_collapse_all" class="recipe_collapse">+' + '</div><div id="recipe_difficult_" class="recipe_difficult"></div><div id="recipe_name" class="recipe_name">' + TW_Calc.getTranslation(178) + '</div></div></div>');
+                $(selector).append('<div id="recipe_title_" onclick="TW_Calc.Craft.toggleRecipes(&quot;' + u + '&quot;)" class="recipe_title" style="display:inline-block;text-align:left;"><div class="recipe_title_inner"><div id="recipe_collapse_all" class="recipe_collapse">+' + '</div><div id="recipe_difficult_" class="recipe_difficult"></div><div id="recipe_name" class="recipe_name">' + TW_Calc.getTranslation(178) + '</div></div></div>');
 
                 while (TW_Calc.isNotUndefinedNullOrNaN(TW_Calc.Craft.craft[id][i]) !== false) {
 
@@ -2191,7 +1779,7 @@ window.TWCalc_inject = function () {
 
                 var html = '<div id="craft_content" style="position:absolute;width:685px;height:98%;top:10px;left:7px;"></div>';
 
-                wman.open(id, tab, "TW-Calc " + tab, "noreload")
+                wman.open(id, tab, "noreload")
                     .addTab(TW_Calc.getTranslation(179), "craft0", tabclick)
                     .addTab(TW_Calc.getTranslation(180), "craft1", tabclick)
                     .addTab(TW_Calc.getTranslation(181), "craft2", tabclick)
@@ -2207,6 +1795,10 @@ window.TWCalc_inject = function () {
             }
         };
 
+        /**
+         * Quests
+         * @type {{}}
+         */
         TW_Calc.Quests = {};
 
         TW_Calc.Quests.questEmployer = function (nr) {
@@ -2285,7 +1877,7 @@ window.TWCalc_inject = function () {
         };
 
         /**
-         * ErrorLog
+         * Error Log
          * @type {{}}
          */
         TW_Calc.ErrorLog = {};
@@ -2315,21 +1907,28 @@ window.TWCalc_inject = function () {
 
         TW_Calc.ErrorLog.open = function () {
 
-            var c = '';
-            var k = 0;
+            var text = 'ErrorLog:\n';
 
-            while (TW_Calc.ErrorLog.log[k]) {
-                c += TW_Calc.ErrorLog.log[k][0] + ' | ' + TW_Calc.ErrorLog.log[k][1] + '\n';
-                k++;
+            for (var k = 0; k < TW_Calc.ErrorLog.log.length; k++) {
+                text += TW_Calc.ErrorLog.log[k][0] + ' | ' + TW_Calc.ErrorLog.log[k][1] + '\n';
             }
 
-            wman.open("TW-Calc Errorlog").appendToContentPane(new west.gui.Textarea().setReadonly().setContent(c).setWidth(675).setHeight(355).getMainDiv()).setTitle("TW-Calc Errorlog").setMiniTitle("TW-Calc Errorlog");
+            wman.open("TW-Calc Errorlog")
+                .appendToContentPane(new west.gui.Textarea()
+                .setReadonly()
+                .setContent(text)
+                .setWidth(675)
+                .setHeight(355)
+                .getMainDiv())
+                .setTitle("TW-Calc Errorlog")
+                .setMiniTitle("TW-Calc Errorlog");
         };
 
         TW_Calc.ErrorLog.create();
 
+
         /**
-         * NearestJob
+         *  Nearest Job
          * @type {{}}
          */
         TW_Calc.NearestJob = {};
@@ -2364,6 +1963,7 @@ window.TWCalc_inject = function () {
                     e = i.x;
                     t = i.y;
                 }
+
             }
 
             return [e, t];
@@ -2684,6 +2284,7 @@ window.TWCalc_inject = function () {
         };
 
         TW_Calc.Wardrobe = {};
+
         TW_Calc.Wardrobe.id = 'TW_Calc_Wardrobe';
         TW_Calc.Wardrobe.img = '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAQFBAYFBQYJBgUGCQsIBgYICwwKCgsKCgwQDAwMDAwMEAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/2wBDAQcHBw0MDRgQEBgUDg4OFBQODg4OFBEMDAwMDBERDAwMDAwMEQwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wgARCAAaADIDAREAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAQQFAgMG/8QAFwEAAwEAAAAAAAAAAAAAAAAAAAECA//aAAwDAQACEAMQAAAB8VhsZeWVooyAGk0rmihNVse3LUUi3P1yeh8WBtiTrLn6GGk7VPOhJO0T8lvHT//EACIQAAICAQMEAwAAAAAAAAAAAAIDAQQAEhMhEBQVMyQxMv/aAAgBAQABBQJhWWO270RJ3QI+WwqcKDzVlRnyAtyLLbBlKGj5CLJyLXg1e8jFOBb+65tvSyIcsbUOmcZYWcagy37l4r3W/wBh99P/xAAoEQABAwIEBAcAAAAAAAAAAAAAAREhAqEDIkFREBKxwTFhgZHR4vD/2gAIAQMBAT8BV1MxJKiIpJOwgv29M0ftkNDUa/h5Nyv791MORxFPl+sXsOOg3azdWuOxBiFBSVFPH//EACURAAIABQMDBQAAAAAAAAAAAAABAhESIfAQMUEDUWEikaHR4f/aAAgBAgEBPwGyKocYqSckVITWkaEp25dk+zb3FuNenO4nL5+v0cLTlyrexSyJCXjMsQJok5CtnjGUvTp7EWkOw9f/xAAxEAABAgIHBQYHAAAAAAAAAAABAAIRMQMSISIyQYE0QkNRYTNxgsHR8AQkkaGx0uH/2gAIAQEABj8CcGyFkAIyW9oz+IOc59mRi1OZDDYOeqwkaKJrgahb+CviM/rLrNU0ItspLw8paSTXmnpi2INXnDLHmqIueXXXXnzxa/lEC0VxA6IfM0/L3fReXuqmkcRXylAZ2D2F2nBj79FSGsWm+IwMbc1EfEUn3Pmt6wQibZ9+XIRPei8m8CDhMZLaKSXX9kK9Z0LY9enIawjKAli4VTDl6p+CQnikuH4lR7PNNwYc/LpyW54k3Z5rh9ov/8QAJRABAAICAQQBBAMAAAAAAAAAAREhADFBUWGB8HGRscHhEKHR/9oACAEBAAE/IUlVE3g4m5b3ep4MCEDHEH2wT4WLw5KhJ1JeSISLkkIPlwxUmCK+M/wYGIBqd31Mh09b9frkaqzN5uHqG7W5w52Y1gXf0Mf/AHLLtu7xRao+DYAsa13ixwE5d9cXyzFUohvcqIufl+ge/niRRYBFbt1uYrxgd8ESQK7MWejXXCUzVEkN3ZbMMoRKbyoccgRHng6VeCESkJ+7DVPm1MaEhWolJSMGDHd+s7+jPYP1/Wbe3nP8/vx36d89Ld5PY98Zz2/3/g//2gAMAwEAAgADAAAAEDRH2Tok62DYDCLP/8QAHxEAAgMAAgIDAAAAAAAAAAAAAAERITFBURAggaHx/9oACAEDAQE/EBJdvoaW9G6HQkQJ/QWmQv5NFCsTaCzgkjJJ4fgobXYK1gSGx6vQFJojsaMGkcfR/8QAIBEBAAICAgEFAAAAAAAAAAAAAQARITEQYUFRcYHB4f/aAAgBAgEBPxArzHrm0xAWRTaVPCnzKa941jUZQqqPSYzFjIP46R50CHVHQxKBG1n3CmYsSpmyXuBC3i0jp3yDj//EACQQAQACAgAFBAMAAAAAAAAAAAEAESExEFFhcZFBocHwsdHh/9oACAEBAAE/EDXBqGkBrQBwfoDTsesSlAQBYswiBzIu6ogVs3gQPBYVAt9b+SHYmqYgya5mOCrUNWjmjCqSsUIxyfEhVaApTFylgzIFHKBMAwCA2AX82ekIJgrIVnwxCzAoJFdLQ/o37gpwqJQFhjSeShgglN5oW1EEdWr8k1yAJfESYGBiJV1JBaFAgVVX8UZ1g6L8IGE/AFSYT+k+G51dffqPDvehfQ9kHu+7cHyPt4H/2Q==';
 
@@ -2691,6 +2292,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.Wardrobe.window = {};
 
+        TW_Calc.Wardrobe.undefined = 'Unnamed';
 
         TW_Calc.Wardrobe.init = function () {
 
@@ -2711,9 +2313,8 @@ window.TWCalc_inject = function () {
             ];
 
             TW_Calc.Wardrobe.window.title = {
-                wardrobe: TW_Calc.Wardrobe.lang[0],
-                OwnCalc: TW_Calc.Wardrobe.lang[1],
-                job: TW_Calc.Wardrobe.lang[9]
+                Wardrobe: TW_Calc.getTranslation(170),
+                OwnCalc: TW_Calc.getTranslation(160)
             };
 
         };
@@ -2732,32 +2333,23 @@ window.TWCalc_inject = function () {
 
             TW_Calc.Wardrobe.window.open();
 
-            if (TW_Calc.Wardrobe.Wardrobe.getAll().length) {
-                TW_Calc.Wardrobe.Wardrobe.show(0);
-            }
-
         };
 
-        TW_Calc.Wardrobe.window.getPos = function (k) {
+        TW_Calc.Wardrobe.window.getPos = function (pos) {
 
             var win = $('.tw2gui_window.tw2gui_win2.tw2gui_window_notabs.wear');
-            var l = Number(win.css("left").split('px')[0]);
-            var t = Number(win.css("top").split('px')[0]);
-            var w = Number(win.css("width").split('px')[0]);
-            var s = l + w;
-            var m = t;
-            var obj = {
-                x: s,
-                y: m
-            };
-            return obj[k];
+
+            return {
+                x: Number(win.css("left").split('px')[0]) + Number(win.css("width").split('px')[0]),
+                y: Number(win.css("top").split('px')[0])
+            }[pos];
 
         };
 
         TW_Calc.Wardrobe.window.moveTo = function (x, y) {
             $('.tw2gui_window.tw2gui_win2.' + TW_Calc.Wardrobe.id)
-                .css('left', TW_Calc.Wardrobe.window.getPos('x'))
-                .css('top', TW_Calc.Wardrobe.window.getPos('y'));
+                .css('left', this.getPos('x'))
+                .css('top', this.getPos('y'));
         };
 
         TW_Calc.Wardrobe.alert = function () {
@@ -2772,511 +2364,248 @@ window.TWCalc_inject = function () {
 
         };
 
+        TW_Calc.Wardrobe.window.iconPlusHmtl = '<div style="background: url(/images/tw2gui/iconset.png); width: 16px; height: 16px; display: inline-block; background-position: -16px 80px; cursor: pointer; margin: 2px 4px;" class="hasMousePopup"></div>';
+        TW_Calc.Wardrobe.window.iconSelectBoxHmtl = '<div style="background: url(/images/window/character/title_editbtn.jpg) no-repeat; width: 24px; height: 18px; cursor: pointer; background-position: -2px -1px; border: 1px solid; margin: 0 2px; display: inline-block"></div>';
+
+        TW_Calc.Wardrobe.window.showTab = function (id) {
+
+            $("." + TW_Calc.Wardrobe.id + " > div.tw2gui_window_tabbar > .tw2gui_window_tabbar_tabs > *").each(function () {
+                $(this).removeClass("tw2gui_window_tab_active");
+            });
+
+            $("." + TW_Calc.Wardrobe.id + " > div.tw2gui_window_tabbar > .tw2gui_window_tabbar_tabs > ._tab_id_" + id)
+                .addClass("tw2gui_window_tab_active");
+
+            $("." + TW_Calc.Wardrobe.id + " > div.tw2gui_window_content_pane > *").each(function () {
+                $(this).hide();
+            });
+
+            $("." + TW_Calc.Wardrobe.id + " > div.tw2gui_window_content_pane > #" + id).fadeIn();
+
+            wman.getById(TW_Calc.Wardrobe.id)
+                .setTitle(TW_Calc.Wardrobe.window.title[id])
+                .setMiniTitle(TW_Calc.Wardrobe.window.title[id]);
+        };
+
+
         TW_Calc.Wardrobe.window.open = function () {
 
-            var win = wman.open(TW_Calc.Wardrobe.id);
+            var win = wman.open(TW_Calc.Wardrobe.id, TW_Calc.getTranslation(170), "noreload")
+                .setSize(328, 363);
 
-            win.setTitle(TW_Calc.Wardrobe.lang[0])
-                .setMiniTitle(TW_Calc.Wardrobe.lang[0])
-                .setSize(328, 383);
+            var tabClick = function (win, id) {
 
-            var tabclick = function (win, id) {
+                TW_Calc.Wardrobe[id].launch(id == "Wardrobe" ? 0 : null);
 
-                TW_Calc.Wardrobe.window.showTab(id);
+                this.showTab(id);
 
-                if (id === 'OwnCalc') TW_Calc.Wardrobe.OwnCalc.launch();
-
-            };
+            }.bind(this);
 
             if (TW_Calc.Wardrobe.bannedLocales.indexOf(Game.locale) === -1) {
-                win.addTab(TW_Calc.Wardrobe.lang[0], 'wardrobe', tabclick);
+                win.addTab(TW_Calc.getTranslation(170), 'Wardrobe', tabClick);
             }
 
-            win.addTab(TW_Calc.Wardrobe.lang[1], 'OwnCalc', tabclick);
+            win.addTab(TW_Calc.getTranslation(160), 'OwnCalc', tabClick);
 
-            $('.tw2gui_window.tw2gui_win2.' + TW_Calc.Wardrobe.id)
-                .addClass("noreload");
+            var wardrobe = $('<div id="Wardrobe" style="display: none; margin: 2px;"></div>')
+                .append($('<div style="margin: 15px 5px 5px 5px; height: 20px"><span class="TW_Calc_WardrobeCaption" style="font-size: 20px; font-family: Georgia, \'Times New Roman\', serif; text-shadow: 1px 1px 0 #FFCC66, 1px 1px 2px #000000;"></span></div>')
+                    .append($('<div style="float: right"></div>')
+                        .append($(this.iconPlusHmtl).attr("title", TW_Calc.getTranslation(161)).click(TW_Calc.Wardrobe.Wardrobe.addDialog))
+                        .append($(this.iconSelectBoxHmtl).attr("title", TW_Calc.getTranslation(172)).click(function (el) {
 
-            win.appendToContentPane($('<div id="wardrobe" class="TW_Calc" style="display: none; margin-top: 5px;"></div><div id="OwnCalc" class="TW_Calc" style="display: none; margin-top: 5px;"></div><div id="job" class="TW_Calc" style="display: none; margin-top: 5px;"></div>'));
+                            var selectBox = new west.gui.Selectbox()
+                                .setHeader(TW_Calc.getTranslation(170));
 
-            TW_Calc.Wardrobe.window.moveTo(TW_Calc.Wardrobe.window.getPos('x'), TW_Calc.Wardrobe.window.getPos('y'));
+                            var items = TW_Calc.Wardrobe.getObject("Wardrobe");
+
+                            for (var i = 0; i < items.length; i++) {
+                                var name = items[i][items[i].length - 1];
+                                selectBox.addItem(i, name.length ? name : TW_Calc.Wardrobe.undefined);
+                            }
+
+                            selectBox.addListener(TW_Calc.Wardrobe.Wardrobe.launch);
+
+                            selectBox.show(el);
+
+                        }))
+                    ))
+                .append('<div class="TW_Calc_WardrobeContent"></div>');
+
+            var ownCalc = $('<div id="OwnCalc" style="display: none; margin: 2px;"></div>')
+                .append($('<div style="margin: 15px 5px 5px 5px; height: 20px"><span class="TW_Calc_WardrobeCaption" style="font-size: 20px; font-family: Georgia, \'Times New Roman\', serif; text-shadow: 1px 1px 0 #FFCC66, 1px 1px 2px #000000;"></span></div>')
+                    .append($('<div style="float: right"></div>')
+                        .append($(this.iconPlusHmtl).attr("title", TW_Calc.getTranslation(161)).click(TW_Calc.Wardrobe.OwnCalc.addDialog))
+                        .append($(this.iconSelectBoxHmtl).attr("title", TW_Calc.getTranslation(172)).click(function (el) {
+
+                            var selectBox = new west.gui.Selectbox()
+                                .setHeader(TW_Calc.getTranslation(160));
+
+                            var items = TW_Calc.Wardrobe.getObject("OwnCalc");
+
+                            for (var i = 0; i < items.length; i++) {
+                                var name = items[i].name;
+                                selectBox.addItem(i, name.length ? name : TW_Calc.Wardrobe.undefined);
+                            }
+
+                            selectBox.addListener(TW_Calc.Wardrobe.OwnCalc.launch);
+
+                            selectBox.show(el);
+
+                        }))
+                    ))
+                .append('<div class="TW_Calc_WardrobeContent"></div>');
+
+            win.appendToContentPane(wardrobe)
+                .appendToContentPane(ownCalc);
+
+            this.moveTo(this.getPos('x'), this.getPos('y'));
+
+            var activeTab = "Wardrobe";
 
             if (TW_Calc.Wardrobe.bannedLocales.indexOf(Game.locale) !== -1) {
-                TW_Calc.Wardrobe.window.showTab('OwnCalc');
-                TW_Calc.Wardrobe.OwnCalc.launch();
-            } else {
-                TW_Calc.Wardrobe.Wardrobe.launch();
+                activeTab = "OwnCalc";
             }
 
-            $('#TW_Calc_Wardrobe_Head > #TW_Calc_Caption').remove();
+
+            TW_Calc.Wardrobe[activeTab].launch(activeTab === "Wardrobe" ? 0 : null);
+            this.showTab(activeTab);
+
+        };
+
+        TW_Calc.Wardrobe.getObject = function (type) {
+
+            var data = '[]';
+
+            if (typeof TW_Calc.storage.get(type) !== "undefined") {
+                data = TW_Calc.storage.get(type);
+            }
+
+            return $.parseJSON(data);
+
+        }
+
+        TW_Calc.Wardrobe.saveObject = function (type, data) {
+            TW_Calc.storage.add(type, JSON.stringify(data));
+        };
+
+        TW_Calc.Wardrobe.removeFromObject = function (type, index) {
+            var item = TW_Calc.Wardrobe.getObject(type);
+            item.splice(index, 1);
+            TW_Calc.Wardrobe.save(item);
+        };
+
+        TW_Calc.Wardrobe.fadeWearItems = function () {
+            if (Bag.loaded) {
+                for (var i = 0; i < WearSet.setItems.length; i++) {
+                    $('.TW_Calc_WardrobeContent>.tw2gui_groupframe>.tw2gui_groupframe_content_pane>.item.item_inventory[item_id=' + WearSet.setItems[i] + ']')
+                        .css('opacity', '0.5');
+                }
+            }
+        };
+
+        TW_Calc.Wardrobe.wear = function (input) {
+
+            var items;
+
+            if (typeof input === "number")
+                items = [input];
+            else if (typeof input === "object")
+                items = input;
+            else return;
+
+            if (Bag.loaded) {
+
+                for (var i = 0; i < (items.length); i++) {
+
+                    var id = items[i];
+
+                    if (Bag.getItemByItemId(Number(id)) != null) {
+                        Wear.carry(Bag.getItemByItemId(Number(id)));
+                    }
+
+                    $('.TW_Calc_WardrobeContent>.tw2gui_groupframe>.tw2gui_groupframe_content_pane>.item.item_inventory[item_id=' + id + ']').css('opacity', '0.5');
+
+                }
+
+            } else {
+                Bag.loadItems();
+            }
+
+        };
+
+        TW_Calc.Wardrobe.remove = function (type, index) {
+
+            var items = TW_Calc.Wardrobe.getObject(type);
+            items.splice(index, 1);
+            TW_Calc.Wardrobe.saveObject(type, items);
+
+            new UserMessage(TW_Calc.getTranslation(165), UserMessage.TYPE_SUCCESS).show();
+
+            TW_Calc.Wardrobe[type].launch();
 
         };
 
         TW_Calc.Wardrobe.Wardrobe = {};
 
-        TW_Calc.Wardrobe.OwnCalc = {};
+        TW_Calc.Wardrobe.Wardrobe.launch = function (index) {
 
-        TW_Calc.Wardrobe.OwnCalc.show = function (id) {
+            var groupFrame = new west.gui.Groupframe();
 
-            $('#TW_Calc_Wardrobe_OwnCalc_del').css('display', 'inline-block');
-            $('#TW_Calc_Wardrobe_OwnCalc_config').css('display', 'inline-block');
-            $('#TW_Calc_OwnCalc_Items>.tw2gui_groupframe_content_pane').empty();
+            var set = TW_Calc.Wardrobe.getObject("Wardrobe");
 
-            var s = TW_Calc.Wardrobe.OwnCalc.get(id);
+            $("#Wardrobe>div>.TW_Calc_WardrobeCaption").empty();
 
-            $('#TW_Calc_Wardrobe_OwnCalc_del').unbind('click').attr('remove_id', id).click(function () {
-                TW_Calc.Wardrobe.OwnCalc.remove($(this).attr('remove_id'));
-            });
+            if (typeof index !== "undefined" && typeof set[index] !== "undefined") {
 
-            $('#TW_Calc_Wardrobe_OwnCalc_config').unbind('click').attr('config_id', id).click(function () {
-                TW_Calc.Wardrobe.OwnCalc.seeConfiguration($(this).attr('config_id'));
-            });
+                var name = set[index][set[index].length - 1];
 
-            TW_Calc.Wardrobe.OwnCalc.actualWear = s;
+                $("#Wardrobe>div>.TW_Calc_WardrobeCaption").append($('<span data-index="' + index + '" style="background: url(/images/tw2gui/iconset.png); display: inline-block; width: 16px; height: 16px; background-position: -48px 0px; cursor: pointer; margin: 2px" title="' + TW_Calc.getTranslation(171) + '"></span>')
+                    .click(function () {
+                        TW_Calc.Wardrobe.remove("Wardrobe", $(this).data("index"))
+                    })).append(name.length ? name : TW_Calc.Wardrobe.undefined);
 
-            if (Bag.loaded) {
+                if (Bag.loaded) {
 
-                var items = west.item.Calculator.getBestSet(s).getItems();
-
-                for (var i = 0; i < (items.length); i++) {
-
-                    var item = new tw2widget.InventoryItem(ItemManager.get(Number(items[i])));
-
-                    $('#TW_Calc_OwnCalc_Items>.tw2gui_groupframe_content_pane').append($(item.getMainDiv()).attr('item_id', items[i]).click(function () {
-                        TW_Calc.Wardrobe.Wardrobe.wear($(this).attr('item_id'));
-                    }));
-
-                }
-
-            } else {
-                Bag.loadItems();
-            }
-
-            TW_Calc.Wardrobe.Wardrobe.fadeAll();
-
-            $('#TW_Calc_OwnCalc_Head > .tw2gui_groupframe_content_pane > #TW_Calc_Caption').remove();
-            $('#TW_Calc_OwnCalc_Head > .tw2gui_groupframe_content_pane').append('<span id="TW_Calc_Caption" style="font-weight:bold;font-size:18px;">' + (s.name.length ? s.name : 'Unnamed') + '</span>');
-
-            if (Premium.hasBonus("automation") === true || 1) {
-                $("#TW_Calc_OwnCalc_Items>.tw2gui_groupframe_content_pane").append(new west.gui.Button()
-                    .setCaption("Wear all").click(function () {
-                    TW_Calc.Wardrobe.OwnCalc.wearAll(TW_Calc.Wardrobe.OwnCalc.actualWear);
-                }).getMainDiv());
-            }
-
-        };
-
-        TW_Calc.Wardrobe.OwnCalc.wearAll = function (id) {
-
-            if (Bag.loaded) {
-
-                var items = west.item.Calculator.getBestSet(id).getItems();
-
-                for (var i = 0; i < (items.length); i++) {
-                    TW_Calc.Wardrobe.Wardrobe.wear(items[i]);
-                }
-
-            } else {
-                Bag.loadItems();
-            }
-
-        };
-
-        TW_Calc.Wardrobe.OwnCalc.seeConfiguration = function (id) {
-
-            var data = TW_Calc.Wardrobe.OwnCalc.get(Number(id));
-            var dialog = new west.gui.Dialog((!data.name.length ? 'Unnamed' : data.name), '<div id="TW_Calc_Wardrobe_OwnCalc_Dialog_Div"></div>')
-                .setId('TW_Calc_Wardrobe_OwnCalc_Dialog');
-
-            dialog.addButton(TW_Calc.Wardrobe.lang[3], function () {});
-            dialog.show();
-
-            $("div#TW_Calc_Wardrobe_OwnCalc_Dialog_Div").append(new west.gui.Groupframe().appendToContentPane('<div id="Skills" style="width:432px; margin-left: auto; margin-right: auto; text-align: center;"></div><div></div>').getMainDiv());
-
-            var skills = CharacterSkills.allSkillKeys;
-
-            for (var k = 0; k < skills.length; k++) {
-
-                $("#Skills").append(CharacterSkills.getSkill(skills[k]).getSkillPMBox("TW_Calc_Wardrobe_OwnCalc_" + skills[k], {}, {
-                    id: "TW_Calc_Wardrobe_OwnCalc_" + skills[k] + "_id",
-                    min_value: 0,
-                    start_value: data[skills[k]],
-                    max_value: data[skills[k]],
-                    extra_points: 0,
-                    callbackPlus: function () {},
-                    callbackMinus: function () {}
-                }));
-
-            }
-
-            $('#TW_Calc_Wardrobe_OwnCalc_Dialog').css('top', (($('body').height() - $('#TW_Calc_Wardrobe_OwnCalc_Dialog_Div').height()) / 2));
-
-        };
-
-        TW_Calc.Wardrobe.OwnCalc.launch = function () {
-
-            TW_Calc.Wardrobe.window.showTab('OwnCalc');
-
-            var maindiv = '#OwnCalc.TW_Calc';
-
-            var c = '<div onclick="TW_Calc.Wardrobe.OwnCalc.AddDialog()" title="' + TW_Calc.Wardrobe.lang[11] + '" style="position:absolute;right:44px;background:url(' + TW_Calc.imgUrl + '/images/tw2gui/iconset.png);width:16px;height:16px;display:inline-block;background-position: -16px 80px;cursor:pointer;"></div><div id="TW_Calc_Wardrobe_OwnCalc_del" style="background:url(' + TW_Calc.imgUrl + '/images/tw2gui/iconset.png);width:16px;height:16px;display:none;background-position: -48px 0px;cursor:pointer;position:absolute;right:62px;" title="' + TW_Calc.Wardrobe.lang[8] + '"></div><div id="TW_Calc_Wardrobe_OwnCalc_config" title="' + TW_Calc.Wardrobe.lang[12] + '" style="display:none;background:url(/images/tw2gui/iconset.png);width:16px;height:16px;display:none;background-position: -32px 80px;cursor:pointer;position:absolute;right:80px;"></div><div id="TW_Calc_OwnCalc_Selectbox" style="position: absolute;right: 14px;top: 14px;background:url(/images/window/character/title_editbtn.jpg) no-repeat;width:24px;height:18px;cursor:pointer;background-position: -2px -1px;border: 1px solid"></div>';
-
-            $(maindiv).html(new west.gui.Groupframe().setId('TW_Calc_OwnCalc_Head').appendToContentPane(c).getMainDiv());
-
-            $("#TW_Calc_OwnCalc_Head>.tw2gui_groupframe_content_pane").css("height", "19px");
-
-            $('#TW_Calc_OwnCalc_Selectbox').click(function (e) {
-
-                TW_Calc.Wardrobe.OwnCalc.Selectbox = new west.gui.Selectbox().setHeader(TW_Calc.Wardrobe.lang[10]);
-
-                var sBox = TW_Calc.Wardrobe.OwnCalc.Selectbox;
-                var s = TW_Calc.Wardrobe.OwnCalc.getAll();
-
-                for (var i = 0; i < s.length; i++) {
-                    sBox.addItem(i, s[i].name.length ? s[i].name : 'Unnamed');
-                }
-
-                sBox.addListener(function (id) {
-                    TW_Calc.Wardrobe.OwnCalc.show(id);
-                });
-
-                TW_Calc.Wardrobe.OwnCalc.Selectbox.show(e);
-
-            });
-
-            $(maindiv).append(new west.gui.Groupframe().setId('TW_Calc_OwnCalc_Items').getMainDiv());
-
-            $('#TW_Calc_OwnCalc_Items').css('height', 220);
-
-            if (TW_Calc.Wardrobe.OwnCalc.getAll().length) {
-                TW_Calc.Wardrobe.OwnCalc.show(0);
-            }
-
-        };
-
-        TW_Calc.Wardrobe.OwnCalc.remove = function (id) {
-
-            var item = TW_Calc.Wardrobe.OwnCalc.getAll();
-            item.splice(id, 1);
-            TW_Calc.Wardrobe.OwnCalc.Save(item);
-
-            new UserMessage(TW_Calc.Wardrobe.lang[6], UserMessage.TYPE_SUCCESS).show();
-
-            TW_Calc.Wardrobe.OwnCalc.launch();
-            TW_Calc.Wardrobe.OwnCalc.show((TW_Calc.Wardrobe.OwnCalc.getAll().length - 1));
-
-        };
-
-        TW_Calc.Wardrobe.OwnCalc.getAll = function () {
-
-            var data = '[]';
-
-            if (TW_Calc.isNotUndefinedNullOrNaN(TW_Calc.storage.get('OwnCalc')) !== false) {
-                data = TW_Calc.storage.get('OwnCalc');
-            }
-
-            return $.parseJSON(data);
-
-        };
-
-        TW_Calc.Wardrobe.OwnCalc.get = function (i) {
-            return this.getAll()[i];
-        };
-
-        TW_Calc.Wardrobe.OwnCalc.AddDialog = function () {
-
-            var dialog = new west.gui.Dialog(TW_Calc.Wardrobe.lang[11], '<div id="TW_Calc_Wardrobe_OwnCalc_Dialog_Div"></div>').setId('TW_Calc_Wardrobe_OwnCalc_Dialog');
-
-            dialog.addButton(TW_Calc.getTranslation(36), function () {
-                TW_Calc.Wardrobe.OwnCalc.Add(TW_Calc.Wardrobe.OwnCalc.createObject());
-            }).addButton(TW_Calc.getTranslation(92), function () {}).show();
-
-            $("div#TW_Calc_Wardrobe_OwnCalc_Dialog_Div").append(new west.gui.Groupframe().appendToContentPane('<div id="Skills" style="width:432px;margin-left:auto;margin-right:auto;text-align:center;"></div><div></div>').getMainDiv());
-
-            var skills = CharacterSkills.allSkillKeys;
-
-            var logicPlusMinus = function (event) {
-
-                var butObj = event.data.obj,
-                    v;
-
-                if ($(event.currentTarget).hasClass('butPlus')) {
-
-                    v = $(".tw2gui_plusminus#" + butObj.id + ">.displayValue").html();
-                    $(".tw2gui_plusminus#" + butObj.id + ">.displayValue").html(Number(v) + 1);
-
-                }
-
-                if ($(event.currentTarget).hasClass('butMinus')) {
-
-                    v = $(".tw2gui_plusminus#" + butObj.id + ">.displayValue").html();
-                    if ((Number(v) - 1) >= 0) {
-                        $(".tw2gui_plusminus#" + butObj.id + ">.displayValue").html(Number(v) - 1);
+                    for (var i = 0; i < set[index].length - 1; i++) {
+                        if (Number(set[index][i])) {
+                            var item = new tw2widget.InventoryItem(ItemManager.get(set[index][i]));
+                            groupFrame.appendToContentPane($(item.getMainDiv())
+                                .attr('item_id', set[index][i]).click(function () {
+                                    TW_Calc.Wardrobe.wear(Number($(this).attr('item_id')));
+                                }));
+                        }
                     }
 
+                } else {
+                    Bag.loadItems();
                 }
 
-            };
-
-            for (var k = 0; k < skills.length; k++) {
-
-                $("#Skills").append(CharacterSkills.getSkill(skills[k]).getSkillPMBox("TW_Calc_Wardrobe_OwnCalc_" + skills[k], {}, {
-                    id: "TW_Calc_Wardrobe_OwnCalc_" + skills[k] + "_id",
-                    min_value: 0,
-                    start_value: 0,
-                    max_value: 1000,
-                    extra_points: 0,
-                    callbackPlus: logicPlusMinus,
-                    callbackMinus: logicPlusMinus
-                }));
-
-            }
-
-            $("#TW_Calc_Wardrobe_OwnCalc_Dialog_Div").append(new west.gui.Textfield()
-                .setWidth(440)
-                .setPlaceholder(TW_Calc.getTranslation(157)
-                ).setId("TW_Calc_Wardrobe_OwnCalc_Name").getMainDiv());
-
-            $('#TW_Calc_Wardrobe_OwnCalc_Dialog').css('top', (($('body').height() - $('#TW_Calc_Wardrobe_OwnCalc_Dialog_Div').height()) / 2));
-        };
-
-        TW_Calc.Wardrobe.OwnCalc.createObject = function () {
-
-            var skills = CharacterSkills.allSkillKeys;
-            var data = {};
-
-            for (var i = 0; i < skills.length; i++) {
-                data[skills[i]] = Number($("#TW_Calc_Wardrobe_OwnCalc_" + skills[i] + "_id>.displayValue").text());
-            }
-
-            data.name = $('#TW_Calc_Wardrobe_OwnCalc_Name').val();
-
-            return data;
-
-        };
-
-        TW_Calc.Wardrobe.OwnCalc.Add = function (k) {
-
-            var data = TW_Calc.Wardrobe.OwnCalc.getAll();
-
-            data.push(k);
-            TW_Calc.Wardrobe.OwnCalc.Save(data);
-
-            return data;
-
-        };
-
-        TW_Calc.Wardrobe.OwnCalc.Save = function (data) {
-
-            TW_Calc.storage.add('OwnCalc', JSON.stringify(data));
-
-            new UserMessage(TW_Calc.Wardrobe.lang[6], UserMessage.TYPE_SUCCESS).show();
-
-            TW_Calc.Wardrobe.OwnCalc.show(TW_Calc.Wardrobe.OwnCalc.getLength());
-
-        };
-
-        TW_Calc.Wardrobe.OwnCalc.getLength = function () {
-            return (TW_Calc.Wardrobe.OwnCalc.getAll().length - 1);
-        };
-
-        TW_Calc.Wardrobe.Wardrobe.remove = function (id) {
-
-            var item = TW_Calc.Wardrobe.Wardrobe.getAll();
-
-            item.splice(id, 1);
-
-            TW_Calc.Wardrobe.Wardrobe.Save(item);
-
-            new UserMessage(TW_Calc.Wardrobe.lang[6], UserMessage.TYPE_SUCCESS).show();
-
-            TW_Calc.Wardrobe.Wardrobe.launch();
-            TW_Calc.Wardrobe.Wardrobe.show((TW_Calc.Wardrobe.Wardrobe.getAll().length - 1));
-
-        };
-
-        TW_Calc.Wardrobe.Wardrobe.show = function (id) {
-
-            $('#TW_Calc_Wardrobe_Wardrobe_del').css('display', 'inline-block');
-            $('#TW_Calc_Wardrobe_Items>.tw2gui_groupframe_content_pane').empty();
-
-            var s = TW_Calc.Wardrobe.Wardrobe.get(id);
-            TW_Calc.Wardrobe.Wardrobe.actualWear = id;
-
-            $('#TW_Calc_Wardrobe_Wardrobe_del').unbind('click').attr('remove_id', id).click(function () {
-                TW_Calc.Wardrobe.Wardrobe.remove($(this).attr('remove_id'));
-            });
-
-            if (Bag.loaded) {
-
-                for (var i = 0; i < (s.length - 1); i++) {
-                    if (Number(s[i])) {
-                        var item = new tw2widget.InventoryItem(ItemManager.get(s[i]));
-                        $('#TW_Calc_Wardrobe_Items>.tw2gui_groupframe_content_pane').append($(item.getMainDiv())
-                            .attr('item_id', s[i]).click(function () {
-                            TW_Calc.Wardrobe.Wardrobe.wear($(this).attr('item_id'));
-                        }));
-                    }
+                if (Premium.hasBonus("automation")) {
+                    groupFrame.appendToContentPane(new west.gui.Button().setCaption("Wear all").click(function () {
+                        var items = set[index];
+                        items.splice(items.length - 1, 1);
+                        TW_Calc.Wardrobe.wear(items);
+                    }.bind(this)).getMainDiv());
                 }
+
+                var groupFrameDiv = groupFrame.getMainDiv()
+
+                $(".tw2gui_groupframe_background", groupFrameDiv).css("background", "url('/images/interface/wood_texture_dark.jpg')");
+                $(".tw2gui_groupframe_content_pane", groupFrameDiv).css("height", "180px");
+
+                $("#Wardrobe>.TW_Calc_WardrobeContent").html(groupFrameDiv);
+
+                TW_Calc.Wardrobe.fadeWearItems();
 
             } else {
-                Bag.loadItems();
-            }
 
-            TW_Calc.Wardrobe.Wardrobe.fadeAll();
-
-            $('#TW_Calc_Wardrobe_Head > .tw2gui_groupframe_content_pane > #TW_Calc_Caption').remove();
-
-            $('#TW_Calc_Wardrobe_Head > .tw2gui_groupframe_content_pane').append('<span id="TW_Calc_Caption" style="font-weight:bold;font-size:18px;">' + (!s[s.length - 1].length ? 'Unnamed' : s[s.length - 1]) + '</span>');
-
-            if (Premium.hasBonus("automation")) {
-                $("#TW_Calc_Wardrobe_Items>.tw2gui_groupframe_content_pane").append(new west.gui.Button().setCaption("Wear all").click(function () {
-                    TW_Calc.Wardrobe.Wardrobe.wearAll(TW_Calc.Wardrobe.Wardrobe.actualWear);
-                }).getMainDiv());
-            }
-
-        };
-
-        TW_Calc.Wardrobe.Wardrobe.wearAll = function (id) {
-
-            if (Bag.loaded) {
-
-                var s = TW_Calc.Wardrobe.Wardrobe.get(id);
-
-                for (var i = 0; i < s.length - 1; i++) {
-                    if (s[i] != null) {
-                        TW_Calc.Wardrobe.Wardrobe.wear(s[i]);
-                    }
-                }
-
-            } else {
-                Bag.loadItems();
-            }
-
-        };
-
-        TW_Calc.Wardrobe.Wardrobe.wear = function (id) {
-
-            if (Bag.getItemByItemId(Number(id)) != null) {
-                Wear.carry(Bag.getItemByItemId(Number(id)));
-            }
-
-            $('.item.item_inventory[item_id=' + id + ']').css('opacity', '0.5');
-
-        };
-
-        TW_Calc.Wardrobe.Wardrobe.fadeAll = function () {
-
-            if (Bag.loaded) {
-                for (var i = 0; i < WearSet.setItems.length; i++) {
-                    $('.item.item_inventory[item_id=' + WearSet.setItems[i] + ']').css('opacity', '0.5');
-                }
-            }
-
-        };
-
-        TW_Calc.Wardrobe.Wardrobe.launch = function () {
-
-            try {
-
-                TW_Calc.Wardrobe.window.showTab('wardrobe');
-
-                var maindiv = '#wardrobe.TW_Calc';
-
-                var c = '<div onclick="TW_Calc.Wardrobe.Wardrobe.AddDialog()" title="' + TW_Calc.Wardrobe.lang[2] + '" style="position: absolute; right: 44px; background:url(' + TW_Calc.imgUrl + '/images/tw2gui/iconset.png);width:16px;height:16px;display:inline-block;background-position: -16px 80px;cursor:pointer"></div><div id="TW_Calc_Wardrobe_Wardrobe_del" style="background:url(/images/tw2gui/iconset.png);width:16px;height:16px;display:none;background-position: -48px 0px;cursor:pointer;position:absolute;right:60px;" title="' + TW_Calc.Wardrobe.lang[8] + '"></div><div id="wardrobe_selector" style="position: absolute; right: 14px; top: 14px; background:url(/images/window/character/title_editbtn.jpg) no-repeat; width: 24px; height: 18px; cursor: pointer; background-position: -2px -1px; border: 1px solid"></div>';
-
-                $(maindiv).html(new west.gui.Groupframe()
-                    .setId('TW_Calc_Wardrobe_Head')
-                    .appendToContentPane(c)
-                    .getMainDiv());
-
-                $("#TW_Calc_Wardrobe_Head>.tw2gui_groupframe_content_pane").css("height", "19px");
-
-                $('#wardrobe_selector').click(function (e) {
-
-                    TW_Calc.Wardrobe.Wardrobe.Selectbox = new west.gui.Selectbox()
-                        .setHeader(TW_Calc.Wardrobe.lang[0]);
-
-                    var sBox = TW_Calc.Wardrobe.Wardrobe.Selectbox;
-                    var s = TW_Calc.Wardrobe.Wardrobe.getAll();
-
-                    for (var i = 0; i < s.length; i++) {
-                        sBox.addItem(i, (!s[i][10].length ? 'Unnamed' : s[i][10]));
-                    }
-
-                    sBox.addListener(function (id) {
-                        TW_Calc.Wardrobe.Wardrobe.show(id);
-                    });
-
-                    TW_Calc.Wardrobe.Wardrobe.Selectbox.show(e);
-
-                });
-
-                $(maindiv).append(new west.gui.Groupframe()
-                    .setId('TW_Calc_Wardrobe_Items')
-                    .getMainDiv());
-
-                $('#TW_Calc_Wardrobe_Items').css('height', 220);
-
-            } catch (e) {
+                $("#Wardrobe>.TW_Calc_WardrobeContent").html('<div style="margin: 15px; text-align: center; font-weight: bold">Create or select set from the menu.</div>');
 
             }
 
         };
 
-        TW_Calc.Wardrobe.Wardrobe.getAll = function () {
-
-            var data = '[]';
-
-            if (typeof TW_Calc.storage.get('Wardrobe') !== "undefined") {
-                data = TW_Calc.storage.get('Wardrobe');
-            }
-
-            return $.parseJSON(data);
-
-        };
-
-        TW_Calc.Wardrobe.Wardrobe.get = function (i) {
-            return TW_Calc.Wardrobe.Wardrobe.getAll()[i];
-        };
-
-        TW_Calc.Wardrobe.Wardrobe.AddDialog = function () {
-
-            new west.gui.Dialog()
-                .setTitle(TW_Calc.Wardrobe.lang[2])
-                .setId('TW_Calc_Wardrobe_Add')
-                .setText(TW_Calc.Wardrobe.lang[5])
-                .addButton(TW_Calc.Wardrobe.lang[4], function () {
-                    TW_Calc.Wardrobe.Wardrobe.AddMyWear($('#TW_Calc_Wardrobe_Wardrobe_Add').val());
-                }).addButton(TW_Calc.Wardrobe.lang[3], function () {}).show();
-
-            $('#TW_Calc_Wardrobe_Add>.tw2gui_dialog_content>.tw2gui_dialog_text').append('</br>')
-                .append(new west.gui.Textfield()
-                    .setWidth("400px")
-                    .setPlaceholder(TW_Calc.Wardrobe.lang[7])
-                    .setId("TW_Calc_Wardrobe_Wardrobe_Add").getMainDiv());
-
-        };
-
-        TW_Calc.Wardrobe.Wardrobe.Save = function (data) {
-            TW_Calc.storage.add('Wardrobe', JSON.stringify(data));
-        };
-
-        TW_Calc.Wardrobe.Wardrobe.Add = function (set) {
-
-            var data = TW_Calc.Wardrobe.Wardrobe.getAll();
-            data.push(set);
-
-            TW_Calc.Wardrobe.Wardrobe.Save(data);
-
-            new UserMessage(TW_Calc.Wardrobe.lang[6], UserMessage.TYPE_SUCCESS).show();
-
-            TW_Calc.Wardrobe.Wardrobe.launch();
-            TW_Calc.Wardrobe.Wardrobe.show((TW_Calc.Wardrobe.Wardrobe.getAll().length - 1));
-
-        };
-
-        TW_Calc.Wardrobe.Wardrobe.AddMyWear = function (name) {
+        TW_Calc.Wardrobe.Wardrobe.saveWear = function (name) {
 
             var data = [];
             var slots = ['animal', 'belt', 'body', 'foot', 'head', 'left_arm', 'neck', 'pants', 'right_arm', 'yield', 'name'];
@@ -3295,32 +2624,213 @@ window.TWCalc_inject = function () {
 
             }
 
-            TW_Calc.Wardrobe.Wardrobe.Add(data);
+            var wardrobe = TW_Calc.Wardrobe.getObject("Wardrobe");
+            wardrobe.push(data);
+            TW_Calc.Wardrobe.saveObject("Wardrobe", wardrobe);
+
+            new UserMessage(TW_Calc.getTranslation(165), UserMessage.TYPE_SUCCESS).show();
+
+            TW_Calc.Wardrobe.Wardrobe.launch(wardrobe.length - 1);
 
         };
 
-        TW_Calc.Wardrobe.window.showTab = function (id) {
+        TW_Calc.Wardrobe.Wardrobe.addDialog = function () {
 
-            $("." + TW_Calc.Wardrobe.id + " > div.tw2gui_window_tabbar > .tw2gui_window_tabbar_tabs > *").each(function () {
-                $(this).removeClass("tw2gui_window_tab_active");
-            });
+            new west.gui.Dialog()
+                .setTitle(TW_Calc.getTranslation(161))
+                .setId('TW_Calc_WardrobeDialog')
+                .setText(TW_Calc.getTranslation(164))
+                .addButton(TW_Calc.getTranslation(163), function () {
+                    TW_Calc.Wardrobe.Wardrobe.saveWear($('#TW_Calc_Wardrobe_Wardrobe_Add').val());
+                })
+                .addButton(TW_Calc.getTranslation(162), function () {})
+                    .show();
 
-            $("." + TW_Calc.Wardrobe.id + " > div.tw2gui_window_tabbar > .tw2gui_window_tabbar_tabs > ._tab_id_" + id).addClass("tw2gui_window_tab_active");
+            $('#TW_Calc_WardrobeDialog > .tw2gui_dialog_content > .tw2gui_dialog_text').append('</br>')
+                .append(new west.gui.Textfield()
+                    .setWidth("400px")
+                    .setPlaceholder(TW_Calc.getTranslation(166))
+                    .setId("TW_Calc_Wardrobe_Wardrobe_Add").getMainDiv());
 
-            $("." + TW_Calc.Wardrobe.id + " > div.tw2gui_window_content_pane > *").each(function () {
-                $(this).hide();
-            });
-
-            $("." + TW_Calc.Wardrobe.id + " > div.tw2gui_window_content_pane > #" + id).fadeIn();
-
-            wman.getById(TW_Calc.Wardrobe.id)
-                .setTitle(TW_Calc.Wardrobe.window.title[id])
-                .setMiniTitle(TW_Calc.Wardrobe.window.title[id]);
         };
 
+        TW_Calc.Wardrobe.OwnCalc = {};
+
+        TW_Calc.Wardrobe.OwnCalc.launch = function (index) {
+
+            var groupFrame = new west.gui.Groupframe();
+
+            var set = TW_Calc.Wardrobe.getObject("OwnCalc");
+
+            $("#OwnCalc>div>.TW_Calc_WardrobeCaption").empty();
+
+            if (typeof index !== "undefined" && typeof set[index] !== "undefined") {
+
+                var name = set[index].name;
+
+                $("#OwnCalc>div>.TW_Calc_WardrobeCaption").append($('<span data-index="' + index + '" style="background: url(/images/tw2gui/iconset.png); display: inline-block; width: 16px; height: 16px; background-position: -48px 0px; cursor: pointer; margin: 2px" title="' + TW_Calc.getTranslation(171) + '"></span>')
+                    .click(function () {
+                        TW_Calc.Wardrobe.remove("OwnCalc", $(this).data("index"))
+                    }))
+                    .append($('<div data-index="' + index + '" style="background: url(/images/tw2gui/iconset.png); width: 16px; height: 16px; display: inline-block; background-position: -32px 80px; cursor: pointer; margin: 2px 4px 2px 0px" title="' + TW_Calc.getTranslation(169) + '"></div>')
+                        .click(function () {
+                            TW_Calc.Wardrobe.OwnCalc.showConfig($(this).data("index"))
+                        }))
+                    .append(name.length ? name : TW_Calc.Wardrobe.undefined);
+
+                if (Bag.loaded) {
+
+                    var items = west.item.Calculator.getBestSet(set[index]).getItems();
+
+                    for (var i = 0; i < items.length - 1; i++) {
+                        if (Number(items[i])) {
+                            var item = new tw2widget.InventoryItem(ItemManager.get(Number(items[i])));
+                            groupFrame.appendToContentPane($(item.getMainDiv())
+                                .attr('item_id', items[i]).click(function () {
+                                    TW_Calc.Wardrobe.wear(Number($(this).attr('item_id')));
+                                }));
+                        }
+                    }
+
+                } else {
+                    Bag.loadItems();
+                }
+
+                groupFrame.appendToContentPane(new west.gui.Button().setCaption("Wear all").click(function () {
+                    var items = set[index];
+                    items.splice(items.length - 1, 1);
+                    TW_Calc.Wardrobe.wear(items);
+                }.bind(this)).getMainDiv());
+
+                var groupFrameDiv = groupFrame.getMainDiv()
+
+                $(".tw2gui_groupframe_background", groupFrameDiv).css("background", "url('/images/interface/wood_texture_dark.jpg')");
+                $(".tw2gui_groupframe_content_pane", groupFrameDiv).css("height", "180px");
+
+                $("#OwnCalc>.TW_Calc_WardrobeContent").html(groupFrameDiv);
+
+                TW_Calc.Wardrobe.fadeWearItems();
+
+            } else {
+
+                $("#OwnCalc>.TW_Calc_WardrobeContent").html('<div style="margin: 15px; text-align: center; font-weight: bold">Create or select set from the menu.</div>');
+
+            }
+
+        };
+
+        TW_Calc.Wardrobe.OwnCalc.showConfig = function (index) {
+
+            var data = TW_Calc.Wardrobe.getObject("OwnCalc")[index];
+
+            var dialog = new west.gui.Dialog((!data.name.length ? 'Unnamed' : data.name))
+                .setId('TW_Calc_WardrobeOwnCalcDialog')
+                .addButton(TW_Calc.getTranslation(162), function () {})
+                .show();
+
+            var skillsFrame = $('<div style="width: 432px; margin-left: auto; margin-right: auto; text-align: center;"></div>');
+            var skills = CharacterSkills.allSkillKeys;
+
+            for (var k = 0; k < skills.length; k++) {
+
+                $(skillsFrame).append(CharacterSkills.getSkill(skills[k]).getSkillPMBox("TW_Calc_Wardrobe_OwnCalc_" + skills[k], {}, {
+                    id: "TW_Calc_Wardrobe_OwnCalc_" + skills[k] + "_id",
+                    min_value: 0,
+                    start_value: data[skills[k]],
+                    max_value: data[skills[k]],
+                    extra_points: 0,
+                    callbackPlus: function () {},
+                    callbackMinus: function () {}
+                }));
+
+            };
+
+            $("#TW_Calc_WardrobeOwnCalcDialog>.tw2gui_dialog_content").append(new west.gui.Groupframe()
+                .appendToContentPane(skillsFrame).getMainDiv());
+
+            $('#TW_Calc_Wardrobe_OwnCalc_Dialog').css('top', (($('body').height() - $('#TW_Calc_Wardrobe_OwnCalc_Dialog_Div').height()) / 2));
+
+        };
+
+        TW_Calc.Wardrobe.OwnCalc.addDialog = function () {
+
+            new west.gui.Dialog(TW_Calc.getTranslation(172))
+                .setId('TW_Calc_WardrobeOwnCalcDialog')
+                .addButton(TW_Calc.getTranslation(36), TW_Calc.Wardrobe.OwnCalc.add)
+                .addButton(TW_Calc.getTranslation(92), function () {})
+                .show();
+
+            var logicPlusMinus = function (event) {
+
+                var butObj = $(".tw2gui_plusminus#" + event.data.obj.id + ">.displayValue");
+                var value = Number($(butObj).html());
+
+                if ($(event.currentTarget).hasClass('butPlus')) {
+                    $(butObj).html(value + 1);
+                } else if ($(event.currentTarget).hasClass('butMinus')) {
+                    $(butObj).html(Math.max(value - 1, 0));
+                }
+
+            };
+
+            var skillsFrame = $('<div style="width: 432px; margin-left: auto; margin-right: auto; text-align: center;"></div>');
+            var skills = CharacterSkills.allSkillKeys;
+
+            for (var k = 0; k < skills.length; k++) {
+
+                $(skillsFrame).append(CharacterSkills.getSkill(skills[k]).getSkillPMBox("TW_Calc_Wardrobe_OwnCalc_" + skills[k], {}, {
+                    id: "TW_Calc_WardrobeOwnCalc" + skills[k] + "Id",
+                    min_value: 0,
+                    start_value: 0,
+                    max_value: 1000,
+                    extra_points: 0,
+                    callbackPlus: logicPlusMinus,
+                    callbackMinus: logicPlusMinus
+                }));
+
+            }
+
+            $("#TW_Calc_WardrobeOwnCalcDialog>.tw2gui_dialog_content").append(new west.gui.Groupframe()
+                .appendToContentPane(skillsFrame)
+                .getMainDiv()).append($('<div></div>').append(new west.gui.Textfield()
+                    .setWidth(440)
+                    .setPlaceholder(TW_Calc.getTranslation(157))
+                    .setId("TW_Calc_WardrobeOwnCalcName")
+                    .getMainDiv()));
+
+
+            $('#TW_Calc_WardrobeOwnCalcDialog').css('top', (($('body').height() - $('#TW_Calc_WardrobeOwnCalcDialog').height()) / 2));
+
+        };
+
+        TW_Calc.Wardrobe.OwnCalc.add = function () {
+
+            var skills = CharacterSkills.allSkillKeys;
+            var data = {};
+
+            for (var i = 0; i < skills.length; i++) {
+                data[skills[i]] = Number($("#TW_Calc_WardrobeOwnCalc" + skills[i] + "Id>.displayValue").text());
+            }
+
+            data.name = $('#TW_Calc_WardrobeOwnCalcName').val();
+
+            var wardrobe = TW_Calc.Wardrobe.getObject("OwnCalc");
+            wardrobe.push(data);
+            TW_Calc.Wardrobe.saveObject("OwnCalc", wardrobe);
+
+            new UserMessage(TW_Calc.getTranslation(165), UserMessage.TYPE_SUCCESS).show();
+
+            TW_Calc.Wardrobe.OwnCalc.launch(wardrobe.length - 1);
+
+        };
+
+
+        /**
+         * TombolaExporter
+         * @type {{}}
+         */
+        TW_Calc.TombolaExporter = {};
         try {
-
-            TW_Calc.TombolaExporter = {};
 
             var cYear = '_' + new Date().getFullYear();
 
