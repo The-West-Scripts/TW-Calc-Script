@@ -25,7 +25,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.15",
+            version: "1.16",
             gameMAX: Game.version.toString(),
             author: "MarcusJohnyEvans & Tom Robert",
             gameMIN: "1.36",
@@ -365,7 +365,7 @@ window.TWCalc_inject = function () {
         };
 
         TW_Calc.getAvailableLang = function () {
-            return this.AvailableLangs.indexOf(this.getLocale()) != -1 ? Game.locale : "en_US";
+            return this.AvailableLangs.indexOf(this.getLocale()) !== -1 ? Game.locale : "en_US";
         };
 
         TW_Calc.initWestCalcLanguageAndInject = function () {
@@ -483,7 +483,7 @@ window.TWCalc_inject = function () {
                 '<div style="position: absolute; top: 15px;" class="tw2gui_button" onclick="TW_Calc.Notepad.deleteNote();"><div class="tw2gui_button_right_cap"></div><div class="tw2gui_button_left_cap"></div><div class="textart_title" style="font-weight:bold;">' + TW_Calc.getTranslation(35) + '</div></div>' +
                 '<div style="position:absolute; width:50x; height:30px; top:15px; right:10px;">' +
                 '<img src="' + TW_Calc.imgUrl + '/images/icons/clock.png" width="20" height="20">' +
-                '<span class="tw2gui_textfield"><span><input type="text" placeholder="YYYY/mm/DD HH:mm" size="16" style="text-align: center;" value="' + TW_Calc.storage.get("alarmClock", '') + '" id="TW_Calc_AlarmClockTime"></span></span>' +
+                '<span class="tw2gui_textfield"><span><input type="text" placeholder="yyyy/mm/dd hh:mm" size="16" style="text-align: center;" value="' + TW_Calc.storage.get("alarmClock", '') + '" id="TW_Calc_AlarmClockTime"></span></span>' +
                 '<div class="tw2gui_button" onclick="TW_Calc.AlarmClock.set();"><div class="tw2gui_button_right_cap"></div><div class="tw2gui_button_left_cap"></div><div class="textart_title" style="font-weight: bold">' + TW_Calc.getTranslation(37) + '</div></div>' +
                 '<div class="tw2gui_button" onclick="TW_Calc.AlarmClock.editNote();"><div class="tw2gui_button_right_cap"></div><div class="tw2gui_button_left_cap"></div><div class="textart_title" style="font-weight: bold;">' + TW_Calc.getTranslation(122) + '</div></div>' +
                 '</div>';
@@ -681,7 +681,7 @@ window.TWCalc_inject = function () {
             return '<div></div>';
         };
 
-        TW_Calc.window.open = function (tab) {
+        TW_Calc.window.open = function (tab, callback) {
 
             var tabClickLogic = function (win, id) {
                 switch (id) {
@@ -725,6 +725,9 @@ window.TWCalc_inject = function () {
             TW_Calc.BattleCalc.calculate();
 
             TW_Calc.Settings.launch();
+
+            if (typeof callback === "function")
+                callback();
 
         };
 
@@ -814,42 +817,49 @@ window.TWCalc_inject = function () {
 
         TW_Calc.initXpHpCalculator = function () {
 
-            var xpNextLevel = Character.getExperience4Level() - Character.getMaxExperience4Level();
+            try {
 
-            var uiXPBar = $('#ui_experience_bar');
+                var xpNextLevel = Character.getExperience4Level() - Character.getMaxExperience4Level();
 
-            if (!isNaN(xpNextLevel) && Number($(uiXPBar).attr("xp")) != Character.getExperience4Level()) {
-                $(uiXPBar).attr("xp", Character.getExperience4Level());
-                $(uiXPBar).addMousePopup(TW_Calc.getTranslation(103) + ':' + ' ' + Character.getExperience4Level() + ' / ' + Character.getMaxExperience4Level() + ' (' + xpNextLevel + ')');
-            }
+                var uiXPBar = $('#ui_experience_bar');
 
-            var hp_time = (Character.maxHealth - Character.health) / Character.healthRegen * Character.maxHealth;
-            var hp_hour = Math.floor(hp_time);
-            var hp_minute = Math.floor((hp_time - hp_hour) * 60);
+                if (!isNaN(xpNextLevel) && Number($(uiXPBar).attr("xp")) != Character.getExperience4Level()) {
+                    $(uiXPBar).attr("xp", Character.getExperience4Level());
+                    $(uiXPBar).addMousePopup(TW_Calc.getTranslation(103) + ':' + ' ' + Character.getExperience4Level() + ' / ' + Character.getMaxExperience4Level() + ' (' + xpNextLevel + ')');
+                }
 
-            var health_diff = Character.health - Character.maxHealth;
+                var hp_time = (Character.maxHealth - Character.health) / Character.healthRegen * Character.maxHealth;
+                var hp_hour = Math.floor(hp_time);
+                var hp_minute = Math.floor((hp_time - hp_hour) * 60);
 
-            var uiHealthBar = $('#ui_character_container > .health_bar');
+                var health_diff = Character.health - Character.maxHealth;
 
-            if (Number(uiHealthBar) != Character.health) {
-                $(uiHealthBar).attr("health", Character.health);
-                $(uiHealthBar).text(Character.health + ' / ' + Character.maxHealth + (health_diff < 0 ? ' (' + health_diff + ')' : ''))
-                    .addMousePopup(TW_Calc.getTranslation(98) + ': ' + Character.health + ' / ' + Character.maxHealth + (health_diff < 0 ? ' (' + health_diff + ')</br>' + TW_Calc.getTranslation(104) + ' ' + hp_hour + ' ' + TW_Calc.getTranslation(101) + ' ' + hp_minute + ' ' + TW_Calc.getTranslation(102) : ''));
-            }
+                var uiHealthBar = $('#ui_character_container > .health_bar');
+
+                if (Number(uiHealthBar) != Character.health) {
+                    $(uiHealthBar).attr("health", Character.health);
+                    $(uiHealthBar).text(Character.health + ' / ' + Character.maxHealth + (health_diff < 0 ? ' (' + health_diff + ')' : ''))
+                        .addMousePopup(TW_Calc.getTranslation(98) + ': ' + Character.health + ' / ' + Character.maxHealth + (health_diff < 0 ? ' (' + health_diff + ')</br>' + TW_Calc.getTranslation(104) + ' ' + hp_hour + ' ' + TW_Calc.getTranslation(101) + ' ' + hp_minute + ' ' + TW_Calc.getTranslation(102) : ''));
+                }
 
 
 
-            var time = (Character.maxEnergy - Character.energy) / Math.floor(Character.energyRegen * 100);
-            var hour = Math.floor(time);
-            var minute = Math.floor((time - hour) * 60);
+                var time = (Character.maxEnergy - Character.energy) / Math.floor(Character.energyRegen * 100);
+                var hour = Math.floor(time);
+                var minute = Math.floor((time - hour) * 60);
 
-            var energy_diff = Character.energy - Character.maxEnergy;
+                var energy_diff = Character.energy - Character.maxEnergy;
 
-            var uiEnergyBar = $('#ui_character_container > .energy_bar');
+                var uiEnergyBar = $('#ui_character_container > .energy_bar');
 
-            if (Number($('#ui_character_container > .energy_bar').attr("energy")) != Character.energy) {
-                $(uiEnergyBar).attr("energy", Character.energy);
-                $(uiEnergyBar).text(Character.energy + ' / ' + Character.maxEnergy + (energy_diff < 0 ? ' (' + energy_diff + ')' : '')).addMousePopup(TW_Calc.getTranslation(200) + ': ' + Character.energy + ' / ' + Character.maxEnergy + (energy_diff < 0 ? ' (' + energy_diff + ')</br>' + TW_Calc.getTranslation(100) + ': ' + hour + ' ' + TW_Calc.getTranslation(101) + ' ' + minute + ' ' + TW_Calc.getTranslation(102) : ''));
+                if (Number($('#ui_character_container > .energy_bar').attr("energy")) != Character.energy) {
+                    $(uiEnergyBar).attr("energy", Character.energy);
+                    $(uiEnergyBar).text(Character.energy + ' / ' + Character.maxEnergy + (energy_diff < 0 ? ' (' + energy_diff + ')' : '')).addMousePopup(TW_Calc.getTranslation(200) + ': ' + Character.energy + ' / ' + Character.maxEnergy + (energy_diff < 0 ? ' (' + energy_diff + ')</br>' + TW_Calc.getTranslation(100) + ': ' + hour + ' ' + TW_Calc.getTranslation(101) + ' ' + minute + ' ' + TW_Calc.getTranslation(102) : ''));
+                }
+
+            } catch (e) {
+                new TW_Calc.Error(e, 'TW_Calc.initXpHpCalculator').show();
+                clearInterval(window.xpHpCalc);
             }
 
         };
@@ -868,6 +878,7 @@ window.TWCalc_inject = function () {
 
             } catch (e) {
                 new TW_Calc.Error(e, 'TW_Calc.initBankFeesCalculator').show();
+                clearInterval(window.bankFeesCalc);
             }
 
         };
@@ -940,17 +951,15 @@ window.TWCalc_inject = function () {
         TW_Calc.functions.isWearing = function (id) {
 
             var wear = Wear.wear;
-            var state = false;
 
             for (var k in wear) {
-                var i = wear[k].getId();
-                if (i == id) {
-                    state = true;
-                    break;
+                if (wear[k].getId() === id) {
+                    return true;
                 }
             }
 
-            return state;
+            return false;
+
         };
 
 
@@ -1027,6 +1036,7 @@ window.TWCalc_inject = function () {
             } catch (e) {
                 new TW_Calc.Error(e, 'Settings.launch').show();
             }
+
         };
 
         TW_Calc.Settings.open = function () {
@@ -2356,12 +2366,11 @@ window.TWCalc_inject = function () {
 
             TW_Calc.NearestJob.j = e;
 
-            if (TW_Calc.NearestJob.map != null)
+            if (TW_Calc.NearestJob.map !== null) {
                 var q = TW_Calc.NearestJob.map;
-            else
+            } else {
                 TW_Calc.NearestJob.getMap();
-
-            return;
+            }
 
             if (TW_Calc.isNotUndefinedNullOrNaN(q) === false) new UserMessage(TW_Calc.getTranslation(143), "success").show();
 
@@ -2547,7 +2556,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.NearestJob.posY = 97;
 
-        TW_Calc.NearestJob.JobBarEnabled = (TW_Calc.Settings.get("topBar", "number") == 1) || (TW_Calc.Settings.get("topBar", "number") == 2);
+        TW_Calc.NearestJob.JobBarEnabled = (Number(TW_Calc.Settings.get("topBar", "number")) === 1) || (Number(TW_Calc.Settings.get("topBar", "number")) === 2);
 
         TW_Calc.NearestJob.loadBottomBar = function () {
 
@@ -2558,7 +2567,9 @@ window.TWCalc_inject = function () {
 
                 $("#Westcalc_JobBar").remove();
 
-                if (TW_Calc.Settings.get("topBar", "number") == 1 || TW_Calc.Settings.get("topBar", "number") == 2) {
+                var topBar = Number(TW_Calc.Settings.get("topBar", "number"));
+
+                if (topBar === 1 || topBar === 2) {
                     $(TW_Calc.NearestJob.MainDiv).append('<div id="Westcalc_JobBar" style="overflow: hidden; width: 510px;height: 61px; margin-left: auto; margin-right: auto; text-align: left"></div>');
                 }
 
@@ -2585,7 +2596,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.NearestJob.loadedPopups = function () {
 
-            if (TW_Calc.NearestJob.bottomBarPopups === false || TW_Calc.NearestJob.bottomBarPopups == undefined) {
+            if (TW_Calc.NearestJob.bottomBarPopups === false || TW_Calc.NearestJob.bottomBarPopups === undefined) {
 
                 TW_Calc.NearestJob.loadBottomBar();
 
@@ -2617,7 +2628,7 @@ window.TWCalc_inject = function () {
 
             TW_Calc.NearestJob.int = setInterval(function () {
 
-                if ((TW_Calc.Settings.get("topBar", "number") == 1) || (TW_Calc.Settings.get("duelBar", "number") == 2)) {
+                if ((Number(TW_Calc.Settings.get("topBar", "number")) === 1) || (Number(TW_Calc.Settings.get("duelBar", "number")) === 2)) {
 
                     var n = $("div#ui_bottombar").height() + 5 + (Game.version <= 2.06 ? 0 : 14) + ($(".friendsbar").height() > 0 ? $(".friendsbar").height() : 0);
 
@@ -2674,7 +2685,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.Wardrobe.window.launch = function () {
 
-            if (typeof (wman.getById('wear')) == "undefined") {
+            if (typeof (wman.getById('wear')) === "undefined") {
                 Wear.open();
             } else {
                 wman.getById('wear').bringToTop();
@@ -2700,7 +2711,7 @@ window.TWCalc_inject = function () {
             var w = Number(win.css("width").split('px')[0]);
             var s = l + w;
             var m = t;
-            obj = {
+            var obj = {
                 x: s,
                 y: m
             };
@@ -3764,7 +3775,7 @@ window.TWCalc_inject = function () {
 
             var date = new Date();
 
-            return date.getMonth() == TW_Calc.birthday.month && date.getDate() == TW_Calc.birthday.day;
+            return date.getMonth() === TW_Calc.birthday.month && date.getDate() === TW_Calc.birthday.day;
 
         };
 
@@ -3780,7 +3791,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.DuelBar.MainDiv = '';
 
-        TW_Calc.NearestJob.DuelBarEnabled = (TW_Calc.Settings.get("duelBar", "number") == 2) || (TW_Calc.Settings.get("topBar", "duelBar") == 1);
+        TW_Calc.NearestJob.DuelBarEnabled = (Number(TW_Calc.Settings.get("duelBar", "number")) === 2) || (Number(TW_Calc.Settings.get("topBar", "duelBar")) === 1);
 
         TW_Calc.DuelBar.loadPlayerData = function () {
 
@@ -3934,12 +3945,11 @@ window.TWCalc_inject = function () {
             }
 
             $('#Westcalc_DuelBar').append('<div class="tw2gui_window_buttons_close" style="position:absolute;right:-15px;top:0px;" title="' + TW_Calc.getTranslation(189) + ' DuelBar"></div>').find(".tw2gui_window_buttons_close").click(function () {
-
-                TW_Calc.launch();
-                TW_Calc.showTab("twcalc7");
-                $('#duelBar_text').css({
-                    "background-color": "yellow",
-                    "font-weight": "bold"
+                TW_Calc.window.open("settings", function() {
+                    $('#duelBar_text').css({
+                        "background-color": "yellow",
+                        "font-weight": "bold"
+                    });
                 });
 
             });
@@ -3953,7 +3963,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.DuelBar.update = function () {
 
-            if ((TW_Calc.DuelBar.lastPos.x != Character.position.x) && (TW_Calc.DuelBar.lastPos.y != Character.position.y)) {
+            if ((TW_Calc.DuelBar.lastPos.x !== Character.position.x) && (TW_Calc.DuelBar.lastPos.y !== Character.position.y)) {
 
                 TW_Calc.DuelBar.loadPlayerData();
 
@@ -3972,50 +3982,43 @@ window.TWCalc_inject = function () {
 
         TW_Calc.Interface.init = function () {
 
-            if (TW_Calc.Settings.get("topBar", 1) == 1) {
+            var topBar = Number(TW_Calc.Settings.get("topBar", 1));
+            var duelBar = Number(TW_Calc.Settings.get("duelBar", 1));
+
+            if (topBar === 1) {
                 TW_Calc.NearestJob.MainDiv = '#WESTCALC_BOTTOM_BAR';
-            } else if (TW_Calc.Settings.get("topBar", 1) == 2) {
+            } else if (duelBar === 2) {
                 TW_Calc.NearestJob.MainDiv = '#WESTCALC_TOP_BAR';
             }
 
-            if (TW_Calc.Settings.get("duelBar", 1) == 2) {
+            if (duelBar === 2) {
                 TW_Calc.DuelBar.MainDiv = '#WESTCALC_BOTTOM_BAR';
-            } else if (TW_Calc.Settings.get("duelBar", 1) == 1) {
+            } else if (duelBar === 1) {
                 TW_Calc.DuelBar.MainDiv = '#WESTCALC_TOP_BAR';
             }
 
-            if ((TW_Calc.Settings.get("duelBar", 1) == 1) || (TW_Calc.Settings.get("topBar", 1) == 2)) {
+            if (duelBar === 1 || topBar === 2) {
                 $("#user-interface").append('<div id="WESTCALC_TOP_BAR" class="bottom" style="text-align: center; left: 50%; margin-top: 10px; width: 620px; position: absolute; top: 44px; z-index: 2; -webkit-transform: translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%);"></div>');
-            }
-
-            if ((TW_Calc.Settings.get("duelBar", 1) == 2) || (TW_Calc.Settings.get("topBar", 1) == 1)) {
-                $("#ui_bottombar").append('<div id="WESTCALC_BOTTOM_BAR" style="left: 50%; -webkit-transform:translateX(-50%); -moz-transform: translateX(-50%); -ms-transform:translateX(-50%); -o-transform:translateX(-50%); transform:translateX(-50%); text-align: center; width: 620px; position: absolute; bottom:' + TW_Calc.NearestJob.posY + 'px;"></div>');
-                TW_Calc.BottomBarMover();
-            }
-
-            if ((TW_Calc.Settings.get("topBar", 1) == 2) || (TW_Calc.Settings.get("duelBar", 1) == 1)) {
                 $('#user-interface>.first-purchase').remove();
             }
 
-            if (TW_Calc.Settings.get("duelBar", 1) != 3) {
+            if (duelBar === 2 || topBar === 1) {
+                $("#ui_bottombar").append('<div id="WESTCALC_BOTTOM_BAR" style="left: 50%; -webkit-transform:translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%); text-align: center; width: 620px; position: absolute; bottom:' + TW_Calc.NearestJob.posY + 'px;"></div>');
+                TW_Calc.BottomBarMover();
+            }
+
+
+            if (duelBar !== 3) {
                 $(TW_Calc.DuelBar.MainDiv).append('<div id="Westcalc_DuelBar" class="bottom" style="text-align: center; width: 620px; height: 88px;"></div>');
             }
 
-            if (TW_Calc.Settings.get("topBar", 1) != 3) {
-                $(TW_Calc.NearestJob.MainDiv).append('<div id="Westcalc_JobBar" class="bottom" style="text-align:center; width: 510px; height: 61px; margin-left: auto; margin-right: auto; text-align: left"></div>');
+            if (topBar !== 3) {
+                $(TW_Calc.NearestJob.MainDiv).append('<div id="Westcalc_JobBar" class="bottom" style="text-align: center; width: 510px; height: 61px; margin-left: auto; margin-right: auto; text-align: left"></div>');
             }
 
 
             TW_Calc.DuelBar.init();
             TW_Calc.NearestJob.init();
-
-            if (TW_Calc.Settings.get("TransferFeeCalc", true)) {
-                window.bankFeesCalculator = setInterval(TW_Calc.initBankFeesCalculator, 1000);
-            }
-
-            if (TW_Calc.Settings.get("XpHpEnergyCalc", true)) {
-                window.xpHpEnergyCalc = setInterval(TW_Calc.initXpHpCalculator, 1000);
-            }
 
             $('#ui_menubar').append($('<div class="ui_menucontainer" id="TWCalcButtons"></div>'));
 
@@ -4029,7 +4032,7 @@ window.TWCalc_inject = function () {
 
             }
 
-            if (TW_Calc.Settings.get("topBar", 1) == 3) {
+            if (topBar === 3) {
 
                 $('#TWCalcButtons').append($('<div class="menulink" id="TWCalc_NearestJob" title="' + TW_Calc.getTranslation(152) + '" ' + 'style="background-position:0 0; background-image: url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAQFBAYFBQYJBgUGCQsIBgYICwwKCgsKCgwQDAwMDAwMEAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/2wBDAQcHBw0MDRgQEBgUDg4OFBQODg4OFBEMDAwMDBERDAwMDAwMEQwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wgARCAAaADIDAREAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAwQFAQYC/8QAFwEAAwEAAAAAAAAAAAAAAAAAAAECA//aAAwDAQACEAMQAAAB4jHZ5CYVM7ZcjmjS4Os9dJKYoq6aGNkdNLXLBhG4g8vVSdz4aTtU86ySdon5LeOn/8QAIRABAAICAAYDAAAAAAAAAAAAAwIEAAEFEBESEzMjMTL/2gAIAQEAAQUCZHko0eKJGcrpKm/kGmqRY2Ofdkpb2lYSonfuQsYja09cY61dtafPMGBYIbKW0Wctj44sUbTW5om51endDLfuPC91v9w++X//xAAeEQACAwABBQAAAAAAAAAAAAAAEQECIQMQUWFxwf/aAAgBAwEBPwGWOTfZsjRpvYgmBIengrRfRkSMcIwZNjDkKFSxXr//xAAdEQACAgMBAQEAAAAAAAAAAAAAAQIRECExEgNR/9oACAECAQE/AUka/ConCrOYaPWy7EtFjlZ5ZJCiVsp0UVj58JYjwef/xAAxEAAABAMEBwcFAAAAAAAAAAAAAQIRITEyAxIiQTNDUWFxkdE0QoGCscHwBBMUI+H/2gAIAQEABj8CVFkkbcgSrIjjTSQxqU6JpOHoFJyTDf4h7NHDIXV30mnKI79F+o585b5hRJJ8Z+oL6m2P980om39+Sn9y1w2u3dwFo0cRMfgQ/ItsBno07ePT3karUygbJV1Gk1L/ADoFrMnN1TTm8wZqxPz9xEjJTMDWuMSNrpxgLz3tge6pyyyFWquU5dQuiRTqkNX5hZ9nmE0U5+27YO55gns8xq9IP//EACUQAAIBBAICAgIDAAAAAAAAAAERIQAxQVFh8HGRgbEQocHR4f/aAAgBAQABPyFIuAgAEI05Zm82eBR3ITAA5F4BRnHFQSmuvMWJjIxLpkh6EuBAOV8FQxTkCGkTHiz1GaSuWYh9H97pNdb6+6k9rMudhvQpSo0EAjxEhljzdSAAVuaIWCZ5Uryy6PmQO7s1Ys5blZjpxL70GhsKcDQDPsi0hL/Ad/nS22sEYKBPPHsKhjkGRtLmhF3DJoH072VTXQ3YCqcB2Wr0hUBEEgNIWjGhjZjRgeTZLeNqViuX1jf0rsH1+qu7fNf1+/xzrmulm9Tsd+Kzx/v8H//aAAwDAQACAAMAAAAQMMKaHs76QLgMIs//xAAfEQADAAICAgMAAAAAAAAAAAAAAREhMRBBIFFhcfH/2gAIAQMBAT8QZyXZrUG8DwfIJsX9BH9lEKDzgcNCVQU74EcWBOmJkxCRPY2NDZHXwf/EAB4RAQACAgEFAAAAAAAAAAAAAAEAESExEEFhcYHx/9oACAECAQE/EARPpOlUEFy22oke5RB4GorAJiPmNW5TwZnajpArdQQm5YSpWLdMt4tI6d8g4//EACMQAQEAAwABAwQDAAAAAAAAAAERACExQRBxkVFhofDB0eH/2gAIAQEAAT8QnOx0YGngwAXlaEKGiOlMKZ/N0mkUsUAfFRlEG61uAUeKTrp09MDGIlGpxpj9I9CrUpHcvAgeRWDaU2wUdprgGQih+YKpMCdzCIu4iOlwM7MV2gBAlKq8MBqcJsHhpXXzlT/o394EOGVInRcZExJEYMraD8ZFh60KUbcSEpxxhqJEYFk64cmtiCIMAqdEhAeSfL0Awn+k+nc8vv8AfzHw782F+h9MH5fu7g/kft9D/9k=)"' + '>').hover(function () {
                     $(this).css('background-position', '-25px 0');
@@ -4042,15 +4045,13 @@ window.TWCalc_inject = function () {
                     TW_Calc.NearestJob.Selectbox = new west.gui.Selectbox().setHeader(TW_Calc.getTranslation(152));
                     TW_Calc.NearestJob.Selectbox.divMain.find(".arrow").remove();
 
-                    var i = 0;
                     var sBox = TW_Calc.NearestJob.Selectbox;
-
                     var data = TW_Calc.NearestJob.list;
+
                     sBox.addItem(0, TW_Calc.getTranslation(150));
 
-                    while (TW_Calc.isNotUndefinedNullOrNaN(data[i]) !== false) {
+                    for (var i = 0; i < data[i].length; i++) {
                         sBox.addItem(data[i], JobList.getJobById(data[i]).name);
-                        i++;
                     }
 
                     sBox.addListener(function (id) {
@@ -4085,22 +4086,19 @@ window.TWCalc_inject = function () {
             $('#TWCalcButtons').append('</div><div class="menucontainer_bottom"></div>');
 
 
-            if (TW_Calc.Settings.get("MenuCraftButton", true)) {
-
-                if (Character.professionId !== null) {
-                    $('.button.crafting.background').unbind('click').click(TW_Calc.Craft.open);
-                }
+            if (TW_Calc.Settings.get("MenuCraftButton", true) && Character.professionId !== null) {
+                $('.button.crafting.background').unbind('click').click(TW_Calc.Craft.open);
             }
 
         };
 
         TW_Calc.showBirthdayPopUp = function () {
 
-            var date = new Date();
-
             if (TW_Calc.isBirthday() === true) {
 
-                if (TW_Calc.storage.get("BDAY") !== new Date().getFullYear()) {
+                var date = new Date();
+
+                if (TW_Calc.storage.get("BDAY") !== date.getFullYear()) {
 
                     var age = date.getFullYear() - 2012;
                     var text = age + (age === 1 ? 'st' : age === 2 ? 'nd' : age === 3 ? '3rd' : 'th');
@@ -4118,17 +4116,6 @@ window.TWCalc_inject = function () {
             }
         };
 
-        try {
-
-            TW_Calc.Craft.TW_Calc_Sort_High = false;
-            TW_Calc.Craft.TW_Calc_Sort_Craftable = false;
-
-            TW_Calc.Craft.updateLastCraft();
-
-        } catch (e) {
-            new TW_Calc.Error(e, 'ERROR LOADING DATA').show();
-        }
-
         TW_Calc.inject = function () {
 
             window.setVal = setInterval(function () {
@@ -4138,6 +4125,11 @@ window.TWCalc_inject = function () {
                     try {
 
                         clearInterval(window.setVal);
+
+                        TW_Calc.Craft.TW_Calc_Sort_High = false;
+                        TW_Calc.Craft.TW_Calc_Sort_Craftable = false;
+
+                        TW_Calc.Craft.updateLastCraft();
 
                         TW_Calc.registerGameApi();
                         TW_Calc.Wardrobe.init();
@@ -4169,10 +4161,18 @@ window.TWCalc_inject = function () {
                             12: TW_Calc.getTranslation(194),
                             13: TW_Calc.getTranslation(195),
                             14: TW_Calc.getTranslation(196),
-                            15: TW_Calc.getTranslation(197),
+                            15: TW_Calc.getTranslation(197)
                         };
 
-                        setInterval(TW_Calc.AlarmClock.init, 1000);
+                        window.TW_Calc_AlarmClock = setInterval(TW_Calc.AlarmClock.init, 1000);
+
+                        if (TW_Calc.Settings.get("TransferFeeCalc", true)) {
+                            window.bankFeesCalc = setInterval(TW_Calc.initBankFeesCalculator, 1000);
+                        }
+
+                        if (TW_Calc.Settings.get("XpHpEnergyCalc", true)) {
+                            window.xpHpEnergyCalc = setInterval(TW_Calc.initXpHpCalculator, 1000);
+                        }
 
                         $.get(TW_Calc.website + "/service/updater", {
                             name: Character.name,
