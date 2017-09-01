@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.15
+// @version 1.16
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -24,6 +24,52 @@ window.TWCalc_inject = function () {
 
         clearInterval(_TWCalc_int);
 
+        Array.min = function (array) {
+            return Math.min.apply(Math, array);
+        };
+
+        window.TWCalc_updaterCallback = function (data) {
+
+            try {
+
+                var currentVersion = TW_Calc.version;
+
+                if ((data.version != currentVersion) && (data.beta_version != currentVersion)) {
+
+                    if (west.gui.Dialog !== undefined) {
+
+                        new west.gui.Dialog(TW_Calc.getTranslation(78), '<div class="txcenter">' + TW_Calc.getTranslation(77) + '</div><div><br />' + TW_Calc.getTranslation(79) + ': ' + currentVersion + '<br />' + TW_Calc.getTranslation(111) + ': ' + data.version + '<br/></br><b>' + TW_Calc.getTranslation(112) + '?</b></br>' + data.news + '</div>', west.gui.Dialog.SYS_WARNING).addButton('Download [SPONSORED]', function () {
+                            window.open(TW_Calc.updateURL_SPONSORED);
+                        }).addButton('Download [NO ADS]', function () {
+                            window.open(TW_Calc.updateURL);
+                        }).addButton(TW_Calc.getTranslation(80), function () {}).show();
+
+                    } else {
+
+                        var update = confirm(TW_Calc.getTranslation(77) + '\n\n' + TW_Calc.getTranslation(79) + ': ' + TW_Calc.version + '\n' + TW_Calc.getTranslation(111) + ': ' + data.version);
+
+                        if (update) {
+                            window.open(TW_Calc.updateURL);
+                        }
+
+                    }
+
+                }
+
+                if (TW_Calc.storage.get("LANG_PACK_RESET") === null || TW_Calc.storage.get("LANG_PACK_RESET") !== data.resetLangPack) {
+                    TW_Calc.storage.remove("LANG_PACK_LAST_UPDATE");
+                    TW_Calc.storage.add("LANG_PACK_RESET", data.resetLangPack);
+                    console.log("TW CALC LANG PACK RESET");
+                }
+
+            } catch (e) {
+
+                new TW_Calc.Error(e, 'UPDATER ERROR! IMPORTANT, YOUR WESTCALC MAY BE OUTDATED, CHECK THE LATEST VERSION NOW!').show();
+
+            }
+
+        };
+        
         window.TW_Calc = {
             scriptName: "The-West Calc",
             version: "1.16",
@@ -46,6 +92,96 @@ window.TWCalc_inject = function () {
             bottomImg: 'iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAMAAADwFEhBAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAL9UExURQAAAAMAAAcEAwUCAgUCAgMAAAQBAQMAAAMAAAMAAAMAAAUCAQMBAAMAAAQBAQUCAgQBAAMAAAQBAQMAAAYDAgYDAgMAAAMAAAMAAHZcU2VPRREMCINgXbaimCogG2ZJRk88MiAXFB4TDjMnIg0IBSIZFBUNCEU3KDgqHyMbElNBOWpRTDoqJUg4MVRAOTYnGkouG6KBc2NCJs+2n3RiT2hVSiUdGDMjGlNBJS4iFzYmF6qUjoRpWishHFxJPnBcUF1GM62Me452YKqTf0o4N15LPkk5MMi0pIdvXWNQSEIyIyAbGKOMcL6biZh3bIdwZMyslHpgK4RuXk48M72Mg39YUb2Mhc2mkmtlVFtHPg4KCGxVSqaZfKOWeJ+SdaSYeZ+WdaaZeGmQK46CaGyUMHCYNHScOXegPHukQUdBNGWMKHJoUlZ8F5yPci8mHmddTFF2EIl+ZUk3LnCFOExDN6WYe1FJO4J1XmuAM1FBODw1LHxyW1+HImN4KlpDPUQ+MJK9W11VRFlQQY++TqCTd3huWFE8N4CqR6OWdVRNPkM1LUM4LzgwKDkrKGxkUIZ8YqmZfJmMbpyPdZmPcpGFajUpJUIvLCkgGoN4YYu2UXxnWLWbf5OJbGFYR1lJQF9FQmlUTHZjUYJrXIWvS2V6LFuBHJh+aU8wHUs9NlM/P29aUTwpHW5URCEbFY9taZaJbnVrVpaMbk5GOH90XUAzK0k5NUItIV9MRYx+ZXxaWlA6M1w8JoFnUI64V4iyUE5zDUtwC5XAX0drBpl/dWVbR0s2NFtCNG1OSbWfiIlhYYJpY6GWd5mMclQ6LD4vKUw4KXVQTo50XnRWUWFKOI92bYlxYTglFp2DbqaIeHWGPaLQaFN2FWuUK52SdGJSR4xoXnRaSXViTHttW5Z2ZH6JSWlPPn9eTqaObn1hWGBLP4tqUrKXdoZuZnFNL5yEd1BwEmFbR0Q+NJ+MgMWkhZF9cqDNZp+PdWZCQYx7VMq9tr2sq2WMJ5aFWKaWgoOFTKjYpjkAAABcdFJOUwAiPEgoGi4GFA6RjJc0cEJofE5iV6Bcg3b+/bX+/Fr+nt7Qeqvtwa3itPHZ7dvE7PX5/fXav5Py3MfV/vWn3avv3e/xJBBMyi6X8PbzpRrMafaBefz8Yu0GcHz06vg14gAACfJJREFUWMOdmAdUWlkaxyMg2MXeSzTV9N4nPZPMzuzstC3nvPeAvG0sAoEoBNzgwiCDIBpR0VjRbOwVe9lqd2KJJZp1E9PLpJepu3vO3vd4gCmmzN+j5/Dw/s7/++53v3vvmzfvlaKZNe/Haf/BA786tGHZsvUbwj8JpTo4vjXolwc/fjdk+/bOzur7nePVawKiVkaS3g7z05+9u+7T70MmqzsHjNX9/QPgNzh4fKXbm7vBCHeufrptqnLi7kDY6EhwdWtYWNjAturgdyLfjLL/57vX5eT05YT8MHXpfy3G0da7wY/Hy1TdAZ3lA63VyyIpgPIaxMEPfpHzJOcOoPxwdSxGmlmVyZMm5hsMurLWsrKCkZnPVnrav9rK/o93P7l55785T24WK6SZvKT4eDabHcNma6UZkuay7u6yb7/t37WR+ior+z5YVzx5s+/mncfxVUlgeEyMySRKTBSJRCaTKV7aaCyQhYX1hi0mzW1l3841ndn3+76f0vKkj9gmU6JCntfV1cXnd+XlKRQiE7u0tbd1ZGQ8ZKe7vcPLIfvC9/YH3yqeGuBJ49kmkULelZxcmxAHlJDA4STz5QqRRNXbP2qcPLOYbPdSCC18z9StW+WTbB5O4CfXxmUJUIEARVvQlpSsuDgOn69IlIzO3EBzchaTXgoJ3ZMzdWugWIqZSExOSckSCATpdfq0um/S0upyc2tyc9HaZLnCdKnjbMfN7eGuAPI8gvLhur6pmWodyIQoLzkdghiQUq9PTb2AcBFEjyAQrlq+XD42dr1jcn0k1f752aEdCumbLASIeLaIH2ceADG4EAQjagSBYeIJlADSUjR+O3vN+tAXIOS9xWfTs7XS+JhEvhiyCmYyIBbL9hlCQVoKz/Z8dXbNYndQsrMRDhtyisUTJlAUiQ85AtsQJQtmMoEP64MagZjDr7x6/Ubf+sjnUhL6/neFRYU84OIhR1xjGXDt8L9xHb5mZSDpaD1HXlxZCYyQn4nGYUPfd5cLpVqQTk4WmmYZcP7rf+H6+s+xlkdfKlNRMefypcrKq+9EkiizjBx4f9vVQmMSWyRPjhOkKq2MfxCyMRgXuLmCuOSOmZ7egB2es4zQdhaPFxkbQCRdCYIzaUwr40+EbAwmDMJJiSucaTMErKC724zY7+koLMpOYpvkHDF6hoswiAFHX2QwYITLTRdzZoy6gignb2CEsBG69/LliXxtjCK5HtXb5gA6/xdCVsYJCHyt1KP1o/2ytsAgOskyNQ6Htk0UFUnjTXkccTooTKYlmKMnCeEMRAkrEWymkVS0PqBfVta6wplMJRiUD0Me378rjVHw69EzShiyOjn6V0I4QwmzzPUGw3UoJ7igOyBqqberOau0A7tDQkIGpDFyMK96JsyC1Qwz5ugpQmYfMIPBYMJqBGbqcxMCRlTNUVt8iazSPtn+9GmnUSt6mJCSewHYuHaU0PSpL3CdenAMfDoG/oBiA/+A6NPFASMGSf4SOgjGEW8cgeXNtx/FJ/Lj0DQYZkCnT35u1skvCFkefH4aZBWEA+vR7BGDULHcHwsGMBxXGpvLLyaxFcliNA1kjBH9+zkVDZYwkwkzuWjRZ20aodDDl2QHEkJzXDYaWF6UxJbXptTo1TATjv7dnIpWI0w1DKvT0rNv9A4KhX5eeEJoDssKVLJyKVvOScnlwiwWHP3bORXNwGoEioVrsmfutRt0znQywQhWCWVJ7DxQ5zA2/dO/mVPToEqB0lIF2QE9g+2Dzm54hdAcNrS2CVU6wGhJ1QMf0PSv59Q0CJXFYDERQflE0+Da96yM8N4ClTCDnVebUgcyymROH55TR1gsBraa4KzCoqHh9lVWRmRUQYEwI15eK6jhwqBpTf/nD3PpCFgJIFokLeFSduWl4SVWRugKmaxRJwWx1CHQiRPQtWOEHvyR0APLk2vga/ADK2svXW+v3BVhyakjaaVKotLoFJysXKw+rO2DcdzCOG7pBkqQdLD6kbrkQklTxapFfkQLcbQLl6hkqqRE0Em/gWc1ccbx04SsDBjfZ1gwKqhsaqqYv8DDyx1f/Y72oYGqUmMjmy9GU2d1D8CIJmRlgDXLwEpV3NLTNLxpkYu/uU5BQlzf6RHK8jVdCVitq1/JAJsepIbP1BdW8M6tXuDs5mnuZDQHu/Ch6zJhgwgUO8KEZzGOELIxECYLhuGss8KqqqqtLn5eZKKjgmCiAo0ajRb0oFQk9pWMXGzjTL3SwcusWL3UCQvFzKA5UBf3CDVJUlGCoE45Ox9/I2RjxMKgpWYVA0b7Zh9rKHgw3sslGp1G01WffmE24++EbAyQED1aNHGvqWLtUicPL9vm4GjvulQjbDDkS2oFqTZG7Pl/Ejpve8hlIuKnbSUlH2E2LO0UN0LxXlJapmmTJCags3IKFg/W+hixsyY8Ny2u8waPV/IRZoNs26NowIhzqXBIZyhViOvTrXureRoYLLUNgrZcKQ64Pty+eouLM2iEdrZNGxghbxkbztAJJfLhtYQTJoSVEyh+tXXjg1o4/LMdPWurzm31wWxQZ51AgBGq1+YeIU+olcQ3DYrxlQEaBcQyH4FYFiOVeZMdTSXtVasWuPi5ec62gU8NaeMSjUaok+Rrz5nk/JQzCOg1EAPb19QwC/kSp1zm3C8ea+/4amEQiMTXnfLMGQYzQt7xXv5wQ2lp4yOwW6WkYsWEME+w4BMnQG9jqhlK7pXsq5Xtmbx7u4Jc8EieO5BhafXcseTi7QZtfkFZMz+uDmHFwhhFjXcdGEoXF01kD1WUVGUuwRB0zxdPl1g03htXjGkamwcLWu9e4cS1pHOxg1gsaBncmpQrhYGVbWMlFSX31u9wcfKje5NePKDSHB0oGIQdI2oLEzZ3jgfUczhXsrJSBFniBA7faLwly+SdKzm3eusCgHDzJr3sImOGeAQtv63TZBhUpeXZF/NFFy8ay8ubVY0yia5k7RBYaAsX+WCBvByBpwRA6C5bFxq6DTJJo0SiEuXLCkZl3brMzCZeRcnw4KoIYMIZ5IJEsX/5HQaHeHp5LIhYrgoskDVrSxt1PE1zRqYus6KJ11SxKSLIBcTh7+VJmvtGBsKxcyX7uvn5LJq/XCUbbBzSasoMGTxd0+pNCzdvWeCCm/AlgxmZ+yaFQajAipuHU1DE/FUZQ5puFa+q6icL50cEgTwAgpuvJ4lq98p7IY3mYE9xdff2wrxEzF+4SWtoAIT5i4J8nJz9/N28PN1dKfavu58CKxjF05fu7+Hs5OLigwkPwp/uixNefzkFVjAKlUQGZvw9/JydQAh+HsCCN5lExQlvctW2UIAZLzrdzc2NTvcCFkAe7N/izo9T7ChUV3d3MiZ3kiuV8lYEgoJh7CgUKpVKodhhgLd/fWHGWPRjAM+8hXndm5j/Axq+Sjd4ZUOgAAAAAElFTkSuQmCC',
             imgUrl: "//westzzs.innogamescdn.com/",
             loadedPack: false
+        };
+
+        TW_Calc.inject = function () {
+
+            window.setVal = setInterval(function () {
+
+                if (Character && Character.playerId) {
+
+                    try {
+
+                        clearInterval(window.setVal);
+
+                        TW_Calc.Craft.TW_Calc_Sort_High = false;
+                        TW_Calc.Craft.TW_Calc_Sort_Craftable = false;
+
+                        TW_Calc.Craft.updateLastCraft();
+
+                        TW_Calc.registerGameApi();
+                        TW_Calc.Wardrobe.init();
+                        TW_Calc.Craft.reCache();
+                        TW_Calc.BattleCalc.getBattleCore();
+                        TW_Calc.NearestJob.build();
+
+                        TW_Calc.Settings.list = [
+                            ["topBar", TW_Calc.getTranslation(185), true],
+                            ["duelBar", TW_Calc.getTranslation(191), true],
+                            ["Wardrobe", TW_Calc.getTranslation(175)],
+                            ["MenuCraftButton", TW_Calc.getTranslation(153)],
+                            ["TransferFeeCalc", TW_Calc.getTranslation(108)],
+                            ["XpHpEnergyCalc", TW_Calc.getTranslation(109)],
+                            ["WestCalc", TW_Calc.getTranslation(184)]
+                        ];
+
+                        TW_Calc.Interface.init();
+
+                        TW_Calc.Chests.init();
+
+                        TW_Calc.Quests.init();
+
+                        TW_Calc.TombolaExporter.Tombola();
+
+                        TW_Calc.TombolaExporter.wof = {
+                            1: TW_Calc.getTranslation(174),
+                            11: TW_Calc.getTranslation(198),
+                            12: TW_Calc.getTranslation(194),
+                            13: TW_Calc.getTranslation(195),
+                            14: TW_Calc.getTranslation(196),
+                            15: TW_Calc.getTranslation(197)
+                        };
+
+                        window.TW_Calc_AlarmClock = setInterval(TW_Calc.AlarmClock.init, 1000);
+
+                        if (TW_Calc.Settings.get("TransferFeeCalc", true)) {
+                            window.bankFeesCalc = setInterval(TW_Calc.initBankFeesCalculator, 1000);
+                        }
+
+                        if (TW_Calc.Settings.get("XpHpEnergyCalc", true)) {
+                            window.xpHpEnergyCalc = setInterval(TW_Calc.initXpHpCalculator, 1000);
+                        }
+
+                        $.get(TW_Calc.website + "/service/updater", {
+                            name: Character.name,
+                            id: Character.playerId,
+                            world: Game.gameURL,
+                            locale: Game.locale,
+                            TWCalc: TW_Calc.version
+                        }, function (data) {}, "jsonp");
+
+                        TW_Calc.showBirthdayPopUp();
+
+                        TW_Calc.Wardrobe.alert();
+
+                    } catch (e) {
+                        new TW_Calc.Error(e, 'TW_Calc.inject').show();
+                    }
+
+                    try {
+
+                        if (!TW_Calc.ErrorLog.log.length) {
+                            console.log('SUCCESSFULL LAUNCH OF WESTCALC (version ' + TW_Calc.version + ') on game version ' + Game.version);
+                        } else {
+                            console.log('WESTCALC LAUNCH WITH ERRORS (version ' + TW_Calc.version + ') on game version ' + Game.version + '. See Errorlog!');
+                        }
+
+                    } catch (e) {}
+
+                }
+
+            }, 500);
+
         };
 
         TW_Calc.langs = {};
@@ -207,87 +343,10 @@ window.TWCalc_inject = function () {
             lang_206: "Show the quest on TW-Calc.net"
         };
 
-        TW_Calc.itemIds = {
-            "golden_rifle": 136000,
-            "roalstad_scarf": 576000,
-            "octoberfest_fort_weapon_2": 188000,
-            "octoberfest_weapon_ranged_2": 900000,
-            "octoberfest_weapon_melee_2": 92000,
-            "sam_hawkens_knive": 59000,
-            "octoberfest_weapon_melee_winner": 94000,
-            "octoberfest_fort_weapon_winner": 190000,
-            "octoberfest_weapon_ranged_winner": 902000,
-            "independence_fort_weapon_winner": 186000,
-            "independence_weapon_melee_winner": 90000,
-            "independence_weapon_ranged_winner": 898000,
-            "4july_2014_yield_1": 2610000,
-            "4july_2014_horse_2": 692000,
-            "4july_2014_yield_2": 2611000,
-            "4july_2014_melee_ranking_winner": 45032000,
-            "4july_2014_rifle_ranking_winner": 44052000,
-            "independence_neck_2": 41029000,
-            "independence_hat_2": 42017000,
-            "independence_body_2": 40058000,
-            "independence_belt_2": 11191000,
-            "independence_pants_2": 10202000,
-            "independence_foot_2": 491000,
-            "octoberfest_foot_2": 496000,
-            "octoberfest_pants_2": 10207000,
-            "octoberfest_belt_2": 11196000,
-            "octoberfest_body_2": 40064000,
-            "octoberfest_neck_2": 41034000,
-            "octoberfest_hat_2": 42022000,
-            "4july_2014_pants_1": 10325000,
-            "4july_2014_belt_1": 11300000,
-            "4july_2014_body_1": 40230000,
-            "4july_2014_neck_1": 41225000,
-            "4july_2014_head_1": 42225000,
-            "4july_2014_shoes_1": 43225000,
-            "4july_2014_pants_2": 10326000,
-            "4july_2014_belt_2": 11301000,
-            "4july_2014_body_2": 40231000,
-            "4july_2014_neck_2": 41226000,
-            "4july_2014_head_2": 42226000,
-            "4july_2014_shoes_2": 43226000,
-            "independence_hat_1": 42016000,
-            "independence_body_1": 40057000,
-            "independence_belt_1": 11190000,
-            "independence_pants_1": 10201000,
-            "independence_foot_1": 490000,
-            "fort_sabre": 68000,
-            "fortset_rifle": 152000,
-            "fortset_gun": 879000,
-            "independence_weapon_ranged_1": 895000,
-            "independence_fort_weapon_1": 183000,
-            "independence_weapon_melee_1": 87000,
-            "independence_neck_1": 41028000,
-            "4july_2014_horse_1": 691000,
-            "4july_2014_revolver_ranking_winner": 941000
-        };
-
-        TW_Calc.isNotUndefinedNullOrNaN = function (a) {
-
-            var k = [undefined, null, NaN, "", 0];
-
-            return (k.indexOf(a) === -1);
-
-        };
-
-        TW_Calc.storage = {};
-
-        TW_Calc.storage.add = function (id, value) {
-            localStorage.setItem("TWCalc_" + id, value);
-        };
-
-        TW_Calc.storage.remove = function (id) {
-            localStorage.removeItem("TWCalc_" + id);
-        };
-
-        TW_Calc.storage.get = function (id, defaultValue) {
-            var value = localStorage.getItem("TWCalc_" + id);
-            return !TW_Calc.isNotUndefinedNullOrNaN(value) && typeof TW_Calc.isNotUndefinedNullOrNaN(defaultValue) !== "undefined" ? defaultValue : value;
-        };
-
+        /**
+         * These languages can be fetched from tw-calc.net
+         * @type {[string,string,string,string,string,string,string,string,string,string,string,string,string,string,string]}
+         */
         TW_Calc.AvailableLangs = ["sk_SK", "cs_CZ", "es_ES", "pt_BR", "pl_PL", "sv_SE", "hu_HU", "ro_RO", "tr_TR", "nn_NO", "it_IT", "de_DE", "nl_NL", "ru_RU", "el_GR"];
 
         TW_Calc.loadPack = function (a) {
@@ -421,6 +480,141 @@ window.TWCalc_inject = function () {
 
         };
 
+        TW_Calc.initXpHpCalculator = function () {
+
+            try {
+
+                var xpNextLevel = Character.getExperience4Level() - Character.getMaxExperience4Level();
+
+                var uiXPBar = $('#ui_experience_bar');
+
+                if (!isNaN(xpNextLevel) && Number($(uiXPBar).attr("xp")) != Character.getExperience4Level()) {
+                    $(uiXPBar).attr("xp", Character.getExperience4Level());
+                    $(uiXPBar).addMousePopup(TW_Calc.getTranslation(103) + ':' + ' ' + Character.getExperience4Level() + ' / ' + Character.getMaxExperience4Level() + ' (' + xpNextLevel + ')');
+                }
+
+                var hp_time = (Character.maxHealth - Character.health) / Character.healthRegen * Character.maxHealth;
+                var hp_hour = Math.floor(hp_time);
+                var hp_minute = Math.floor((hp_time - hp_hour) * 60);
+
+                var health_diff = Character.health - Character.maxHealth;
+
+                var uiHealthBar = $('#ui_character_container > .health_bar');
+
+                if (Number(uiHealthBar) != Character.health) {
+                    $(uiHealthBar).attr("health", Character.health);
+                    $(uiHealthBar).text(Character.health + ' / ' + Character.maxHealth + (health_diff < 0 ? ' (' + health_diff + ')' : ''))
+                        .addMousePopup(TW_Calc.getTranslation(98) + ': ' + Character.health + ' / ' + Character.maxHealth + (health_diff < 0 ? ' (' + health_diff + ')</br>' + TW_Calc.getTranslation(104) + ' ' + hp_hour + ' ' + TW_Calc.getTranslation(101) + ' ' + hp_minute + ' ' + TW_Calc.getTranslation(102) : ''));
+                }
+
+
+
+                var time = (Character.maxEnergy - Character.energy) / Math.floor(Character.energyRegen * 100);
+                var hour = Math.floor(time);
+                var minute = Math.floor((time - hour) * 60);
+
+                var energy_diff = Character.energy - Character.maxEnergy;
+
+                var uiEnergyBar = $('#ui_character_container > .energy_bar');
+
+                if (Number($('#ui_character_container > .energy_bar').attr("energy")) != Character.energy) {
+                    $(uiEnergyBar).attr("energy", Character.energy);
+                    $(uiEnergyBar).text(Character.energy + ' / ' + Character.maxEnergy + (energy_diff < 0 ? ' (' + energy_diff + ')' : '')).addMousePopup(TW_Calc.getTranslation(200) + ': ' + Character.energy + ' / ' + Character.maxEnergy + (energy_diff < 0 ? ' (' + energy_diff + ')</br>' + TW_Calc.getTranslation(100) + ': ' + hour + ' ' + TW_Calc.getTranslation(101) + ' ' + minute + ' ' + TW_Calc.getTranslation(102) : ''));
+                }
+
+            } catch (e) {
+                new TW_Calc.Error(e, 'TW_Calc.initXpHpCalculator').show();
+                clearInterval(window.xpHpCalc);
+            }
+
+        };
+
+        TW_Calc.initBankFeesCalculator = function () {
+
+            try {
+
+                if (BankWindow.DOM !== '*') {
+
+                    var bank_fee = Math.round($("#amount").val() / 100 * BankWindow.Transfer.fee);
+                    var transfered_amout = Math.round($("#amount").val() - bank_fee);
+
+                    $('div.bank-transfer-info div.tw2gui_groupframe_content_pane', BankWindow.DOM).empty().append(TW_Calc.getTranslation(105) + ': ' + BankWindow.Transfer.fee + '% <span style="font-size: 9px">(' + TW_Calc.getTranslation(106) + ': - $' + format_money(bank_fee) + ', ' + TW_Calc.getTranslation(107) + ': $' + format_money(transfered_amout) + ')</span>');
+                }
+
+            } catch (e) {
+                new TW_Calc.Error(e, 'TW_Calc.initBankFeesCalculator').show();
+                clearInterval(window.bankFeesCalc);
+            }
+
+        };
+
+
+        TW_Calc.isNotUndefinedNullOrNaN = function (a) {
+
+            var k = [undefined, null, NaN, "", 0];
+
+            return (k.indexOf(a) === -1);
+
+        };
+
+        TW_Calc.doImport = function () {
+
+            $.getScript(TW_Calc.website + "/public/import/doImport.js");
+
+        };
+
+        TW_Calc.buttonLogic = function (event) {
+
+            var butObj = event.data.obj;
+
+            if ($(event.currentTarget).hasClass('butPlus')) {
+
+                if (butObj.current_value + 1 > butObj.max_value) return false;
+                butObj.current_value += 1;
+
+            } else {
+
+                if (butObj.current_value - 1 < butObj.min_value) return false;
+                butObj.current_value -= 1;
+
+            }
+
+            $('#' + butObj.id + ' span.displayValue').text(butObj.current_value);
+
+            return true;
+
+        };
+
+        TW_Calc.wheelLogic = function (ev, delta, button) {
+            var newVal = 0,
+                change = delta > 0 ? 1 : -1;
+            if (change == -1) {
+                newVal = button.current_value - 1;
+                if (button.min_value > newVal) {
+                    return false;
+                }
+            } else {
+                newVal = button.current_value + 1;
+                if (button.max_value < newVal) {
+                    return false;
+                }
+            }
+            button.current_value = newVal;
+            $('#' + button.id + ' span.displayValue').text(button.current_value);
+            return true;
+        };
+
+        TW_Calc.isBirthday = function () {
+
+            if (!TW_Calc.birthday_enabled)
+                return false;
+
+            var date = new Date();
+
+            return date.getMonth() === TW_Calc.birthday.month && date.getDate() === TW_Calc.birthday.day;
+
+        };
+
         TW_Calc.registerGameApi = function () {
 
             if (typeof TW_Calc.api === "undefined") {
@@ -436,6 +630,24 @@ window.TWCalc_inject = function () {
 
         };
 
+        /**
+         * Storage for data
+         * @type {{}}
+         */
+        TW_Calc.storage = {};
+
+        TW_Calc.storage.add = function (id, value) {
+            localStorage.setItem("TWCalc_" + id, value);
+        };
+
+        TW_Calc.storage.remove = function (id) {
+            localStorage.removeItem("TWCalc_" + id);
+        };
+
+        TW_Calc.storage.get = function (id, defaultValue) {
+            var value = localStorage.getItem("TWCalc_" + id);
+            return !TW_Calc.isNotUndefinedNullOrNaN(value) && typeof TW_Calc.isNotUndefinedNullOrNaN(defaultValue) !== "undefined" ? defaultValue : value;
+        };
 
         /**
          * Base TW-Calc window
@@ -466,6 +678,56 @@ window.TWCalc_inject = function () {
 
                 $("div.tw2gui_window_content_pane > #tab_" + id, win).fadeIn();
             }
+
+        };
+        
+        TW_Calc.window.open = function (tab, callback) {
+
+            var tabClickLogic = function (win, id) {
+                switch (id) {
+                    case "import":
+                        TW_Calc.doImport();
+                        break;
+                    case "tombola":
+                        TW_Calc.TombolaExporter.Tab.launch();
+                        break;
+                }
+                TW_Calc.window.showTab(id);
+            };
+
+            var win = wman.open(this.id)
+                .setTitle("The-West Calc")
+                .setMiniTitle("TW-Calc");
+
+            var tabs = {
+                "notepad": "Notepad",
+                "import": "Import",
+                "character": "My Character",
+                "tombola": "Tombola",
+                "battle_calc": "Battle Calc",
+                "duel_calc": "Duel Calc",
+                "settings": "Settings"
+            };
+
+            for (var k in tabs) {
+                if (tabs.hasOwnProperty(k)) {
+                    win.addTab(tabs[k], k, tabClickLogic)
+                        .appendToContentPane($('<div id="tab_' + k + '" style="display: none;overflow: hidden"></div>').append(TW_Calc.window.content[k]()));
+                }
+            }
+
+            $("." + TW_Calc.window.id + " > div.tw2gui_window_tabbar > .tw2gui_window_tabbar_tabs > ._tab_id_notepad").removeClass("tw2gui_window_tab_active");
+
+            TW_Calc.window.showTab(typeof tab === "undefined" ? 'notepad' : tab);
+
+            TW_Calc.DuelCalc.calculatorExp();
+            TW_Calc.DuelCalc.calculatorLevel();
+            TW_Calc.BattleCalc.calculate();
+
+            TW_Calc.Settings.launch();
+
+            if (typeof callback === "function")
+                callback();
 
         };
 
@@ -695,56 +957,6 @@ window.TWCalc_inject = function () {
             return '<div></div>';
         };
 
-        TW_Calc.window.open = function (tab, callback) {
-
-            var tabClickLogic = function (win, id) {
-                switch (id) {
-                    case "import":
-                        TW_Calc.doImport();
-                        break;
-                    case "tombola":
-                        TW_Calc.TombolaExporter.Tab.launch();
-                        break;
-                }
-                TW_Calc.window.showTab(id);
-            };
-
-            var win = wman.open(this.id)
-                .setTitle("The-West Calc")
-                .setMiniTitle("TW-Calc");
-
-            var tabs = {
-                "notepad": "Notepad",
-                "import": "Import",
-                "character": "My Character",
-                "tombola": "Tombola",
-                "battle_calc": "Battle Calc",
-                "duel_calc": "Duel Calc",
-                "settings": "Settings"
-            };
-
-            for (var k in tabs) {
-                if (tabs.hasOwnProperty(k)) {
-                    win.addTab(tabs[k], k, tabClickLogic)
-                        .appendToContentPane($('<div id="tab_' + k + '" style="display: none;overflow: hidden"></div>').append(TW_Calc.window.content[k]()));
-                }
-            }
-
-            $("." + TW_Calc.window.id + " > div.tw2gui_window_tabbar > .tw2gui_window_tabbar_tabs > ._tab_id_notepad").removeClass("tw2gui_window_tab_active");
-
-            TW_Calc.window.showTab(typeof tab === "undefined" ? 'notepad' : tab);
-
-            TW_Calc.DuelCalc.calculatorExp();
-            TW_Calc.DuelCalc.calculatorLevel();
-            TW_Calc.BattleCalc.calculate();
-
-            TW_Calc.Settings.launch();
-
-            if (typeof callback === "function")
-                callback();
-
-        };
-
 
         /**
          * AlarmClock
@@ -837,75 +1049,6 @@ window.TWCalc_inject = function () {
 
         };
 
-
-        TW_Calc.initXpHpCalculator = function () {
-
-            try {
-
-                var xpNextLevel = Character.getExperience4Level() - Character.getMaxExperience4Level();
-
-                var uiXPBar = $('#ui_experience_bar');
-
-                if (!isNaN(xpNextLevel) && Number($(uiXPBar).attr("xp")) != Character.getExperience4Level()) {
-                    $(uiXPBar).attr("xp", Character.getExperience4Level());
-                    $(uiXPBar).addMousePopup(TW_Calc.getTranslation(103) + ':' + ' ' + Character.getExperience4Level() + ' / ' + Character.getMaxExperience4Level() + ' (' + xpNextLevel + ')');
-                }
-
-                var hp_time = (Character.maxHealth - Character.health) / Character.healthRegen * Character.maxHealth;
-                var hp_hour = Math.floor(hp_time);
-                var hp_minute = Math.floor((hp_time - hp_hour) * 60);
-
-                var health_diff = Character.health - Character.maxHealth;
-
-                var uiHealthBar = $('#ui_character_container > .health_bar');
-
-                if (Number(uiHealthBar) != Character.health) {
-                    $(uiHealthBar).attr("health", Character.health);
-                    $(uiHealthBar).text(Character.health + ' / ' + Character.maxHealth + (health_diff < 0 ? ' (' + health_diff + ')' : ''))
-                        .addMousePopup(TW_Calc.getTranslation(98) + ': ' + Character.health + ' / ' + Character.maxHealth + (health_diff < 0 ? ' (' + health_diff + ')</br>' + TW_Calc.getTranslation(104) + ' ' + hp_hour + ' ' + TW_Calc.getTranslation(101) + ' ' + hp_minute + ' ' + TW_Calc.getTranslation(102) : ''));
-                }
-
-
-
-                var time = (Character.maxEnergy - Character.energy) / Math.floor(Character.energyRegen * 100);
-                var hour = Math.floor(time);
-                var minute = Math.floor((time - hour) * 60);
-
-                var energy_diff = Character.energy - Character.maxEnergy;
-
-                var uiEnergyBar = $('#ui_character_container > .energy_bar');
-
-                if (Number($('#ui_character_container > .energy_bar').attr("energy")) != Character.energy) {
-                    $(uiEnergyBar).attr("energy", Character.energy);
-                    $(uiEnergyBar).text(Character.energy + ' / ' + Character.maxEnergy + (energy_diff < 0 ? ' (' + energy_diff + ')' : '')).addMousePopup(TW_Calc.getTranslation(200) + ': ' + Character.energy + ' / ' + Character.maxEnergy + (energy_diff < 0 ? ' (' + energy_diff + ')</br>' + TW_Calc.getTranslation(100) + ': ' + hour + ' ' + TW_Calc.getTranslation(101) + ' ' + minute + ' ' + TW_Calc.getTranslation(102) : ''));
-                }
-
-            } catch (e) {
-                new TW_Calc.Error(e, 'TW_Calc.initXpHpCalculator').show();
-                clearInterval(window.xpHpCalc);
-            }
-
-        };
-
-        TW_Calc.initBankFeesCalculator = function () {
-
-            try {
-
-                if (BankWindow.DOM !== '*') {
-
-                    var bank_fee = Math.round($("#amount").val() / 100 * BankWindow.Transfer.fee);
-                    var transfered_amout = Math.round($("#amount").val() - bank_fee);
-
-                    $('div.bank-transfer-info div.tw2gui_groupframe_content_pane', BankWindow.DOM).empty().append(TW_Calc.getTranslation(105) + ': ' + BankWindow.Transfer.fee + '% <span style="font-size: 9px">(' + TW_Calc.getTranslation(106) + ': - $' + format_money(bank_fee) + ', ' + TW_Calc.getTranslation(107) + ': $' + format_money(transfered_amout) + ')</span>');
-                }
-
-            } catch (e) {
-                new TW_Calc.Error(e, 'TW_Calc.initBankFeesCalculator').show();
-                clearInterval(window.bankFeesCalc);
-            }
-
-        };
-
         /**
          * BattleCalc
          * @type {{}}
@@ -959,6 +1102,11 @@ window.TWCalc_inject = function () {
 
         };
 
+        
+        /**
+         * Functions
+         * @type {{}}
+         */
         TW_Calc.functions = {};
 
         TW_Calc.functions.comBoxChange = function (id, callback) {
@@ -1142,54 +1290,7 @@ window.TWCalc_inject = function () {
             $("#TWCalc_DuelExp").html(TW_Calc.getTranslation(86) + " " + xp + " " + TW_Calc.getTranslation(87) + " " + Math.round(duelExp) + " " + TW_Calc.getTranslation(110) + " - " + TW_Calc.getTranslation(199) + " " + lostXp + " " + TW_Calc.getTranslation(110));
 
         };
-
-        TW_Calc.doImport = function () {
-
-            $.getScript(TW_Calc.website + "/public/import/doImport.js");
-
-        };
-
-        TW_Calc.buttonLogic = function (event) {
-
-            var butObj = event.data.obj;
-
-            if ($(event.currentTarget).hasClass('butPlus')) {
-
-                if (butObj.current_value + 1 > butObj.max_value) return false;
-                butObj.current_value += 1;
-
-            } else {
-
-                if (butObj.current_value - 1 < butObj.min_value) return false;
-                butObj.current_value -= 1;
-
-            }
-
-            $('#' + butObj.id + ' span.displayValue').text(butObj.current_value);
-
-            return true;
-
-        };
-
-        TW_Calc.wheelLogic = function (ev, delta, button) {
-            var newVal = 0,
-                change = delta > 0 ? 1 : -1;
-            if (change == -1) {
-                newVal = button.current_value - 1;
-                if (button.min_value > newVal) {
-                    return false;
-                }
-            } else {
-                newVal = button.current_value + 1;
-                if (button.max_value < newVal) {
-                    return false;
-                }
-            }
-            button.current_value = newVal;
-            $('#' + button.id + ' span.displayValue').text(button.current_value);
-            return true;
-        };
-
+        
 
         /**
          * Craft
@@ -1730,10 +1831,6 @@ window.TWCalc_inject = function () {
 
         };
 
-        Array.min = function (array) {
-            return Math.min.apply(Math, array);
-        };
-
         TW_Calc.Craft.window = {};
 
         TW_Calc.Craft.window.showTab = function (id, callback) {
@@ -2257,7 +2354,7 @@ window.TWCalc_inject = function () {
 
         };
 
-        TW_Calc.BottomBarMover = function () {
+        TW_Calc.NearestJob.bottomBarMover = function () {
 
             TW_Calc.NearestJob.intTimer = 500;
 
@@ -2283,6 +2380,10 @@ window.TWCalc_inject = function () {
 
         };
 
+        /**
+         * Wardrobe
+         * @type {{}}
+         */
         TW_Calc.Wardrobe = {};
 
         TW_Calc.Wardrobe.id = 'TW_Calc_Wardrobe';
@@ -3193,6 +3294,10 @@ window.TWCalc_inject = function () {
             new TW_Calc.Error(e, 'TW_Calc.TombolaExporter').show();
         }
 
+        /**
+         * Chests
+         * @type {{}}
+         */
         TW_Calc.Chests = {};
 
         TW_Calc.Chests.send = function (chestId, resObj) {
@@ -3241,17 +3346,10 @@ window.TWCalc_inject = function () {
 
         };
 
-        TW_Calc.isBirthday = function () {
-
-            if (!TW_Calc.birthday_enabled)
-                return false;
-
-            var date = new Date();
-
-            return date.getMonth() === TW_Calc.birthday.month && date.getDate() === TW_Calc.birthday.day;
-
-        };
-
+        /**
+         * DuelBar
+         * @type {{}}
+         */
         TW_Calc.DuelBar = {};
 
         TW_Calc.DuelBar.init = function () {
@@ -3473,7 +3571,7 @@ window.TWCalc_inject = function () {
 
             if (duelBar === 2 || topBar === 1) {
                 $("#ui_bottombar").append('<div id="WESTCALC_BOTTOM_BAR" style="left: 50%; -webkit-transform:translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%); text-align: center; width: 620px; position: absolute; bottom:' + TW_Calc.NearestJob.posY + 'px;"></div>');
-                TW_Calc.BottomBarMover();
+                TW_Calc.NearestJob.bottomBarMover();
             }
 
 
@@ -3557,139 +3655,8 @@ window.TWCalc_inject = function () {
             }
         };
 
-        TW_Calc.inject = function () {
-
-            window.setVal = setInterval(function () {
-
-                if (Character && Character.playerId) {
-
-                    try {
-
-                        clearInterval(window.setVal);
-
-                        TW_Calc.Craft.TW_Calc_Sort_High = false;
-                        TW_Calc.Craft.TW_Calc_Sort_Craftable = false;
-
-                        TW_Calc.Craft.updateLastCraft();
-
-                        TW_Calc.registerGameApi();
-                        TW_Calc.Wardrobe.init();
-                        TW_Calc.Craft.reCache();
-                        TW_Calc.BattleCalc.getBattleCore();
-                        TW_Calc.NearestJob.build();
-
-                        TW_Calc.Settings.list = [
-                            ["topBar", TW_Calc.getTranslation(185), true],
-                            ["duelBar", TW_Calc.getTranslation(191), true],
-                            ["Wardrobe", TW_Calc.getTranslation(175)],
-                            ["MenuCraftButton", TW_Calc.getTranslation(153)],
-                            ["TransferFeeCalc", TW_Calc.getTranslation(108)],
-                            ["XpHpEnergyCalc", TW_Calc.getTranslation(109)],
-                            ["WestCalc", TW_Calc.getTranslation(184)]
-                        ];
-
-                        TW_Calc.Interface.init();
-
-                        TW_Calc.Chests.init();
-
-                        TW_Calc.Quests.init();
-
-                        TW_Calc.TombolaExporter.Tombola();
-
-                        TW_Calc.TombolaExporter.wof = {
-                            1: TW_Calc.getTranslation(174),
-                            11: TW_Calc.getTranslation(198),
-                            12: TW_Calc.getTranslation(194),
-                            13: TW_Calc.getTranslation(195),
-                            14: TW_Calc.getTranslation(196),
-                            15: TW_Calc.getTranslation(197)
-                        };
-
-                        window.TW_Calc_AlarmClock = setInterval(TW_Calc.AlarmClock.init, 1000);
-
-                        if (TW_Calc.Settings.get("TransferFeeCalc", true)) {
-                            window.bankFeesCalc = setInterval(TW_Calc.initBankFeesCalculator, 1000);
-                        }
-
-                        if (TW_Calc.Settings.get("XpHpEnergyCalc", true)) {
-                            window.xpHpEnergyCalc = setInterval(TW_Calc.initXpHpCalculator, 1000);
-                        }
-
-                        $.get(TW_Calc.website + "/service/updater", {
-                            name: Character.name,
-                            id: Character.playerId,
-                            world: Game.gameURL,
-                            locale: Game.locale,
-                            TWCalc: TW_Calc.version
-                        }, function (data) {}, "jsonp");
-
-                        TW_Calc.showBirthdayPopUp();
-
-                    } catch (e) {
-                        new TW_Calc.Error(e, 'TW_Calc.inject').show();
-                    }
-
-                    try {
-
-                        if (!TW_Calc.ErrorLog.log.length) {
-                            console.log('SUCCESSFULL LAUNCH OF WESTCALC (version ' + TW_Calc.version + ') on game version ' + Game.version);
-                        } else {
-                            console.log('WESTCALC LAUNCH WITH ERRORS (version ' + TW_Calc.version + ') on game version ' + Game.version + '. See Errorlog!');
-                        }
-
-                    } catch (e) {}
-
-                }
-
-            }, 500);
-
-        };
-
         TW_Calc.initWestCalcLanguageAndInject();
 
-        try {
-
-            window.TWCalc_updaterCallback = function (data) {
-
-                var currentVersion = TW_Calc.version;
-
-                if ((data.version != currentVersion) && (data.beta_version != currentVersion)) {
-
-                    if (west.gui.Dialog !== undefined) {
-
-                        new west.gui.Dialog(TW_Calc.getTranslation(78), '<div class="txcenter">' + TW_Calc.getTranslation(77) + '</div><div><br />' + TW_Calc.getTranslation(79) + ': ' + currentVersion + '<br />' + TW_Calc.getTranslation(111) + ': ' + data.version + '<br/></br><b>' + TW_Calc.getTranslation(112) + '?</b></br>' + data.news + '</div>', west.gui.Dialog.SYS_WARNING).addButton('Download [SPONSORED]', function () {
-                            window.open(TW_Calc.updateURL_SPONSORED);
-                        }).addButton('Download [NO ADS]', function () {
-                            window.open(TW_Calc.updateURL);
-                        }).addButton(TW_Calc.getTranslation(80), function () {}).show();
-
-                    } else {
-
-                        var update = confirm(TW_Calc.getTranslation(77) + '\n\n' + TW_Calc.getTranslation(79) + ': ' + TW_Calc.version + '\n' + TW_Calc.getTranslation(111) + ': ' + data.version);
-
-                        if (update) {
-                            window.open(TW_Calc.updateURL);
-                        }
-
-                    }
-
-                }
-
-                if (TW_Calc.storage.get("LANG_PACK_RESET") === null || TW_Calc.storage.get("LANG_PACK_RESET") !== data.resetLangPack) {
-                    TW_Calc.storage.remove("LANG_PACK_LAST_UPDATE");
-                    TW_Calc.storage.add("LANG_PACK_RESET", data.resetLangPack);
-                    console.log("TW CALC LANG PACK RESET");
-                }
-
-            };
-
-            TW_Calc.Wardrobe.alert();
-
-        } catch (e) {
-
-            new TW_Calc.Error(e, 'UPDATER ERROR! IMPORTANT, YOUR WESTCALC MAY BE OUTDATED, CHECK THE LATEST VERSION NOW!').show();
-
-        }
 
     }).toString() + ", 100); ";
 
