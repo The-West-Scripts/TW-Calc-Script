@@ -104,14 +104,6 @@ window.TWCalc_inject = function () {
 
                         clearInterval(window.setVal);
 
-                        TW_Calc.Craft.updateLastCraftedItemList();
-
-                        TW_Calc.registerGameApi();
-                        TW_Calc.Wardrobe.init();
-                        TW_Calc.Craft.reCache();
-                        TW_Calc.BattleCalc.getBattleCore();
-                        TW_Calc.NearestJob.build();
-
                         TW_Calc.Settings.list = [
                             ["topBar", TW_Calc.getTranslation(185), true],
                             ["duelBar", TW_Calc.getTranslation(191), true],
@@ -122,13 +114,14 @@ window.TWCalc_inject = function () {
                             ["WestCalc", TW_Calc.getTranslation(184)]
                         ];
 
+                        TW_Calc.registerGameApi();
+                        TW_Calc.Wardrobe.init();
+                        TW_Calc.Craft.init();
+                        TW_Calc.BattleCalc.init();
                         TW_Calc.Interface.init();
-
                         TW_Calc.Chests.init();
-
                         TW_Calc.Quests.init();
-
-                        TW_Calc.TombolaExporter.Tombola();
+                        TW_Calc.TombolaExporter.init();
 
                         TW_Calc.TombolaExporter.wof = {
                             1: TW_Calc.getTranslation(174),
@@ -877,6 +870,10 @@ window.TWCalc_inject = function () {
          */
         TW_Calc.BattleCalc = {};
 
+        TW_Calc.BattleCalc.init = function () {
+            this.getBattleCore();
+        };
+
         TW_Calc.BattleCalc.getBattleCore = function () {
             $.getScript(TW_Calc.website + '/public/js/battle-calculator-core.js');
         };
@@ -1143,6 +1140,65 @@ window.TWCalc_inject = function () {
          */
         TW_Calc.Craft = {};
 
+        TW_Calc.Craft.init = function () {
+
+            TW_Calc.Craft.updateLastCraftedItemList();
+            TW_Calc.Craft.reCache();
+
+            Bag.updateChanges = function(changes, from) {
+                this.handleChanges(changes, from);
+                Crafting.updateResources();
+                TW_Calc.Craft.updateResources();
+            }
+
+        };
+
+        TW_Calc.Craft.updateResources = function () {
+
+            var professionId = TW_Calc.Craft.activeProfession;
+            var craft = TW_Calc.Craft.professionsCache[professionId - 1];
+
+            if (typeof craft === "undefined" || !$("#tab_craft" + professionId).length) return;
+
+            for (var i = 0; i < craft.length; i++) {
+                TW_Calc.Craft.window.updateRecipeRow(Number(craft[i].r));
+            }
+
+        };
+
+        TW_Calc.Craft.start = function (recipe_id) {
+
+            var amount = Number(Number($('#recipe_button_' + recipe_id + '>.displayValue').text()));
+
+            Ajax.remoteCall('crafting', 'start_craft', {
+                    recipe_id: recipe_id,
+                    amount: amount
+                },
+                function (resp) {
+
+                    if (resp.error) return new MessageError(resp.msg).show();
+
+                    var data = resp.msg;
+
+                    Character.setProfessionSkill(data.profession_skill);
+
+                    $('#recipe_difficult_' + recipe_id).removeClass('middle hard easy').addClass(Crafting.getRecipeColor(ItemManager.get(recipe_id)));
+
+                    Character.updateDailyTask('crafts', data.count);
+
+                    var proffesion_id = ItemManager.get(recipe_id).profession_id;
+                    TW_Calc.Craft.window.progressBar.setValue(Character.professionSkill);
+
+                    EventHandler.signal("inventory_changed");
+
+                    return new MessageSuccess(data.msg).show();
+
+                }
+
+            );
+
+        };
+
         TW_Calc.Craft.professionsCache = [[{"r":20000000,"o":[0,50,100]},{"r":20001000,"o":[0,50,100]},{"r":20002000,"o":[0,50,100]},{"r":20083000,"o":[0,100,100]},{"r":20084000,"o":[0,10,10]},{"r":20085000,"o":[10,20,20]},{"r":20086000,"o":[20,40,40]},{"r":20003000,"o":[50,100,100]},{"r":20004000,"o":[50,100,100]},{"r":20005000,"o":[100,150,200]},{"r":20006000,"o":[100,150,200]},{"r":20007000,"o":[100,150,200]},{"r":20008000,"o":[150,225,300]},{"r":20009000,"o":[150,225,300]},{"r":20010000,"o":[150,225,300]},{"r":20011000,"o":[250,300,300]},{"r":20012000,"o":[250,300,300]},{"r":20013000,"o":[250,300,300]},{"r":20014000,"o":[300,350,400]},{"r":20015000,"o":[350,425,500]},{"r":20016000,"o":[350,425,500]},{"r":20017000,"o":[350,425,500]},{"r":20116000,"o":[350,425,500]},{"r":20134000,"o":[450,475,500]},{"r":20018000,"o":[400,500,500]},{"r":20019000,"o":[450,500,500]},{"r":20096000,"o":[500,525,550]},{"r":20120000,"o":[500,525,550]},{"r":20124000,"o":[500,525,550]},{"r":20097000,"o":[525,550,575]},{"r":20098000,"o":[550,575,600]},{"r":20135000,"o":[550,575,600]},{"r":20099000,"o":[600,625,650]},{"r":20100000,"o":[600,625,650]},{"r":20136000,"o":[600,650,700]}],[{"r":20020000,"o":[0,50,100]},{"r":20021000,"o":[0,50,100]},{"r":20022000,"o":[0,100,100]},{"r":20081000,"o":[0,50,100]},{"r":20087000,"o":[0,10,10]},{"r":20088000,"o":[10,20,20]},{"r":20089000,"o":[20,40,40]},{"r":20023000,"o":[50,100,100]},{"r":20024000,"o":[50,100,100]},{"r":20025000,"o":[100,150,200]},{"r":20026000,"o":[100,150,200]},{"r":20027000,"o":[100,150,200]},{"r":20028000,"o":[150,225,300]},{"r":20029000,"o":[150,225,300]},{"r":20030000,"o":[150,225,300]},{"r":20031000,"o":[250,300,300]},{"r":20032000,"o":[250,300,300]},{"r":20033000,"o":[250,300,300]},{"r":20034000,"o":[300,350,400]},{"r":20035000,"o":[350,425,500]},{"r":20036000,"o":[350,425,500]},{"r":20037000,"o":[350,425,500]},{"r":20119000,"o":[350,425,500]},{"r":20038000,"o":[400,500,500]},{"r":20123000,"o":[450,475,500]},{"r":20128000,"o":[450,475,500]},{"r":20039000,"o":[450,500,500]},{"r":20101000,"o":[500,525,550]},{"r":20127000,"o":[500,525,550]},{"r":20102000,"o":[525,550,575]},{"r":20103000,"o":[550,575,600]},{"r":20129000,"o":[550,575,600]},{"r":20104000,"o":[600,625,650]},{"r":20105000,"o":[600,625,650]},{"r":20130000,"o":[600,650,700]}],[{"r":20040000,"o":[0,50,100]},{"r":20041000,"o":[0,50,100]},{"r":20042000,"o":[0,100,100]},{"r":20082000,"o":[0,50,100]},{"r":20090000,"o":[0,10,10]},{"r":20091000,"o":[10,20,20]},{"r":20092000,"o":[20,40,40]},{"r":20043000,"o":[50,100,100]},{"r":20044000,"o":[50,100,100]},{"r":20045000,"o":[100,150,200]},{"r":20046000,"o":[100,150,200]},{"r":20047000,"o":[100,150,200]},{"r":20048000,"o":[150,225,300]},{"r":20049000,"o":[150,225,300]},{"r":20050000,"o":[150,225,300]},{"r":20051000,"o":[250,300,300]},{"r":20052000,"o":[250,300,300]},{"r":20053000,"o":[250,300,300]},{"r":20054000,"o":[300,350,400]},{"r":20055000,"o":[350,425,500]},{"r":20056000,"o":[350,425,500]},{"r":20057000,"o":[350,425,500]},{"r":20118000,"o":[350,425,500]},{"r":20058000,"o":[400,500,500]},{"r":20122000,"o":[450,475,500]},{"r":20131000,"o":[450,475,500]},{"r":20059000,"o":[450,500,500]},{"r":20111000,"o":[500,525,550]},{"r":20126000,"o":[500,525,550]},{"r":20112000,"o":[525,550,575]},{"r":20113000,"o":[550,575,600]},{"r":20132000,"o":[550,575,600]},{"r":20114000,"o":[600,625,650]},{"r":20115000,"o":[600,625,650]},{"r":20133000,"o":[600,650,700]}],[{"r":20060000,"o":[0,50,100]},{"r":20061000,"o":[0,50,100]},{"r":20062000,"o":[0,100,100]},{"r":20080000,"o":[0,50,100]},{"r":20093000,"o":[0,10,10]},{"r":20094000,"o":[10,20,20]},{"r":20095000,"o":[20,40,40]},{"r":20063000,"o":[50,100,100]},{"r":20064000,"o":[50,100,100]},{"r":20065000,"o":[100,150,200]},{"r":20066000,"o":[100,150,200]},{"r":20067000,"o":[100,150,200]},{"r":20068000,"o":[150,225,300]},{"r":20069000,"o":[150,225,300]},{"r":20070000,"o":[150,225,300]},{"r":20071000,"o":[250,300,300]},{"r":20072000,"o":[250,300,300]},{"r":20073000,"o":[250,300,300]},{"r":20074000,"o":[300,350,400]},{"r":20075000,"o":[350,425,500]},{"r":20076000,"o":[350,425,500]},{"r":20077000,"o":[350,425,500]},{"r":20117000,"o":[350,425,500]},{"r":20078000,"o":[400,500,500]},{"r":20121000,"o":[450,475,500]},{"r":20137000,"o":[450,475,500]},{"r":20079000,"o":[450,500,500]},{"r":20106000,"o":[500,525,550]},{"r":20125000,"o":[500,525,550]},{"r":20107000,"o":[525,550,575]},{"r":20108000,"o":[550,575,600]},{"r":20138000,"o":[550,575,600]},{"r":20109000,"o":[600,625,650]},{"r":20110000,"o":[600,625,650]},{"r":20139000,"o":[600,650,700]}],[1855000,1862000,1856000,1940000,1941000,1942000,1943000,1863000,1864000,1865000,1866000,1867000,1868000,1869000,1870000,1871000,1872000,1873000,1874000,1875000,1876000,1877000,2516000,2736000,1878000,1879000,1980000,2517000,2518000,1981000,1982000,2737000,1999000,2001000,2738000,1861000,1881000,1880000,1939000,1944000,1945000,1946000,1882000,1883000,1884000,1885000,1886000,1887000,1888000,1889000,1890000,1891000,1892000,1893000,1894000,1895000,1896000,2525000,1897000,2526000,2730000,1898000,1983000,2527000,1984000,1985000,2731000,2002000,2004000,2732000,1859000,1899000,1858000,1938000,1947000,1948000,1949000,1900000,1901000,1902000,1903000,1904000,1905000,1906000,1907000,1908000,1909000,1910000,1911000,1912000,1913000,1914000,2522000,1915000,2523000,2733000,1916000,1989000,2524000,1990000,1991000,2735000,2008000,2010000,2734000,1857000,1917000,1860000,1937000,1950000,1951000,1952000,1918000,1919000,1920000,1921000,1922000,1923000,1924000,1925000,1926000,1927000,1928000,1929000,1930000,1931000,1932000,2519000,1933000,2520000,2739000,1934000,1986000,2521000,1987000,1988000,2740000,2005000,2007000,2741000],[]]
 
         TW_Calc.Craft.reCache = function () {
@@ -1154,8 +1210,6 @@ window.TWCalc_inject = function () {
             });
 
         };
-
-        TW_Calc.Craft.Filter = {};
 
         TW_Calc.Craft.updateLastCraftedItemList = function () {
 
@@ -1192,8 +1246,6 @@ window.TWCalc_inject = function () {
 
                 if ([1, 2, 3, 4].indexOf(craft_id) === -1)
                     craft_id = 1;
-
-                var tab = TW_Calc.getTranslation(183);
 
                 var tabClick = function (win, id) {
 
@@ -1517,46 +1569,6 @@ window.TWCalc_inject = function () {
                 new TW_Calc.Error(e, 'TW_Calc.Craft.window.launch').show();
 
             }
-
-        }
-
-        TW_Calc.Craft.start = function (recipe_id) {
-
-            var amount = Number(Number($('#recipe_button_' + recipe_id + '>.displayValue').text()));
-
-            Ajax.remoteCall('crafting', 'start_craft', {
-                    recipe_id: recipe_id,
-                    amount: amount
-                },
-                function (resp) {
-
-                    if (resp.error) return new MessageError(resp.msg).show();
-
-                    var data = resp.msg;
-
-                    Character.setProfessionSkill(data.profession_skill);
-
-                    $('#recipe_difficult_' + recipe_id).removeClass('middle hard easy').addClass(Crafting.getRecipeColor(ItemManager.get(recipe_id)));
-
-                    EventHandler.signal("inventory_changed");
-
-                    Character.updateDailyTask('crafts', data.count);
-
-                    EventHandler.signal("inventory_changed")
-
-                    var proffesion_id = ItemManager.get(recipe_id).profession_id;
-                    var craft = TW_Calc.Craft.professionsCache[proffesion_id - 1];
-                    TW_Calc.Craft.window.progressBar.setValue(Character.professionSkill);
-
-                    for (var i = 0; i < craft.length; i++) {
-                        TW_Calc.Craft.window.updateRecipeRow(Number(craft[i].r));
-                    }
-
-                    return new MessageSuccess(data.msg).show();
-
-                }
-
-            );
 
         };
 
@@ -1956,7 +1968,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.NearestJob.posY = 97;
 
-        TW_Calc.NearestJob.JobBarEnabled = (Number(TW_Calc.Settings.get("topBar", "number")) === 1) || (Number(TW_Calc.Settings.get("topBar", "number")) === 2);
+        TW_Calc.NearestJob.JobBarEnabled = (Number(TW_Calc.Settings.get("topBar", 1)) === 1) || (Number(TW_Calc.Settings.get("topBar", 1)) === 2);
 
         TW_Calc.NearestJob.loadBottomBar = function () {
 
@@ -1967,7 +1979,7 @@ window.TWCalc_inject = function () {
 
                 $("#Westcalc_JobBar").remove();
 
-                var topBar = Number(TW_Calc.Settings.get("topBar", "number"));
+                var topBar = Number(TW_Calc.Settings.get("topBar", 1));
 
                 if (topBar === 1 || topBar === 2) {
                     $(TW_Calc.NearestJob.MainDiv).append('<div id="Westcalc_JobBar" style="overflow: hidden; width: 510px;height: 61px; margin-left: auto; margin-right: auto; text-align: left"></div>');
@@ -2011,6 +2023,8 @@ window.TWCalc_inject = function () {
 
         TW_Calc.NearestJob.init = function () {
 
+            this.build();
+
             if (TW_Calc.NearestJob.JobBarEnabled) {
 
                 TW_Calc.NearestJob.loadBottomBar();
@@ -2028,12 +2042,11 @@ window.TWCalc_inject = function () {
 
             TW_Calc.NearestJob.int = setInterval(function () {
 
-                if ((Number(TW_Calc.Settings.get("topBar", "number")) === 1) || (Number(TW_Calc.Settings.get("duelBar", "number")) === 2)) {
+                if ((Number(TW_Calc.Settings.get("topBar", 1)) === 1) || (Number(TW_Calc.Settings.get("duelBar", 1)) === 2)) {
 
                     var n = $("div#ui_bottombar").height() + 5 + (Game.version <= 2.06 ? 0 : 14) + ($(".friendsbar").height() > 0 ? $(".friendsbar").height() : 0);
 
-                    if ($("#ui_windowdock").css("display") == "none" || $('.windowbar_frames').html() == '') n = n + 15;
-                    else n = n + 47;
+                    if ($("#ui_windowdock").css("display") == "none" || $('.windowbar_frames').html() == '') n += 15; else n += 47;
 
                     $('#WESTCALC_BOTTOM_BAR').stop();
                     TW_Calc.NearestJob.posY = n;
@@ -2407,27 +2420,39 @@ window.TWCalc_inject = function () {
                 invItems = Bag.getItemsByItemIds(items),
                 result = {},
                 invItem,
-                wearItem;
+                wearItem,
+                _wear = {},
+                i;
 
-            for (var i = 0; i < invItems.length; i++) {
+            for (i = 0; i < items.length; i++) {
+                _wear[ItemManager.get(items[i]).type] = items[i];
+            }
+
+            for (i = 0; i < invItems.length; i++) {
 
                 invItem = invItems[i];
                 wearItem = Wear.get(invItem.getType());
 
                 if (!wearItem || (wearItem && (wearItem.getItemBaseId() !== invItem.getItemBaseId() || wearItem.getItemLevel() < invItem.getItemLevel()))) {
-                    result[invItem.getType()](invItem.getId());
+                    result[invItem.getType()] = invItem.getId();
                 }
 
             }
 
             var output = [];
 
-            for (var type in Wear.wear) {
-                if (Wear.wear.hasOwnProperty(type) && !result.hasOwnProperty(type)) {
-                    output.push(Wear.wear[type].obj.item_id);
-                } else {
+            for (i = 0; i < Wear.slots.length; i++) {
+
+                var type = Wear.slots[i];
+
+                if (result.hasOwnProperty(type)) {
                     output.push(result[type]);
+                } else if (Wear.wear.hasOwnProperty(type)) {
+                    output.push(Wear.wear[type].obj.item_id);
+                } else if (_wear.hasOwnProperty(type)) {
+                    output.push(_wear[type]);
                 }
+
             }
 
             return output;
@@ -2611,7 +2636,7 @@ window.TWCalc_inject = function () {
 
             var cYear = '_' + new Date().getFullYear();
 
-            TW_Calc.TombolaExporter.Tombola = function () {
+            TW_Calc.TombolaExporter.init = function () {
 
                 //west.wof.WofManager.wofs
                 west.wof.WheelofFortune.prototype.process = function (action, data, callback, context, window) {
@@ -3056,7 +3081,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.DuelBar.MainDiv = '';
 
-        TW_Calc.NearestJob.DuelBarEnabled = (Number(TW_Calc.Settings.get("duelBar", "number")) === 2) || (Number(TW_Calc.Settings.get("topBar", "duelBar")) === 1);
+        TW_Calc.NearestJob.DuelBarEnabled = (Number(TW_Calc.Settings.get("duelBar", 1)) === 2) || (Number(TW_Calc.Settings.get("topBar", "duelBar")) === 1);
 
         TW_Calc.DuelBar.loadPlayerData = function () {
 
@@ -3106,7 +3131,7 @@ window.TWCalc_inject = function () {
 
                 } else {
 
-                    if (Number(TW_Calc.Settings.get("topBar", "number")) !== 2)
+                    if (Number(TW_Calc.Settings.get("topBar", 1)) !== 2)
                         if (!$("#WESTCALC_TOP_BAR>#Westcalc_DuelBar").html().length) $("#WESTCALC_TOP_BAR").remove();
 
                 }
@@ -3268,7 +3293,6 @@ window.TWCalc_inject = function () {
                 TW_Calc.NearestJob.bottomBarMover();
             }
 
-
             if (duelBar !== 3) {
                 $(TW_Calc.DuelBar.MainDiv).append('<div id="Westcalc_DuelBar" class="bottom" style="text-align: center; width: 620px; height: 88px;"></div>');
             }
@@ -3280,7 +3304,6 @@ window.TWCalc_inject = function () {
 
             TW_Calc.DuelBar.init();
             TW_Calc.NearestJob.init();
-
 
             if (TW_Calc.Settings.get("WestCalc", true) || topBar === 3 || TW_Calc.Settings.get("Wardrobe", true)) {
 
