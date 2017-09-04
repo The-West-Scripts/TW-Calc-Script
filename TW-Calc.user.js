@@ -1016,9 +1016,7 @@ window.TWCalc_inject = function () {
 
                 $(div).empty();
 
-                var i = 0;
-
-                for (i; i < TW_Calc.Settings.list.length; i++) {
+                for (var i = 0; i < TW_Calc.Settings.list.length; i++) {
 
                     if (TW_Calc.Settings.list[i][2] !== true) $(div).append(new west.gui.Checkbox()
                         .setId(TW_Calc.Settings.list[i][0])
