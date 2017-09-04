@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.20
+// @version 1.21
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -72,7 +72,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.20",
+            version: "1.21",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -90,6 +90,7 @@ window.TWCalc_inject = function () {
             UseLocalLanguagePack: false,
             ShowLogs: false,
             bottomImg: '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',
+            icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAZCAMAAABEio12AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAMAUExURQ4BAFtKL2pSN0IqEDcjDTQgDDAdBxQCACcSABsSCmVMNVc3IA8DAEw+MRcMBmBJMSEYDychGUUoFh0KAHNcP0EvHwoAAFpKOFVBJVRCKHxlUYhwV081GzAlGzghFB4VDGBHIy0XA1A3J3hQJ41oQlxJKCYfFYx3ZSwcDm9FJIBXMHlQH6B7VopoPE1BOj0qE1pFJ5RmKhoSC083H2ZNPHZcOZt3TpRmRWRSQV1OMVlKMFZEJzEiBlNDKUU1LW1XPZZ8bIhWNigXD5l0RHlYMXNILYRjOqp7RZh/YYVtU6iGXZRlNI1eLT4cA3BNMraEUGA+FJV3X5RlPYlcOWBMLEg4HmtbRGJFI0gyHYVTNW1ROZd0TKCNZaaTa2dBGlAsEpFzW4x2XnlVO3RHJl1HKF1INKJ+V3piQYJdN////000FR8GABoGAPn18kgxF/X08i8bBNHJwTIdCPPx8DYcAyELAR4UCkYgAlQ7HjQcDsm1omJPNDkeE9rV0FQ0FdrOwx0OA2NKLFAuFlQ6IywTBCITBUcmCy0XCTAWAquek0kwIT8nEXJHJSYYDHNnWmJBIlw7ITokCycTBEkpEunm49/TyOTb1KGVh11DKl9ILl5IJ3ZSLjsoGZGDdjwiG6+SejQiFDoeBVk/Jlg2HVAzJScKAC8bDkgqGhMAAIRrT19IOVA7NIdwW8rBtmU9G2lOMGtKIkwrDeTh4HJCG7uUdJhjNNTLxINPKryvpWhELLCZhZtyTUQdBKGFZeDX0Laqn9TNyHhdRFQoGkEqHm9JNIxdLY11XlU1Gp6MgXxVL2A8Gd3Y1GA4HaWZjtLGunpKJntHHsO7tGY4FcKvm4JZL2QvCkweBqyYipJdPX1jSNPPzDkpFbixrNG+qNnRy1lDM21VR5WJg7CAUYd2aXlwaFw2E72hiXhjTmpMKlVGN8bBvJdoPYRZPXFTPL+SZK6ln4JtYPLs5urbz8qslXBPItC9r5R5aL+1rYhdSqCLdm1CIquDaV4lCujg1mVJJMWpjVXPAa8AAADcdFJOU+v+/v7s/uvs7P6vr/2v/uz+/a/rr/7rr8j+r6+t/q/rr+z+r6/s66/9r3jO6+uvyO2v6/3+66qvr+3tr8jtr6/rr6+vocivyNnr68jI7a+v6uui68jI7aLtyOvr6evZ6/2h6+v49fbr9v/////////////////////////////////////+///////////////////////////+///////////////////////////+//////////////////////////////////////////////////////////5vmyxZAAAEkElEQVQYGQXBeUxTBwAH4N+7etGbtlBKLUWq6ISJaBSELVwuLioaJJku02k8NhPMnDrFzSsSnZubV7Y5/9hkW7LFIwuTaSaSaQaoEfFEDqEFKi09aOn5aPvat+8j5ha0x4qmABfMtigASGaP5GEIKblbGmZVplHTOEwP5QBQRgzKEAJRTT8MKwC4AQAAdIGYMJZe4NEH2MK/AR3SIm6YbYUcG9FSHJHtJiScgAQSYD5lEme2nW8433AhBeDnlo5NOedWxY8fEOi1dd8Ta7UXPrrmPjKRic3E2/cPNQENyJgGRC7g4raML4Qpkltzc+CERcyOCQo90UAGPDoxbBl24HgDJXI5Lkrnx+O+9bl3Pg5tyK45uaQqqzmjpIOt9JE9E2x4eJ75QSPpWmwN5Ne1LE3sUlKE+HDaEACM9CT6Vl5tH2qeqLp/7+IroXdtj9IDAGmdSVmfpNVjcfS6rcVDLBmNvLydD2xNY5rgfUsMTPachuazRq2iAq8PA7qzlRtxJWch8Gb5cxTUlNaTSpzFAPBrueoScMgB/LIXkNo3q4jfNWIdgHOtXoD/D2gOA+W3HQ9IAuAAAP65wKAXiH4LzOS2PwM4+V8AqmcTQOdzIN4PuCmTlYR+OzQAHnECCaYh0GAa8NE/wmSk4QFgN82n4QZdgBeA1MwsI/lxWk4BtVPM01IAy1cDqLZeAU8lvOsAAFS3GoBsNYBT3lGOIkH8EGSBaLFzZArAyywA7uiO+TOQSfykBXTZY5l7AJT2ALhsgHOMlAFZ0kIUOIzTz49iN/31Qmxm8mj/mHWymAnshKVbnRxYiVpdfCfq1z0UVJOUZYIvTB2seTTNcUQH02l2eRgJTTtMo0Rxt0/6FDaf/JaBGre0VnsrpIzCNGSnEnSDLjc/N2n0p8tkNb0WubbsxtJJVYB/3RRbEvMxkuI2tSiaoFldbDDZTlwNPiaVYYWzX2TVuJJCp/OuGB5Ph6RDJIkO61pxI35EVRHUIPk5kkY4bWmhLuEsPSVi25bPsAfjqgWd7zPWfdpwUXeECR5951loxUSlSOvYGim71bjIF5ujfKPtyfKldfkbSD935IPuqhzp+ha4J8iTV0qaU/uleRifzdTz439W7Tk45xSCxv5+o+vYMdVtaqiPJpUKfzv6XfwIdt+kAQcB429Tz87OUsr/GMxGtK/0FE7ubwckOlzbVTEswWOSiNytg33l4nv4Bgs4lCqwYseyInrVFIylr6Hu6tqHfYgCl9yIns4tsT9ZRPIp/6395GWDLafy+Is10X9HN353gFhE3FFMmu1f5rT4txzKea+W38UNt+4c9BMvk4lGQh3ZImE18AK8BKyYLenSesWAcvB6o/GRQj5mjNvkc/pQ+wA+kZE24H6K1gabsyMhAoD0k3TBRrSEwcvS3pUG8npF7Bnl3qYTX8n++RBzeeIYwVvrUWYgNjkHHJkQxoTSXtNkRO/MgFCKHrpG22/AdUUIKYAkUzDMQxsHWu9YE6Diene05AUdId18KEuVmkeIBWqXuoziHLSv6BVJasl0pKhyNafMnmkxR9QC/n+f2e8W3vECWAAAAABJRU5ErkJggg==',
             imgUrl: "//westzzs.innogamescdn.com/",
             loadedPack: false
         };
@@ -451,6 +452,30 @@ window.TWCalc_inject = function () {
 
         };
 
+        TW_Calc.showBirthdayPopUp = function () {
+
+            if (TW_Calc.isBirthday() === true) {
+
+                var date = new Date();
+
+                if (TW_Calc.storage.get("BDAY") !== date.getFullYear()) {
+
+                    var age = date.getFullYear() - 2012;
+                    var text = age + (age === 1 ? 'st' : age === 2 ? 'nd' : age === 3 ? '3rd' : 'th');
+
+                    new west.gui.Dialog().setTitle("It's TW-Calc " + text + " birthday!").setText("<table><tr><td><img src='" + TW_Calc.imgUrl + "/images/items/yield/5_year_cake.png?1'></td><td>Thank you for using this script and visiting our website!</br>" +
+                        "If you like our webpage, please donate for server costsand further development, we'll be very grateful to you. We are funding everything from our own resources. All your donations will be appreciated and used in best way possible to ensure future development of our page and scipt. <b>Thank you!</b>" +
+                        '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top"><input type="hidden" name="cmd" value="_s-xclick"><input type="hidden" name="hosted_button_id" value="LRG4X3PGMYHZY"><input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"><img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"></form></td></tr></table>').addButton("Visit website", function () {
+                        TW_Calc.storage.add("BDAY", new Date().getFullYear());
+                        window.open(TW_Calc.website);
+                    }).addButton("Close", function () {
+                        TW_Calc.storage.add("BDAY", new Date().getFullYear());
+                    }).show();
+
+                }
+            }
+        };
+
         TW_Calc.registerGameApi = function () {
 
             if (typeof TW_Calc.api === "undefined") {
@@ -598,8 +623,8 @@ window.TWCalc_inject = function () {
                 }
             };
 
-            if (typeof BattleCalc === "undefined")
-                return '<p>Error! BattleCalc have to be loaded from tw-calc web server. Try refreshing the game.</p>';
+            if (!BattleCalc || typeof BattleCalc === "undefined")
+                return '<div style="margin-top: 15px">' + TW_Calc.BattleCalc.notLoadedBattleCoreMsg + '</div>';
 
             var data = BattleCalc.coreCalc(input, true);
 
@@ -618,11 +643,11 @@ window.TWCalc_inject = function () {
                 '<div style="font-weight: bold; font-size: 16px;color: darkred;">' + TW_Calc.getTranslation(31) + '</div>' +
                 '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(14) + '</div><div>' + data.attack.hit + '</div>' +
                 '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(51) + '</div><div>' + data.attack.dodge + '</div>' +
-                '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(51) + '</div><div>' + data.attack.resistance + '</div>' +
+                '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(140) + '</div><div>' + data.attack.resistance + '</div>' +
                 '</td><td style="width: 33%"><div style="font-weight: bold; font-size: 16px; color: darkblue;">' + TW_Calc.getTranslation(33) + '</div>' +
                 '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(14) + '</div><div>' + data.defense.hit + '</div>' +
                 '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(51) + '</div><div>' + data.defense.dodge + '</div>' +
-                '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(51) + '</div><div>' + data.defense.resistance + '</div>' +
+                '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(140) + '</div><div>' + data.defense.resistance + '</div>' +
                 '</td><td style="width: 33%"><div style="font-weight: bold;">' + TW_Calc.getTranslation(28) + ': </div><span>' + data.health + ' HP</span>' +
                 '<div style="font-weight: bold;">' + TW_Calc.getTranslation(141) + ': </div><span>' + data.damage + '</span></td></tr></table>')).getMainDiv());
 
@@ -878,6 +903,8 @@ window.TWCalc_inject = function () {
             $.getScript(TW_Calc.website + '/public/js/battle-calculator-core.js');
         };
 
+        TW_Calc.BattleCalc.notLoadedBattleCoreMsg = 'Error! BattleCalc have to be loaded from tw-calc web server. Try refreshing the game.';
+
         TW_Calc.BattleCalc.calculate = function () {
 
             var input = {
@@ -903,8 +930,8 @@ window.TWCalc_inject = function () {
                 }
             };
 
-            if (typeof BattleCalc === "undefined")
-                return '<p>Error! BattleCalc have to be loaded from tw-calc web server. Try refreshing the game.</p>';
+            if (!BattleCalc || typeof BattleCalc === "undefined")
+                return new MessageError(TW_Calc.BattleCalc.notLoadedBattleCoreMsg).show();
 
             var data = BattleCalc.coreCalc(input);
 
@@ -1352,7 +1379,7 @@ window.TWCalc_inject = function () {
                         }));
 
                         if (craftable)
-                            craftable = bag_count > item.count;
+                            craftable = bag_count >= item.count;
 
                         items.push(itemWidget);
 
@@ -1556,8 +1583,9 @@ window.TWCalc_inject = function () {
 
                 scrollPane.appendContent(recipes);
 
-                parent.append($(scrollPane.getMainDiv()).css({"height": myProfession ? 270 : 295, "text-align": "center"}));
+                parent.append($(scrollPane.getMainDiv()).css({"height": myProfession ? 278 : 295, "text-align": "center"}));
 
+                parent.append($('<a href="//tw-calc.net/craft/' + craft_id + '" target="_blank" title="Show this profession on tw-calc.net"><div style="background-position: 0 0; background-image: url(' + TW_Calc.icon + '); width: 25px; height: 25px; position: absolute; bottom: 0; left: 5px"></div></a>'));
                 $("#tab_craft" + craft_id).empty().append(parent);
 
                 for (i = 0; i < craft.length; i++) {
@@ -1579,6 +1607,7 @@ window.TWCalc_inject = function () {
         TW_Calc.Quests = {};
 
         TW_Calc.Quests.questEmployer = function (nr) {
+
             try {
 
                 Ajax.get('map', 'get_minimap', {}, function (json) {
@@ -1596,9 +1625,11 @@ window.TWCalc_inject = function () {
                 new TW_Calc.Error(e, 'TW_Calc.QuestsquestEmployer').show();
 
             }
+
         };
 
         TW_Calc.Quests.init = function () {
+
             try {
 
                 Quest.calc_getMinimapLink = Quest.getMinimapLink;
@@ -1628,6 +1659,7 @@ window.TWCalc_inject = function () {
                 new TW_Calc.Error(e, 'TW_Calc.Quests.init').show();
 
             }
+
         };
 
         OnGoingWestcalcErrorEntry = function (f) {
@@ -2023,14 +2055,22 @@ window.TWCalc_inject = function () {
 
         TW_Calc.NearestJob.init = function () {
 
-            this.build();
+            try {
 
-            if (TW_Calc.NearestJob.JobBarEnabled) {
+                this.build();
 
-                TW_Calc.NearestJob.loadBottomBar();
-                TW_Calc.NearestJob.loadedPopups();
+                if (TW_Calc.NearestJob.JobBarEnabled) {
 
-                TW_Calc.NearestJob.getMap();
+                    TW_Calc.NearestJob.loadBottomBar();
+                    TW_Calc.NearestJob.loadedPopups();
+
+                    TW_Calc.NearestJob.getMap();
+
+                }
+
+            } catch (e) {
+
+                new TW_Calc.Error(e, 'TW_Calc.NearestJob.init').show();
 
             }
 
@@ -3072,7 +3112,13 @@ window.TWCalc_inject = function () {
         TW_Calc.DuelBar = {};
 
         TW_Calc.DuelBar.init = function () {
-            TW_Calc.DuelBar.loadPlayerData();
+
+            try {
+                TW_Calc.DuelBar.loadPlayerData();
+            } catch (e) {
+                new TW_Calc.Error(e, 'TW_Calc.DuelBar.init').show();
+            }
+
         };
 
         TW_Calc.DuelBar.loadedData = [];
@@ -3268,110 +3314,92 @@ window.TWCalc_inject = function () {
 
         TW_Calc.Interface.init = function () {
 
-            var topBar = Number(TW_Calc.Settings.get("topBar", 1));
-            var duelBar = Number(TW_Calc.Settings.get("duelBar", 1));
+            try {
 
-            if (topBar === 1) {
-                TW_Calc.NearestJob.MainDiv = '#WESTCALC_BOTTOM_BAR';
-            } else if (duelBar === 2) {
-                TW_Calc.NearestJob.MainDiv = '#WESTCALC_TOP_BAR';
-            }
+                var topBar = Number(TW_Calc.Settings.get("topBar", 1));
+                var duelBar = Number(TW_Calc.Settings.get("duelBar", 1));
 
-            if (duelBar === 2) {
-                TW_Calc.DuelBar.MainDiv = '#WESTCALC_BOTTOM_BAR';
-            } else if (duelBar === 1) {
-                TW_Calc.DuelBar.MainDiv = '#WESTCALC_TOP_BAR';
-            }
-
-            if (duelBar === 1 || topBar === 2) {
-                $("#user-interface").append('<div id="WESTCALC_TOP_BAR" class="bottom" style="text-align: center; left: 50%; margin-top: 10px; width: 620px; position: absolute; top: 44px; z-index: 2; -webkit-transform: translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%);"></div>');
-                $('#user-interface>.first-purchase').remove();
-            }
-
-            if (duelBar === 2 || topBar === 1) {
-                $("#ui_bottombar").append('<div id="WESTCALC_BOTTOM_BAR" style="left: 50%; -webkit-transform:translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%); text-align: center; width: 620px; position: absolute; bottom:' + TW_Calc.NearestJob.posY + 'px;"></div>');
-                TW_Calc.NearestJob.bottomBarMover();
-            }
-
-            if (duelBar !== 3) {
-                $(TW_Calc.DuelBar.MainDiv).append('<div id="Westcalc_DuelBar" class="bottom" style="text-align: center; width: 620px; height: 88px;"></div>');
-            }
-
-            if (topBar !== 3) {
-                $(TW_Calc.NearestJob.MainDiv).append('<div id="Westcalc_JobBar" class="bottom" style="width: 510px; height: 61px; margin-left: auto; margin-right: auto; text-align: left"></div>');
-            }
-
-
-            TW_Calc.DuelBar.init();
-            TW_Calc.NearestJob.init();
-
-            if (TW_Calc.Settings.get("WestCalc", true) || topBar === 3 || TW_Calc.Settings.get("Wardrobe", true)) {
-
-                var rightMenuButtonLogicIn = function () {
-                    $(this).css('background-position', '-25px 0');
-                };
-
-                var rightMenuButtonLogicOut = function () {
-                    $(this).css('background-position', '0 0');
-                };
-
-                var container = $('<div class="ui_menucontainer" id="TWCalcButtons"></div>');
-
-                if (TW_Calc.Settings.get("WestCalc", true)) {
-                    $(container).append($('<div class="menulink" title="The-West Calc" ' + 'onclick="TW_Calc.window.open();" ' + 'style="background-position: 0 0; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAZCAMAAABEio12AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAMAUExURQ4BAFtKL2pSN0IqEDcjDTQgDDAdBxQCACcSABsSCmVMNVc3IA8DAEw+MRcMBmBJMSEYDychGUUoFh0KAHNcP0EvHwoAAFpKOFVBJVRCKHxlUYhwV081GzAlGzghFB4VDGBHIy0XA1A3J3hQJ41oQlxJKCYfFYx3ZSwcDm9FJIBXMHlQH6B7VopoPE1BOj0qE1pFJ5RmKhoSC083H2ZNPHZcOZt3TpRmRWRSQV1OMVlKMFZEJzEiBlNDKUU1LW1XPZZ8bIhWNigXD5l0RHlYMXNILYRjOqp7RZh/YYVtU6iGXZRlNI1eLT4cA3BNMraEUGA+FJV3X5RlPYlcOWBMLEg4HmtbRGJFI0gyHYVTNW1ROZd0TKCNZaaTa2dBGlAsEpFzW4x2XnlVO3RHJl1HKF1INKJ+V3piQYJdN////000FR8GABoGAPn18kgxF/X08i8bBNHJwTIdCPPx8DYcAyELAR4UCkYgAlQ7HjQcDsm1omJPNDkeE9rV0FQ0FdrOwx0OA2NKLFAuFlQ6IywTBCITBUcmCy0XCTAWAquek0kwIT8nEXJHJSYYDHNnWmJBIlw7ITokCycTBEkpEunm49/TyOTb1KGVh11DKl9ILl5IJ3ZSLjsoGZGDdjwiG6+SejQiFDoeBVk/Jlg2HVAzJScKAC8bDkgqGhMAAIRrT19IOVA7NIdwW8rBtmU9G2lOMGtKIkwrDeTh4HJCG7uUdJhjNNTLxINPKryvpWhELLCZhZtyTUQdBKGFZeDX0Laqn9TNyHhdRFQoGkEqHm9JNIxdLY11XlU1Gp6MgXxVL2A8Gd3Y1GA4HaWZjtLGunpKJntHHsO7tGY4FcKvm4JZL2QvCkweBqyYipJdPX1jSNPPzDkpFbixrNG+qNnRy1lDM21VR5WJg7CAUYd2aXlwaFw2E72hiXhjTmpMKlVGN8bBvJdoPYRZPXFTPL+SZK6ln4JtYPLs5urbz8qslXBPItC9r5R5aL+1rYhdSqCLdm1CIquDaV4lCujg1mVJJMWpjVXPAa8AAADcdFJOU+v+/v7s/uvs7P6vr/2v/uz+/a/rr/7rr8j+r6+t/q/rr+z+r6/s66/9r3jO6+uvyO2v6/3+66qvr+3tr8jtr6/rr6+vocivyNnr68jI7a+v6uui68jI7aLtyOvr6evZ6/2h6+v49fbr9v/////////////////////////////////////+///////////////////////////+///////////////////////////+//////////////////////////////////////////////////////////5vmyxZAAAEkElEQVQYGQXBeUxTBwAH4N+7etGbtlBKLUWq6ISJaBSELVwuLioaJJku02k8NhPMnDrFzSsSnZubV7Y5/9hkW7LFIwuTaSaSaQaoEfFEDqEFKi09aOn5aPvat+8j5ha0x4qmABfMtigASGaP5GEIKblbGmZVplHTOEwP5QBQRgzKEAJRTT8MKwC4AQAAdIGYMJZe4NEH2MK/AR3SIm6YbYUcG9FSHJHtJiScgAQSYD5lEme2nW8433AhBeDnlo5NOedWxY8fEOi1dd8Ta7UXPrrmPjKRic3E2/cPNQENyJgGRC7g4raML4Qpkltzc+CERcyOCQo90UAGPDoxbBl24HgDJXI5Lkrnx+O+9bl3Pg5tyK45uaQqqzmjpIOt9JE9E2x4eJ75QSPpWmwN5Ne1LE3sUlKE+HDaEACM9CT6Vl5tH2qeqLp/7+IroXdtj9IDAGmdSVmfpNVjcfS6rcVDLBmNvLydD2xNY5rgfUsMTPachuazRq2iAq8PA7qzlRtxJWch8Gb5cxTUlNaTSpzFAPBrueoScMgB/LIXkNo3q4jfNWIdgHOtXoD/D2gOA+W3HQ9IAuAAAP65wKAXiH4LzOS2PwM4+V8AqmcTQOdzIN4PuCmTlYR+OzQAHnECCaYh0GAa8NE/wmSk4QFgN82n4QZdgBeA1MwsI/lxWk4BtVPM01IAy1cDqLZeAU8lvOsAAFS3GoBsNYBT3lGOIkH8EGSBaLFzZArAyywA7uiO+TOQSfykBXTZY5l7AJT2ALhsgHOMlAFZ0kIUOIzTz49iN/31Qmxm8mj/mHWymAnshKVbnRxYiVpdfCfq1z0UVJOUZYIvTB2seTTNcUQH02l2eRgJTTtMo0Rxt0/6FDaf/JaBGre0VnsrpIzCNGSnEnSDLjc/N2n0p8tkNb0WubbsxtJJVYB/3RRbEvMxkuI2tSiaoFldbDDZTlwNPiaVYYWzX2TVuJJCp/OuGB5Ph6RDJIkO61pxI35EVRHUIPk5kkY4bWmhLuEsPSVi25bPsAfjqgWd7zPWfdpwUXeECR5951loxUSlSOvYGim71bjIF5ujfKPtyfKldfkbSD935IPuqhzp+ha4J8iTV0qaU/uleRifzdTz439W7Tk45xSCxv5+o+vYMdVtaqiPJpUKfzv6XfwIdt+kAQcB429Tz87OUsr/GMxGtK/0FE7ubwckOlzbVTEswWOSiNytg33l4nv4Bgs4lCqwYseyInrVFIylr6Hu6tqHfYgCl9yIns4tsT9ZRPIp/6395GWDLafy+Is10X9HN353gFhE3FFMmu1f5rT4txzKea+W38UNt+4c9BMvk4lGQh3ZImE18AK8BKyYLenSesWAcvB6o/GRQj5mjNvkc/pQ+wA+kZE24H6K1gabsyMhAoD0k3TBRrSEwcvS3pUG8npF7Bnl3qYTX8n++RBzeeIYwVvrUWYgNjkHHJkQxoTSXtNkRO/MgFCKHrpG22/AdUUIKYAkUzDMQxsHWu9YE6Diene05AUdId18KEuVmkeIBWqXuoziHLSv6BVJasl0pKhyNafMnmkxR9QC/n+f2e8W3vECWAAAAABJRU5ErkJggg==);"' + '></div>')
-                        .hover(rightMenuButtonLogicIn, rightMenuButtonLogicOut));
+                if (topBar === 1) {
+                    TW_Calc.NearestJob.MainDiv = '#WESTCALC_BOTTOM_BAR';
+                } else if (duelBar === 2) {
+                    TW_Calc.NearestJob.MainDiv = '#WESTCALC_TOP_BAR';
                 }
 
-                if (topBar === 3) {
-                    $(container).append($('<div class="menulink" title="' + TW_Calc.getTranslation(152) + '" ' + 'style="background-position: 0 0; background-image: url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAQFBAYFBQYJBgUGCQsIBgYICwwKCgsKCgwQDAwMDAwMEAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/2wBDAQcHBw0MDRgQEBgUDg4OFBQODg4OFBEMDAwMDBERDAwMDAwMEQwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wgARCAAaADIDAREAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAwQFAQYC/8QAFwEAAwEAAAAAAAAAAAAAAAAAAAECA//aAAwDAQACEAMQAAAB4jHZ5CYVM7ZcjmjS4Os9dJKYoq6aGNkdNLXLBhG4g8vVSdz4aTtU86ySdon5LeOn/8QAIRABAAICAAYDAAAAAAAAAAAAAwIEAAEFEBESEzMjMTL/2gAIAQEAAQUCZHko0eKJGcrpKm/kGmqRY2Ofdkpb2lYSonfuQsYja09cY61dtafPMGBYIbKW0Wctj44sUbTW5om51endDLfuPC91v9w++X//xAAeEQACAwABBQAAAAAAAAAAAAAAEQECIQMQUWFxwf/aAAgBAwEBPwGWOTfZsjRpvYgmBIengrRfRkSMcIwZNjDkKFSxXr//xAAdEQACAgMBAQEAAAAAAAAAAAAAAQIRECExEgNR/9oACAECAQE/AUka/ConCrOYaPWy7EtFjlZ5ZJCiVsp0UVj58JYjwef/xAAxEAAABAMEBwcFAAAAAAAAAAAAAQIRITEyAxIiQTNDUWFxkdE0QoGCscHwBBMUI+H/2gAIAQEABj8CVFkkbcgSrIjjTSQxqU6JpOHoFJyTDf4h7NHDIXV30mnKI79F+o585b5hRJJ8Z+oL6m2P980om39+Sn9y1w2u3dwFo0cRMfgQ/ItsBno07ePT3karUygbJV1Gk1L/ADoFrMnN1TTm8wZqxPz9xEjJTMDWuMSNrpxgLz3tge6pyyyFWquU5dQuiRTqkNX5hZ9nmE0U5+27YO55gns8xq9IP//EACUQAAIBBAICAgIDAAAAAAAAAAERIQAxQVFh8HGRgbEQocHR4f/aAAgBAQABPyFIuAgAEI05Zm82eBR3ITAA5F4BRnHFQSmuvMWJjIxLpkh6EuBAOV8FQxTkCGkTHiz1GaSuWYh9H97pNdb6+6k9rMudhvQpSo0EAjxEhljzdSAAVuaIWCZ5Uryy6PmQO7s1Ys5blZjpxL70GhsKcDQDPsi0hL/Ad/nS22sEYKBPPHsKhjkGRtLmhF3DJoH072VTXQ3YCqcB2Wr0hUBEEgNIWjGhjZjRgeTZLeNqViuX1jf0rsH1+qu7fNf1+/xzrmulm9Tsd+Kzx/v8H//aAAwDAQACAAMAAAAQMMKaHs76QLgMIs//xAAfEQADAAICAgMAAAAAAAAAAAAAAREhMRBBIFFhcfH/2gAIAQMBAT8QZyXZrUG8DwfIJsX9BH9lEKDzgcNCVQU74EcWBOmJkxCRPY2NDZHXwf/EAB4RAQACAgEFAAAAAAAAAAAAAAEAESExEEFhcYHx/9oACAECAQE/EARPpOlUEFy22oke5RB4GorAJiPmNW5TwZnajpArdQQm5YSpWLdMt4tI6d8g4//EACMQAQEAAwABAwQDAAAAAAAAAAERACExQRBxkVFhofDB0eH/2gAIAQEAAT8QnOx0YGngwAXlaEKGiOlMKZ/N0mkUsUAfFRlEG61uAUeKTrp09MDGIlGpxpj9I9CrUpHcvAgeRWDaU2wUdprgGQih+YKpMCdzCIu4iOlwM7MV2gBAlKq8MBqcJsHhpXXzlT/o394EOGVInRcZExJEYMraD8ZFh60KUbcSEpxxhqJEYFk64cmtiCIMAqdEhAeSfL0Awn+k+nc8vv8AfzHw782F+h9MH5fu7g/kft9D/9k=)"' + '></div>')
-                        .hover(rightMenuButtonLogicIn, rightMenuButtonLogicOut)
-                        .click(TW_Calc.NearestJob.rightMenuButtonLogic));
-                    TW_Calc.NearestJob.getMap();
+                if (duelBar === 2) {
+                    TW_Calc.DuelBar.MainDiv = '#WESTCALC_BOTTOM_BAR';
+                } else if (duelBar === 1) {
+                    TW_Calc.DuelBar.MainDiv = '#WESTCALC_TOP_BAR';
                 }
 
-                if (TW_Calc.Settings.get("Wardrobe", true)) {
-                    $(container).append($('<div class="menulink" id="' + TW_Calc.Wardrobe.id + '" title="' + TW_Calc.getTranslation(170) + '" ' + 'style="background-position:0 0; background-image: url(data:image/png;data:;base64,' + TW_Calc.Wardrobe.img + ')"' + '></div>')
-                        .hover(rightMenuButtonLogicIn, rightMenuButtonLogicOut)
-                        .click(TW_Calc.Wardrobe.window.launch));
+                if (duelBar === 1 || topBar === 2) {
+                    $("#user-interface").append('<div id="WESTCALC_TOP_BAR" class="bottom" style="text-align: center; left: 50%; margin-top: 10px; width: 620px; position: absolute; top: 44px; z-index: 2; -webkit-transform: translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%);"></div>');
+                    $('#user-interface>.first-purchase').remove();
                 }
 
-                $(container).append('<div class="menucontainer_bottom"></div>');
+                if (duelBar === 2 || topBar === 1) {
+                    $("#ui_bottombar").append('<div id="WESTCALC_BOTTOM_BAR" style="left: 50%; -webkit-transform:translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%); text-align: center; width: 620px; position: absolute; bottom:' + TW_Calc.NearestJob.posY + 'px;"></div>');
+                    TW_Calc.NearestJob.bottomBarMover();
+                }
+
+                if (duelBar !== 3) {
+                    $(TW_Calc.DuelBar.MainDiv).append('<div id="Westcalc_DuelBar" class="bottom" style="text-align: center; width: 620px; height: 88px;"></div>');
+                }
+
+                if (topBar !== 3) {
+                    $(TW_Calc.NearestJob.MainDiv).append('<div id="Westcalc_JobBar" class="bottom" style="width: 510px; height: 61px; margin-left: auto; margin-right: auto; text-align: left"></div>');
+                }
 
 
-                $('#ui_menubar').append(container);
+                TW_Calc.DuelBar.init();
+                TW_Calc.NearestJob.init();
 
-            }
+                if (TW_Calc.Settings.get("WestCalc", true) || topBar === 3 || TW_Calc.Settings.get("Wardrobe", true)) {
 
-            if (TW_Calc.Settings.get("MenuCraftButton", true) && Character.professionId !== null) {
-                $('.button.crafting.background').unbind('click').click(function() {
-                    TW_Calc.Craft.window.open(Character.professionId);
-                });
-            }
+                    var rightMenuButtonLogicIn = function () {
+                        $(this).css('background-position', '-25px 0');
+                    };
 
-        };
+                    var rightMenuButtonLogicOut = function () {
+                        $(this).css('background-position', '0 0');
+                    };
 
-        TW_Calc.showBirthdayPopUp = function () {
+                    var container = $('<div class="ui_menucontainer" id="TWCalcButtons"></div>');
 
-            if (TW_Calc.isBirthday() === true) {
+                    if (TW_Calc.Settings.get("WestCalc", true)) {
+                        $(container).append($('<div class="menulink" title="The-West Calc" ' + 'onclick="TW_Calc.window.open();" ' + 'style="background-position: 0 0; background-image: url(' + TW_Calc.icon + ');"' + '"></div>')
+                            .hover(rightMenuButtonLogicIn, rightMenuButtonLogicOut));
+                    }
 
-                var date = new Date();
+                    if (topBar === 3) {
+                        $(container).append($('<div class="menulink" title="' + TW_Calc.getTranslation(152) + '" ' + 'style="background-position: 0 0; background-image: url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAQFBAYFBQYJBgUGCQsIBgYICwwKCgsKCgwQDAwMDAwMEAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/2wBDAQcHBw0MDRgQEBgUDg4OFBQODg4OFBEMDAwMDBERDAwMDAwMEQwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wgARCAAaADIDAREAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAwQFAQYC/8QAFwEAAwEAAAAAAAAAAAAAAAAAAAECA//aAAwDAQACEAMQAAAB4jHZ5CYVM7ZcjmjS4Os9dJKYoq6aGNkdNLXLBhG4g8vVSdz4aTtU86ySdon5LeOn/8QAIRABAAICAAYDAAAAAAAAAAAAAwIEAAEFEBESEzMjMTL/2gAIAQEAAQUCZHko0eKJGcrpKm/kGmqRY2Ofdkpb2lYSonfuQsYja09cY61dtafPMGBYIbKW0Wctj44sUbTW5om51endDLfuPC91v9w++X//xAAeEQACAwABBQAAAAAAAAAAAAAAEQECIQMQUWFxwf/aAAgBAwEBPwGWOTfZsjRpvYgmBIengrRfRkSMcIwZNjDkKFSxXr//xAAdEQACAgMBAQEAAAAAAAAAAAAAAQIRECExEgNR/9oACAECAQE/AUka/ConCrOYaPWy7EtFjlZ5ZJCiVsp0UVj58JYjwef/xAAxEAAABAMEBwcFAAAAAAAAAAAAAQIRITEyAxIiQTNDUWFxkdE0QoGCscHwBBMUI+H/2gAIAQEABj8CVFkkbcgSrIjjTSQxqU6JpOHoFJyTDf4h7NHDIXV30mnKI79F+o585b5hRJJ8Z+oL6m2P980om39+Sn9y1w2u3dwFo0cRMfgQ/ItsBno07ePT3karUygbJV1Gk1L/ADoFrMnN1TTm8wZqxPz9xEjJTMDWuMSNrpxgLz3tge6pyyyFWquU5dQuiRTqkNX5hZ9nmE0U5+27YO55gns8xq9IP//EACUQAAIBBAICAgIDAAAAAAAAAAERIQAxQVFh8HGRgbEQocHR4f/aAAgBAQABPyFIuAgAEI05Zm82eBR3ITAA5F4BRnHFQSmuvMWJjIxLpkh6EuBAOV8FQxTkCGkTHiz1GaSuWYh9H97pNdb6+6k9rMudhvQpSo0EAjxEhljzdSAAVuaIWCZ5Uryy6PmQO7s1Ys5blZjpxL70GhsKcDQDPsi0hL/Ad/nS22sEYKBPPHsKhjkGRtLmhF3DJoH072VTXQ3YCqcB2Wr0hUBEEgNIWjGhjZjRgeTZLeNqViuX1jf0rsH1+qu7fNf1+/xzrmulm9Tsd+Kzx/v8H//aAAwDAQACAAMAAAAQMMKaHs76QLgMIs//xAAfEQADAAICAgMAAAAAAAAAAAAAAREhMRBBIFFhcfH/2gAIAQMBAT8QZyXZrUG8DwfIJsX9BH9lEKDzgcNCVQU74EcWBOmJkxCRPY2NDZHXwf/EAB4RAQACAgEFAAAAAAAAAAAAAAEAESExEEFhcYHx/9oACAECAQE/EARPpOlUEFy22oke5RB4GorAJiPmNW5TwZnajpArdQQm5YSpWLdMt4tI6d8g4//EACMQAQEAAwABAwQDAAAAAAAAAAERACExQRBxkVFhofDB0eH/2gAIAQEAAT8QnOx0YGngwAXlaEKGiOlMKZ/N0mkUsUAfFRlEG61uAUeKTrp09MDGIlGpxpj9I9CrUpHcvAgeRWDaU2wUdprgGQih+YKpMCdzCIu4iOlwM7MV2gBAlKq8MBqcJsHhpXXzlT/o394EOGVInRcZExJEYMraD8ZFh60KUbcSEpxxhqJEYFk64cmtiCIMAqdEhAeSfL0Awn+k+nc8vv8AfzHw782F+h9MH5fu7g/kft9D/9k=)"' + '></div>')
+                            .hover(rightMenuButtonLogicIn, rightMenuButtonLogicOut)
+                            .click(TW_Calc.NearestJob.rightMenuButtonLogic));
+                        TW_Calc.NearestJob.getMap();
+                    }
 
-                if (TW_Calc.storage.get("BDAY") !== date.getFullYear()) {
+                    if (TW_Calc.Settings.get("Wardrobe", true)) {
+                        $(container).append($('<div class="menulink" id="' + TW_Calc.Wardrobe.id + '" title="' + TW_Calc.getTranslation(170) + '" ' + 'style="background-position:0 0; background-image: url(data:image/png;data:;base64,' + TW_Calc.Wardrobe.img + ')"' + '></div>')
+                            .hover(rightMenuButtonLogicIn, rightMenuButtonLogicOut)
+                            .click(TW_Calc.Wardrobe.window.launch));
+                    }
 
-                    var age = date.getFullYear() - 2012;
-                    var text = age + (age === 1 ? 'st' : age === 2 ? 'nd' : age === 3 ? '3rd' : 'th');
+                    $(container).append('<div class="menucontainer_bottom"></div>');
 
-                    new west.gui.Dialog().setTitle("It's TW-Calc " + text + " birthday!").setText("<table><tr><td><img src='" + TW_Calc.imgUrl + "/images/items/yield/5_year_cake.png?1'></td><td>Thank you for using this script and visiting our website!</br>" +
-                        "If you like our webpage, please donate for server costsand further development, we'll be very grateful to you. We are funding everything from our own resources. All your donations will be appreciated and used in best way possible to ensure future development of our page and scipt. <b>Thank you!</b>" +
-                        '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top"><input type="hidden" name="cmd" value="_s-xclick"><input type="hidden" name="hosted_button_id" value="LRG4X3PGMYHZY"><input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"><img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"></form></td></tr></table>').addButton("Visit website", function () {
-                        TW_Calc.storage.add("BDAY", new Date().getFullYear());
-                        window.open(TW_Calc.website);
-                    }).addButton("Close", function () {
-                        TW_Calc.storage.add("BDAY", new Date().getFullYear());
-                    }).show();
+
+                    $('#ui_menubar').append(container);
 
                 }
+
+                if (TW_Calc.Settings.get("MenuCraftButton", true) && Character.professionId !== null) {
+                    $('.button.crafting.background').unbind('click').click(function() {
+                        TW_Calc.Craft.window.open(Character.professionId);
+                    });
+                }
+
+            } catch (e) {
+                new TW_Calc.Error(e, 'TW_Calc.Interface.init').show();
             }
+
         };
 
         TW_Calc.initWestCalcLanguageAndInject();
