@@ -130,7 +130,8 @@ window.TWCalc_inject = function () {
                             12: TW_Calc.getTranslation(194),
                             13: TW_Calc.getTranslation(195),
                             14: TW_Calc.getTranslation(196),
-                            15: TW_Calc.getTranslation(197)
+                            15: TW_Calc.getTranslation(197),
+                            16: TW_Calc.getTranslation(197),
                         };
 
                         window.TW_Calc_AlarmClock = setInterval(TW_Calc.AlarmClock.init, 1000);
@@ -2788,11 +2789,12 @@ window.TWCalc_inject = function () {
                             TW_Calc.TombolaExporter.saveData(prize, b, category);
                         }
 
-                    } else if (b == 7 || b == 8 || b == 13 || b == 14 || b == 15) {
+                    } else if (b == 7 || b == 8 || b == 13 || b == 14 || b == 15 || b == 16) {
 
                         TW_Calc.TombolaExporter.level = a.construction_id;
 
                         //easter & independence: a.outcome & a.enhance
+                        //octoberfest: a.failed, normal: without outcome, after bribe: a.outcome ...& a.enhance
 
                         if (a && !a.failed && (a.itemId || a.outcome)) {
                             var prize = a.itemId || a.outcome && a.outcome.itemId;
@@ -2880,7 +2882,7 @@ window.TWCalc_inject = function () {
 
                 try {
 
-                    if (tombolaId == 1 || tombolaId == 11 || tombolaId == 12 || tombolaId == 13 || tombolaId == 14 || tombolaId == 15) {
+                    if (tombolaId == 1 || tombolaId == 11 || tombolaId == 12 || tombolaId == 13 || tombolaId == 14 || tombolaId == 15 || tombolaId == 16) {
 
                         var okey = tombolaId + (tombolaId == 1 ? '' : cYear);
                         var o = TW_Calc.TombolaExporter.createObjectFromStorage(okey) || [{}, {}, {}, {}, {}];
@@ -3035,6 +3037,7 @@ window.TWCalc_inject = function () {
                     $('#tab_tombola').append(TW_Calc.TombolaExporter.Tab.Scrollpane.getMainDiv());
 
                     TW_Calc.TombolaExporter.Tab.load(1, ''); //travelling fair
+                    TW_Calc.TombolaExporter.Tab.load(16, '_2017'); //octoberfest
                     TW_Calc.TombolaExporter.Tab.load(14, '_2017'); //independence
                     TW_Calc.TombolaExporter.Tab.load(13, '_2017'); //easter
                     TW_Calc.TombolaExporter.Tab.load(12, '_2017'); //valentine
