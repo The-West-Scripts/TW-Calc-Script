@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.21
+// @version 1.22
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -72,7 +72,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.21",
+            version: "1.22",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -130,7 +130,8 @@ window.TWCalc_inject = function () {
                             12: TW_Calc.getTranslation(194),
                             13: TW_Calc.getTranslation(195),
                             14: TW_Calc.getTranslation(196),
-                            15: TW_Calc.getTranslation(197)
+                            15: TW_Calc.getTranslation(197),
+                            16: TW_Calc.getTranslation(197),
                         };
 
                         window.TW_Calc_AlarmClock = setInterval(TW_Calc.AlarmClock.init, 1000);
@@ -529,6 +530,9 @@ window.TWCalc_inject = function () {
                     case "import":
                         TW_Calc.doImport();
                         break;
+                    case "character":
+                        TW_Calc.window.loadCharacter();
+                        break;
                     case "tombola":
                         TW_Calc.TombolaExporter.Tab.launch();
                         break;
@@ -599,7 +603,11 @@ window.TWCalc_inject = function () {
         };
 
         TW_Calc.window.content.character = function () {
-
+            return '<div></div>';
+        };
+        
+        TW_Calc.window.loadCharacter = function () {
+            
             var input = {
                 charClass: Character.charClass,
                 premium: Premium.hasBonus('character'),
@@ -653,7 +661,7 @@ window.TWCalc_inject = function () {
 
             html.append(new west.gui.Groupframe().appendToContentPane($('<div>BB Code: <input type="text" class="input_layout" readonly="readonly" value="[QUOTE][LIST][*][B]' + TW_Calc.getTranslation(43) + ':[/B] ' + Character.name + '[*][B]' + TW_Calc.getTranslation(44) + ':[/B] ' + Game.worldName + ',   (' + window.location.host + ')[*][B]' + TW_Calc.getTranslation(45) + ':[/B] ' + Character.level + '[*][B]' + TW_Calc.getTranslation(46) + ':[/B] ' + Game.InfoHandler.getLocalString4Charclass(Character.charClass) + '[*]••••••••••••••••[*][B]' + TW_Calc.getTranslation(31) + '[/B][*][B]' + TW_Calc.getTranslation(50) + '[/B][*]' + data.attack.hit + '[*][B]' + TW_Calc.getTranslation(51) + '[/B][*]' + data.attack.dodge + '[*][B]' + TW_Calc.getTranslation(33) + '[/B][*][B]' + TW_Calc.getTranslation(50) + '[/B][*]' + data.defense.hit + '[*][B]' + TW_Calc.getTranslation(51) + '[/B][*]' + data.defense.dodge + '[*][B]' + TW_Calc.getTranslation(49) + ':[/B]' + data.health + '[/LIST][/QUOTE]" style="text-align: center; width: 600px" onclick="this.select();"></div>')).getMainDiv());
 
-            return html;
+            $('#tab_character').empty().append(html);
 
         };
 
@@ -769,8 +777,8 @@ window.TWCalc_inject = function () {
                 '<span style="display: inline-block; font-weight: bold; width: 20px;"><center><img src="' + TW_Calc.imgUrl + '/images/fort/battle/defender_secondary.png"></center></span><span id="TW_Calc_BattleCalc_DefenseDodge">0</span></br>' +
                 '<span style="display: inline-block; font-weight: bold; width: 150px;">' + TW_Calc.getTranslation(140) + '</span></br>' +
                 '<span style="display: inline-block; font-weight: bold; width: 20px;"><img src="' + TW_Calc.imgUrl + '/images/fort/battle/resistance.png"></span></span><span id="TW_Calc_BattleCalc_DefenseResistance">0</span></br>' +
-                '<span style="display: inline-block; font-weight: bold; font-size: large; width: 150px;">' + TW_Calc.getTranslation(28) + '</span></br><span id="TW_Calc_BattleCalc_HealthOutput">0</span></br>' +
-                '<span style="display: inline-block; font-weight: bold; font-size: large; width: 250px;">' + TW_Calc.getTranslation(141) + '</span></br><span id="TW_Calc_BattleCalc_DamageOutput">0</span>';
+                '<div style="font-size: large;"><b>' + TW_Calc.getTranslation(28) + ':</b>&nbsp;<span id="TW_Calc_BattleCalc_HealthOutput">0</span></div>' +
+                '<div style="font-size: large;"><b>' + TW_Calc.getTranslation(141) + ':</b>&nbsp;<span id="TW_Calc_BattleCalc_DamageOutput">0</span></div>';
 
             var html = $('<div></div>');
 
@@ -1309,7 +1317,7 @@ window.TWCalc_inject = function () {
                 if (typeof data === "undefined") return $(this).show();
 
                 if (by === "name") {
-                    show = data.search(value) !== -1;
+                    show = data.toLowerCase().search(value.toLowerCase()) !== -1;
                 } else {
                     show = data === value;
                 }
@@ -2788,11 +2796,12 @@ window.TWCalc_inject = function () {
                             TW_Calc.TombolaExporter.saveData(prize, b, category);
                         }
 
-                    } else if (b == 7 || b == 8 || b == 13 || b == 14 || b == 15) {
+                    } else if (b == 7 || b == 8 || b == 13 || b == 14 || b == 15 || b == 16) {
 
                         TW_Calc.TombolaExporter.level = a.construction_id;
 
                         //easter & independence: a.outcome & a.enhance
+                        //octoberfest: a.failed, normal: without outcome, after bribe: a.outcome ...& a.enhance
 
                         if (a && !a.failed && (a.itemId || a.outcome)) {
                             var prize = a.itemId || a.outcome && a.outcome.itemId;
@@ -2880,7 +2889,7 @@ window.TWCalc_inject = function () {
 
                 try {
 
-                    if (tombolaId == 1 || tombolaId == 11 || tombolaId == 12 || tombolaId == 13 || tombolaId == 14 || tombolaId == 15) {
+                    if (tombolaId == 1 || tombolaId == 11 || tombolaId == 12 || tombolaId == 13 || tombolaId == 14 || tombolaId == 15 || tombolaId == 16) {
 
                         var okey = tombolaId + (tombolaId == 1 ? '' : cYear);
                         var o = TW_Calc.TombolaExporter.createObjectFromStorage(okey) || [{}, {}, {}, {}, {}];
@@ -3035,6 +3044,7 @@ window.TWCalc_inject = function () {
                     $('#tab_tombola').append(TW_Calc.TombolaExporter.Tab.Scrollpane.getMainDiv());
 
                     TW_Calc.TombolaExporter.Tab.load(1, ''); //travelling fair
+                    TW_Calc.TombolaExporter.Tab.load(16, '_2017'); //octoberfest
                     TW_Calc.TombolaExporter.Tab.load(14, '_2017'); //independence
                     TW_Calc.TombolaExporter.Tab.load(13, '_2017'); //easter
                     TW_Calc.TombolaExporter.Tab.load(12, '_2017'); //valentine
