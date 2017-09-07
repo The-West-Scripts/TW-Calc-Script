@@ -530,6 +530,9 @@ window.TWCalc_inject = function () {
                     case "import":
                         TW_Calc.doImport();
                         break;
+                    case "character":
+                        TW_Calc.window.loadCharacter();
+                        break;
                     case "tombola":
                         TW_Calc.TombolaExporter.Tab.launch();
                         break;
@@ -600,7 +603,11 @@ window.TWCalc_inject = function () {
         };
 
         TW_Calc.window.content.character = function () {
-
+            return '<div></div>';
+        };
+        
+        TW_Calc.window.loadCharacter = function () {
+            
             var input = {
                 charClass: Character.charClass,
                 premium: Premium.hasBonus('character'),
@@ -654,7 +661,7 @@ window.TWCalc_inject = function () {
 
             html.append(new west.gui.Groupframe().appendToContentPane($('<div>BB Code: <input type="text" class="input_layout" readonly="readonly" value="[QUOTE][LIST][*][B]' + TW_Calc.getTranslation(43) + ':[/B] ' + Character.name + '[*][B]' + TW_Calc.getTranslation(44) + ':[/B] ' + Game.worldName + ',   (' + window.location.host + ')[*][B]' + TW_Calc.getTranslation(45) + ':[/B] ' + Character.level + '[*][B]' + TW_Calc.getTranslation(46) + ':[/B] ' + Game.InfoHandler.getLocalString4Charclass(Character.charClass) + '[*]••••••••••••••••[*][B]' + TW_Calc.getTranslation(31) + '[/B][*][B]' + TW_Calc.getTranslation(50) + '[/B][*]' + data.attack.hit + '[*][B]' + TW_Calc.getTranslation(51) + '[/B][*]' + data.attack.dodge + '[*][B]' + TW_Calc.getTranslation(33) + '[/B][*][B]' + TW_Calc.getTranslation(50) + '[/B][*]' + data.defense.hit + '[*][B]' + TW_Calc.getTranslation(51) + '[/B][*]' + data.defense.dodge + '[*][B]' + TW_Calc.getTranslation(49) + ':[/B]' + data.health + '[/LIST][/QUOTE]" style="text-align: center; width: 600px" onclick="this.select();"></div>')).getMainDiv());
 
-            return html;
+            $('#tab_character').empty().append(html);
 
         };
 
