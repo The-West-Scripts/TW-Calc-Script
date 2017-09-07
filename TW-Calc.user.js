@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.21
+// @version 1.22
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -72,7 +72,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.21",
+            version: "1.22",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -769,8 +769,8 @@ window.TWCalc_inject = function () {
                 '<span style="display: inline-block; font-weight: bold; width: 20px;"><center><img src="' + TW_Calc.imgUrl + '/images/fort/battle/defender_secondary.png"></center></span><span id="TW_Calc_BattleCalc_DefenseDodge">0</span></br>' +
                 '<span style="display: inline-block; font-weight: bold; width: 150px;">' + TW_Calc.getTranslation(140) + '</span></br>' +
                 '<span style="display: inline-block; font-weight: bold; width: 20px;"><img src="' + TW_Calc.imgUrl + '/images/fort/battle/resistance.png"></span></span><span id="TW_Calc_BattleCalc_DefenseResistance">0</span></br>' +
-                '<span style="display: inline-block; font-weight: bold; font-size: large; width: 150px;">' + TW_Calc.getTranslation(28) + '</span></br><span id="TW_Calc_BattleCalc_HealthOutput">0</span></br>' +
-                '<span style="display: inline-block; font-weight: bold; font-size: large; width: 250px;">' + TW_Calc.getTranslation(141) + '</span></br><span id="TW_Calc_BattleCalc_DamageOutput">0</span>';
+                '<div style="font-size: large;"><b>' + TW_Calc.getTranslation(28) + ':</b>&nbsp;<span id="TW_Calc_BattleCalc_HealthOutput">0</span></div>' +
+                '<div style="font-size: large;"><b>' + TW_Calc.getTranslation(141) + ':</b>&nbsp;<span id="TW_Calc_BattleCalc_DamageOutput">0</span></div>';
 
             var html = $('<div></div>');
 
@@ -1309,7 +1309,7 @@ window.TWCalc_inject = function () {
                 if (typeof data === "undefined") return $(this).show();
 
                 if (by === "name") {
-                    show = data.search(value) !== -1;
+                    show = data.toLowerCase().search(value.toLowerCase()) !== -1;
                 } else {
                     show = data === value;
                 }
