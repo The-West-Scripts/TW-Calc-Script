@@ -1406,7 +1406,8 @@ window.TWCalc_inject = function () {
                 }
 
                 var maxCraftable = Array.min(amount_data);
-                var _craftable = myProfession && craftable && TW_Calc.Craft.professionsCache[5].indexOf(reciepeId) !== -1;
+                var isLearned = TW_Calc.Craft.professionsCache[5].indexOf(reciepeId) !== -1;
+                var _craftable = myProfession && craftable && isLearned;
 
                 var parent = $("#TWCalcRecipe_" + reciepeId);
                 var difficult = Crafting.getRecipeColor(ItemManager.get(reciepeId));
@@ -1436,7 +1437,7 @@ window.TWCalc_inject = function () {
                 $(".recipe_content>.recipe_craftitem", parent).empty().append(new tw2widget.CraftingItem(ItemManager.get(productId)).setCount(Bag.getItemCount(productId)).getMainDiv());
 
                 if (myProfession) {
-                    $('.recipe_title>.recipe_title_inner>.recipe_difficult', parent).removeClass('middle hard easy').addClass(difficult);
+                    $('.recipe_title>.recipe_title_inner>.recipe_difficult', parent).css('opacity', isLearned ? 1 : 0).removeClass('middle hard easy').addClass(difficult);
                     $('.recipe_title>.recipe_title_inner>.recipe_name', parent).css("color", TW_Calc.Craft.professionsCache[5].indexOf(reciepeId) !== -1 ? "white" : "gray");
                 }
 
