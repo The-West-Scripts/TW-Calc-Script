@@ -131,7 +131,7 @@ window.TWCalc_inject = function () {
                             13: TW_Calc.getTranslation(195),
                             14: TW_Calc.getTranslation(196),
                             15: TW_Calc.getTranslation(197),
-                            16: TW_Calc.getTranslation(197),
+                            16: TW_Calc.getTranslation(197)
                         };
 
                         window.TW_Calc_AlarmClock = setInterval(TW_Calc.AlarmClock.init, 1000);
@@ -178,7 +178,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.langs = {};
 
-        TW_Calc.langs["en_US"] = {"lang_0":"No","lang_1":"Yes","lang_2":"with premium","lang_3":"Settings","lang_4":"Skills","lang_5":"Leadership","lang_6":"Hiding","lang_7":"Stamina","lang_8":"Dodging","lang_9":"Aiming","lang_14":"Attack","lang_15":"Defence","lang_18":"Position on map","lang_20":"The tower of your character","lang_21":"Ground","lang_22":"Tower - level","lang_27":"Calculate","lang_28":"Health","lang_29":"Health points","lang_30":"Level","lang_31":"Fortbattle attack","lang_32":"Character","lang_33":"Fortbattle defence","lang_34":"Other","lang_35":"Delete","lang_36":"Save","lang_37":"Set time","lang_38":"Greenhorn","lang_39":"Dueller","lang_40":"Adventurer","lang_41":"Soldier","lang_42":"Worker","lang_43":"Player name","lang_44":"Game world","lang_45":"Player level","lang_46":"Character class","lang_49":"Health","lang_50":"Attack","lang_51":"Defense","lang_52":"Gameworld","lang_61":"Health","lang_62":"Alarmclock settings","lang_63":"Calculate the highest and lowest duelling level you are able to duel","lang_64":"Calculate the amount of experiences gained from a duel","lang_66":"Your duelling level","lang_67":"Calculate","lang_68":"Highest possible duelling level","lang_69":"Lowest possible duelling level","lang_70":"Duelling level of your opponent","lang_71":"Duel motivation","lang_72":"How to write a date? Example:","lang_77":"for The-West Calc is a new version available, please click ok to update the Userscript","lang_78":"TW-Calc Update needed","lang_79":"Current version","lang_80":"Later","lang_81":"Your note","lang_82":"Time","lang_83":"TW-Calc Alarm clock","lang_86":"Victory: You gain","lang_87":"experience and","lang_88":"Successfully saved","lang_89":"Your notes has been successfully deleted","lang_90":"Alarm Clock not set (BAD SYNTAX)","lang_91":"Alarm clock set","lang_92":"Cancel","lang_93":"TW-Calc Alarm clock - settings","lang_94":"Alarm clock","lang_95":"Enter URL adress of your sound. For example: https:\/\/tw-calc.net\/script\/budik.mp3","lang_96":"Alarm clock set","lang_97":"Melody of alarm clock: Alarm1, Alarm2","lang_98":"Health points","lang_100":"Full energy in","lang_101":"hours and","lang_102":"minutes","lang_103":"Experience points","lang_104":"Full health in","lang_105":"Transfer fee","lang_106":"Transfer fee","lang_107":"Transfer amount","lang_108":"Add bank fees calculator (during transfer) to the bank window","lang_109":"Add energy&health refill calculators","lang_110":"duel experience.","lang_111":"New version","lang_112":"Whats new","lang_113":"Edit","lang_114":"Duelling level","lang_115":"Duleable","lang_116":"Distance","lang_117":"Center map","lang_118":"Town","lang_122":"Note","lang_123":"Really?","lang_124":"Actually empty","lang_140":"Resistance","lang_141":"Damage","lang_143":"Loading","lang_146":"All your saved jobs will be removed. Are you sure you want to do it?","lang_147":"Close (Saved automatically)","lang_148":"Reset jobs","lang_149":"Reset","lang_150":"Add or remove Jobs","lang_151":"Search for job","lang_152":"Job list","lang_153":"Replace native craft window in the menu by Westcalc craft window","lang_154":"Open duel window","lang_157":"Name","lang_159":"Importing...","lang_160":"Own skills","lang_161":"New equipment","lang_162":"Close","lang_163":"Add","lang_164":"Current clothing will be added as new equipment.","lang_165":"Successfull","lang_166":"Name...","lang_167":"Job","lang_169":"Show configuration of this set","lang_170":"Wardrobe","lang_171":"Remove this set","lang_172":"Create","lang_173":"Tombola analyser","lang_174":"Travelling fair","lang_175":"Add wardrobe to the game","lang_176":"Hide unavailable materials","lang_177":"Craft","lang_178":"Toggle all recipes","lang_179":"Field cook","lang_180":"Tonic peddler","lang_181":"Blacksmith","lang_182":"Master Saddler","lang_183":"Crafting","lang_184":"Add Westcalc icon to the right menu","lang_185":"Position of Job bar","lang_186":"Top","lang_187":"Bottom","lang_188":"In right panel","lang_189":"Hide","lang_190":"without premium","lang_191":"Position of duel panel","lang_192":"Show the crafting product","lang_193":"Setting Traps","lang_194":"Valentine's Day","lang_195":"Easter","lang_196":"Independence Day","lang_197":"Octoberfest","lang_198":"Day of the Dead","lang_199":"Defeat: You lose","lang_200":"Energy\n","lang_201":"Weapon damage","lang_202":"Cloth bonus","lang_203":"Wall - level","lang_204":"Accept the quest to see the quest giver","lang_205":"Show quest giver on map","lang_206":"Show the quest on TW-Calc.net","lang_207":"Wear all","lang_208":"Create or select set from the menu"};
+        TW_Calc.langs["en_US"] = {"lang_0":"No","lang_1":"Yes","lang_2":"with premium","lang_3":"Settings","lang_4":"Skills","lang_5":"Leadership","lang_6":"Hiding","lang_7":"Stamina","lang_8":"Dodging","lang_9":"Aiming","lang_14":"Attack","lang_15":"Defence","lang_18":"Position on map","lang_20":"The tower of your character","lang_21":"Ground","lang_22":"Tower - level","lang_27":"Calculate","lang_28":"Health","lang_29":"Health points","lang_30":"Level","lang_31":"Fortbattle attack","lang_32":"Character","lang_33":"Fortbattle defence","lang_34":"Other","lang_35":"Delete","lang_36":"Save","lang_37":"Set time","lang_38":"Greenhorn","lang_39":"Dueller","lang_40":"Adventurer","lang_41":"Soldier","lang_42":"Worker","lang_43":"Player name","lang_44":"Game world","lang_45":"Player level","lang_46":"Character class","lang_49":"Health","lang_50":"Attack","lang_51":"Defense","lang_52":"Gameworld","lang_61":"Health","lang_62":"Alarmclock settings","lang_63":"Calculate the highest and lowest duelling level you are able to duel","lang_64":"Calculate the amount of experiences gained from a duel","lang_66":"Your duelling level","lang_67":"Calculate","lang_68":"Highest possible duelling level","lang_69":"Lowest possible duelling level","lang_70":"Duelling level of your opponent","lang_71":"Duel motivation","lang_72":"How to write a date? Example:","lang_77":"for The-West Calc is a new version available, please click ok to update the Userscript","lang_78":"TW-Calc Update needed","lang_79":"Current version","lang_80":"Later","lang_81":"Your note","lang_82":"Time","lang_83":"TW-Calc Alarm clock","lang_86":"Victory: You gain","lang_87":"experience and","lang_88":"Successfully saved","lang_89":"Your notes has been successfully deleted","lang_90":"Alarm Clock not set (BAD SYNTAX)","lang_91":"Alarm clock set","lang_92":"Cancel","lang_93":"TW-Calc Alarm clock - settings","lang_94":"Alarm clock","lang_95":"Enter URL adress of your sound. For example: https:\/\/tw-calc.net\/script\/budik.mp3","lang_96":"Alarm clock set","lang_97":"Melody of alarm clock: Alarm1, Alarm2","lang_98":"Health points","lang_100":"Full energy in","lang_101":"hours and","lang_102":"minutes","lang_103":"Experience points","lang_104":"Full health in","lang_105":"Transfer fee","lang_106":"Transfer fee","lang_107":"Transfer amount","lang_108":"Add bank fees calculator (during transfer) to the bank window","lang_109":"Add energy&health refill calculators","lang_110":"duel experience.","lang_111":"New version","lang_112":"Whats new","lang_113":"Edit","lang_114":"Duelling level","lang_115":"Duleable","lang_116":"Distance","lang_117":"Center map","lang_118":"Town","lang_122":"Note","lang_123":"Really?","lang_124":"Actually empty","lang_140":"Resistance","lang_141":"Damage","lang_143":"Loading","lang_146":"All your saved jobs will be removed. Are you sure you want to do it?","lang_147":"Close (Saved automatically)","lang_148":"Reset jobs","lang_149":"Reset","lang_150":"Add or remove Jobs","lang_151":"Search for job","lang_152":"Job list","lang_153":"Replace native craft window in the menu by Westcalc craft window","lang_154":"Open duel window","lang_157":"Name","lang_159":"Importing...","lang_160":"Own skills","lang_161":"New equipment","lang_162":"Close","lang_163":"Add","lang_164":"Current clothing will be added as new equipment.","lang_165":"Successfull","lang_166":"Name...","lang_167":"Job","lang_169":"Show configuration of this set","lang_170":"Wardrobe","lang_171":"Remove this set","lang_172":"Create","lang_173":"Tombola analyser","lang_174":"Travelling fair","lang_175":"Add wardrobe to the game","lang_176":"Hide unavailable materials","lang_177":"Craft","lang_178":"Toggle all recipes","lang_179":"Field cook","lang_180":"Tonic peddler","lang_181":"Blacksmith","lang_182":"Master Saddler","lang_183":"Crafting","lang_184":"Add Westcalc icon to the right menu","lang_185":"Position of Job bar","lang_186":"Top","lang_187":"Bottom","lang_188":"In right panel","lang_189":"Hide","lang_190":"without premium","lang_191":"Position of duel panel","lang_192":"Show the crafting product","lang_193":"Setting Traps","lang_194":"Valentine's Day","lang_195":"Easter","lang_196":"Independence Day","lang_197":"Octoberfest","lang_198":"Day of the Dead","lang_199":"Defeat: You lose","lang_200":"Energy\n","lang_201":"Weapon damage","lang_202":"Cloth bonus","lang_203":"Wall - level","lang_204":"Accept the quest to see the quest giver","lang_205":"Show quest giver on map","lang_206":"Show the quest on TW-Calc.net","lang_207":"Wear all","lang_208":"Create or select set from the menu","lang_209":"Learn"};
 
         /**
          * These languages can be fetched from tw-calc.net
@@ -1349,7 +1349,7 @@ window.TWCalc_inject = function () {
 
                 var myProfession = recipe.profession_id === Character.professionId;
                 var productId = ItemManager.get(reciepeId).craftitem;
-                var craftable = true;
+                var hasProducts = true;
 
                 var items = [];
 
@@ -1385,8 +1385,8 @@ window.TWCalc_inject = function () {
                             'bottom': '27px'
                         }));
 
-                        if (craftable)
-                            craftable = bag_count >= item.count;
+                        if (hasProducts)
+                            hasProducts = bag_count >= item.count;
 
                         items.push(itemWidget);
 
@@ -1407,25 +1407,28 @@ window.TWCalc_inject = function () {
 
                 var maxCraftable = Array.min(amount_data);
                 var isLearned = TW_Calc.Craft.professionsCache[5].indexOf(reciepeId) !== -1;
-                var _craftable = myProfession && craftable && isLearned;
-
+                var craftable = myProfession && hasProducts && isLearned;
                 var parent = $("#TWCalcRecipe_" + reciepeId);
                 var difficult = Crafting.getRecipeColor(ItemManager.get(reciepeId));
+                var lastCraft = TW_Calc.Craft.dataLastCraft[reciepeId];
+                var canBeLearned = myProfession && Bag.items_by_id.hasOwnProperty(reciepeId) && !isLearned;
 
-                $(parent).data("craftable", _craftable);
+                $(parent).data("craftable", craftable);
                 $(parent).data("difficulty", difficult);
 
-                $(".recipe_title>.recipe_craft_amount", parent).empty().html(craftable ? new west.gui.Plusminusfield('recipe_button_' + reciepeId, 1, 1, maxCraftable, 1, TW_Calc.buttonLogic, TW_Calc.buttonLogic, TW_Calc.wheelLogic).getMainDiv() : $('<div></div>'));
-
-                var lastCraft = TW_Calc.Craft.dataLastCraft[reciepeId];
-
-                $(".recipe_title>.recipe_craft", parent).html(typeof lastCraft === "undefined" || lastCraft === null ? (_craftable ? TW_Calc.getTranslation(177) : '') : '<span style="color: yellow; cursor: default;">' + lastCraft.formatDurationBuffWay() + '</span>')
+                $(".recipe_title>.recipe_craft_amount", parent).empty().html(hasProducts ? new west.gui.Plusminusfield('recipe_button_' + reciepeId, 1, 1, maxCraftable, 1, TW_Calc.buttonLogic, TW_Calc.buttonLogic, TW_Calc.wheelLogic).getMainDiv() : $('<div></div>'));
+                $(".recipe_title>.recipe_craft", parent).html(typeof lastCraft === "undefined" || lastCraft === null ? (craftable ? TW_Calc.getTranslation(177) : (canBeLearned ? TW_Calc.getTranslation(209) : '')) : '<span style="color: yellow; cursor: default;">' + lastCraft.formatDurationBuffWay() + '</span>')
                     .unbind("click");
 
-                if (craftable)
+                if (craftable) {
                     $(".recipe_title>.recipe_craft", parent).click(function () {
                         TW_Calc.Craft.start(Number($(this).data("id")));
                     });
+                } else if (canBeLearned) {
+                    $(".recipe_title>.recipe_craft", parent).click(function () {
+                        ItemUse.use(Number($(this).data("id")), null, 'recipe');
+                    });
+                }
 
                 var resources = $(".recipe_content>.recipe_resources", parent);
                 resources.empty();
@@ -1438,7 +1441,7 @@ window.TWCalc_inject = function () {
 
                 if (myProfession) {
                     $('.recipe_title>.recipe_title_inner>.recipe_difficult', parent).css('opacity', isLearned ? 1 : 0).removeClass('middle hard easy').addClass(difficult);
-                    $('.recipe_title>.recipe_title_inner>.recipe_name', parent).css("color", TW_Calc.Craft.professionsCache[5].indexOf(reciepeId) !== -1 ? "white" : "gray");
+                    $('.recipe_title>.recipe_title_inner>.recipe_name', parent).css("color", isLearned ? "white" : "gray");
                 }
 
             } catch (e) {
