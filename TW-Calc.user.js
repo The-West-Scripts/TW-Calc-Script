@@ -1288,6 +1288,7 @@ window.TWCalc_inject = function () {
                 };
 
                 wman.open( TW_Calc.Craft.window.id, TW_Calc.getTranslation(183), "noreload")
+                    .setMiniTitle(TW_Calc.getTranslation(183))
                     .addTab(TW_Calc.getTranslation(179), "craft1", tabClick)
                     .addTab(TW_Calc.getTranslation(180), "craft2", tabClick)
                     .addTab(TW_Calc.getTranslation(181), "craft3", tabClick)
