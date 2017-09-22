@@ -1768,10 +1768,16 @@ window.TWCalc_inject = function () {
 
         TW_Calc.NearestJob.map = null;
 
-        TW_Calc.NearestJob.getMap = function () {
+        TW_Calc.NearestJob.getMap = function (callback) {
 
             Ajax.get("map", "get_minimap", {}, function (data) {
+
                 TW_Calc.NearestJob.map = data;
+
+                if (typeof callback === "function") {
+                    callback();
+                }
+
             });
 
         };
@@ -1824,59 +1830,69 @@ window.TWCalc_inject = function () {
 
         };
 
-        TW_Calc.NearestJob.find = function (e, dataType) {
+        TW_Calc.NearestJob.find = function (jobId, dataType) {
 
-            TW_Calc.NearestJob.j = e;
+            function jobStart(jobId, dataType) {
 
-            if (TW_Calc.NearestJob.map !== null) {
-                var q = TW_Calc.NearestJob.map;
-            } else {
-                TW_Calc.NearestJob.getMap();
+                var obj = TW_Calc.NearestJob;
+
+                if (!obj.map)
+                    return;
+
+                var u = obj.map.job_groups;
+                var n = JobList.getJobById(jobId);
+                var r = u[n.groupid];
+
+                if (!r) return [];
+
+                var i = [];
+
+                var s = obj.lastPos();
+
+                for (var o = 0; o < r.length; o++) {
+
+                    var a = r[o][0] - s[0];
+                    var f = r[o][1] - s[1];
+                    var l = Math.sqrt(a * a + f * f);
+                    i.push({
+                        dist: l,
+                        x: r[o][0],
+                        y: r[o][1]
+                    });
+
+                }
+
+                var p = function (e, t) {
+                    return e.dist * 1 > t.dist * 1 ? 1 : -1;
+                };
+
+                i.sort(p);
+
+                var job = i[0];
+
+                if (dataType) {
+                    switch (dataType.type) {
+                        case "startJob":
+                            return TaskQueue.add(new TaskJob(jobId, Number(job.x), Number(job.y), dataType.duration));
+                            break;
+                    }
+                }
+
+                return JobWindow.open(jobId, Number(job.x), Number(job.y));
+
             }
 
-            if (TW_Calc.isNotUndefinedNullOrNaN(q) === false) new UserMessage(TW_Calc.getTranslation(143), "success").show();
+            if (!TW_Calc.isNotUndefinedNullOrNaN(TW_Calc.NearestJob.map)) {
 
-            var u = q.job_groups;
-            e = Number(TW_Calc.NearestJob.j);
-            var t = TW_Calc.NearestJob;
-            var n = JobList.getJobById(e);
-            var r = u[n.groupid];
+                new UserMessage(TW_Calc.getTranslation(143), "success").show();
 
-            if (!r) return [];
+                return TW_Calc.NearestJob.getMap(function () {
+                    jobStart(jobId, dataType);
+                }.bind(this))
 
-            var i = [];
-
-            var s = t.lastPos();
-
-            for (var o = 0; o < r.length; o++) {
-
-                var a = r[o][0] - s[0];
-                var f = r[o][1] - s[1];
-                var l = Math.sqrt(a * a + f * f);
-                i.push({
-                    dist: l,
-                    x: r[o][0],
-                    y: r[o][1]
-                });
             }
 
-            var p = function (e, t) {
-                return e.dist * 1 > t.dist * 1 ? 1 : -1;
-            };
-
-            i.sort(p);
-
-            var job = i[0];
-
-            switch (dataType.type) {
-
-                case "startJob":
-                    TaskQueue.add(new TaskJob(e, Number(job.x), Number(job.y), dataType.duration));
-                    break;
-
-                default:
-                    JobWindow.open(e, Number(job.x), Number(job.y));
-            }
+            return jobStart(jobId, dataType);
 
         };
 
