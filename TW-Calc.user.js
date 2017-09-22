@@ -1644,27 +1644,34 @@ window.TWCalc_inject = function () {
             try {
 
                 Quest.calc_getMinimapLink = Quest.getMinimapLink;
+
                 Quest.getMinimapLink = function (jsRequirement) {
-                    var mmLink = '',
-                        tmpObj = null;
-                    if (jsRequirement && jsRequirement.id && jsRequirement.type == 'inventory_changed') {
+
+                    var mmLink = '';
+                    var tmpObj = null;
+
+                    if (jsRequirement && jsRequirement.id && jsRequirement.type === 'inventory_changed') {
                         tmpObj = ItemManager.get(jsRequirement.id);
-                        if (isDefined(tmpObj) && tmpObj.spec_type == 'crafting') {
-                            mmLink = '<span class="quest_craftlink" style="cursor:pointer;" title=\'' + TW_Calc.getTranslation(192) + '\' onclick="TW_Calc.Craft.window.showRecipe(' + tmpObj.item_id + ')"><img src="/images/items/yield/toolbox.png" width="16"/></span>&nbsp;';
-                            return mmLink;
+                        if (isDefined(tmpObj) && tmpObj.spec_type === 'crafting') {
+                            return '<span class="quest_craftlink" style="cursor: pointer;" title=\'' + TW_Calc.getTranslation(192) + '\' onclick="TW_Calc.Craft.window.showRecipe(' + tmpObj.item_id + ')"><img src="/images/items/yield/toolbox.png" width="16"/></span>&nbsp;';
                         }
-                    } else if (jsRequirement && jsRequirement.type == 'task-finish-walk') {
-                        mmLink = '<span class="quest_employerlink" style="cursor:pointer;" title=\'' + TW_Calc.getTranslation(205) + '\' onclick="TW_Calc.Quests.questEmployer(' + jsRequirement.value + ')"><img src="/images/map/minimap/icons/miniicon_quests.png"/></span>&nbsp;';
-                        return mmLink;
+                    } else if (jsRequirement && jsRequirement.type === 'task-finish-walk') {
+                        return '<span class="quest_employerlink" style="cursor: pointer;" title=\'' + TW_Calc.getTranslation(205) + '\' onclick="TW_Calc.Quests.questEmployer(' + jsRequirement.value + ')"><img src="/images/map/minimap/icons/miniicon_quests.png"/></span>&nbsp;';
+                    } else if (jsRequirement && jsRequirement.type === 'task-finish-job') {
+                        mmLink += '<span class="tw2gui-iconset tw2gui-icon-hammer" style="display: inline-block; cursor: pointer; vertical-align: middle; margin-right: 2px;" onclick="TW_Calc.NearestJob.find(' + jsRequirement.id + ', {})"></span>';
                     }
-                    return Quest.calc_getMinimapLink(jsRequirement);
+
+                    return mmLink + Quest.calc_getMinimapLink(jsRequirement);
+
                 };
 
                 Quest.calc_render = Quest.render;
+
                 Quest.render = function () {
                     Quest.calc_render.apply(this, arguments);
-                    this.el.find('.quest_description_container .strong').append('<a class="quest_calclink" style="float:right;" title="' + TW_Calc.getTranslation(206) + '" href="' + TW_Calc.website + '/quests/quest/' + this.id + '" target="_blank"><img src="/images/items/yield/book_plain.png" width="22"/></a>');
+                    this.el.find('.quest_description_container .strong').append('<a class="quest_calclink" style="float: right;" title="' + TW_Calc.getTranslation(206) + '" href="' + TW_Calc.website + '/quests/quest/' + this.id + '" target="_blank"><img src="/images/items/yield/book_plain.png" width="22"/></a>');
                 };
+
             } catch (e) {
 
                 new TW_Calc.Error(e, 'TW_Calc.Quests.init').show();
