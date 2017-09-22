@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.23
+// @version 1.24
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -72,7 +72,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.23",
+            version: "1.24",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -1651,14 +1651,19 @@ window.TWCalc_inject = function () {
                     var tmpObj = null;
 
                     if (jsRequirement && jsRequirement.id && jsRequirement.type === 'inventory_changed') {
+
                         tmpObj = ItemManager.get(jsRequirement.id);
+
                         if (isDefined(tmpObj) && tmpObj.spec_type === 'crafting') {
                             return '<span class="quest_craftlink" style="cursor: pointer;" title=\'' + TW_Calc.getTranslation(192) + '\' onclick="TW_Calc.Craft.window.showRecipe(' + tmpObj.item_id + ')"><img src="/images/items/yield/toolbox.png" width="16"/></span>&nbsp;';
+                        } else if (isDefined(tmpObj) && tmpObj.spec_type === 'mapdrop') {
+                            mmLink += '<span class="tw2gui-iconset tw2gui-icon-hammer" style="display: inline-block; cursor: pointer; vertical-align: middle; margin-right: 2px;" onclick="TW_Calc.NearestJob.findByProductId(' + tmpObj.item_id + ')"></span>';
                         }
+
                     } else if (jsRequirement && jsRequirement.type === 'task-finish-walk') {
                         return '<span class="quest_employerlink" style="cursor: pointer;" title=\'' + TW_Calc.getTranslation(205) + '\' onclick="TW_Calc.Quests.questEmployer(' + jsRequirement.value + ')"><img src="/images/map/minimap/icons/miniicon_quests.png"/></span>&nbsp;';
                     } else if (jsRequirement && jsRequirement.type === 'task-finish-job') {
-                        mmLink += '<span class="tw2gui-iconset tw2gui-icon-hammer" style="display: inline-block; cursor: pointer; vertical-align: middle; margin-right: 2px;" onclick="TW_Calc.NearestJob.find(' + jsRequirement.id + ', {})"></span>';
+                        mmLink += '<span class="tw2gui-iconset tw2gui-icon-hammer" style="display: inline-block; cursor: pointer; vertical-align: middle; margin-right: 2px;" onclick="TW_Calc.NearestJob.addTask(' + jsRequirement.id + ', {})"></span>';
                     }
 
                     return mmLink + Quest.calc_getMinimapLink(jsRequirement);
@@ -1830,45 +1835,117 @@ window.TWCalc_inject = function () {
 
         };
 
-        TW_Calc.NearestJob.find = function (jobId, dataType) {
+        TW_Calc.NearestJob.findByProductId = function (id) {
 
-            function jobStart(jobId, dataType) {
+            this.use(function () {
 
-                var obj = TW_Calc.NearestJob;
+                var jobs = JobList.getJobsIdsByItemId(id);
 
-                if (!obj.map)
-                    return;
+                var getJobsRecursive = function (productId, jobs, job_data) {
 
-                var u = obj.map.job_groups;
-                var n = JobList.getJobById(jobId);
-                var r = u[n.groupid];
+                    var job;
 
-                if (!r) return [];
+                    if (!jobs.length) {
 
-                var i = [];
+                        var max = 0;
 
-                var s = obj.lastPos();
+                        for (var i = 0; i < job_data.length; i++) {
 
-                for (var o = 0; o < r.length; o++) {
+                            var items = job_data[i]["durations"][2]["items"];
 
-                    var a = r[o][0] - s[0];
-                    var f = r[o][1] - s[1];
-                    var l = Math.sqrt(a * a + f * f);
-                    i.push({
-                        dist: l,
-                        x: r[o][0],
-                        y: r[o][1]
+                            for (var j = 0; j < items.length; j++) {
+                                var luck = items[j].prop + items[j].probBonus;
+                                if (luck > max) {
+                                    job = job_data[i].id;
+                                    max = luck;
+                                }
+                            }
+
+                        }
+
+                        return job && TW_Calc.NearestJob.addTask(job);
+
+                    }
+
+                    var id = jobs[0];
+                    jobs.splice(0, 1);
+                    job = TW_Calc.NearestJob.find(id);
+
+                    Ajax.remoteCallMode("job", "job", {"jobId": id, "x": job.x, "y": job.y}, function (data) {
+
+                        job_data.push(data);
+
+                        getJobsRecursive(productId, jobs, job_data);
+
                     });
 
-                }
-
-                var p = function (e, t) {
-                    return e.dist * 1 > t.dist * 1 ? 1 : -1;
                 };
 
-                i.sort(p);
+                getJobsRecursive(id, jobs, []);
 
-                var job = i[0];
+            }.bind(this));
+
+        };
+
+        TW_Calc.NearestJob.find = function (jobId) {
+
+            var obj = TW_Calc.NearestJob;
+
+            if (!obj.map)
+                return;
+
+            var u = obj.map.job_groups;
+            var n = JobList.getJobById(jobId);
+            var r = u[n.groupid];
+
+            if (!r) return [];
+
+            var i = [];
+
+            var s = obj.lastPos();
+
+            for (var o = 0; o < r.length; o++) {
+
+                var a = r[o][0] - s[0];
+                var f = r[o][1] - s[1];
+                var l = Math.sqrt(a * a + f * f);
+                i.push({
+                    dist: l,
+                    x: r[o][0],
+                    y: r[o][1]
+                });
+
+            }
+
+            var p = function (e, t) {
+                return e.dist * 1 > t.dist * 1 ? 1 : -1;
+            };
+
+            i.sort(p);
+
+            return i[0];
+
+        };
+
+        TW_Calc.NearestJob.use = function (callback) {
+
+            if (!TW_Calc.isNotUndefinedNullOrNaN(this.map)) {
+
+                new UserMessage(TW_Calc.getTranslation(143), "success").show();
+
+                return this.getMap(callback.bind(this));
+
+            }
+
+            return callback();
+
+        };
+
+        TW_Calc.NearestJob.addTask = function (jobId, dataType) {
+
+            this.use(function () {
+
+                var job = this.find(jobId);
 
                 if (dataType) {
                     switch (dataType.type) {
@@ -1880,24 +1957,12 @@ window.TWCalc_inject = function () {
 
                 return JobWindow.open(jobId, Number(job.x), Number(job.y));
 
-            }
-
-            if (!TW_Calc.isNotUndefinedNullOrNaN(TW_Calc.NearestJob.map)) {
-
-                new UserMessage(TW_Calc.getTranslation(143), "success").show();
-
-                return TW_Calc.NearestJob.getMap(function () {
-                    jobStart(jobId, dataType);
-                }.bind(this))
-
-            }
-
-            return jobStart(jobId, dataType);
+            }.bind(this));
 
         };
 
         TW_Calc.NearestJob.search = function (id) {
-            TW_Calc.NearestJob.find(id, {
+            this.addTask(id, {
                 type: "window"
             });
         };
@@ -2025,7 +2090,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.NearestJob.start = function (jobid, duration) {
 
-            TW_Calc.NearestJob.find(jobid, {
+            TW_Calc.NearestJob.addTask(jobid, {
                 type: "startJob",
                 duration: duration
             });
