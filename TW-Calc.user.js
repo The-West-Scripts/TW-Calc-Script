@@ -2117,10 +2117,11 @@ window.TWCalc_inject = function () {
                     var jobBarDiv = $('<div id="Westcalc_JobBar" style="overflow: hidden; width: 510px; height: 61px; margin-left: auto; margin-right: auto; text-align: left"></div>');
                     if (topBar === 5)
                         jobBarDiv.css({
-                            "background": "rgb(29, 28, 28)",
+                            "background": "rgba(29, 28, 28, 0.8)",
                             "border": "1px solid rgb(100, 100, 100)",
                             "border-radius": "2px",
-                            "box-shadow": "rgb(0, 0, 0) 0px 0px 1px 1px"
+                            "box-shadow": "rgb(0, 0, 0) 0px 0px 1px 1px",
+                            "padding-left": "5px"
                         });
 
                     $(TW_Calc.NearestJob.MainDiv).append(jobBarDiv);
