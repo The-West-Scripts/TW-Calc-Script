@@ -1040,7 +1040,8 @@ window.TWCalc_inject = function () {
                 var comBoxId = "topBar";
                 var comBox = new west.gui.Combobox('TWCalc_' + comBoxId)
                     .setWidth(100)
-                    .addItem(1, TW_Calc.getTranslation(187))
+                    .addItem(1, TW_Calc.getTranslation(187) + " - transparent")
+                    .addItem(5, TW_Calc.getTranslation(187))
                     .addItem(2, TW_Calc.getTranslation(186))
                     .addItem(3, TW_Calc.getTranslation(188))
                     .addItem(4, TW_Calc.getTranslation(189)).select(TW_Calc.Settings.get(comBoxId, 1)).getMainDiv();
@@ -2099,7 +2100,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.NearestJob.posY = 97;
 
-        TW_Calc.NearestJob.JobBarEnabled = (Number(TW_Calc.Settings.get("topBar", 1)) === 1) || (Number(TW_Calc.Settings.get("topBar", 1)) === 2);
+        TW_Calc.NearestJob.JobBarEnabled = (Number(TW_Calc.Settings.get("topBar", 1)) === 1) || (Number(TW_Calc.Settings.get("topBar", 1)) === 2) || (Number(TW_Calc.Settings.get("topBar", 1)) === 5);
 
         TW_Calc.NearestJob.loadBottomBar = function () {
 
@@ -2112,8 +2113,17 @@ window.TWCalc_inject = function () {
 
                 var topBar = Number(TW_Calc.Settings.get("topBar", 1));
 
-                if (topBar === 1 || topBar === 2) {
-                    $(TW_Calc.NearestJob.MainDiv).append('<div id="Westcalc_JobBar" style="overflow: hidden; width: 510px;height: 61px; margin-left: auto; margin-right: auto; text-align: left"></div>');
+                if (topBar === 1 || topBar === 2 || topBar === 5) {
+                    var jobBarDiv = $('<div id="Westcalc_JobBar" style="overflow: hidden; width: 510px; height: 61px; margin-left: auto; margin-right: auto; text-align: left"></div>');
+                    if (topBar === 5)
+                        jobBarDiv.css({
+                            "background": "rgb(29, 28, 28)",
+                            "border": "1px solid rgb(100, 100, 100)",
+                            "border-radius": "2px",
+                            "box-shadow": "rgb(0, 0, 0) 0px 0px 1px 1px"
+                        });
+
+                    $(TW_Calc.NearestJob.MainDiv).append(jobBarDiv);
                 }
 
                 var bottomBar = $('#Westcalc_JobBar');
@@ -2181,7 +2191,9 @@ window.TWCalc_inject = function () {
 
             TW_Calc.NearestJob.int = setInterval(function () {
 
-                if ((Number(TW_Calc.Settings.get("topBar", 1)) === 1) || (Number(TW_Calc.Settings.get("duelBar", 1)) === 2)) {
+                var topBar = Number(TW_Calc.Settings.get("topBar", 1));
+
+                if (topBar === 1 || topBar === 5 || Number(TW_Calc.Settings.get("duelBar", 1)) === 2) {
 
                     var n = $("div#ui_bottombar").height() + 5 + (Game.version <= 2.06 ? 0 : 14) + ($(".friendsbar").height() > 0 ? $(".friendsbar").height() : 0);
 
@@ -3420,7 +3432,7 @@ window.TWCalc_inject = function () {
                 var topBar = Number(TW_Calc.Settings.get("topBar", 1));
                 var duelBar = Number(TW_Calc.Settings.get("duelBar", 1));
 
-                if (topBar === 1) {
+                if (topBar === 1 || topBar === 5) {
                     TW_Calc.NearestJob.MainDiv = '#WESTCALC_BOTTOM_BAR';
                 } else if (duelBar === 2) {
                     TW_Calc.NearestJob.MainDiv = '#WESTCALC_TOP_BAR';
@@ -3433,12 +3445,12 @@ window.TWCalc_inject = function () {
                 }
 
                 if (duelBar === 1 || topBar === 2) {
-                    $("#user-interface").append('<div id="WESTCALC_TOP_BAR" class="bottom" style="text-align: center; left: 50%; margin-top: 10px; width: 620px; position: absolute; top: 44px; z-index: 2; -webkit-transform: translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%);"></div>');
+                    $("#user-interface").append('<div id="WESTCALC_TOP_BAR" class="bottom" style="text-align: center; left: 50%; margin-top: 10px; max-width: 620px; position: absolute; top: 44px; z-index: 2; -webkit-transform: translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%);"></div>');
                     $('#user-interface>.first-purchase').remove();
                 }
 
-                if (duelBar === 2 || topBar === 1) {
-                    $("#ui_bottombar").append('<div id="WESTCALC_BOTTOM_BAR" style="left: 50%; -webkit-transform:translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%); text-align: center; width: 620px; position: absolute; bottom:' + TW_Calc.NearestJob.posY + 'px;"></div>');
+                if (duelBar === 2 || topBar === 1 || topBar === 5) {
+                    $("#ui_bottombar").append('<div id="WESTCALC_BOTTOM_BAR" style="left: 50%; -webkit-transform: translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%); text-align: center; max-width: 620px; position: absolute; bottom:' + TW_Calc.NearestJob.posY + 'px;"></div>');
                     TW_Calc.NearestJob.bottomBarMover();
                 }
 
