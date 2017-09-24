@@ -605,9 +605,9 @@ window.TWCalc_inject = function () {
         TW_Calc.window.content.character = function () {
             return '<div></div>';
         };
-        
+
         TW_Calc.window.loadCharacter = function () {
-            
+
             var input = {
                 charClass: Character.charClass,
                 premium: Premium.hasBonus('character'),
