@@ -1374,7 +1374,7 @@ window.TWCalc_inject = function () {
                         craft_recipe_data.inventory[item.item] = bag_count;
                         craft_recipe_data.required[item.item] = item.count;
 
-                        $(itemWidget).append($(Quest.getMinimapLink({
+                        $(itemWidget).append($('<div></div>').append($(Quest.getMinimapLink({
                             id: item.item,
                             type: 'inventory_changed'
                         })).css({
@@ -1382,8 +1382,12 @@ window.TWCalc_inject = function () {
                             'width': '16px',
                             'position': 'relative',
                             'opacity': '1',
-                            'left': '4px',
-                            'bottom': '27px'
+                            'left': '4px'
+                        })).css({
+                            'width': '16px',
+                            'right': '7px',
+                            'bottom': '10px',
+                            'position': 'absolute'
                         }));
 
                         if (hasProducts)
