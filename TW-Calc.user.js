@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.20
+// @version 1.24
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -72,7 +72,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.20",
+            version: "1.24",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -90,6 +90,7 @@ window.TWCalc_inject = function () {
             UseLocalLanguagePack: false,
             ShowLogs: false,
             bottomImg: 'iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAMAAADwFEhBAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAL9UExURQAAAAMAAAcEAwUCAgUCAgMAAAQBAQMAAAMAAAMAAAMAAAUCAQMBAAMAAAQBAQUCAgQBAAMAAAQBAQMAAAYDAgYDAgMAAAMAAAMAAHZcU2VPRREMCINgXbaimCogG2ZJRk88MiAXFB4TDjMnIg0IBSIZFBUNCEU3KDgqHyMbElNBOWpRTDoqJUg4MVRAOTYnGkouG6KBc2NCJs+2n3RiT2hVSiUdGDMjGlNBJS4iFzYmF6qUjoRpWishHFxJPnBcUF1GM62Me452YKqTf0o4N15LPkk5MMi0pIdvXWNQSEIyIyAbGKOMcL6biZh3bIdwZMyslHpgK4RuXk48M72Mg39YUb2Mhc2mkmtlVFtHPg4KCGxVSqaZfKOWeJ+SdaSYeZ+WdaaZeGmQK46CaGyUMHCYNHScOXegPHukQUdBNGWMKHJoUlZ8F5yPci8mHmddTFF2EIl+ZUk3LnCFOExDN6WYe1FJO4J1XmuAM1FBODw1LHxyW1+HImN4KlpDPUQ+MJK9W11VRFlQQY++TqCTd3huWFE8N4CqR6OWdVRNPkM1LUM4LzgwKDkrKGxkUIZ8YqmZfJmMbpyPdZmPcpGFajUpJUIvLCkgGoN4YYu2UXxnWLWbf5OJbGFYR1lJQF9FQmlUTHZjUYJrXIWvS2V6LFuBHJh+aU8wHUs9NlM/P29aUTwpHW5URCEbFY9taZaJbnVrVpaMbk5GOH90XUAzK0k5NUItIV9MRYx+ZXxaWlA6M1w8JoFnUI64V4iyUE5zDUtwC5XAX0drBpl/dWVbR0s2NFtCNG1OSbWfiIlhYYJpY6GWd5mMclQ6LD4vKUw4KXVQTo50XnRWUWFKOI92bYlxYTglFp2DbqaIeHWGPaLQaFN2FWuUK52SdGJSR4xoXnRaSXViTHttW5Z2ZH6JSWlPPn9eTqaObn1hWGBLP4tqUrKXdoZuZnFNL5yEd1BwEmFbR0Q+NJ+MgMWkhZF9cqDNZp+PdWZCQYx7VMq9tr2sq2WMJ5aFWKaWgoOFTKjYpjkAAABcdFJOUwAiPEgoGi4GFA6RjJc0cEJofE5iV6Bcg3b+/bX+/Fr+nt7Qeqvtwa3itPHZ7dvE7PX5/fXav5Py3MfV/vWn3avv3e/xJBBMyi6X8PbzpRrMafaBefz8Yu0GcHz06vg14gAACfJJREFUWMOdmAdUWlkaxyMg2MXeSzTV9N4nPZPMzuzstC3nvPeAvG0sAoEoBNzgwiCDIBpR0VjRbOwVe9lqd2KJJZp1E9PLpJepu3vO3vd4gCmmzN+j5/Dw/s7/++53v3vvmzfvlaKZNe/Haf/BA786tGHZsvUbwj8JpTo4vjXolwc/fjdk+/bOzur7nePVawKiVkaS3g7z05+9u+7T70MmqzsHjNX9/QPgNzh4fKXbm7vBCHeufrptqnLi7kDY6EhwdWtYWNjAturgdyLfjLL/57vX5eT05YT8MHXpfy3G0da7wY/Hy1TdAZ3lA63VyyIpgPIaxMEPfpHzJOcOoPxwdSxGmlmVyZMm5hsMurLWsrKCkZnPVnrav9rK/o93P7l55785T24WK6SZvKT4eDabHcNma6UZkuay7u6yb7/t37WR+ior+z5YVzx5s+/mncfxVUlgeEyMySRKTBSJRCaTKV7aaCyQhYX1hi0mzW1l3841ndn3+76f0vKkj9gmU6JCntfV1cXnd+XlKRQiE7u0tbd1ZGQ8ZKe7vcPLIfvC9/YH3yqeGuBJ49kmkULelZxcmxAHlJDA4STz5QqRRNXbP2qcPLOYbPdSCC18z9StW+WTbB5O4CfXxmUJUIEARVvQlpSsuDgOn69IlIzO3EBzchaTXgoJ3ZMzdWugWIqZSExOSckSCATpdfq0um/S0upyc2tyc9HaZLnCdKnjbMfN7eGuAPI8gvLhur6pmWodyIQoLzkdghiQUq9PTb2AcBFEjyAQrlq+XD42dr1jcn0k1f752aEdCumbLASIeLaIH2ceADG4EAQjagSBYeIJlADSUjR+O3vN+tAXIOS9xWfTs7XS+JhEvhiyCmYyIBbL9hlCQVoKz/Z8dXbNYndQsrMRDhtyisUTJlAUiQ85AtsQJQtmMoEP64MagZjDr7x6/Ubf+sjnUhL6/neFRYU84OIhR1xjGXDt8L9xHb5mZSDpaD1HXlxZCYyQn4nGYUPfd5cLpVqQTk4WmmYZcP7rf+H6+s+xlkdfKlNRMefypcrKq+9EkiizjBx4f9vVQmMSWyRPjhOkKq2MfxCyMRgXuLmCuOSOmZ7egB2es4zQdhaPFxkbQCRdCYIzaUwr40+EbAwmDMJJiSucaTMErKC724zY7+koLMpOYpvkHDF6hoswiAFHX2QwYITLTRdzZoy6gignb2CEsBG69/LliXxtjCK5HtXb5gA6/xdCVsYJCHyt1KP1o/2ytsAgOskyNQ6Htk0UFUnjTXkccTooTKYlmKMnCeEMRAkrEWymkVS0PqBfVta6wplMJRiUD0Me378rjVHw69EzShiyOjn6V0I4QwmzzPUGw3UoJ7igOyBqqberOau0A7tDQkIGpDFyMK96JsyC1Qwz5ugpQmYfMIPBYMJqBGbqcxMCRlTNUVt8iazSPtn+9GmnUSt6mJCSewHYuHaU0PSpL3CdenAMfDoG/oBiA/+A6NPFASMGSf4SOgjGEW8cgeXNtx/FJ/Lj0DQYZkCnT35u1skvCFkefH4aZBWEA+vR7BGDULHcHwsGMBxXGpvLLyaxFcliNA1kjBH9+zkVDZYwkwkzuWjRZ20aodDDl2QHEkJzXDYaWF6UxJbXptTo1TATjv7dnIpWI0w1DKvT0rNv9A4KhX5eeEJoDssKVLJyKVvOScnlwiwWHP3bORXNwGoEioVrsmfutRt0znQywQhWCWVJ7DxQ5zA2/dO/mVPToEqB0lIF2QE9g+2Dzm54hdAcNrS2CVU6wGhJ1QMf0PSv59Q0CJXFYDERQflE0+Da96yM8N4ClTCDnVebUgcyymROH55TR1gsBraa4KzCoqHh9lVWRmRUQYEwI15eK6jhwqBpTf/nD3PpCFgJIFokLeFSduWl4SVWRugKmaxRJwWx1CHQiRPQtWOEHvyR0APLk2vga/ADK2svXW+v3BVhyakjaaVKotLoFJysXKw+rO2DcdzCOG7pBkqQdLD6kbrkQklTxapFfkQLcbQLl6hkqqRE0Em/gWc1ccbx04SsDBjfZ1gwKqhsaqqYv8DDyx1f/Y72oYGqUmMjmy9GU2d1D8CIJmRlgDXLwEpV3NLTNLxpkYu/uU5BQlzf6RHK8jVdCVitq1/JAJsepIbP1BdW8M6tXuDs5mnuZDQHu/Ch6zJhgwgUO8KEZzGOELIxECYLhuGss8KqqqqtLn5eZKKjgmCiAo0ajRb0oFQk9pWMXGzjTL3SwcusWL3UCQvFzKA5UBf3CDVJUlGCoE45Ox9/I2RjxMKgpWYVA0b7Zh9rKHgw3sslGp1G01WffmE24++EbAyQED1aNHGvqWLtUicPL9vm4GjvulQjbDDkS2oFqTZG7Pl/Ejpve8hlIuKnbSUlH2E2LO0UN0LxXlJapmmTJCags3IKFg/W+hixsyY8Ny2u8waPV/IRZoNs26NowIhzqXBIZyhViOvTrXureRoYLLUNgrZcKQ64Pty+eouLM2iEdrZNGxghbxkbztAJJfLhtYQTJoSVEyh+tXXjg1o4/LMdPWurzm31wWxQZ51AgBGq1+YeIU+olcQ3DYrxlQEaBcQyH4FYFiOVeZMdTSXtVasWuPi5ec62gU8NaeMSjUaok+Rrz5nk/JQzCOg1EAPb19QwC/kSp1zm3C8ea+/4amEQiMTXnfLMGQYzQt7xXv5wQ2lp4yOwW6WkYsWEME+w4BMnQG9jqhlK7pXsq5Xtmbx7u4Jc8EieO5BhafXcseTi7QZtfkFZMz+uDmHFwhhFjXcdGEoXF01kD1WUVGUuwRB0zxdPl1g03htXjGkamwcLWu9e4cS1pHOxg1gsaBncmpQrhYGVbWMlFSX31u9wcfKje5NePKDSHB0oGIQdI2oLEzZ3jgfUczhXsrJSBFniBA7faLwly+SdKzm3eusCgHDzJr3sImOGeAQtv63TZBhUpeXZF/NFFy8ay8ubVY0yia5k7RBYaAsX+WCBvByBpwRA6C5bFxq6DTJJo0SiEuXLCkZl3brMzCZeRcnw4KoIYMIZ5IJEsX/5HQaHeHp5LIhYrgoskDVrSxt1PE1zRqYus6KJ11SxKSLIBcTh7+VJmvtGBsKxcyX7uvn5LJq/XCUbbBzSasoMGTxd0+pNCzdvWeCCm/AlgxmZ+yaFQajAipuHU1DE/FUZQ5puFa+q6icL50cEgTwAgpuvJ4lq98p7IY3mYE9xdff2wrxEzF+4SWtoAIT5i4J8nJz9/N28PN1dKfavu58CKxjF05fu7+Hs5OLigwkPwp/uixNefzkFVjAKlUQGZvw9/JydQAh+HsCCN5lExQlvctW2UIAZLzrdzc2NTvcCFkAe7N/izo9T7ChUV3d3MiZ3kiuV8lYEgoJh7CgUKpVKodhhgLd/fWHGWPRjAM+8hXndm5j/Axq+Sjd4ZUOgAAAAAElFTkSuQmCC',
+            icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAZCAMAAABEio12AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAMAUExURQ4BAFtKL2pSN0IqEDcjDTQgDDAdBxQCACcSABsSCmVMNVc3IA8DAEw+MRcMBmBJMSEYDychGUUoFh0KAHNcP0EvHwoAAFpKOFVBJVRCKHxlUYhwV081GzAlGzghFB4VDGBHIy0XA1A3J3hQJ41oQlxJKCYfFYx3ZSwcDm9FJIBXMHlQH6B7VopoPE1BOj0qE1pFJ5RmKhoSC083H2ZNPHZcOZt3TpRmRWRSQV1OMVlKMFZEJzEiBlNDKUU1LW1XPZZ8bIhWNigXD5l0RHlYMXNILYRjOqp7RZh/YYVtU6iGXZRlNI1eLT4cA3BNMraEUGA+FJV3X5RlPYlcOWBMLEg4HmtbRGJFI0gyHYVTNW1ROZd0TKCNZaaTa2dBGlAsEpFzW4x2XnlVO3RHJl1HKF1INKJ+V3piQYJdN////000FR8GABoGAPn18kgxF/X08i8bBNHJwTIdCPPx8DYcAyELAR4UCkYgAlQ7HjQcDsm1omJPNDkeE9rV0FQ0FdrOwx0OA2NKLFAuFlQ6IywTBCITBUcmCy0XCTAWAquek0kwIT8nEXJHJSYYDHNnWmJBIlw7ITokCycTBEkpEunm49/TyOTb1KGVh11DKl9ILl5IJ3ZSLjsoGZGDdjwiG6+SejQiFDoeBVk/Jlg2HVAzJScKAC8bDkgqGhMAAIRrT19IOVA7NIdwW8rBtmU9G2lOMGtKIkwrDeTh4HJCG7uUdJhjNNTLxINPKryvpWhELLCZhZtyTUQdBKGFZeDX0Laqn9TNyHhdRFQoGkEqHm9JNIxdLY11XlU1Gp6MgXxVL2A8Gd3Y1GA4HaWZjtLGunpKJntHHsO7tGY4FcKvm4JZL2QvCkweBqyYipJdPX1jSNPPzDkpFbixrNG+qNnRy1lDM21VR5WJg7CAUYd2aXlwaFw2E72hiXhjTmpMKlVGN8bBvJdoPYRZPXFTPL+SZK6ln4JtYPLs5urbz8qslXBPItC9r5R5aL+1rYhdSqCLdm1CIquDaV4lCujg1mVJJMWpjVXPAa8AAADcdFJOU+v+/v7s/uvs7P6vr/2v/uz+/a/rr/7rr8j+r6+t/q/rr+z+r6/s66/9r3jO6+uvyO2v6/3+66qvr+3tr8jtr6/rr6+vocivyNnr68jI7a+v6uui68jI7aLtyOvr6evZ6/2h6+v49fbr9v/////////////////////////////////////+///////////////////////////+///////////////////////////+//////////////////////////////////////////////////////////5vmyxZAAAEkElEQVQYGQXBeUxTBwAH4N+7etGbtlBKLUWq6ISJaBSELVwuLioaJJku02k8NhPMnDrFzSsSnZubV7Y5/9hkW7LFIwuTaSaSaQaoEfFEDqEFKi09aOn5aPvat+8j5ha0x4qmABfMtigASGaP5GEIKblbGmZVplHTOEwP5QBQRgzKEAJRTT8MKwC4AQAAdIGYMJZe4NEH2MK/AR3SIm6YbYUcG9FSHJHtJiScgAQSYD5lEme2nW8433AhBeDnlo5NOedWxY8fEOi1dd8Ta7UXPrrmPjKRic3E2/cPNQENyJgGRC7g4raML4Qpkltzc+CERcyOCQo90UAGPDoxbBl24HgDJXI5Lkrnx+O+9bl3Pg5tyK45uaQqqzmjpIOt9JE9E2x4eJ75QSPpWmwN5Ne1LE3sUlKE+HDaEACM9CT6Vl5tH2qeqLp/7+IroXdtj9IDAGmdSVmfpNVjcfS6rcVDLBmNvLydD2xNY5rgfUsMTPachuazRq2iAq8PA7qzlRtxJWch8Gb5cxTUlNaTSpzFAPBrueoScMgB/LIXkNo3q4jfNWIdgHOtXoD/D2gOA+W3HQ9IAuAAAP65wKAXiH4LzOS2PwM4+V8AqmcTQOdzIN4PuCmTlYR+OzQAHnECCaYh0GAa8NE/wmSk4QFgN82n4QZdgBeA1MwsI/lxWk4BtVPM01IAy1cDqLZeAU8lvOsAAFS3GoBsNYBT3lGOIkH8EGSBaLFzZArAyywA7uiO+TOQSfykBXTZY5l7AJT2ALhsgHOMlAFZ0kIUOIzTz49iN/31Qmxm8mj/mHWymAnshKVbnRxYiVpdfCfq1z0UVJOUZYIvTB2seTTNcUQH02l2eRgJTTtMo0Rxt0/6FDaf/JaBGre0VnsrpIzCNGSnEnSDLjc/N2n0p8tkNb0WubbsxtJJVYB/3RRbEvMxkuI2tSiaoFldbDDZTlwNPiaVYYWzX2TVuJJCp/OuGB5Ph6RDJIkO61pxI35EVRHUIPk5kkY4bWmhLuEsPSVi25bPsAfjqgWd7zPWfdpwUXeECR5951loxUSlSOvYGim71bjIF5ujfKPtyfKldfkbSD935IPuqhzp+ha4J8iTV0qaU/uleRifzdTz439W7Tk45xSCxv5+o+vYMdVtaqiPJpUKfzv6XfwIdt+kAQcB429Tz87OUsr/GMxGtK/0FE7ubwckOlzbVTEswWOSiNytg33l4nv4Bgs4lCqwYseyInrVFIylr6Hu6tqHfYgCl9yIns4tsT9ZRPIp/6395GWDLafy+Is10X9HN353gFhE3FFMmu1f5rT4txzKea+W38UNt+4c9BMvk4lGQh3ZImE18AK8BKyYLenSesWAcvB6o/GRQj5mjNvkc/pQ+wA+kZE24H6K1gabsyMhAoD0k3TBRrSEwcvS3pUG8npF7Bnl3qYTX8n++RBzeeIYwVvrUWYgNjkHHJkQxoTSXtNkRO/MgFCKHrpG22/AdUUIKYAkUzDMQxsHWu9YE6Diene05AUdId18KEuVmkeIBWqXuoziHLSv6BVJasl0pKhyNafMnmkxR9QC/n+f2e8W3vECWAAAAABJRU5ErkJggg==',
             imgUrl: "//westzzs.innogamescdn.com/",
             loadedPack: false
         };
@@ -104,14 +105,6 @@ window.TWCalc_inject = function () {
 
                         clearInterval(window.setVal);
 
-                        TW_Calc.Craft.updateLastCraftedItemList();
-
-                        TW_Calc.registerGameApi();
-                        TW_Calc.Wardrobe.init();
-                        TW_Calc.Craft.reCache();
-                        TW_Calc.BattleCalc.getBattleCore();
-                        TW_Calc.NearestJob.build();
-
                         TW_Calc.Settings.list = [
                             ["topBar", TW_Calc.getTranslation(185), true],
                             ["duelBar", TW_Calc.getTranslation(191), true],
@@ -122,13 +115,14 @@ window.TWCalc_inject = function () {
                             ["WestCalc", TW_Calc.getTranslation(184)]
                         ];
 
+                        TW_Calc.registerGameApi();
+                        TW_Calc.Wardrobe.init();
+                        TW_Calc.Craft.init();
+                        TW_Calc.BattleCalc.init();
                         TW_Calc.Interface.init();
-
                         TW_Calc.Chests.init();
-
                         TW_Calc.Quests.init();
-
-                        TW_Calc.TombolaExporter.Tombola();
+                        TW_Calc.TombolaExporter.init();
 
                         TW_Calc.TombolaExporter.wof = {
                             1: TW_Calc.getTranslation(174),
@@ -136,7 +130,8 @@ window.TWCalc_inject = function () {
                             12: TW_Calc.getTranslation(194),
                             13: TW_Calc.getTranslation(195),
                             14: TW_Calc.getTranslation(196),
-                            15: TW_Calc.getTranslation(197)
+                            15: TW_Calc.getTranslation(197),
+                            16: TW_Calc.getTranslation(197)
                         };
 
                         window.TW_Calc_AlarmClock = setInterval(TW_Calc.AlarmClock.init, 1000);
@@ -183,7 +178,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.langs = {};
 
-        TW_Calc.langs["en_US"] = {"lang_0":"No","lang_1":"Yes","lang_2":"with premium","lang_3":"Settings","lang_4":"Skills","lang_5":"Leadership","lang_6":"Hiding","lang_7":"Stamina","lang_8":"Dodging","lang_9":"Aiming","lang_14":"Attack","lang_15":"Defence","lang_18":"Position on map","lang_20":"The tower of your character","lang_21":"Ground","lang_22":"Tower - level","lang_27":"Calculate","lang_28":"Health","lang_29":"Health points","lang_30":"Level","lang_31":"Fortbattle attack","lang_32":"Character","lang_33":"Fortbattle defence","lang_34":"Other","lang_35":"Delete","lang_36":"Save","lang_37":"Set time","lang_38":"Greenhorn","lang_39":"Dueller","lang_40":"Adventurer","lang_41":"Soldier","lang_42":"Worker","lang_43":"Player name","lang_44":"Game world","lang_45":"Player level","lang_46":"Character class","lang_49":"Health","lang_50":"Attack","lang_51":"Defense","lang_52":"Gameworld","lang_61":"Health","lang_62":"Alarmclock settings","lang_63":"Calculate the highest and lowest duelling level you are able to duel","lang_64":"Calculate the amount of experiences gained from a duel","lang_66":"Your duelling level","lang_67":"Calculate","lang_68":"Highest possible duelling level","lang_69":"Lowest possible duelling level","lang_70":"Duelling level of your opponent","lang_71":"Duel motivation","lang_72":"How to write a date? Example:","lang_77":"for The-West Calc is a new version available, please click ok to update the Userscript","lang_78":"TW-Calc Update needed","lang_79":"Current version","lang_80":"Later","lang_81":"Your note","lang_82":"Time","lang_83":"TW-Calc Alarm clock","lang_86":"Victory: You gain","lang_87":"experience and","lang_88":"Successfully saved","lang_89":"Your notes has been successfully deleted","lang_90":"Alarm Clock not set (BAD SYNTAX)","lang_91":"Alarm clock set","lang_92":"Cancel","lang_93":"TW-Calc Alarm clock - settings","lang_94":"Alarm clock","lang_95":"Enter URL adress of your sound. For example: https:\/\/tw-calc.net\/script\/budik.mp3","lang_96":"Alarm clock set","lang_97":"Melody of alarm clock: Alarm1, Alarm2","lang_98":"Health points","lang_100":"Full energy in","lang_101":"hours and","lang_102":"minutes","lang_103":"Experience points","lang_104":"Full health in","lang_105":"Transfer fee","lang_106":"Transfer fee","lang_107":"Transfer amount","lang_108":"Add bank fees calculator (during transfer) to the bank window","lang_109":"Add energy&health refill calculators","lang_110":"duel experience.","lang_111":"New version","lang_112":"Whats new","lang_113":"Edit","lang_114":"Duelling level","lang_115":"Duleable","lang_116":"Distance","lang_117":"Center map","lang_118":"Town","lang_122":"Note","lang_123":"Really?","lang_124":"Actually empty","lang_140":"Resistance","lang_141":"Damage","lang_143":"Loading","lang_146":"All your saved jobs will be removed. Are you sure you want to do it?","lang_147":"Close (Saved automatically)","lang_148":"Reset jobs","lang_149":"Reset","lang_150":"Add or remove Jobs","lang_151":"Search for job","lang_152":"Job list","lang_153":"Replace native craft window in the menu by Westcalc craft window","lang_154":"Open duel window","lang_157":"Name","lang_159":"Importing...","lang_160":"Own skills","lang_161":"New equipment","lang_162":"Close","lang_163":"Add","lang_164":"Current clothing will be added as new equipment.","lang_165":"Successfull","lang_166":"Name...","lang_167":"Job","lang_169":"Show configuration of this set","lang_170":"Wardrobe","lang_171":"Remove this set","lang_172":"Create","lang_173":"Tombola analyser","lang_174":"Travelling fair","lang_175":"Add wardrobe to the game","lang_176":"Hide unavailable materials","lang_177":"Craft","lang_178":"Toggle all recipes","lang_179":"Field cook","lang_180":"Tonic peddler","lang_181":"Blacksmith","lang_182":"Master Saddler","lang_183":"Crafting","lang_184":"Add Westcalc icon to the right menu","lang_185":"Position of Job bar","lang_186":"Top","lang_187":"Bottom","lang_188":"In right panel","lang_189":"Hide","lang_190":"without premium","lang_191":"Position of duel panel","lang_192":"Show the crafting product","lang_193":"Setting Traps","lang_194":"Valentine's Day","lang_195":"Easter","lang_196":"Independence Day","lang_197":"Octoberfest","lang_198":"Day of the Dead","lang_199":"Defeat: You lose","lang_200":"Energy\n","lang_201":"Weapon damage","lang_202":"Cloth bonus","lang_203":"Wall - level","lang_204":"Accept the quest to see the quest giver","lang_205":"Show quest giver on map","lang_206":"Show the quest on TW-Calc.net","lang_207":"Wear all","lang_208":"Create or select set from the menu"};
+        TW_Calc.langs["en_US"] = {"lang_0":"No","lang_1":"Yes","lang_2":"with premium","lang_3":"Settings","lang_4":"Skills","lang_5":"Leadership","lang_6":"Hiding","lang_7":"Stamina","lang_8":"Dodging","lang_9":"Aiming","lang_14":"Attack","lang_15":"Defence","lang_18":"Position on map","lang_20":"The tower of your character","lang_21":"Ground","lang_22":"Tower - level","lang_27":"Calculate","lang_28":"Health","lang_29":"Health points","lang_30":"Level","lang_31":"Fortbattle attack","lang_32":"Character","lang_33":"Fortbattle defence","lang_34":"Other","lang_35":"Delete","lang_36":"Save","lang_37":"Set time","lang_38":"Greenhorn","lang_39":"Dueller","lang_40":"Adventurer","lang_41":"Soldier","lang_42":"Worker","lang_43":"Player name","lang_44":"Game world","lang_45":"Player level","lang_46":"Character class","lang_49":"Health","lang_50":"Attack","lang_51":"Defense","lang_52":"Gameworld","lang_61":"Health","lang_62":"Alarmclock settings","lang_63":"Calculate the highest and lowest duelling level you are able to duel","lang_64":"Calculate the amount of experiences gained from a duel","lang_66":"Your duelling level","lang_67":"Calculate","lang_68":"Highest possible duelling level","lang_69":"Lowest possible duelling level","lang_70":"Duelling level of your opponent","lang_71":"Duel motivation","lang_72":"How to write a date? Example:","lang_77":"for The-West Calc is a new version available, please click ok to update the Userscript","lang_78":"TW-Calc Update needed","lang_79":"Current version","lang_80":"Later","lang_81":"Your note","lang_82":"Time","lang_83":"TW-Calc Alarm clock","lang_86":"Victory: You gain","lang_87":"experience and","lang_88":"Successfully saved","lang_89":"Your notes has been successfully deleted","lang_90":"Alarm Clock not set (BAD SYNTAX)","lang_91":"Alarm clock set","lang_92":"Cancel","lang_93":"TW-Calc Alarm clock - settings","lang_94":"Alarm clock","lang_95":"Enter URL adress of your sound. For example: https:\/\/tw-calc.net\/script\/budik.mp3","lang_96":"Alarm clock set","lang_97":"Melody of alarm clock: Alarm1, Alarm2","lang_98":"Health points","lang_100":"Full energy in","lang_101":"hours and","lang_102":"minutes","lang_103":"Experience points","lang_104":"Full health in","lang_105":"Transfer fee","lang_106":"Transfer fee","lang_107":"Transfer amount","lang_108":"Add bank fees calculator (during transfer) to the bank window","lang_109":"Add energy&health refill calculators","lang_110":"duel experience.","lang_111":"New version","lang_112":"Whats new","lang_113":"Edit","lang_114":"Duelling level","lang_115":"Duleable","lang_116":"Distance","lang_117":"Center map","lang_118":"Town","lang_122":"Note","lang_123":"Really?","lang_124":"Actually empty","lang_140":"Resistance","lang_141":"Damage","lang_143":"Loading","lang_146":"All your saved jobs will be removed. Are you sure you want to do it?","lang_147":"Close (Saved automatically)","lang_148":"Reset jobs","lang_149":"Reset","lang_150":"Add or remove Jobs","lang_151":"Search for job","lang_152":"Job list","lang_153":"Replace native craft window in the menu by Westcalc craft window","lang_154":"Open duel window","lang_157":"Name","lang_159":"Importing...","lang_160":"Own skills","lang_161":"New equipment","lang_162":"Close","lang_163":"Add","lang_164":"Current clothing will be added as new equipment.","lang_165":"Successfull","lang_166":"Name...","lang_167":"Job","lang_169":"Show configuration of this set","lang_170":"Wardrobe","lang_171":"Remove this set","lang_172":"Create","lang_173":"Tombola analyser","lang_174":"Travelling fair","lang_175":"Add wardrobe to the game","lang_176":"Hide unavailable materials","lang_177":"Craft","lang_178":"Toggle all recipes","lang_179":"Field cook","lang_180":"Tonic peddler","lang_181":"Blacksmith","lang_182":"Master Saddler","lang_183":"Crafting","lang_184":"Add Westcalc icon to the right menu","lang_185":"Position of Job bar","lang_186":"Top","lang_187":"Bottom","lang_188":"In right panel","lang_189":"Hide","lang_190":"without premium","lang_191":"Position of duel panel","lang_192":"Show the crafting product","lang_193":"Setting Traps","lang_194":"Valentine's Day","lang_195":"Easter","lang_196":"Independence Day","lang_197":"Octoberfest","lang_198":"Day of the Dead","lang_199":"Defeat: You lose","lang_200":"Energy\n","lang_201":"Weapon damage","lang_202":"Cloth bonus","lang_203":"Wall - level","lang_204":"Accept the quest to see the quest giver","lang_205":"Show quest giver on map","lang_206":"Show the quest on TW-Calc.net","lang_207":"Wear all","lang_208":"Create or select set from the menu","lang_209":"Learn"};
 
         /**
          * These languages can be fetched from tw-calc.net
@@ -458,6 +453,30 @@ window.TWCalc_inject = function () {
 
         };
 
+        TW_Calc.showBirthdayPopUp = function () {
+
+            if (TW_Calc.isBirthday() === true) {
+
+                var date = new Date();
+
+                if (TW_Calc.storage.get("BDAY") !== date.getFullYear()) {
+
+                    var age = date.getFullYear() - 2012;
+                    var text = age + (age === 1 ? 'st' : age === 2 ? 'nd' : age === 3 ? '3rd' : 'th');
+
+                    new west.gui.Dialog().setTitle("It's TW-Calc " + text + " birthday!").setText("<table><tr><td><img src='" + TW_Calc.imgUrl + "/images/items/yield/5_year_cake.png?1'></td><td>Thank you for using this script and visiting our website!</br>" +
+                        "If you like our webpage, please donate for server costsand further development, we'll be very grateful to you. We are funding everything from our own resources. All your donations will be appreciated and used in best way possible to ensure future development of our page and scipt. <b>Thank you!</b>" +
+                        '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top"><input type="hidden" name="cmd" value="_s-xclick"><input type="hidden" name="hosted_button_id" value="LRG4X3PGMYHZY"><input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"><img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"></form></td></tr></table>').addButton("Visit website", function () {
+                        TW_Calc.storage.add("BDAY", new Date().getFullYear());
+                        window.open(TW_Calc.website);
+                    }).addButton("Close", function () {
+                        TW_Calc.storage.add("BDAY", new Date().getFullYear());
+                    }).show();
+
+                }
+            }
+        };
+
         TW_Calc.registerGameApi = function () {
 
             if (typeof TW_Calc.api === "undefined") {
@@ -510,6 +529,9 @@ window.TWCalc_inject = function () {
                 switch (id) {
                     case "import":
                         TW_Calc.doImport();
+                        break;
+                    case "character":
+                        TW_Calc.window.loadCharacter();
                         break;
                     case "tombola":
                         TW_Calc.TombolaExporter.Tab.launch();
@@ -581,7 +603,11 @@ window.TWCalc_inject = function () {
         };
 
         TW_Calc.window.content.character = function () {
-
+            return '<div></div>';
+        };
+        
+        TW_Calc.window.loadCharacter = function () {
+            
             var input = {
                 charClass: Character.charClass,
                 premium: Premium.hasBonus('character'),
@@ -605,8 +631,8 @@ window.TWCalc_inject = function () {
                 }
             };
 
-            if (typeof BattleCalc === "undefined")
-                return '<p>Error! BattleCalc have to be loaded from tw-calc web server. Try refreshing the game.</p>';
+            if (!BattleCalc || typeof BattleCalc === "undefined")
+                return '<div style="margin-top: 15px">' + TW_Calc.BattleCalc.notLoadedBattleCoreMsg + '</div>';
 
             var data = BattleCalc.coreCalc(input, true);
 
@@ -625,17 +651,17 @@ window.TWCalc_inject = function () {
                 '<div style="font-weight: bold; font-size: 16px;color: darkred;">' + TW_Calc.getTranslation(31) + '</div>' +
                 '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(14) + '</div><div>' + data.attack.hit + '</div>' +
                 '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(51) + '</div><div>' + data.attack.dodge + '</div>' +
-                '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(51) + '</div><div>' + data.attack.resistance + '</div>' +
+                '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(140) + '</div><div>' + data.attack.resistance + '</div>' +
                 '</td><td style="width: 33%"><div style="font-weight: bold; font-size: 16px; color: darkblue;">' + TW_Calc.getTranslation(33) + '</div>' +
                 '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(14) + '</div><div>' + data.defense.hit + '</div>' +
                 '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(51) + '</div><div>' + data.defense.dodge + '</div>' +
-                '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(51) + '</div><div>' + data.defense.resistance + '</div>' +
+                '<div style="display: inline-block; font-weight: bold; width: 50%;">' + TW_Calc.getTranslation(140) + '</div><div>' + data.defense.resistance + '</div>' +
                 '</td><td style="width: 33%"><div style="font-weight: bold;">' + TW_Calc.getTranslation(28) + ': </div><span>' + data.health + ' HP</span>' +
                 '<div style="font-weight: bold;">' + TW_Calc.getTranslation(141) + ': </div><span>' + data.damage + '</span></td></tr></table>')).getMainDiv());
 
             html.append(new west.gui.Groupframe().appendToContentPane($('<div>BB Code: <input type="text" class="input_layout" readonly="readonly" value="[QUOTE][LIST][*][B]' + TW_Calc.getTranslation(43) + ':[/B] ' + Character.name + '[*][B]' + TW_Calc.getTranslation(44) + ':[/B] ' + Game.worldName + ',   (' + window.location.host + ')[*][B]' + TW_Calc.getTranslation(45) + ':[/B] ' + Character.level + '[*][B]' + TW_Calc.getTranslation(46) + ':[/B] ' + Game.InfoHandler.getLocalString4Charclass(Character.charClass) + '[*]••••••••••••••••[*][B]' + TW_Calc.getTranslation(31) + '[/B][*][B]' + TW_Calc.getTranslation(50) + '[/B][*]' + data.attack.hit + '[*][B]' + TW_Calc.getTranslation(51) + '[/B][*]' + data.attack.dodge + '[*][B]' + TW_Calc.getTranslation(33) + '[/B][*][B]' + TW_Calc.getTranslation(50) + '[/B][*]' + data.defense.hit + '[*][B]' + TW_Calc.getTranslation(51) + '[/B][*]' + data.defense.dodge + '[*][B]' + TW_Calc.getTranslation(49) + ':[/B]' + data.health + '[/LIST][/QUOTE]" style="text-align: center; width: 600px" onclick="this.select();"></div>')).getMainDiv());
 
-            return html;
+            $('#tab_character').empty().append(html);
 
         };
 
@@ -751,8 +777,8 @@ window.TWCalc_inject = function () {
                 '<span style="display: inline-block; font-weight: bold; width: 20px;"><center><img src="' + TW_Calc.imgUrl + '/images/fort/battle/defender_secondary.png"></center></span><span id="TW_Calc_BattleCalc_DefenseDodge">0</span></br>' +
                 '<span style="display: inline-block; font-weight: bold; width: 150px;">' + TW_Calc.getTranslation(140) + '</span></br>' +
                 '<span style="display: inline-block; font-weight: bold; width: 20px;"><img src="' + TW_Calc.imgUrl + '/images/fort/battle/resistance.png"></span></span><span id="TW_Calc_BattleCalc_DefenseResistance">0</span></br>' +
-                '<span style="display: inline-block; font-weight: bold; font-size: large; width: 150px;">' + TW_Calc.getTranslation(28) + '</span></br><span id="TW_Calc_BattleCalc_HealthOutput">0</span></br>' +
-                '<span style="display: inline-block; font-weight: bold; font-size: large; width: 250px;">' + TW_Calc.getTranslation(141) + '</span></br><span id="TW_Calc_BattleCalc_DamageOutput">0</span>';
+                '<div style="font-size: large;"><b>' + TW_Calc.getTranslation(28) + ':</b>&nbsp;<span id="TW_Calc_BattleCalc_HealthOutput">0</span></div>' +
+                '<div style="font-size: large;"><b>' + TW_Calc.getTranslation(141) + ':</b>&nbsp;<span id="TW_Calc_BattleCalc_DamageOutput">0</span></div>';
 
             var html = $('<div></div>');
 
@@ -877,9 +903,15 @@ window.TWCalc_inject = function () {
          */
         TW_Calc.BattleCalc = {};
 
+        TW_Calc.BattleCalc.init = function () {
+            this.getBattleCore();
+        };
+
         TW_Calc.BattleCalc.getBattleCore = function () {
             $.getScript(TW_Calc.website + '/public/js/battle-calculator-core.js');
         };
+
+        TW_Calc.BattleCalc.notLoadedBattleCoreMsg = 'Error! BattleCalc have to be loaded from tw-calc web server. Try refreshing the game.';
 
         TW_Calc.BattleCalc.calculate = function () {
 
@@ -906,8 +938,8 @@ window.TWCalc_inject = function () {
                 }
             };
 
-            if (typeof BattleCalc === "undefined")
-                return '<p>Error! BattleCalc have to be loaded from tw-calc web server. Try refreshing the game.</p>';
+            if (!BattleCalc || typeof BattleCalc === "undefined")
+                return new MessageError(TW_Calc.BattleCalc.notLoadedBattleCoreMsg).show();
 
             var data = BattleCalc.coreCalc(input);
 
@@ -992,9 +1024,7 @@ window.TWCalc_inject = function () {
 
                 $(div).empty();
 
-                var i = 0;
-
-                for (i; i < TW_Calc.Settings.list.length; i++) {
+                for (var i = 0; i < TW_Calc.Settings.list.length; i++) {
 
                     if (TW_Calc.Settings.list[i][2] !== true) $(div).append(new west.gui.Checkbox()
                         .setId(TW_Calc.Settings.list[i][0])
@@ -1010,7 +1040,8 @@ window.TWCalc_inject = function () {
                 var comBoxId = "topBar";
                 var comBox = new west.gui.Combobox('TWCalc_' + comBoxId)
                     .setWidth(100)
-                    .addItem(1, TW_Calc.getTranslation(187))
+                    .addItem(1, TW_Calc.getTranslation(187) + " - transparent")
+                    .addItem(5, TW_Calc.getTranslation(187))
                     .addItem(2, TW_Calc.getTranslation(186))
                     .addItem(3, TW_Calc.getTranslation(188))
                     .addItem(4, TW_Calc.getTranslation(189)).select(TW_Calc.Settings.get(comBoxId, 1)).getMainDiv();
@@ -1143,6 +1174,65 @@ window.TWCalc_inject = function () {
          */
         TW_Calc.Craft = {};
 
+        TW_Calc.Craft.init = function () {
+
+            TW_Calc.Craft.updateLastCraftedItemList();
+            TW_Calc.Craft.reCache();
+
+            Bag.updateChanges = function(changes, from) {
+                this.handleChanges(changes, from);
+                Crafting.updateResources();
+                TW_Calc.Craft.updateResources();
+            }
+
+        };
+
+        TW_Calc.Craft.updateResources = function () {
+
+            var professionId = TW_Calc.Craft.activeProfession;
+            var craft = TW_Calc.Craft.professionsCache[professionId - 1];
+
+            if (typeof craft === "undefined" || !$("#tab_craft" + professionId).length) return;
+
+            for (var i = 0; i < craft.length; i++) {
+                TW_Calc.Craft.window.updateRecipeRow(Number(craft[i].r));
+            }
+
+        };
+
+        TW_Calc.Craft.start = function (recipe_id) {
+
+            var amount = Number(Number($('#recipe_button_' + recipe_id + '>.displayValue').text()));
+
+            Ajax.remoteCall('crafting', 'start_craft', {
+                    recipe_id: recipe_id,
+                    amount: amount
+                },
+                function (resp) {
+
+                    if (resp.error) return new MessageError(resp.msg).show();
+
+                    var data = resp.msg;
+
+                    Character.setProfessionSkill(data.profession_skill);
+
+                    $('#recipe_difficult_' + recipe_id).removeClass('middle hard easy').addClass(Crafting.getRecipeColor(ItemManager.get(recipe_id)));
+
+                    Character.updateDailyTask('crafts', data.count);
+
+                    var proffesion_id = ItemManager.get(recipe_id).profession_id;
+                    TW_Calc.Craft.window.progressBar.setValue(Character.professionSkill);
+
+                    EventHandler.signal("inventory_changed");
+
+                    return new MessageSuccess(data.msg).show();
+
+                }
+
+            );
+
+        };
+
         TW_Calc.Craft.professionsCache = [[{"r":20000000,"o":[0,50,100]},{"r":20001000,"o":[0,50,100]},{"r":20002000,"o":[0,50,100]},{"r":20083000,"o":[0,100,100]},{"r":20084000,"o":[0,10,10]},{"r":20085000,"o":[10,20,20]},{"r":20086000,"o":[20,40,40]},{"r":20003000,"o":[50,100,100]},{"r":20004000,"o":[50,100,100]},{"r":20005000,"o":[100,150,200]},{"r":20006000,"o":[100,150,200]},{"r":20007000,"o":[100,150,200]},{"r":20008000,"o":[150,225,300]},{"r":20009000,"o":[150,225,300]},{"r":20010000,"o":[150,225,300]},{"r":20011000,"o":[250,300,300]},{"r":20012000,"o":[250,300,300]},{"r":20013000,"o":[250,300,300]},{"r":20014000,"o":[300,350,400]},{"r":20015000,"o":[350,425,500]},{"r":20016000,"o":[350,425,500]},{"r":20017000,"o":[350,425,500]},{"r":20116000,"o":[350,425,500]},{"r":20134000,"o":[450,475,500]},{"r":20018000,"o":[400,500,500]},{"r":20019000,"o":[450,500,500]},{"r":20096000,"o":[500,525,550]},{"r":20120000,"o":[500,525,550]},{"r":20124000,"o":[500,525,550]},{"r":20097000,"o":[525,550,575]},{"r":20098000,"o":[550,575,600]},{"r":20135000,"o":[550,575,600]},{"r":20099000,"o":[600,625,650]},{"r":20100000,"o":[600,625,650]},{"r":20136000,"o":[600,650,700]}],[{"r":20020000,"o":[0,50,100]},{"r":20021000,"o":[0,50,100]},{"r":20022000,"o":[0,100,100]},{"r":20081000,"o":[0,50,100]},{"r":20087000,"o":[0,10,10]},{"r":20088000,"o":[10,20,20]},{"r":20089000,"o":[20,40,40]},{"r":20023000,"o":[50,100,100]},{"r":20024000,"o":[50,100,100]},{"r":20025000,"o":[100,150,200]},{"r":20026000,"o":[100,150,200]},{"r":20027000,"o":[100,150,200]},{"r":20028000,"o":[150,225,300]},{"r":20029000,"o":[150,225,300]},{"r":20030000,"o":[150,225,300]},{"r":20031000,"o":[250,300,300]},{"r":20032000,"o":[250,300,300]},{"r":20033000,"o":[250,300,300]},{"r":20034000,"o":[300,350,400]},{"r":20035000,"o":[350,425,500]},{"r":20036000,"o":[350,425,500]},{"r":20037000,"o":[350,425,500]},{"r":20119000,"o":[350,425,500]},{"r":20038000,"o":[400,500,500]},{"r":20123000,"o":[450,475,500]},{"r":20128000,"o":[450,475,500]},{"r":20039000,"o":[450,500,500]},{"r":20101000,"o":[500,525,550]},{"r":20127000,"o":[500,525,550]},{"r":20102000,"o":[525,550,575]},{"r":20103000,"o":[550,575,600]},{"r":20129000,"o":[550,575,600]},{"r":20104000,"o":[600,625,650]},{"r":20105000,"o":[600,625,650]},{"r":20130000,"o":[600,650,700]}],[{"r":20040000,"o":[0,50,100]},{"r":20041000,"o":[0,50,100]},{"r":20042000,"o":[0,100,100]},{"r":20082000,"o":[0,50,100]},{"r":20090000,"o":[0,10,10]},{"r":20091000,"o":[10,20,20]},{"r":20092000,"o":[20,40,40]},{"r":20043000,"o":[50,100,100]},{"r":20044000,"o":[50,100,100]},{"r":20045000,"o":[100,150,200]},{"r":20046000,"o":[100,150,200]},{"r":20047000,"o":[100,150,200]},{"r":20048000,"o":[150,225,300]},{"r":20049000,"o":[150,225,300]},{"r":20050000,"o":[150,225,300]},{"r":20051000,"o":[250,300,300]},{"r":20052000,"o":[250,300,300]},{"r":20053000,"o":[250,300,300]},{"r":20054000,"o":[300,350,400]},{"r":20055000,"o":[350,425,500]},{"r":20056000,"o":[350,425,500]},{"r":20057000,"o":[350,425,500]},{"r":20118000,"o":[350,425,500]},{"r":20058000,"o":[400,500,500]},{"r":20122000,"o":[450,475,500]},{"r":20131000,"o":[450,475,500]},{"r":20059000,"o":[450,500,500]},{"r":20111000,"o":[500,525,550]},{"r":20126000,"o":[500,525,550]},{"r":20112000,"o":[525,550,575]},{"r":20113000,"o":[550,575,600]},{"r":20132000,"o":[550,575,600]},{"r":20114000,"o":[600,625,650]},{"r":20115000,"o":[600,625,650]},{"r":20133000,"o":[600,650,700]}],[{"r":20060000,"o":[0,50,100]},{"r":20061000,"o":[0,50,100]},{"r":20062000,"o":[0,100,100]},{"r":20080000,"o":[0,50,100]},{"r":20093000,"o":[0,10,10]},{"r":20094000,"o":[10,20,20]},{"r":20095000,"o":[20,40,40]},{"r":20063000,"o":[50,100,100]},{"r":20064000,"o":[50,100,100]},{"r":20065000,"o":[100,150,200]},{"r":20066000,"o":[100,150,200]},{"r":20067000,"o":[100,150,200]},{"r":20068000,"o":[150,225,300]},{"r":20069000,"o":[150,225,300]},{"r":20070000,"o":[150,225,300]},{"r":20071000,"o":[250,300,300]},{"r":20072000,"o":[250,300,300]},{"r":20073000,"o":[250,300,300]},{"r":20074000,"o":[300,350,400]},{"r":20075000,"o":[350,425,500]},{"r":20076000,"o":[350,425,500]},{"r":20077000,"o":[350,425,500]},{"r":20117000,"o":[350,425,500]},{"r":20078000,"o":[400,500,500]},{"r":20121000,"o":[450,475,500]},{"r":20137000,"o":[450,475,500]},{"r":20079000,"o":[450,500,500]},{"r":20106000,"o":[500,525,550]},{"r":20125000,"o":[500,525,550]},{"r":20107000,"o":[525,550,575]},{"r":20108000,"o":[550,575,600]},{"r":20138000,"o":[550,575,600]},{"r":20109000,"o":[600,625,650]},{"r":20110000,"o":[600,625,650]},{"r":20139000,"o":[600,650,700]}],[1855000,1862000,1856000,1940000,1941000,1942000,1943000,1863000,1864000,1865000,1866000,1867000,1868000,1869000,1870000,1871000,1872000,1873000,1874000,1875000,1876000,1877000,2516000,2736000,1878000,1879000,1980000,2517000,2518000,1981000,1982000,2737000,1999000,2001000,2738000,1861000,1881000,1880000,1939000,1944000,1945000,1946000,1882000,1883000,1884000,1885000,1886000,1887000,1888000,1889000,1890000,1891000,1892000,1893000,1894000,1895000,1896000,2525000,1897000,2526000,2730000,1898000,1983000,2527000,1984000,1985000,2731000,2002000,2004000,2732000,1859000,1899000,1858000,1938000,1947000,1948000,1949000,1900000,1901000,1902000,1903000,1904000,1905000,1906000,1907000,1908000,1909000,1910000,1911000,1912000,1913000,1914000,2522000,1915000,2523000,2733000,1916000,1989000,2524000,1990000,1991000,2735000,2008000,2010000,2734000,1857000,1917000,1860000,1937000,1950000,1951000,1952000,1918000,1919000,1920000,1921000,1922000,1923000,1924000,1925000,1926000,1927000,1928000,1929000,1930000,1931000,1932000,2519000,1933000,2520000,2739000,1934000,1986000,2521000,1987000,1988000,2740000,2005000,2007000,2741000],[]]
 
         TW_Calc.Craft.reCache = function () {
@@ -1154,8 +1244,6 @@ window.TWCalc_inject = function () {
             });
 
         };
-
-        TW_Calc.Craft.Filter = {};
 
         TW_Calc.Craft.updateLastCraftedItemList = function () {
 
@@ -1193,8 +1281,6 @@ window.TWCalc_inject = function () {
                 if ([1, 2, 3, 4].indexOf(craft_id) === -1)
                     craft_id = 1;
 
-                var tab = TW_Calc.getTranslation(183);
-
                 var tabClick = function (win, id) {
 
                     TW_Calc.Craft.window.launch(Number(id.toString()[5]));
@@ -1203,6 +1289,7 @@ window.TWCalc_inject = function () {
                 };
 
                 wman.open( TW_Calc.Craft.window.id, TW_Calc.getTranslation(183), "noreload")
+                    .setMiniTitle(TW_Calc.getTranslation(183))
                     .addTab(TW_Calc.getTranslation(179), "craft1", tabClick)
                     .addTab(TW_Calc.getTranslation(180), "craft2", tabClick)
                     .addTab(TW_Calc.getTranslation(181), "craft3", tabClick)
@@ -1232,7 +1319,7 @@ window.TWCalc_inject = function () {
                 if (typeof data === "undefined") return $(this).show();
 
                 if (by === "name") {
-                    show = data.search(value) !== -1;
+                    show = data.toLowerCase().search(value.toLowerCase()) !== -1;
                 } else {
                     show = data === value;
                 }
@@ -1263,7 +1350,7 @@ window.TWCalc_inject = function () {
 
                 var myProfession = recipe.profession_id === Character.professionId;
                 var productId = ItemManager.get(reciepeId).craftitem;
-                var craftable = true;
+                var hasProducts = true;
 
                 var items = [];
 
@@ -1287,7 +1374,7 @@ window.TWCalc_inject = function () {
                         craft_recipe_data.inventory[item.item] = bag_count;
                         craft_recipe_data.required[item.item] = item.count;
 
-                        $(itemWidget).append($(Quest.getMinimapLink({
+                        $(itemWidget).append($('<div></div>').append($(Quest.getMinimapLink({
                             id: item.item,
                             type: 'inventory_changed'
                         })).css({
@@ -1295,12 +1382,16 @@ window.TWCalc_inject = function () {
                             'width': '16px',
                             'position': 'relative',
                             'opacity': '1',
-                            'left': '4px',
-                            'bottom': '27px'
+                            'left': '4px'
+                        })).css({
+                            'width': '16px',
+                            'right': '7px',
+                            'bottom': '10px',
+                            'position': 'absolute'
                         }));
 
-                        if (craftable)
-                            craftable = bag_count > item.count;
+                        if (hasProducts)
+                            hasProducts = bag_count >= item.count;
 
                         items.push(itemWidget);
 
@@ -1320,25 +1411,29 @@ window.TWCalc_inject = function () {
                 }
 
                 var maxCraftable = Array.min(amount_data);
-                var _craftable = myProfession && craftable && TW_Calc.Craft.professionsCache[5].indexOf(reciepeId) !== -1;
-
+                var isLearned = TW_Calc.Craft.professionsCache[5].indexOf(reciepeId) !== -1;
+                var craftable = myProfession && hasProducts && isLearned;
                 var parent = $("#TWCalcRecipe_" + reciepeId);
                 var difficult = Crafting.getRecipeColor(ItemManager.get(reciepeId));
+                var lastCraft = TW_Calc.Craft.dataLastCraft[reciepeId];
+                var canBeLearned = myProfession && Bag.items_by_id.hasOwnProperty(reciepeId) && !isLearned;
 
-                $(parent).data("craftable", _craftable);
+                $(parent).data("craftable", craftable);
                 $(parent).data("difficulty", difficult);
 
-                $(".recipe_title>.recipe_craft_amount", parent).empty().html(craftable ? new west.gui.Plusminusfield('recipe_button_' + reciepeId, 1, 1, maxCraftable, 1, TW_Calc.buttonLogic, TW_Calc.buttonLogic, TW_Calc.wheelLogic).getMainDiv() : $('<div></div>'));
-
-                var lastCraft = TW_Calc.Craft.dataLastCraft[reciepeId];
-
-                $(".recipe_title>.recipe_craft", parent).html(typeof lastCraft === "undefined" || lastCraft === null ? (_craftable ? TW_Calc.getTranslation(177) : '') : '<span style="color: yellow; cursor: default;">' + lastCraft.formatDurationBuffWay() + '</span>')
+                $(".recipe_title>.recipe_craft_amount", parent).empty().html(hasProducts ? new west.gui.Plusminusfield('recipe_button_' + reciepeId, 1, 1, maxCraftable, 1, TW_Calc.buttonLogic, TW_Calc.buttonLogic, TW_Calc.wheelLogic).getMainDiv() : $('<div></div>'));
+                $(".recipe_title>.recipe_craft", parent).html(typeof lastCraft === "undefined" || lastCraft === null ? (craftable ? TW_Calc.getTranslation(177) : (canBeLearned ? TW_Calc.getTranslation(209) : '')) : '<span style="color: yellow; cursor: default;">' + lastCraft.formatDurationBuffWay() + '</span>')
                     .unbind("click");
 
-                if (craftable)
+                if (craftable) {
                     $(".recipe_title>.recipe_craft", parent).click(function () {
                         TW_Calc.Craft.start(Number($(this).data("id")));
                     });
+                } else if (canBeLearned) {
+                    $(".recipe_title>.recipe_craft", parent).click(function () {
+                        ItemUse.use(Number($(this).data("id")), null, 'recipe');
+                    });
+                }
 
                 var resources = $(".recipe_content>.recipe_resources", parent);
                 resources.empty();
@@ -1350,8 +1445,8 @@ window.TWCalc_inject = function () {
                 $(".recipe_content>.recipe_craftitem", parent).empty().append(new tw2widget.CraftingItem(ItemManager.get(productId)).setCount(Bag.getItemCount(productId)).getMainDiv());
 
                 if (myProfession) {
-                    $('.recipe_title>.recipe_title_inner>.recipe_difficult', parent).removeClass('middle hard easy').addClass(difficult);
-                    $('.recipe_title>.recipe_title_inner>.recipe_name', parent).css("color", TW_Calc.Craft.professionsCache[5].indexOf(reciepeId) !== -1 ? "white" : "gray");
+                    $('.recipe_title>.recipe_title_inner>.recipe_difficult', parent).css('opacity', isLearned ? 1 : 0).removeClass('middle hard easy').addClass(difficult);
+                    $('.recipe_title>.recipe_title_inner>.recipe_name', parent).css("color", isLearned ? "white" : "gray");
                 }
 
             } catch (e) {
@@ -1504,8 +1599,9 @@ window.TWCalc_inject = function () {
 
                 scrollPane.appendContent(recipes);
 
-                parent.append($(scrollPane.getMainDiv()).css({"height": myProfession ? 270 : 295, "text-align": "center"}));
+                parent.append($(scrollPane.getMainDiv()).css({"height": myProfession ? 278 : 295, "text-align": "center"}));
 
+                parent.append($('<a href="//tw-calc.net/craft/' + craft_id + '" target="_blank" title="Show this profession on tw-calc.net"><div style="background-position: 0 0; background-image: url(' + TW_Calc.icon + '); width: 25px; height: 25px; position: absolute; bottom: 0; left: 5px"></div></a>'));
                 $("#tab_craft" + craft_id).empty().append(parent);
 
                 for (i = 0; i < craft.length; i++) {
@@ -1518,46 +1614,6 @@ window.TWCalc_inject = function () {
 
             }
 
-        }
-
-        TW_Calc.Craft.start = function (recipe_id) {
-
-            var amount = Number(Number($('#recipe_button_' + recipe_id + '>.displayValue').text()));
-
-            Ajax.remoteCall('crafting', 'start_craft', {
-                    recipe_id: recipe_id,
-                    amount: amount
-                },
-                function (resp) {
-
-                    if (resp.error) return new MessageError(resp.msg).show();
-
-                    var data = resp.msg;
-
-                    Character.setProfessionSkill(data.profession_skill);
-
-                    $('#recipe_difficult_' + recipe_id).removeClass('middle hard easy').addClass(Crafting.getRecipeColor(ItemManager.get(recipe_id)));
-
-                    EventHandler.signal("inventory_changed");
-
-                    Character.updateDailyTask('crafts', data.count);
-
-                    EventHandler.signal("inventory_changed")
-
-                    var proffesion_id = ItemManager.get(recipe_id).profession_id;
-                    var craft = TW_Calc.Craft.professionsCache[proffesion_id - 1];
-                    TW_Calc.Craft.window.progressBar.setValue(Character.professionSkill);
-
-                    for (var i = 0; i < craft.length; i++) {
-                        TW_Calc.Craft.window.updateRecipeRow(Number(craft[i].r));
-                    }
-
-                    return new MessageSuccess(data.msg).show();
-
-                }
-
-            );
-
         };
 
         /**
@@ -1567,6 +1623,7 @@ window.TWCalc_inject = function () {
         TW_Calc.Quests = {};
 
         TW_Calc.Quests.questEmployer = function (nr) {
+
             try {
 
                 Ajax.get('map', 'get_minimap', {}, function (json) {
@@ -1584,38 +1641,53 @@ window.TWCalc_inject = function () {
                 new TW_Calc.Error(e, 'TW_Calc.QuestsquestEmployer').show();
 
             }
+
         };
 
         TW_Calc.Quests.init = function () {
+
             try {
 
                 Quest.calc_getMinimapLink = Quest.getMinimapLink;
+
                 Quest.getMinimapLink = function (jsRequirement) {
-                    var mmLink = '',
-                        tmpObj = null;
-                    if (jsRequirement && jsRequirement.id && jsRequirement.type == 'inventory_changed') {
+
+                    var mmLink = '';
+                    var tmpObj = null;
+
+                    if (jsRequirement && jsRequirement.id && jsRequirement.type === 'inventory_changed') {
+
                         tmpObj = ItemManager.get(jsRequirement.id);
-                        if (isDefined(tmpObj) && tmpObj.spec_type == 'crafting') {
-                            mmLink = '<span class="quest_craftlink" style="cursor:pointer;" title=\'' + TW_Calc.getTranslation(192) + '\' onclick="TW_Calc.Craft.window.showRecipe(' + tmpObj.item_id + ')"><img src="/images/items/yield/toolbox.png" width="16"/></span>&nbsp;';
-                            return mmLink;
+
+                        if (isDefined(tmpObj) && tmpObj.spec_type === 'crafting') {
+                            return '<span class="quest_craftlink" style="cursor: pointer;" title=\'' + TW_Calc.getTranslation(192) + '\' onclick="TW_Calc.Craft.window.showRecipe(' + tmpObj.item_id + ')"><img src="/images/items/yield/toolbox.png" width="16"/></span>&nbsp;';
+                        } else if (isDefined(tmpObj) && tmpObj.spec_type === 'mapdrop') {
+                            mmLink += '<span class="tw2gui-iconset tw2gui-icon-hammer" style="display: inline-block; cursor: pointer; vertical-align: middle; margin-right: 2px;" onclick="TW_Calc.NearestJob.findByProductId(' + tmpObj.item_id + ')"></span>';
                         }
-                    } else if (jsRequirement && jsRequirement.type == 'task-finish-walk') {
-                        mmLink = '<span class="quest_employerlink" style="cursor:pointer;" title=\'' + TW_Calc.getTranslation(205) + '\' onclick="TW_Calc.Quests.questEmployer(' + jsRequirement.value + ')"><img src="/images/map/minimap/icons/miniicon_quests.png"/></span>&nbsp;';
-                        return mmLink;
+
+                    } else if (jsRequirement && jsRequirement.type === 'task-finish-walk') {
+                        return '<span class="quest_employerlink" style="cursor: pointer;" title=\'' + TW_Calc.getTranslation(205) + '\' onclick="TW_Calc.Quests.questEmployer(' + jsRequirement.value + ')"><img src="/images/map/minimap/icons/miniicon_quests.png"/></span>&nbsp;';
+                    } else if (jsRequirement && jsRequirement.type === 'task-finish-job') {
+                        mmLink += '<span class="tw2gui-iconset tw2gui-icon-hammer" style="display: inline-block; cursor: pointer; vertical-align: middle; margin-right: 2px;" onclick="TW_Calc.NearestJob.addTask(' + jsRequirement.id + ', {})"></span>';
                     }
-                    return Quest.calc_getMinimapLink(jsRequirement);
+
+                    return mmLink + Quest.calc_getMinimapLink(jsRequirement);
+
                 };
 
                 Quest.calc_render = Quest.render;
+
                 Quest.render = function () {
                     Quest.calc_render.apply(this, arguments);
-                    this.el.find('.quest_description_container .strong').append('<a class="quest_calclink" style="float:right;" title="' + TW_Calc.getTranslation(206) + '" href="' + TW_Calc.website + '/quests/quest/' + this.id + '" target="_blank"><img src="/images/items/yield/book_plain.png" width="22"/></a>');
+                    this.el.find('.quest_description_container .strong').append('<a class="quest_calclink" style="float: right;" title="' + TW_Calc.getTranslation(206) + '" href="' + TW_Calc.website + '/quests/quest/' + this.id + '" target="_blank"><img src="/images/items/yield/book_plain.png" width="22"/></a>');
                 };
+
             } catch (e) {
 
                 new TW_Calc.Error(e, 'TW_Calc.Quests.init').show();
 
             }
+
         };
 
         OnGoingWestcalcErrorEntry = function (f) {
@@ -1706,10 +1778,16 @@ window.TWCalc_inject = function () {
 
         TW_Calc.NearestJob.map = null;
 
-        TW_Calc.NearestJob.getMap = function () {
+        TW_Calc.NearestJob.getMap = function (callback) {
 
             Ajax.get("map", "get_minimap", {}, function (data) {
+
                 TW_Calc.NearestJob.map = data;
+
+                if (typeof callback === "function") {
+                    callback();
+                }
+
             });
 
         };
@@ -1762,29 +1840,74 @@ window.TWCalc_inject = function () {
 
         };
 
-        TW_Calc.NearestJob.find = function (e, dataType) {
+        TW_Calc.NearestJob.findByProductId = function (id) {
 
-            TW_Calc.NearestJob.j = e;
+            this.use(function () {
 
-            if (TW_Calc.NearestJob.map !== null) {
-                var q = TW_Calc.NearestJob.map;
-            } else {
-                TW_Calc.NearestJob.getMap();
-            }
+                var jobs = JobList.getJobsIdsByItemId(id);
 
-            if (TW_Calc.isNotUndefinedNullOrNaN(q) === false) new UserMessage(TW_Calc.getTranslation(143), "success").show();
+                var getJobsRecursive = function (productId, jobs, job_data) {
 
-            var u = q.job_groups;
-            e = Number(TW_Calc.NearestJob.j);
-            var t = TW_Calc.NearestJob;
-            var n = JobList.getJobById(e);
+                    var job;
+
+                    if (!jobs.length) {
+
+                        var max = 0;
+
+                        for (var i = 0; i < job_data.length; i++) {
+
+                            var items = job_data[i]["durations"][2]["items"];
+
+                            for (var j = 0; j < items.length; j++) {
+                                var luck = items[j].prop + items[j].probBonus;
+                                if (luck > max) {
+                                    job = job_data[i].id;
+                                    max = luck;
+                                }
+                            }
+
+                        }
+
+                        return job && TW_Calc.NearestJob.addTask(job);
+
+                    }
+
+                    var id = jobs[0];
+                    jobs.splice(0, 1);
+                    job = TW_Calc.NearestJob.find(id);
+
+                    Ajax.remoteCallMode("job", "job", {"jobId": id, "x": job.x, "y": job.y}, function (data) {
+
+                        job_data.push(data);
+
+                        getJobsRecursive(productId, jobs, job_data);
+
+                    });
+
+                };
+
+                getJobsRecursive(id, jobs, []);
+
+            }.bind(this));
+
+        };
+
+        TW_Calc.NearestJob.find = function (jobId) {
+
+            var obj = TW_Calc.NearestJob;
+
+            if (!obj.map)
+                return;
+
+            var u = obj.map.job_groups;
+            var n = JobList.getJobById(jobId);
             var r = u[n.groupid];
 
             if (!r) return [];
 
             var i = [];
 
-            var s = t.lastPos();
+            var s = obj.lastPos();
 
             for (var o = 0; o < r.length; o++) {
 
@@ -1796,6 +1919,7 @@ window.TWCalc_inject = function () {
                     x: r[o][0],
                     y: r[o][1]
                 });
+
             }
 
             var p = function (e, t) {
@@ -1804,22 +1928,46 @@ window.TWCalc_inject = function () {
 
             i.sort(p);
 
-            var job = i[0];
+            return i[0];
 
-            switch (dataType.type) {
+        };
 
-                case "startJob":
-                    TaskQueue.add(new TaskJob(e, Number(job.x), Number(job.y), dataType.duration));
-                    break;
+        TW_Calc.NearestJob.use = function (callback) {
 
-                default:
-                    JobWindow.open(e, Number(job.x), Number(job.y));
+            if (!TW_Calc.isNotUndefinedNullOrNaN(this.map)) {
+
+                new UserMessage(TW_Calc.getTranslation(143), "success").show();
+
+                return this.getMap(callback.bind(this));
+
             }
+
+            return callback();
+
+        };
+
+        TW_Calc.NearestJob.addTask = function (jobId, dataType) {
+
+            this.use(function () {
+
+                var job = this.find(jobId);
+
+                if (dataType) {
+                    switch (dataType.type) {
+                        case "startJob":
+                            return TaskQueue.add(new TaskJob(jobId, Number(job.x), Number(job.y), dataType.duration));
+                            break;
+                    }
+                }
+
+                return JobWindow.open(jobId, Number(job.x), Number(job.y));
+
+            }.bind(this));
 
         };
 
         TW_Calc.NearestJob.search = function (id) {
-            TW_Calc.NearestJob.find(id, {
+            this.addTask(id, {
                 type: "window"
             });
         };
@@ -1947,7 +2095,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.NearestJob.start = function (jobid, duration) {
 
-            TW_Calc.NearestJob.find(jobid, {
+            TW_Calc.NearestJob.addTask(jobid, {
                 type: "startJob",
                 duration: duration
             });
@@ -1956,7 +2104,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.NearestJob.posY = 97;
 
-        TW_Calc.NearestJob.JobBarEnabled = (Number(TW_Calc.Settings.get("topBar", "number")) === 1) || (Number(TW_Calc.Settings.get("topBar", "number")) === 2);
+        TW_Calc.NearestJob.JobBarEnabled = (Number(TW_Calc.Settings.get("topBar", 1)) === 1) || (Number(TW_Calc.Settings.get("topBar", 1)) === 2) || (Number(TW_Calc.Settings.get("topBar", 1)) === 5);
 
         TW_Calc.NearestJob.loadBottomBar = function () {
 
@@ -1967,10 +2115,20 @@ window.TWCalc_inject = function () {
 
                 $("#Westcalc_JobBar").remove();
 
-                var topBar = Number(TW_Calc.Settings.get("topBar", "number"));
+                var topBar = Number(TW_Calc.Settings.get("topBar", 1));
 
-                if (topBar === 1 || topBar === 2) {
-                    $(TW_Calc.NearestJob.MainDiv).append('<div id="Westcalc_JobBar" style="overflow: hidden; width: 510px;height: 61px; margin-left: auto; margin-right: auto; text-align: left"></div>');
+                if (topBar === 1 || topBar === 2 || topBar === 5) {
+                    var jobBarDiv = $('<div id="Westcalc_JobBar" style="overflow: hidden; width: 510px; height: 61px; margin-left: auto; margin-right: auto; text-align: left"></div>');
+                    if (topBar === 5)
+                        jobBarDiv.css({
+                            "background": "rgba(29, 28, 28, 0.8)",
+                            "border": "1px solid rgb(100, 100, 100)",
+                            "border-radius": "2px",
+                            "box-shadow": "rgb(0, 0, 0) 0px 0px 1px 1px",
+                            "padding-left": "5px"
+                        });
+
+                    $(TW_Calc.NearestJob.MainDiv).append(jobBarDiv);
                 }
 
                 var bottomBar = $('#Westcalc_JobBar');
@@ -2011,12 +2169,22 @@ window.TWCalc_inject = function () {
 
         TW_Calc.NearestJob.init = function () {
 
-            if (TW_Calc.NearestJob.JobBarEnabled) {
+            try {
 
-                TW_Calc.NearestJob.loadBottomBar();
-                TW_Calc.NearestJob.loadedPopups();
+                this.build();
 
-                TW_Calc.NearestJob.getMap();
+                if (TW_Calc.NearestJob.JobBarEnabled) {
+
+                    TW_Calc.NearestJob.loadBottomBar();
+                    TW_Calc.NearestJob.loadedPopups();
+
+                    TW_Calc.NearestJob.getMap();
+
+                }
+
+            } catch (e) {
+
+                new TW_Calc.Error(e, 'TW_Calc.NearestJob.init').show();
 
             }
 
@@ -2028,12 +2196,13 @@ window.TWCalc_inject = function () {
 
             TW_Calc.NearestJob.int = setInterval(function () {
 
-                if ((Number(TW_Calc.Settings.get("topBar", "number")) === 1) || (Number(TW_Calc.Settings.get("duelBar", "number")) === 2)) {
+                var topBar = Number(TW_Calc.Settings.get("topBar", 1));
+
+                if (topBar === 1 || topBar === 5 || Number(TW_Calc.Settings.get("duelBar", 1)) === 2) {
 
                     var n = $("div#ui_bottombar").height() + 5 + (Game.version <= 2.06 ? 0 : 14) + ($(".friendsbar").height() > 0 ? $(".friendsbar").height() : 0);
 
-                    if ($("#ui_windowdock").css("display") == "none" || $('.windowbar_frames').html() == '') n = n + 15;
-                    else n = n + 47;
+                    if ($("#ui_windowdock").css("display") == "none" || $('.windowbar_frames').html() == '') n += 15; else n += 47;
 
                     $('#WESTCALC_BOTTOM_BAR').stop();
                     TW_Calc.NearestJob.posY = n;
@@ -2407,27 +2576,39 @@ window.TWCalc_inject = function () {
                 invItems = Bag.getItemsByItemIds(items),
                 result = {},
                 invItem,
-                wearItem;
+                wearItem,
+                _wear = {},
+                i;
 
-            for (var i = 0; i < invItems.length; i++) {
+            for (i = 0; i < items.length; i++) {
+                _wear[ItemManager.get(items[i]).type] = items[i];
+            }
+
+            for (i = 0; i < invItems.length; i++) {
 
                 invItem = invItems[i];
                 wearItem = Wear.get(invItem.getType());
 
                 if (!wearItem || (wearItem && (wearItem.getItemBaseId() !== invItem.getItemBaseId() || wearItem.getItemLevel() < invItem.getItemLevel()))) {
-                    result[invItem.getType()](invItem.getId());
+                    result[invItem.getType()] = invItem.getId();
                 }
 
             }
 
             var output = [];
 
-            for (var type in Wear.wear) {
-                if (Wear.wear.hasOwnProperty(type) && !result.hasOwnProperty(type)) {
-                    output.push(Wear.wear[type].obj.item_id);
-                } else {
+            for (i = 0; i < Wear.slots.length; i++) {
+
+                var type = Wear.slots[i];
+
+                if (result.hasOwnProperty(type)) {
                     output.push(result[type]);
+                } else if (Wear.wear.hasOwnProperty(type)) {
+                    output.push(Wear.wear[type].obj.item_id);
+                } else if (_wear.hasOwnProperty(type)) {
+                    output.push(_wear[type]);
                 }
+
             }
 
             return output;
@@ -2611,7 +2792,7 @@ window.TWCalc_inject = function () {
 
             var cYear = '_' + new Date().getFullYear();
 
-            TW_Calc.TombolaExporter.Tombola = function () {
+            TW_Calc.TombolaExporter.init = function () {
 
                 //west.wof.WofManager.wofs
                 west.wof.WheelofFortune.prototype.process = function (action, data, callback, context, window) {
@@ -2725,11 +2906,12 @@ window.TWCalc_inject = function () {
                             TW_Calc.TombolaExporter.saveData(prize, b, category);
                         }
 
-                    } else if (b == 7 || b == 8 || b == 13 || b == 14 || b == 15) {
+                    } else if (b == 7 || b == 8 || b == 13 || b == 14 || b == 15 || b == 16) {
 
                         TW_Calc.TombolaExporter.level = a.construction_id;
 
                         //easter & independence: a.outcome & a.enhance
+                        //octoberfest: a.failed, normal: without outcome, after bribe: a.outcome ...& a.enhance
 
                         if (a && !a.failed && (a.itemId || a.outcome)) {
                             var prize = a.itemId || a.outcome && a.outcome.itemId;
@@ -2817,7 +2999,7 @@ window.TWCalc_inject = function () {
 
                 try {
 
-                    if (tombolaId == 1 || tombolaId == 11 || tombolaId == 12 || tombolaId == 13 || tombolaId == 14 || tombolaId == 15) {
+                    if (tombolaId == 1 || tombolaId == 11 || tombolaId == 12 || tombolaId == 13 || tombolaId == 14 || tombolaId == 15 || tombolaId == 16) {
 
                         var okey = tombolaId + (tombolaId == 1 ? '' : cYear);
                         var o = TW_Calc.TombolaExporter.createObjectFromStorage(okey) || [{}, {}, {}, {}, {}];
@@ -2972,6 +3154,7 @@ window.TWCalc_inject = function () {
                     $('#tab_tombola').append(TW_Calc.TombolaExporter.Tab.Scrollpane.getMainDiv());
 
                     TW_Calc.TombolaExporter.Tab.load(1, ''); //travelling fair
+                    TW_Calc.TombolaExporter.Tab.load(16, '_2017'); //octoberfest
                     TW_Calc.TombolaExporter.Tab.load(14, '_2017'); //independence
                     TW_Calc.TombolaExporter.Tab.load(13, '_2017'); //easter
                     TW_Calc.TombolaExporter.Tab.load(12, '_2017'); //valentine
@@ -3047,7 +3230,13 @@ window.TWCalc_inject = function () {
         TW_Calc.DuelBar = {};
 
         TW_Calc.DuelBar.init = function () {
-            TW_Calc.DuelBar.loadPlayerData();
+
+            try {
+                TW_Calc.DuelBar.loadPlayerData();
+            } catch (e) {
+                new TW_Calc.Error(e, 'TW_Calc.DuelBar.init').show();
+            }
+
         };
 
         TW_Calc.DuelBar.loadedData = [];
@@ -3056,7 +3245,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.DuelBar.MainDiv = '';
 
-        TW_Calc.NearestJob.DuelBarEnabled = (Number(TW_Calc.Settings.get("duelBar", "number")) === 2) || (Number(TW_Calc.Settings.get("topBar", "duelBar")) === 1);
+        TW_Calc.NearestJob.DuelBarEnabled = (Number(TW_Calc.Settings.get("duelBar", 1)) === 2) || (Number(TW_Calc.Settings.get("topBar", "duelBar")) === 1);
 
         TW_Calc.DuelBar.loadPlayerData = function () {
 
@@ -3106,7 +3295,7 @@ window.TWCalc_inject = function () {
 
                 } else {
 
-                    if (Number(TW_Calc.Settings.get("topBar", "number")) !== 2)
+                    if (Number(TW_Calc.Settings.get("topBar", 1)) !== 2)
                         if (!$("#WESTCALC_TOP_BAR>#Westcalc_DuelBar").html().length) $("#WESTCALC_TOP_BAR").remove();
 
                 }
@@ -3243,112 +3432,92 @@ window.TWCalc_inject = function () {
 
         TW_Calc.Interface.init = function () {
 
-            var topBar = Number(TW_Calc.Settings.get("topBar", 1));
-            var duelBar = Number(TW_Calc.Settings.get("duelBar", 1));
+            try {
 
-            if (topBar === 1) {
-                TW_Calc.NearestJob.MainDiv = '#WESTCALC_BOTTOM_BAR';
-            } else if (duelBar === 2) {
-                TW_Calc.NearestJob.MainDiv = '#WESTCALC_TOP_BAR';
-            }
+                var topBar = Number(TW_Calc.Settings.get("topBar", 1));
+                var duelBar = Number(TW_Calc.Settings.get("duelBar", 1));
 
-            if (duelBar === 2) {
-                TW_Calc.DuelBar.MainDiv = '#WESTCALC_BOTTOM_BAR';
-            } else if (duelBar === 1) {
-                TW_Calc.DuelBar.MainDiv = '#WESTCALC_TOP_BAR';
-            }
-
-            if (duelBar === 1 || topBar === 2) {
-                $("#user-interface").append('<div id="WESTCALC_TOP_BAR" class="bottom" style="text-align: center; left: 50%; margin-top: 10px; width: 620px; position: absolute; top: 44px; z-index: 2; -webkit-transform: translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%);"></div>');
-                $('#user-interface>.first-purchase').remove();
-            }
-
-            if (duelBar === 2 || topBar === 1) {
-                $("#ui_bottombar").append('<div id="WESTCALC_BOTTOM_BAR" style="left: 50%; -webkit-transform:translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%); text-align: center; width: 620px; position: absolute; bottom:' + TW_Calc.NearestJob.posY + 'px;"></div>');
-                TW_Calc.NearestJob.bottomBarMover();
-            }
-
-
-            if (duelBar !== 3) {
-                $(TW_Calc.DuelBar.MainDiv).append('<div id="Westcalc_DuelBar" class="bottom" style="text-align: center; width: 620px; height: 88px;"></div>');
-            }
-
-            if (topBar !== 3) {
-                $(TW_Calc.NearestJob.MainDiv).append('<div id="Westcalc_JobBar" class="bottom" style="width: 510px; height: 61px; margin-left: auto; margin-right: auto; text-align: left"></div>');
-            }
-
-
-            TW_Calc.DuelBar.init();
-            TW_Calc.NearestJob.init();
-
-
-            if (TW_Calc.Settings.get("WestCalc", true) || topBar === 3 || TW_Calc.Settings.get("Wardrobe", true)) {
-
-                var rightMenuButtonLogicIn = function () {
-                    $(this).css('background-position', '-25px 0');
-                };
-
-                var rightMenuButtonLogicOut = function () {
-                    $(this).css('background-position', '0 0');
-                };
-
-                var container = $('<div class="ui_menucontainer" id="TWCalcButtons"></div>');
-
-                if (TW_Calc.Settings.get("WestCalc", true)) {
-                    $(container).append($('<div class="menulink" title="The-West Calc" ' + 'onclick="TW_Calc.window.open();" ' + 'style="background-position: 0 0; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAZCAMAAABEio12AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAMAUExURQ4BAFtKL2pSN0IqEDcjDTQgDDAdBxQCACcSABsSCmVMNVc3IA8DAEw+MRcMBmBJMSEYDychGUUoFh0KAHNcP0EvHwoAAFpKOFVBJVRCKHxlUYhwV081GzAlGzghFB4VDGBHIy0XA1A3J3hQJ41oQlxJKCYfFYx3ZSwcDm9FJIBXMHlQH6B7VopoPE1BOj0qE1pFJ5RmKhoSC083H2ZNPHZcOZt3TpRmRWRSQV1OMVlKMFZEJzEiBlNDKUU1LW1XPZZ8bIhWNigXD5l0RHlYMXNILYRjOqp7RZh/YYVtU6iGXZRlNI1eLT4cA3BNMraEUGA+FJV3X5RlPYlcOWBMLEg4HmtbRGJFI0gyHYVTNW1ROZd0TKCNZaaTa2dBGlAsEpFzW4x2XnlVO3RHJl1HKF1INKJ+V3piQYJdN////000FR8GABoGAPn18kgxF/X08i8bBNHJwTIdCPPx8DYcAyELAR4UCkYgAlQ7HjQcDsm1omJPNDkeE9rV0FQ0FdrOwx0OA2NKLFAuFlQ6IywTBCITBUcmCy0XCTAWAquek0kwIT8nEXJHJSYYDHNnWmJBIlw7ITokCycTBEkpEunm49/TyOTb1KGVh11DKl9ILl5IJ3ZSLjsoGZGDdjwiG6+SejQiFDoeBVk/Jlg2HVAzJScKAC8bDkgqGhMAAIRrT19IOVA7NIdwW8rBtmU9G2lOMGtKIkwrDeTh4HJCG7uUdJhjNNTLxINPKryvpWhELLCZhZtyTUQdBKGFZeDX0Laqn9TNyHhdRFQoGkEqHm9JNIxdLY11XlU1Gp6MgXxVL2A8Gd3Y1GA4HaWZjtLGunpKJntHHsO7tGY4FcKvm4JZL2QvCkweBqyYipJdPX1jSNPPzDkpFbixrNG+qNnRy1lDM21VR5WJg7CAUYd2aXlwaFw2E72hiXhjTmpMKlVGN8bBvJdoPYRZPXFTPL+SZK6ln4JtYPLs5urbz8qslXBPItC9r5R5aL+1rYhdSqCLdm1CIquDaV4lCujg1mVJJMWpjVXPAa8AAADcdFJOU+v+/v7s/uvs7P6vr/2v/uz+/a/rr/7rr8j+r6+t/q/rr+z+r6/s66/9r3jO6+uvyO2v6/3+66qvr+3tr8jtr6/rr6+vocivyNnr68jI7a+v6uui68jI7aLtyOvr6evZ6/2h6+v49fbr9v/////////////////////////////////////+///////////////////////////+///////////////////////////+//////////////////////////////////////////////////////////5vmyxZAAAEkElEQVQYGQXBeUxTBwAH4N+7etGbtlBKLUWq6ISJaBSELVwuLioaJJku02k8NhPMnDrFzSsSnZubV7Y5/9hkW7LFIwuTaSaSaQaoEfFEDqEFKi09aOn5aPvat+8j5ha0x4qmABfMtigASGaP5GEIKblbGmZVplHTOEwP5QBQRgzKEAJRTT8MKwC4AQAAdIGYMJZe4NEH2MK/AR3SIm6YbYUcG9FSHJHtJiScgAQSYD5lEme2nW8433AhBeDnlo5NOedWxY8fEOi1dd8Ta7UXPrrmPjKRic3E2/cPNQENyJgGRC7g4raML4Qpkltzc+CERcyOCQo90UAGPDoxbBl24HgDJXI5Lkrnx+O+9bl3Pg5tyK45uaQqqzmjpIOt9JE9E2x4eJ75QSPpWmwN5Ne1LE3sUlKE+HDaEACM9CT6Vl5tH2qeqLp/7+IroXdtj9IDAGmdSVmfpNVjcfS6rcVDLBmNvLydD2xNY5rgfUsMTPachuazRq2iAq8PA7qzlRtxJWch8Gb5cxTUlNaTSpzFAPBrueoScMgB/LIXkNo3q4jfNWIdgHOtXoD/D2gOA+W3HQ9IAuAAAP65wKAXiH4LzOS2PwM4+V8AqmcTQOdzIN4PuCmTlYR+OzQAHnECCaYh0GAa8NE/wmSk4QFgN82n4QZdgBeA1MwsI/lxWk4BtVPM01IAy1cDqLZeAU8lvOsAAFS3GoBsNYBT3lGOIkH8EGSBaLFzZArAyywA7uiO+TOQSfykBXTZY5l7AJT2ALhsgHOMlAFZ0kIUOIzTz49iN/31Qmxm8mj/mHWymAnshKVbnRxYiVpdfCfq1z0UVJOUZYIvTB2seTTNcUQH02l2eRgJTTtMo0Rxt0/6FDaf/JaBGre0VnsrpIzCNGSnEnSDLjc/N2n0p8tkNb0WubbsxtJJVYB/3RRbEvMxkuI2tSiaoFldbDDZTlwNPiaVYYWzX2TVuJJCp/OuGB5Ph6RDJIkO61pxI35EVRHUIPk5kkY4bWmhLuEsPSVi25bPsAfjqgWd7zPWfdpwUXeECR5951loxUSlSOvYGim71bjIF5ujfKPtyfKldfkbSD935IPuqhzp+ha4J8iTV0qaU/uleRifzdTz439W7Tk45xSCxv5+o+vYMdVtaqiPJpUKfzv6XfwIdt+kAQcB429Tz87OUsr/GMxGtK/0FE7ubwckOlzbVTEswWOSiNytg33l4nv4Bgs4lCqwYseyInrVFIylr6Hu6tqHfYgCl9yIns4tsT9ZRPIp/6395GWDLafy+Is10X9HN353gFhE3FFMmu1f5rT4txzKea+W38UNt+4c9BMvk4lGQh3ZImE18AK8BKyYLenSesWAcvB6o/GRQj5mjNvkc/pQ+wA+kZE24H6K1gabsyMhAoD0k3TBRrSEwcvS3pUG8npF7Bnl3qYTX8n++RBzeeIYwVvrUWYgNjkHHJkQxoTSXtNkRO/MgFCKHrpG22/AdUUIKYAkUzDMQxsHWu9YE6Diene05AUdId18KEuVmkeIBWqXuoziHLSv6BVJasl0pKhyNafMnmkxR9QC/n+f2e8W3vECWAAAAABJRU5ErkJggg==);"' + '></div>')
-                        .hover(rightMenuButtonLogicIn, rightMenuButtonLogicOut));
+                if (topBar === 1 || topBar === 5) {
+                    TW_Calc.NearestJob.MainDiv = '#WESTCALC_BOTTOM_BAR';
+                } else if (duelBar === 2) {
+                    TW_Calc.NearestJob.MainDiv = '#WESTCALC_TOP_BAR';
                 }
 
-                if (topBar === 3) {
-                    $(container).append($('<div class="menulink" title="' + TW_Calc.getTranslation(152) + '" ' + 'style="background-position: 0 0; background-image: url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAQFBAYFBQYJBgUGCQsIBgYICwwKCgsKCgwQDAwMDAwMEAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/2wBDAQcHBw0MDRgQEBgUDg4OFBQODg4OFBEMDAwMDBERDAwMDAwMEQwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wgARCAAaADIDAREAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAwQFAQYC/8QAFwEAAwEAAAAAAAAAAAAAAAAAAAECA//aAAwDAQACEAMQAAAB4jHZ5CYVM7ZcjmjS4Os9dJKYoq6aGNkdNLXLBhG4g8vVSdz4aTtU86ySdon5LeOn/8QAIRABAAICAAYDAAAAAAAAAAAAAwIEAAEFEBESEzMjMTL/2gAIAQEAAQUCZHko0eKJGcrpKm/kGmqRY2Ofdkpb2lYSonfuQsYja09cY61dtafPMGBYIbKW0Wctj44sUbTW5om51endDLfuPC91v9w++X//xAAeEQACAwABBQAAAAAAAAAAAAAAEQECIQMQUWFxwf/aAAgBAwEBPwGWOTfZsjRpvYgmBIengrRfRkSMcIwZNjDkKFSxXr//xAAdEQACAgMBAQEAAAAAAAAAAAAAAQIRECExEgNR/9oACAECAQE/AUka/ConCrOYaPWy7EtFjlZ5ZJCiVsp0UVj58JYjwef/xAAxEAAABAMEBwcFAAAAAAAAAAAAAQIRITEyAxIiQTNDUWFxkdE0QoGCscHwBBMUI+H/2gAIAQEABj8CVFkkbcgSrIjjTSQxqU6JpOHoFJyTDf4h7NHDIXV30mnKI79F+o585b5hRJJ8Z+oL6m2P980om39+Sn9y1w2u3dwFo0cRMfgQ/ItsBno07ePT3karUygbJV1Gk1L/ADoFrMnN1TTm8wZqxPz9xEjJTMDWuMSNrpxgLz3tge6pyyyFWquU5dQuiRTqkNX5hZ9nmE0U5+27YO55gns8xq9IP//EACUQAAIBBAICAgIDAAAAAAAAAAERIQAxQVFh8HGRgbEQocHR4f/aAAgBAQABPyFIuAgAEI05Zm82eBR3ITAA5F4BRnHFQSmuvMWJjIxLpkh6EuBAOV8FQxTkCGkTHiz1GaSuWYh9H97pNdb6+6k9rMudhvQpSo0EAjxEhljzdSAAVuaIWCZ5Uryy6PmQO7s1Ys5blZjpxL70GhsKcDQDPsi0hL/Ad/nS22sEYKBPPHsKhjkGRtLmhF3DJoH072VTXQ3YCqcB2Wr0hUBEEgNIWjGhjZjRgeTZLeNqViuX1jf0rsH1+qu7fNf1+/xzrmulm9Tsd+Kzx/v8H//aAAwDAQACAAMAAAAQMMKaHs76QLgMIs//xAAfEQADAAICAgMAAAAAAAAAAAAAAREhMRBBIFFhcfH/2gAIAQMBAT8QZyXZrUG8DwfIJsX9BH9lEKDzgcNCVQU74EcWBOmJkxCRPY2NDZHXwf/EAB4RAQACAgEFAAAAAAAAAAAAAAEAESExEEFhcYHx/9oACAECAQE/EARPpOlUEFy22oke5RB4GorAJiPmNW5TwZnajpArdQQm5YSpWLdMt4tI6d8g4//EACMQAQEAAwABAwQDAAAAAAAAAAERACExQRBxkVFhofDB0eH/2gAIAQEAAT8QnOx0YGngwAXlaEKGiOlMKZ/N0mkUsUAfFRlEG61uAUeKTrp09MDGIlGpxpj9I9CrUpHcvAgeRWDaU2wUdprgGQih+YKpMCdzCIu4iOlwM7MV2gBAlKq8MBqcJsHhpXXzlT/o394EOGVInRcZExJEYMraD8ZFh60KUbcSEpxxhqJEYFk64cmtiCIMAqdEhAeSfL0Awn+k+nc8vv8AfzHw782F+h9MH5fu7g/kft9D/9k=)"' + '></div>')
-                        .hover(rightMenuButtonLogicIn, rightMenuButtonLogicOut)
-                        .click(TW_Calc.NearestJob.rightMenuButtonLogic));
-                    TW_Calc.NearestJob.getMap();
+                if (duelBar === 2) {
+                    TW_Calc.DuelBar.MainDiv = '#WESTCALC_BOTTOM_BAR';
+                } else if (duelBar === 1) {
+                    TW_Calc.DuelBar.MainDiv = '#WESTCALC_TOP_BAR';
                 }
 
-                if (TW_Calc.Settings.get("Wardrobe", true)) {
-                    $(container).append($('<div class="menulink" id="' + TW_Calc.Wardrobe.id + '" title="' + TW_Calc.getTranslation(170) + '" ' + 'style="background-position:0 0; background-image: url(data:image/png;data:;base64,' + TW_Calc.Wardrobe.img + ')"' + '></div>')
-                        .hover(rightMenuButtonLogicIn, rightMenuButtonLogicOut)
-                        .click(TW_Calc.Wardrobe.window.launch));
+                if (duelBar === 1 || topBar === 2) {
+                    $("#user-interface").append('<div id="WESTCALC_TOP_BAR" class="bottom" style="text-align: center; left: 50%; margin-top: 10px; max-width: 620px; position: absolute; top: 44px; z-index: 2; -webkit-transform: translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%);"></div>');
+                    $('#user-interface>.first-purchase').remove();
                 }
 
-                $(container).append('<div class="menucontainer_bottom"></div>');
+                if (duelBar === 2 || topBar === 1 || topBar === 5) {
+                    $("#ui_bottombar").append('<div id="WESTCALC_BOTTOM_BAR" style="left: 50%; -webkit-transform: translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%); text-align: center; max-width: 620px; position: absolute; bottom:' + TW_Calc.NearestJob.posY + 'px;"></div>');
+                    TW_Calc.NearestJob.bottomBarMover();
+                }
+
+                if (duelBar !== 3) {
+                    $(TW_Calc.DuelBar.MainDiv).append('<div id="Westcalc_DuelBar" class="bottom" style="text-align: center; width: 620px; height: 88px;"></div>');
+                }
+
+                if (topBar !== 3) {
+                    $(TW_Calc.NearestJob.MainDiv).append('<div id="Westcalc_JobBar" class="bottom" style="width: 510px; height: 61px; margin-left: auto; margin-right: auto; text-align: left"></div>');
+                }
 
 
-                $('#ui_menubar').append(container);
+                TW_Calc.DuelBar.init();
+                TW_Calc.NearestJob.init();
 
-            }
+                if (TW_Calc.Settings.get("WestCalc", true) || topBar === 3 || TW_Calc.Settings.get("Wardrobe", true)) {
 
-            if (TW_Calc.Settings.get("MenuCraftButton", true) && Character.professionId !== null) {
-                $('.button.crafting.background').unbind('click').click(function() {
-                    TW_Calc.Craft.window.open(Character.professionId);
-                });
-            }
+                    var rightMenuButtonLogicIn = function () {
+                        $(this).css('background-position', '-25px 0');
+                    };
 
-        };
+                    var rightMenuButtonLogicOut = function () {
+                        $(this).css('background-position', '0 0');
+                    };
 
-        TW_Calc.showBirthdayPopUp = function () {
+                    var container = $('<div class="ui_menucontainer" id="TWCalcButtons"></div>');
 
-            if (TW_Calc.isBirthday() === true) {
+                    if (TW_Calc.Settings.get("WestCalc", true)) {
+                        $(container).append($('<div class="menulink" title="The-West Calc" ' + 'onclick="TW_Calc.window.open();" ' + 'style="background-position: 0 0; background-image: url(' + TW_Calc.icon + ');"' + '"></div>')
+                            .hover(rightMenuButtonLogicIn, rightMenuButtonLogicOut));
+                    }
 
-                var date = new Date();
+                    if (topBar === 3) {
+                        $(container).append($('<div class="menulink" title="' + TW_Calc.getTranslation(152) + '" ' + 'style="background-position: 0 0; background-image: url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAQFBAYFBQYJBgUGCQsIBgYICwwKCgsKCgwQDAwMDAwMEAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/2wBDAQcHBw0MDRgQEBgUDg4OFBQODg4OFBEMDAwMDBERDAwMDAwMEQwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wgARCAAaADIDAREAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAwQFAQYC/8QAFwEAAwEAAAAAAAAAAAAAAAAAAAECA//aAAwDAQACEAMQAAAB4jHZ5CYVM7ZcjmjS4Os9dJKYoq6aGNkdNLXLBhG4g8vVSdz4aTtU86ySdon5LeOn/8QAIRABAAICAAYDAAAAAAAAAAAAAwIEAAEFEBESEzMjMTL/2gAIAQEAAQUCZHko0eKJGcrpKm/kGmqRY2Ofdkpb2lYSonfuQsYja09cY61dtafPMGBYIbKW0Wctj44sUbTW5om51endDLfuPC91v9w++X//xAAeEQACAwABBQAAAAAAAAAAAAAAEQECIQMQUWFxwf/aAAgBAwEBPwGWOTfZsjRpvYgmBIengrRfRkSMcIwZNjDkKFSxXr//xAAdEQACAgMBAQEAAAAAAAAAAAAAAQIRECExEgNR/9oACAECAQE/AUka/ConCrOYaPWy7EtFjlZ5ZJCiVsp0UVj58JYjwef/xAAxEAAABAMEBwcFAAAAAAAAAAAAAQIRITEyAxIiQTNDUWFxkdE0QoGCscHwBBMUI+H/2gAIAQEABj8CVFkkbcgSrIjjTSQxqU6JpOHoFJyTDf4h7NHDIXV30mnKI79F+o585b5hRJJ8Z+oL6m2P980om39+Sn9y1w2u3dwFo0cRMfgQ/ItsBno07ePT3karUygbJV1Gk1L/ADoFrMnN1TTm8wZqxPz9xEjJTMDWuMSNrpxgLz3tge6pyyyFWquU5dQuiRTqkNX5hZ9nmE0U5+27YO55gns8xq9IP//EACUQAAIBBAICAgIDAAAAAAAAAAERIQAxQVFh8HGRgbEQocHR4f/aAAgBAQABPyFIuAgAEI05Zm82eBR3ITAA5F4BRnHFQSmuvMWJjIxLpkh6EuBAOV8FQxTkCGkTHiz1GaSuWYh9H97pNdb6+6k9rMudhvQpSo0EAjxEhljzdSAAVuaIWCZ5Uryy6PmQO7s1Ys5blZjpxL70GhsKcDQDPsi0hL/Ad/nS22sEYKBPPHsKhjkGRtLmhF3DJoH072VTXQ3YCqcB2Wr0hUBEEgNIWjGhjZjRgeTZLeNqViuX1jf0rsH1+qu7fNf1+/xzrmulm9Tsd+Kzx/v8H//aAAwDAQACAAMAAAAQMMKaHs76QLgMIs//xAAfEQADAAICAgMAAAAAAAAAAAAAAREhMRBBIFFhcfH/2gAIAQMBAT8QZyXZrUG8DwfIJsX9BH9lEKDzgcNCVQU74EcWBOmJkxCRPY2NDZHXwf/EAB4RAQACAgEFAAAAAAAAAAAAAAEAESExEEFhcYHx/9oACAECAQE/EARPpOlUEFy22oke5RB4GorAJiPmNW5TwZnajpArdQQm5YSpWLdMt4tI6d8g4//EACMQAQEAAwABAwQDAAAAAAAAAAERACExQRBxkVFhofDB0eH/2gAIAQEAAT8QnOx0YGngwAXlaEKGiOlMKZ/N0mkUsUAfFRlEG61uAUeKTrp09MDGIlGpxpj9I9CrUpHcvAgeRWDaU2wUdprgGQih+YKpMCdzCIu4iOlwM7MV2gBAlKq8MBqcJsHhpXXzlT/o394EOGVInRcZExJEYMraD8ZFh60KUbcSEpxxhqJEYFk64cmtiCIMAqdEhAeSfL0Awn+k+nc8vv8AfzHw782F+h9MH5fu7g/kft9D/9k=)"' + '></div>')
+                            .hover(rightMenuButtonLogicIn, rightMenuButtonLogicOut)
+                            .click(TW_Calc.NearestJob.rightMenuButtonLogic));
+                        TW_Calc.NearestJob.getMap();
+                    }
 
-                if (TW_Calc.storage.get("BDAY") !== date.getFullYear()) {
+                    if (TW_Calc.Settings.get("Wardrobe", true)) {
+                        $(container).append($('<div class="menulink" id="' + TW_Calc.Wardrobe.id + '" title="' + TW_Calc.getTranslation(170) + '" ' + 'style="background-position:0 0; background-image: url(data:image/png;data:;base64,' + TW_Calc.Wardrobe.img + ')"' + '></div>')
+                            .hover(rightMenuButtonLogicIn, rightMenuButtonLogicOut)
+                            .click(TW_Calc.Wardrobe.window.launch));
+                    }
 
-                    var age = date.getFullYear() - 2012;
-                    var text = age + (age === 1 ? 'st' : age === 2 ? 'nd' : age === 3 ? '3rd' : 'th');
+                    $(container).append('<div class="menucontainer_bottom"></div>');
 
-                    new west.gui.Dialog().setTitle("It's TW-Calc " + text + " birthday!").setText("<table><tr><td><img src='" + TW_Calc.imgUrl + "/images/items/yield/5_year_cake.png?1'></td><td>Thank you for using this script and visiting our website!</br>" +
-                        "If you like our webpage, please donate for server costsand further development, we'll be very grateful to you. We are funding everything from our own resources. All your donations will be appreciated and used in best way possible to ensure future development of our page and scipt. <b>Thank you!</b>" +
-                        '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top"><input type="hidden" name="cmd" value="_s-xclick"><input type="hidden" name="hosted_button_id" value="LRG4X3PGMYHZY"><input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"><img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"></form></td></tr></table>').addButton("Visit website", function () {
-                        TW_Calc.storage.add("BDAY", new Date().getFullYear());
-                        window.open(TW_Calc.website);
-                    }).addButton("Close", function () {
-                        TW_Calc.storage.add("BDAY", new Date().getFullYear());
-                    }).show();
+
+                    $('#ui_menubar').append(container);
 
                 }
+
+                if (TW_Calc.Settings.get("MenuCraftButton", true) && Character.professionId !== null) {
+                    $('.button.crafting.background').unbind('click').click(function() {
+                        TW_Calc.Craft.window.open(Character.professionId);
+                    });
+                }
+
+            } catch (e) {
+                new TW_Calc.Error(e, 'TW_Calc.Interface.init').show();
             }
+
         };
 
         TW_Calc.initWestCalcLanguageAndInject();
