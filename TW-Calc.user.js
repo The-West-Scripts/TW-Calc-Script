@@ -3439,7 +3439,7 @@ window.TWCalc_inject = function () {
 
                 if (topBar === 1 || topBar === 5) {
                     TW_Calc.NearestJob.MainDiv = '#WESTCALC_BOTTOM_BAR';
-                } else if (duelBar === 2) {
+                } else if (topBar === 2) {
                     TW_Calc.NearestJob.MainDiv = '#WESTCALC_TOP_BAR';
                 }
 
