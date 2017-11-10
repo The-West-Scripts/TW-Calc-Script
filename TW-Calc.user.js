@@ -2870,7 +2870,7 @@ window.TWCalc_inject = function () {
 
                     var b = a.wofid;
 
-                    if (b == 1) {
+                    if ([1].indexOf(b) !== -1) {
 
                         var prize = a.picked[0];
                         var category = a.picked[1];
@@ -2878,7 +2878,7 @@ window.TWCalc_inject = function () {
                         TW_Calc.TombolaExporter.exportData(prize, b, category);
                         TW_Calc.TombolaExporter.saveData(prize, b, category);
 
-                    } else if (b == 12) {
+                    } else if ([12].indexOf(b) !== -1) {
 
                         var prize = a.prize.itemId;
                         var category = 0;
@@ -2888,26 +2888,27 @@ window.TWCalc_inject = function () {
                         TW_Calc.TombolaExporter.exportData(prize, b, category);
                         TW_Calc.TombolaExporter.saveData(prize, b, category);
 
-                    } else if (b == 11 || b==17) {
+                    } else if ([11, 17].indexOf(b) !== -1) {
 
                         var category = a.stages.length - 1;
                         var prize = a.stages[category].rewards.item;
-                        var level = '';
-                        if (a.action == 'gamble') {
-                            level = a.card == 1 ? 'Left_card' : 'Right_card'; //a.card: left card is 1 and right card is 0
+                        var level = -1;
+
+                        if (a.action === 'gamble') {
+                            level = Number(a.card) === 1 ? 'Left_card' : 'Right_card'; //a.card: left card is 1 and right card is 0
                             localStorage.setItem('TWCalc_Tombola_currentStage', category);
                             TW_Calc.TombolaExporter.exportData(prize, b, category, level);
-                        } else if (a.action == 'bribe' || a.action == 'change') {
+                        } else if (a.action === 'bribe' || a.action === 'change') {
                             level = 'After_bribe';
                             TW_Calc.TombolaExporter.Spins(b, 1, false);
                             TW_Calc.TombolaExporter.exportData(prize, b, category, level);
-                        } else if (a.action == 'end') {
+                        } else if (a.action === 'end') {
                             TW_Calc.TombolaExporter.Spins(b, 0, true);
                             category = localStorage.getItem('TWCalc_Tombola_currentStage');
                             TW_Calc.TombolaExporter.saveData(prize, b, category);
                         }
 
-                    } else if (b == 7 || b == 8 || b == 13 || b == 14 || b == 15 || b == 16) {
+                    } else if ([7, 8, 13, 14, 15, 16].indexOf(b) !== -1) {
 
                         TW_Calc.TombolaExporter.level = a.construction_id;
 
@@ -2915,6 +2916,7 @@ window.TWCalc_inject = function () {
                         //octoberfest: a.failed, normal: without outcome, after bribe: a.outcome ...& a.enhance
 
                         if (a && !a.failed && (a.itemId || a.outcome)) {
+
                             var prize = a.itemId || a.outcome && a.outcome.itemId;
                             var c = a.itemEnhance || a.outcome && a.outcome.itemEnhance;
 
@@ -2967,8 +2969,9 @@ window.TWCalc_inject = function () {
 
             TW_Calc.TombolaExporter.exportData = function (prize, id, category, level) {
 
-                if (TW_Calc.ShowLogs) console.log('level:', level);
-                if (level > -1) {
+                if (TW_Calc.ShowLogs) console.log('Level: ', level);
+
+                if (typeof(level) !== "undefined" && level !== -1) {
 
                     $.get(TW_Calc.website + '/service/tombola-export', {
                         tombolaId: id,
