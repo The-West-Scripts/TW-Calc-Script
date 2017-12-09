@@ -216,7 +216,7 @@ window.TWCalc_inject = function () {
 
                     if (TW_Calc.storage.get("LANG_PACK_LAST_UPDATE") !== null) {
 
-                        TW_Calc.lang = $.parseJSON(TW_Calc.storage.get("LANG_PACK"));
+                        TW_Calc.lang = JSON.parse(TW_Calc.storage.get("LANG_PACK"));
 
                     } else {
 
@@ -237,7 +237,7 @@ window.TWCalc_inject = function () {
 
                     if (TW_Calc.storage.get("LANG_PACK_LAST_UPDATE") !== null) {
 
-                        TW_Calc.lang = $.parseJSON(TW_Calc.storage.get("LANG_PACK"));
+                        TW_Calc.lang = JSON.parse(TW_Calc.storage.get("LANG_PACK"));
 
                     } else {
 
@@ -280,7 +280,7 @@ window.TWCalc_inject = function () {
 
                 if (typeof this.storage.get("LANG_PACK_LAST_UPDATE") !== "undefined") {
 
-                    this.lang = $.parseJSON(this.storage.get("LANG_PACK"));
+                    this.lang = JSON.parse(this.storage.get("LANG_PACK"));
 
                     var a = new Date(this.storage.get("LANG_PACK_LAST_UPDATE"));
                     var today = new Date();
@@ -295,7 +295,7 @@ window.TWCalc_inject = function () {
 
                     } else {
 
-                        TW_Calc.lang = $.parseJSON(TW_Calc.storage.get("LANG_PACK"));
+                        TW_Calc.lang = JSON.parse(TW_Calc.storage.get("LANG_PACK"));
                         this.inject();
 
                     }
@@ -1092,7 +1092,7 @@ window.TWCalc_inject = function () {
 
                 if (typeof data !== "undefined") {
 
-                    var json = $.parseJSON(data);
+                    var json = JSON.parse(data);
 
                     if (json.hasOwnProperty(name)) {
                         return json[name];
@@ -1424,7 +1424,7 @@ window.TWCalc_inject = function () {
 
                 $(".recipe_title>.recipe_craft_amount", parent).empty().html(hasProducts ? new west.gui.Plusminusfield('recipe_button_' + reciepeId, 1, 1, maxCraftable, 1, TW_Calc.buttonLogic, TW_Calc.buttonLogic, TW_Calc.wheelLogic).getMainDiv() : $('<div></div>'));
                 $(".recipe_title>.recipe_craft", parent).html(typeof lastCraft === "undefined" || lastCraft === null ? (craftable ? TW_Calc.getTranslation(177) : (canBeLearned ? TW_Calc.getTranslation(209) : '')) : '<span style="color: yellow; cursor: default;">' + lastCraft.formatDurationBuffWay() + '</span>')
-                    .unbind("click");
+                    .off("click");
 
                 if (craftable) {
                     $(".recipe_title>.recipe_craft", parent).click(function () {
@@ -2393,7 +2393,7 @@ window.TWCalc_inject = function () {
                 data = TW_Calc.storage.get(type);
             }
 
-            return $.parseJSON(data);
+            return JSON.parse(data);
 
         };
 
@@ -2957,7 +2957,7 @@ window.TWCalc_inject = function () {
                 var lkey = "TWCalc_Tombola_Spins_" + id + cYear;
 
                 if (localStorage.getItem(lkey) !== null)
-                    a = $.parseJSON(localStorage.getItem(lkey));
+                    a = JSON.parse(localStorage.getItem(lkey));
 
                 if (t === true)
                     a.total++;
@@ -2995,7 +2995,7 @@ window.TWCalc_inject = function () {
             TW_Calc.TombolaExporter.createObjectFromStorage = function (tombolaId) {
 
                 var d = localStorage.getItem('TWCalc_Tombola_' + tombolaId);
-                return (d ? $.parseJSON(d) : null);
+                return (d ? JSON.parse(d) : null);
 
             };
 
@@ -3088,13 +3088,13 @@ window.TWCalc_inject = function () {
                         };
 
                         if (valentine) {
-                            var a = $.parseJSON(localStorage.getItem("TWCalc_Tombola_Spins_" + combi)) || {
+                            var a = JSON.parse(localStorage.getItem("TWCalc_Tombola_Spins_" + combi)) || {
                                 total: 0,
                                 free: 0
                             };
                             $('#TW_Calc_TombolaExporter_Tab_Groupframe_' + combi).append('<span style="font-size: 15px;text-align: right;margin-left: 35px;">' + a.free + ' free spins of ' + a.total + ' total spins</span></h2>');
                         } else if (dotd) {
-                            var a2 = $.parseJSON(localStorage.getItem("TWCalc_Tombola_Spins_" + combi)) || {
+                            var a2 = JSON.parse(localStorage.getItem("TWCalc_Tombola_Spins_" + combi)) || {
                                 total: 0,
                                 free: 0
                             };
@@ -3215,12 +3215,12 @@ window.TWCalc_inject = function () {
         TW_Calc.Chests.init = function () {
 
             try {
-                var foo = ItemUse.doItOrigin || ItemUse.doIt;
-                var str = foo.toString();
-                var pos = str.indexOf('EventHandler.signal(\'item_used\'');
-                var inject = str.substr(0, pos) + 'TW_Calc.Chests.send(itemId,res);' + str.substr(pos);
+                var toolkit = ItemUse.doItOrigin ? 'doItOrigin' : 'doIt',
+                str = ItemUse[toolkit].toString(),
+                pos = str.indexOf('EventHandler.signal(\'item_used\''),
+                inject = str.substr(0, pos) + 'TW_Calc.Chests.send(itemId,res);' + str.substr(pos);
 
-                eval('ItemUse.doIt = ' + inject);
+                eval('ItemUse.' + toolkit + ' = ' + inject);
 
             } catch (e) {
                 new TW_Calc.Error(e, 'TW_Calc.Chests.open').show();
@@ -3309,10 +3309,6 @@ window.TWCalc_inject = function () {
 
         };
 
-        TW_Calc.DuelBar.startDuel = function (playerId) {
-            TaskQueue.add(new TaskDuel(playerId));
-        };
-
         TW_Calc.DuelBar.InsertContent = function () {
 
             if (TW_Calc.ShowLogs) console.log("INSERING DUEL DATA...");
@@ -3348,7 +3344,7 @@ window.TWCalc_inject = function () {
 
                 var title = 'Duel - ' + p.player_name + ' - ' + way_time.formatDuration();
 
-                var ava = $('<div style="display:inline-block;margin-right:5px;cursor:pointer;position:relative;float:left;" id="TWCalc_Quick_duel_' + p.player_id + '" player_id="' + p.player_id + '">' + p.avatar + '<div style="color:#F8C57C;top:5px;position:absolute;text-align:center;width:100%;font-weight:bold;text-shadow: 1px 1px 1px black;font-size:11px;">' + p.duellevel + '</div><img onclick="TW_Calc.DuelBar.startDuel(' + p.player_id + ')" title="' + title + '" style="position:absolute;bottom:-22px;left:11px;width:50px;" src="/images/window/duels/charclass_' + p.class + '.png"><div class="open_profile" title="' + p.player_name + '" onclick="PlayerProfileWindow.open(' + p.player_id + ')" style="z-index:3;width:20px;height:20px;display:none;cursor:pointer;position:absolute;left:-10px;top:20px;background-image:url(/images/map/icons/instant-work-1.png);"></div><!--<div class="open_profile" title="Loading..." style="z-index:3;width:20px;height:20px;display:none;cursor:pointer;position:absolute;right:-10px;top:20px;background-image:url(/images/map/icons/instant-work-1.png);o-transform:scaleX(-1);-webkit-transform:scaleX(-1);transform:scaleX(-1);filter:FlipH;-ms-filter: &quot;FlipH";&quot;></div>!--></div>').hover(function () {
+                var ava = $('<div style="display:inline-block;margin-right:5px;cursor:pointer;position:relative;float:left;" id="TWCalc_Quick_duel_' + p.player_id + '" player_id="' + p.player_id + '">' + p.avatar + '<div style="color:#F8C57C;top:5px;position:absolute;text-align:center;width:100%;font-weight:bold;text-shadow: 1px 1px 1px black;font-size:11px;">' + p.duellevel + '</div><img onclick="SaloonWindow.startDuel(' + p.player_id + ')" title="' + title + '" style="position:absolute;bottom:-22px;left:11px;width:50px;" src="/images/window/duels/charclass_' + p.class + '.png"><div class="open_profile" title="' + p.player_name + '" onclick="PlayerProfileWindow.open(' + p.player_id + ')" style="z-index:3;width:20px;height:20px;display:none;cursor:pointer;position:absolute;left:-10px;top:20px;background-image:url(/images/map/icons/instant-work-1.png);"></div><!--<div class="open_profile" title="Loading..." style="z-index:3;width:20px;height:20px;display:none;cursor:pointer;position:absolute;right:-10px;top:20px;background-image:url(/images/map/icons/instant-work-1.png);o-transform:scaleX(-1);-webkit-transform:scaleX(-1);transform:scaleX(-1);filter:FlipH;-ms-filter: &quot;FlipH";&quot;></div>!--></div>').hover(function () {
 
                     $(this).find(".open_profile").show();
 
@@ -3362,12 +3358,12 @@ window.TWCalc_inject = function () {
 
                 $(TW_Calc.DuelBar.selector).find('#TWCalc_Quick_duel_' + p.player_id).find('.avatar_pic').attr("title", title).click(function () {
                     var id = $(this).parent().attr("player_id");
-                    TW_Calc.DuelBar.startDuel(id);
+                    SaloonWindow.startDuel(id);
                 });
 
                 $(TW_Calc.DuelBar.selector).find('#TWCalc_Quick_duel_' + p.player_id).find('img').click(function () {
                     var id = $(this).parent().attr("player_id");
-                    TW_Calc.DuelBar.startDuel(id);
+                    SaloonWindow.startDuel(id);
                 });
 
                 function flipBackgroundHover() {
@@ -3514,7 +3510,7 @@ window.TWCalc_inject = function () {
                 }
 
                 if (TW_Calc.Settings.get("MenuCraftButton", true) && Character.professionId !== null) {
-                    $('.button.crafting.background').unbind('click').click(function() {
+                    $('.button.crafting.background').off('click').click(function() {
                         TW_Calc.Craft.window.open(Character.professionId);
                     });
                 }
