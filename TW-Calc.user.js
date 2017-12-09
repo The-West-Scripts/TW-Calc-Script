@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.26
+// @version 1.27
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -72,7 +72,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.26",
+            version: "1.27",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -347,7 +347,7 @@ window.TWCalc_inject = function () {
 
 
 
-                var time = (Character.maxEnergy - Character.energy) / Math.floor(Character.energyRegen * 100);
+                var time = (Character.maxEnergy - Character.energy) / (Character.energyRegen * Character.maxEnergy);
                 var hour = Math.floor(time);
                 var minute = Math.floor((time - hour) * 60);
 
@@ -363,7 +363,7 @@ window.TWCalc_inject = function () {
 
             } catch (e) {
                 new TW_Calc.Error(e, 'TW_Calc.initXpHpCalculator').show();
-                clearInterval(window.xpHpCalc);
+                clearInterval(window.xpHpEnergyCalc);
             }
 
         };
