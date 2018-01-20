@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.27
+// @version 1.28
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -72,7 +72,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.27",
+            version: "1.28",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -1178,7 +1178,6 @@ window.TWCalc_inject = function () {
         TW_Calc.Craft.init = function () {
 
             TW_Calc.Craft.updateLastCraftedItemList();
-            TW_Calc.Craft.reCache();
 
             Bag.updateChanges = function(changes, from) {
                 this.handleChanges(changes, from);
@@ -1203,7 +1202,7 @@ window.TWCalc_inject = function () {
 
         TW_Calc.Craft.start = function (recipe_id) {
 
-            var amount = Number(Number($('#recipe_button_' + recipe_id + '>.displayValue').text()));
+            var amount = Number(Number($('#recipe_button_Calc_' + recipe_id + '>.displayValue').text()));
 
             Ajax.remoteCall('crafting', 'start_craft', {
                     recipe_id: recipe_id,
@@ -1221,7 +1220,6 @@ window.TWCalc_inject = function () {
 
                     Character.updateDailyTask('crafts', data.count);
 
-                    var proffesion_id = ItemManager.get(recipe_id).profession_id;
                     TW_Calc.Craft.window.progressBar.setValue(Character.professionSkill);
 
                     EventHandler.signal("inventory_changed");
@@ -1236,16 +1234,6 @@ window.TWCalc_inject = function () {
 
         TW_Calc.Craft.professionsCache = [[{"r":20000000,"o":[0,50,100]},{"r":20001000,"o":[0,50,100]},{"r":20002000,"o":[0,50,100]},{"r":20083000,"o":[0,100,100]},{"r":20084000,"o":[0,10,10]},{"r":20085000,"o":[10,20,20]},{"r":20086000,"o":[20,40,40]},{"r":20003000,"o":[50,100,100]},{"r":20004000,"o":[50,100,100]},{"r":20005000,"o":[100,150,200]},{"r":20006000,"o":[100,150,200]},{"r":20007000,"o":[100,150,200]},{"r":20008000,"o":[150,225,300]},{"r":20009000,"o":[150,225,300]},{"r":20010000,"o":[150,225,300]},{"r":20011000,"o":[250,300,300]},{"r":20012000,"o":[250,300,300]},{"r":20013000,"o":[250,300,300]},{"r":20014000,"o":[300,350,400]},{"r":20015000,"o":[350,425,500]},{"r":20016000,"o":[350,425,500]},{"r":20017000,"o":[350,425,500]},{"r":20116000,"o":[350,425,500]},{"r":20134000,"o":[450,475,500]},{"r":20018000,"o":[400,500,500]},{"r":20019000,"o":[450,500,500]},{"r":20096000,"o":[500,525,550]},{"r":20120000,"o":[500,525,550]},{"r":20124000,"o":[500,525,550]},{"r":20097000,"o":[525,550,575]},{"r":20098000,"o":[550,575,600]},{"r":20135000,"o":[550,575,600]},{"r":20099000,"o":[600,625,650]},{"r":20100000,"o":[600,625,650]},{"r":20136000,"o":[600,650,700]}],[{"r":20020000,"o":[0,50,100]},{"r":20021000,"o":[0,50,100]},{"r":20022000,"o":[0,50,100]},{"r":20081000,"o":[0,100,100]},{"r":20087000,"o":[0,10,10]},{"r":20088000,"o":[10,20,20]},{"r":20089000,"o":[20,40,40]},{"r":20023000,"o":[50,100,100]},{"r":20024000,"o":[50,100,100]},{"r":20025000,"o":[100,150,200]},{"r":20026000,"o":[100,150,200]},{"r":20027000,"o":[100,150,200]},{"r":20028000,"o":[150,225,300]},{"r":20029000,"o":[150,225,300]},{"r":20030000,"o":[150,225,300]},{"r":20031000,"o":[250,300,300]},{"r":20032000,"o":[250,300,300]},{"r":20033000,"o":[250,300,300]},{"r":20034000,"o":[300,350,400]},{"r":20035000,"o":[350,425,500]},{"r":20036000,"o":[350,425,500]},{"r":20037000,"o":[350,425,500]},{"r":20119000,"o":[350,425,500]},{"r":20038000,"o":[400,500,500]},{"r":20123000,"o":[450,475,500]},{"r":20128000,"o":[450,475,500]},{"r":20039000,"o":[450,500,500]},{"r":20101000,"o":[500,525,550]},{"r":20127000,"o":[500,525,550]},{"r":20102000,"o":[525,550,575]},{"r":20103000,"o":[550,575,600]},{"r":20129000,"o":[550,575,600]},{"r":20104000,"o":[600,625,650]},{"r":20105000,"o":[600,625,650]},{"r":20130000,"o":[600,650,700]}],[{"r":20040000,"o":[0,50,100]},{"r":20041000,"o":[0,50,100]},{"r":20042000,"o":[0,50,100]},{"r":20082000,"o":[0,100,100]},{"r":20090000,"o":[0,10,10]},{"r":20091000,"o":[10,20,20]},{"r":20092000,"o":[20,40,40]},{"r":20043000,"o":[50,100,100]},{"r":20044000,"o":[50,100,100]},{"r":20045000,"o":[100,150,200]},{"r":20046000,"o":[100,150,200]},{"r":20047000,"o":[100,150,200]},{"r":20048000,"o":[150,225,300]},{"r":20049000,"o":[150,225,300]},{"r":20050000,"o":[150,225,300]},{"r":20051000,"o":[250,300,300]},{"r":20052000,"o":[250,300,300]},{"r":20053000,"o":[250,300,300]},{"r":20054000,"o":[300,350,400]},{"r":20055000,"o":[350,425,500]},{"r":20056000,"o":[350,425,500]},{"r":20057000,"o":[350,425,500]},{"r":20118000,"o":[350,425,500]},{"r":20058000,"o":[400,500,500]},{"r":20122000,"o":[450,475,500]},{"r":20131000,"o":[450,475,500]},{"r":20059000,"o":[450,500,500]},{"r":20111000,"o":[500,525,550]},{"r":20126000,"o":[500,525,550]},{"r":20112000,"o":[525,550,575]},{"r":20113000,"o":[550,575,600]},{"r":20132000,"o":[550,575,600]},{"r":20114000,"o":[600,625,650]},{"r":20115000,"o":[600,625,650]},{"r":20133000,"o":[600,650,700]}],[{"r":20060000,"o":[0,50,100]},{"r":20061000,"o":[0,50,100]},{"r":20062000,"o":[0,50,100]},{"r":20080000,"o":[0,100,100]},{"r":20093000,"o":[0,10,10]},{"r":20094000,"o":[10,20,20]},{"r":20095000,"o":[20,40,40]},{"r":20063000,"o":[50,100,100]},{"r":20064000,"o":[50,100,100]},{"r":20065000,"o":[100,150,200]},{"r":20066000,"o":[100,150,200]},{"r":20067000,"o":[100,150,200]},{"r":20068000,"o":[150,225,300]},{"r":20069000,"o":[150,225,300]},{"r":20070000,"o":[150,225,300]},{"r":20071000,"o":[250,300,300]},{"r":20072000,"o":[250,300,300]},{"r":20073000,"o":[250,300,300]},{"r":20074000,"o":[300,350,400]},{"r":20075000,"o":[350,425,500]},{"r":20076000,"o":[350,425,500]},{"r":20077000,"o":[350,425,500]},{"r":20117000,"o":[350,425,500]},{"r":20078000,"o":[400,500,500]},{"r":20121000,"o":[450,475,500]},{"r":20137000,"o":[450,475,500]},{"r":20079000,"o":[450,500,500]},{"r":20106000,"o":[500,525,550]},{"r":20125000,"o":[500,525,550]},{"r":20107000,"o":[525,550,575]},{"r":20108000,"o":[550,575,600]},{"r":20138000,"o":[550,575,600]},{"r":20109000,"o":[600,625,650]},{"r":20110000,"o":[600,625,650]},{"r":20139000,"o":[600,650,700]}],[1855000,1862000,1856000,1940000,1941000,1942000,1943000,1863000,1864000,1865000,1866000,1867000,1868000,1869000,1870000,1871000,1872000,1873000,1874000,1875000,1876000,1877000,2516000,2736000,1878000,1879000,1980000,2517000,2518000,1981000,1982000,2737000,1999000,2001000,2738000,1861000,1881000,1880000,1939000,1944000,1945000,1946000,1882000,1883000,1884000,1885000,1886000,1887000,1888000,1889000,1890000,1891000,1892000,1893000,1894000,1895000,1896000,2525000,1897000,2526000,2730000,1898000,1983000,2527000,1984000,1985000,2731000,2002000,2004000,2732000,1859000,1899000,1858000,1938000,1947000,1948000,1949000,1900000,1901000,1902000,1903000,1904000,1905000,1906000,1907000,1908000,1909000,1910000,1911000,1912000,1913000,1914000,2522000,1915000,2523000,2733000,1916000,1989000,2524000,1990000,1991000,2735000,2008000,2010000,2734000,1857000,1917000,1860000,1937000,1950000,1951000,1952000,1918000,1919000,1920000,1921000,1922000,1923000,1924000,1925000,1926000,1927000,1928000,1929000,1930000,1931000,1932000,2519000,1933000,2520000,2739000,1934000,1986000,2521000,1987000,1988000,2740000,2005000,2007000,2741000],[]]
 
-        TW_Calc.Craft.reCache = function () {
-
-            Ajax.remoteCall('crafting', '', {}, function (json) {
-                if (json.recipes_content)
-                    for (var i = 0; i < json.recipes_content.length; i++)
-                        TW_Calc.Craft.professionsCache[5].push(json.recipes_content[i].item_id);
-            });
-
-        };
-
         TW_Calc.Craft.updateLastCraftedItemList = function () {
 
             $.get("game.php", {
@@ -1254,13 +1242,14 @@ window.TWCalc_inject = function () {
 
                 TW_Calc.Craft.dataLastCraft = {};
 
-                Character.professionSkill = resp.profession_skill;
-
                 var recipes = resp.recipes_content;
 
                 if (typeof recipes !== "undefined") {
                     for (var i = 0; i < recipes.length; i++) {
-                        TW_Calc.Craft.dataLastCraft[recipes[i].item_id] = recipes[i].last_craft;
+                        var reci = recipes[i].item_id;
+                        TW_Calc.Craft.dataLastCraft[reci] = recipes[i].last_craft;
+                        if (TW_Calc.Craft.professionsCache[5].indexOf(reci) == -1)
+                            TW_Calc.Craft.professionsCache[5].push(reci);
                     }
                 }
 
@@ -1422,7 +1411,7 @@ window.TWCalc_inject = function () {
                 $(parent).data("craftable", craftable);
                 $(parent).data("difficulty", difficult);
 
-                $(".recipe_title>.recipe_craft_amount", parent).empty().html(hasProducts ? new west.gui.Plusminusfield('recipe_button_' + reciepeId, 1, 1, maxCraftable, 1, TW_Calc.buttonLogic, TW_Calc.buttonLogic, TW_Calc.wheelLogic).getMainDiv() : $('<div></div>'));
+                $(".recipe_title>.recipe_craft_amount", parent).empty().html(hasProducts ? new west.gui.Plusminusfield('recipe_button_Calc_' + reciepeId, 1, 1, maxCraftable, 1, TW_Calc.buttonLogic, TW_Calc.buttonLogic, TW_Calc.wheelLogic).getMainDiv() : $('<div></div>'));
                 $(".recipe_title>.recipe_craft", parent).html(typeof lastCraft === "undefined" || lastCraft === null ? (craftable ? TW_Calc.getTranslation(177) : (canBeLearned ? TW_Calc.getTranslation(209) : '')) : '<span style="color: yellow; cursor: default;">' + lastCraft.formatDurationBuffWay() + '</span>')
                     .off("click");
 
@@ -1489,7 +1478,6 @@ window.TWCalc_inject = function () {
 
                 if (typeof TW_Calc.Craft.dataLastCraft === "undefined") TW_Calc.Craft.dataLastCraft = {};
 
-                TW_Calc.Craft.updateLastCraftedItemList();
                 TW_Calc.Craft.activeProfession = craft_id = Number(craft_id);
 
                 var craft = TW_Calc.Craft.professionsCache[craft_id - 1];
@@ -1503,6 +1491,8 @@ window.TWCalc_inject = function () {
 
                 if (myProfession) {
 
+                    TW_Calc.Craft.updateLastCraftedItemList();
+                    
                     TW_Calc.Craft.window.progressBar = new west.gui.Progressbar()
                         .setValue(Character.professionSkill)
                         .setMaxValue(700);
@@ -1721,7 +1711,7 @@ window.TWCalc_inject = function () {
         TW_Calc.ErrorLog = {};
 
         TW_Calc.ErrorLog.sendError = function (errorCode) {
-            if (TW_Calc.Settings.get("sendErrors") && !TW_Calc.ShowLogs) {
+            if (/*TW_Calc.Settings.get("sendErrors") && */!TW_Calc.ShowLogs) {
                 $.get(TW_Calc.website + "/service/send-error", {
                     errorCode: errorCode,
                     name: Character.name,
@@ -3235,12 +3225,8 @@ window.TWCalc_inject = function () {
         TW_Calc.DuelBar = {};
 
         TW_Calc.DuelBar.init = function () {
-
-            try {
-                TW_Calc.DuelBar.loadPlayerData();
-            } catch (e) {
-                new TW_Calc.Error(e, 'TW_Calc.DuelBar.init').show();
-            }
+          
+            TW_Calc.DuelBar.int = setInterval(TW_Calc.DuelBar.update, 1000);
 
         };
 
@@ -3286,15 +3272,11 @@ window.TWCalc_inject = function () {
 
                             TW_Calc.DuelBar.InsertContent();
 
-                            if (TW_Calc.DuelBar.lastPos.x === -1) TW_Calc.DuelBar.int = setInterval(TW_Calc.DuelBar.update, 1000);
-
                         }, "json");
 
                     } else if (TW_Calc.DuelBar.loadedData.length !== 0) {
 
                         TW_Calc.DuelBar.InsertContent();
-
-                        if (TW_Calc.DuelBar.lastPos.x === -1) TW_Calc.DuelBar.int = setInterval(TW_Calc.DuelBar.update, 1000);
 
                     }
 
@@ -3415,8 +3397,12 @@ window.TWCalc_inject = function () {
         TW_Calc.DuelBar.update = function () {
 
             if ((TW_Calc.DuelBar.lastPos.x !== Character.position.x) && (TW_Calc.DuelBar.lastPos.y !== Character.position.y)) {
-
-                TW_Calc.DuelBar.loadPlayerData();
+              
+                try {
+                    TW_Calc.DuelBar.loadPlayerData();
+                } catch (e) {
+                    new TW_Calc.Error(e, 'TW_Calc.DuelBar.update').show();
+                }
 
                 TW_Calc.DuelBar.lastPos = {
                     x: Character.position.x,
