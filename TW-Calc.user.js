@@ -133,6 +133,7 @@ window.TWCalc_inject = function () {
                             15: TW_Calc.getTranslation(197),
                             16: TW_Calc.getTranslation(197),
                             17: TW_Calc.getTranslation(198),
+                            18: TW_Calc.getTranslation(194),
                         };
 
                         window.TW_Calc_AlarmClock = setInterval(TW_Calc.AlarmClock.init, 1000);
@@ -2993,7 +2994,7 @@ window.TWCalc_inject = function () {
 
                 try {
 
-                    if (tombolaId == 1 || tombolaId == 11 || tombolaId == 12 || tombolaId == 13 || tombolaId == 14 || tombolaId == 15 || tombolaId == 16 || tombolaId == 17) {
+                    if ([1, 11, 12, 13, 14, 15, 16, 17, 18].indexOf(tombolaId) !== -1) {
 
                         var okey = tombolaId + (tombolaId == 1 ? '' : cYear);
                         var o = TW_Calc.TombolaExporter.createObjectFromStorage(okey) || [{}, {}, {}, {}, {}];
@@ -3056,7 +3057,7 @@ window.TWCalc_inject = function () {
 
                     if (obj && TW_Calc.TombolaExporter.wof.hasOwnProperty(wofId)) {
 
-                        var valentines = [12];
+                        var valentines = [12,18];
                         var valentine = valentines.indexOf(wofId) > -1;
                         var dotds = [11,17];
                         var dotd = dotds.indexOf(wofId) > -1;
@@ -3148,6 +3149,7 @@ window.TWCalc_inject = function () {
                     $('#tab_tombola').append(TW_Calc.TombolaExporter.Tab.Scrollpane.getMainDiv());
 
                     TW_Calc.TombolaExporter.Tab.load(1, ''); //travelling fair
+                    TW_Calc.TombolaExporter.Tab.load(18, '_2018'); //valentine
                     TW_Calc.TombolaExporter.Tab.load(17, '_2017'); //dayofthedead
                     TW_Calc.TombolaExporter.Tab.load(16, '_2017'); //octoberfest
                     TW_Calc.TombolaExporter.Tab.load(14, '_2017'); //independence
