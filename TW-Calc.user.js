@@ -2899,7 +2899,7 @@ window.TWCalc_inject = function () {
                             TW_Calc.TombolaExporter.saveData(prize, b, category);
                         }
 
-                    } else if ([7, 8, 13, 14, 15, 16].indexOf(b) !== -1) {
+                    } else if ([7, 8, 13, 14, 15, 16, 19].indexOf(b) !== -1) {
 
                         TW_Calc.TombolaExporter.level = a.construction_id;
 
