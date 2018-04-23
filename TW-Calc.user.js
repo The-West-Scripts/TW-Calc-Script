@@ -120,7 +120,8 @@ window.TWCalc_inject = function () {
                         TW_Calc.Craft.init();
                         TW_Calc.BattleCalc.init();
                         TW_Calc.Interface.init();
-                        TW_Calc.Chests.init();
+                        if (Game.environment != 'alpha')
+                            TW_Calc.Chests.init();
                         TW_Calc.Quests.init();
                         TW_Calc.TombolaExporter.init();
 
@@ -3217,7 +3218,7 @@ window.TWCalc_inject = function () {
                 eval('ItemUse.' + toolkit + ' = ' + inject);
 
             } catch (e) {
-                new TW_Calc.Error(e, 'TW_Calc.Chests.open').show();
+                new TW_Calc.Error(e, 'TW_Calc.Chests.init').show();
             }
 
         };
