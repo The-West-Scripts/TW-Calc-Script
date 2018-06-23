@@ -3173,6 +3173,7 @@ window.TWCalc_inject = function () {
                     $('#tab_tombola').append(TW_Calc.TombolaExporter.Tab.Scrollpane.getMainDiv());
 
                     TW_Calc.TombolaExporter.Tab.load(1, ''); //travelling fair
+                    TW_Calc.TombolaExporter.Tab.load(14, '_2018'); //independence
                     TW_Calc.TombolaExporter.Tab.load(19, '_2018'); //easter
                     TW_Calc.TombolaExporter.Tab.load(18, '_2018'); //valentine
                     TW_Calc.TombolaExporter.Tab.load(17, '_2017'); //dayofthedead
