@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.35
+// @version 1.36
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -71,7 +71,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.35",
+            version: "1.36",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -3076,20 +3076,21 @@ window.TWCalc_inject = function () {
 
                 try {
 
-                    var combi = wofId + year;
-                    var obj = TW_Calc.TombolaExporter.createObjectFromStorage(combi);
+                    var tombolaId = wofId + (year ? '_' + year : '');
+                    var obj = TW_Calc.TombolaExporter.createObjectFromStorage(tombolaId);
 
                     if (obj && TW_Calc.TombolaExporter.wof.hasOwnProperty(wofId)) {
 
-                        var valentines = [12,18];
+                        var valentines = [12, 18];
                         var valentine = valentines.indexOf(wofId) > -1;
-                        var dotds = [11,17];
+                        var dotds = [11, 17];
                         var dotd = dotds.indexOf(wofId) > -1;
 
-                        $('#tab_tombola>.tw2gui_scrollpane>.tw2gui_scrollpane_clipper>.tw2gui_scrollpane_clipper_contentpane').append('<h2 style="margin-left: 0; padding-top: 0;"><span id="TW_Calc_TombolaExporter_Tab_Groupframe_' + combi + '"><a target="_blank" href="' + TW_Calc.website + '/tombola/' + combi + '">' + TW_Calc.TombolaExporter.wof[wofId] + year + '</a>:</span></h2>');
+
+                        $('#tab_tombola>.tw2gui_scrollpane>.tw2gui_scrollpane_clipper>.tw2gui_scrollpane_clipper_contentpane').append('<h2 style="margin-left: 0; padding-top: 0;"><span id="TW_Calc_TombolaExporter_Tab_Groupframe_' + tombolaId + '"><a target="_blank" href="' + TW_Calc.website + '/tombola/' + tombolaId + '">' + TW_Calc.TombolaExporter.wof[wofId] + (year ? ' ' + year : '') + '</a>:</span></h2>');
 
                         var getBackground = function (bg, i) {
-                            var html = '<div id="TW_Calc_TombolaExporter_Tab_' + combi + '_Items_' + i + '" style="background:' + bg + '; float: left; width: 636px; margin: 5px; padding: 10px; border: 3px solid #a49e97; border-radius: 8px; box-shadow: 0 0 20px inset; opacity: 0.9; left: 0; right: 0; top: 0; bottom: 0;"></div>';
+                            var html = '<div id="TW_Calc_TombolaExporter_Tab_' + tombolaId + '_Items_' + i + '" style="background:' + bg + '; float: left; width: 636px; margin: 5px; padding: 10px; border: 3px solid #a49e97; border-radius: 8px; box-shadow: 0 0 20px inset; opacity: 0.9; left: 0; right: 0; top: 0; bottom: 0;"></div>';
                             $('#tab_tombola>.tw2gui_scrollpane>.tw2gui_scrollpane_clipper>.tw2gui_scrollpane_clipper_contentpane').append(html);
                         };
 
@@ -3099,21 +3100,21 @@ window.TWCalc_inject = function () {
                             var itemObj = ItemManager.get(id);
                             var count = Number(COUNT);
                             var item = new tw2widget.InventoryItem(itemObj).setCount(count).setShowcompare(false).getMainDiv();
-                            $('#TW_Calc_TombolaExporter_Tab_' + combi + '_Items_' + i).append(item);
+                            $('#TW_Calc_TombolaExporter_Tab_' + tombolaId + '_Items_' + i).append(item);
                         };
 
                         if (valentine) {
-                            var a = JSON.parse(localStorage.getItem("TWCalc_Tombola_Spins_" + combi)) || {
+                            var a = JSON.parse(localStorage.getItem("TWCalc_Tombola_Spins_" + tombolaId)) || {
                                 total: 0,
                                 free: 0
                             };
-                            $('#TW_Calc_TombolaExporter_Tab_Groupframe_' + combi).append('<span style="font-size: 15px;text-align: right;margin-left: 35px;">' + a.free + ' free spins of ' + a.total + ' total spins</span></h2>');
+                            $('#TW_Calc_TombolaExporter_Tab_Groupframe_' + tombolaId).append('<span style="font-size: 15px;text-align: right;margin-left: 35px;">' + a.free + ' free spins of ' + a.total + ' total spins</span></h2>');
                         } else if (dotd) {
-                            var a2 = JSON.parse(localStorage.getItem("TWCalc_Tombola_Spins_" + combi)) || {
+                            var a2 = JSON.parse(localStorage.getItem("TWCalc_Tombola_Spins_" + tombolaId)) || {
                                 total: 0,
                                 free: 0
                             };
-                            $('#TW_Calc_TombolaExporter_Tab_Groupframe_' + combi).append('<span style="font-size: 15px;text-align: right;margin-left: 35px;">' + a2.free + ' times bribed at ' + a2.total + ' total games</span></h2>');
+                            $('#TW_Calc_TombolaExporter_Tab_Groupframe_' + tombolaId).append('<span style="font-size: 15px;text-align: right;margin-left: 35px;">' + a2.free + ' times bribed at ' + a2.total + ' total games</span></h2>');
                         }
                         for (var i = 0; i < obj.length; i++) {
 
@@ -3141,8 +3142,10 @@ window.TWCalc_inject = function () {
 
                                 getBackground(bg, i);
 
-                                for (var l in oi)
+                                for (var l in oi) {
                                     getItem(l, oi[l], i);
+                                }
+
                             }
                         }
 
@@ -3157,31 +3160,29 @@ window.TWCalc_inject = function () {
 
                 try {
 
-                    TW_Calc.TombolaExporter.Tab.Scrollpane = new west.gui.Scrollpane();
+                    this.Scrollpane = new west.gui.Scrollpane();
 
-                    $('.tw2gui_scrollpane_clipper>.tw2gui_scrollpane_clipper_contentpane', TW_Calc.TombolaExporter.Tab.Scrollpane.getMainDiv()).css('float', 'left');
+                    $('.tw2gui_scrollpane_clipper>.tw2gui_scrollpane_clipper_contentpane', this.Scrollpane.getMainDiv()).css('float', 'left');
 
-                    $(TW_Calc.TombolaExporter.Tab.Scrollpane.getMainDiv()).css({
+                    $(this.Scrollpane.getMainDiv()).css({
                         "height": "360px",
                         "top": "10px",
                         "left": "5px",
                         "width": "688px"
                     });
 
-                    $('#tab_tombola').empty();
+                    $('#tab_tombola').html(this.Scrollpane.getMainDiv());
 
-                    $('#tab_tombola').append(TW_Calc.TombolaExporter.Tab.Scrollpane.getMainDiv());
 
-                    TW_Calc.TombolaExporter.Tab.load(1, ''); //travelling fair
-                    TW_Calc.TombolaExporter.Tab.load(19, '_2018'); //easter
-                    TW_Calc.TombolaExporter.Tab.load(18, '_2018'); //valentine
-                    TW_Calc.TombolaExporter.Tab.load(17, '_2017'); //dayofthedead
-                    TW_Calc.TombolaExporter.Tab.load(16, '_2017'); //octoberfest
-                    TW_Calc.TombolaExporter.Tab.load(14, '_2017'); //independence
-                    TW_Calc.TombolaExporter.Tab.load(13, '_2017'); //easter
-                    TW_Calc.TombolaExporter.Tab.load(12, '_2017'); //valentine
-                    TW_Calc.TombolaExporter.Tab.load(11, '_2016'); //dayofthedead
-                    TW_Calc.TombolaExporter.Tab.load(15, '_2016'); //octoberfest
+                    for (var key in localStorage) {
+                        if (localStorage.hasOwnProperty(key)) {
+                            var match = key.match(/TWCalc_Tombola_(\d+)(_(\d+))?/);
+                            console.log(match);
+                            if (match) {
+                                this.load(Number(match[1]), match[3] || '');
+                            }
+                        }
+                    }
 
                 } catch (e) {
                     new TW_Calc.Error(e, 'TombolaExporter.Tab.launch').show();
