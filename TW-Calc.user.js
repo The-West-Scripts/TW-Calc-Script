@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.34
+// @version 1.35
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -38,9 +38,8 @@ window.TWCalc_inject = function () {
 
                     if (west.gui.Dialog !== undefined) {
 
-                        new west.gui.Dialog(TW_Calc.getTranslation(78), '<div class="txcenter">' + TW_Calc.getTranslation(77) + '</div><div><br />' + TW_Calc.getTranslation(79) + ': ' + currentVersion + '<br />' + TW_Calc.getTranslation(111) + ': ' + data.version + '<br/></br><b>' + TW_Calc.getTranslation(112) + '?</b></br>' + data.news + '</div>', west.gui.Dialog.SYS_WARNING).addButton('Download [SPONSORED]', function () {
-                            window.open(TW_Calc.updateURL_SPONSORED);
-                        }).addButton('Download [NO ADS]', function () {
+                        new west.gui.Dialog(TW_Calc.getTranslation(78), '<div class="txcenter">' + TW_Calc.getTranslation(77) + '</div><div><br />' + TW_Calc.getTranslation(79) + ': ' + currentVersion + '<br />' + TW_Calc.getTranslation(111) + ': ' + data.version + '<br/></br><b>' + TW_Calc.getTranslation(112) + '?</b></br>' + data.news + '</div>', west.gui.Dialog.SYS_WARNING)
+                        .addButton('Download', function () {
                             window.open(TW_Calc.updateURL);
                         }).addButton(TW_Calc.getTranslation(80), function () {}).show();
 
@@ -72,7 +71,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.34",
+            version: "1.35",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -2852,68 +2851,91 @@ window.TWCalc_inject = function () {
 
             };
 
+            TW_Calc.TombolaExporter.eventTypes = {
+                Easter: {},
+                Independence: {},
+                Hearts: {},
+                Octoberfest: {},
+                DayOfDead: {}
+            };
+
+            TW_Calc.TombolaExporter.getCurrentEvent = function () {
+                for (var event in this.eventTypes) {
+                    if (this.eventTypes.hasOwnProperty(event) && Game.sesData.hasOwnProperty(event)) {
+                        return event;
+                    }
+                }
+                return false;
+            };
+
             TW_Calc.TombolaExporter.createData = function (a, z) {
 
-                if (TW_Calc.ShowLogs)
+                if (TW_Calc.ShowLogs) {
                     console.log(z, a);
+                }
 
                 try {
 
                     $.extend(a, z);
 
-                    var b = a.wofid;
+                    var prize,
+                        category,
+                        tombolaId = a.wofid,
+                        eventType = this.getCurrentEvent(),
+                        level = -1;
 
-                    if ([1].indexOf(b) !== -1) {
+                    console.log(tombolaId, eventType);
+                    // Travelling circus
+                    if (tombolaId === 1) {
 
-                        var prize = a.picked[0];
-                        var category = a.picked[1];
+                        prize = a.picked[0];
+                        category = a.picked[1];
 
-                        TW_Calc.TombolaExporter.exportData(prize, b, category);
-                        TW_Calc.TombolaExporter.saveData(prize, b, category);
+                        TW_Calc.TombolaExporter.exportData(prize, tombolaId, category);
+                        TW_Calc.TombolaExporter.saveData(prize, tombolaId, category);
 
-                    } else if ([12, 18].indexOf(b) !== -1) {
+                    } else if (eventType === 'Hearts') {
 
-                        var prize = a.prize.itemId;
-                        var category = 0;
-                        var c = (west.wof.WofManager.wofs.heartswof.mode.free ? 1 : 0);
+                        prize = a.prize.itemId;
+                        category = 0;
+                        var isFree = (west.wof.WofManager.wofs.heartswof.mode.free ? 1 : 0);
 
-                        TW_Calc.TombolaExporter.Spins(b, c, true);
-                        TW_Calc.TombolaExporter.exportData(prize, b, category);
-                        TW_Calc.TombolaExporter.saveData(prize, b, category);
+                        TW_Calc.TombolaExporter.Spins(tombolaId, isFree, true);
 
-                    } else if ([11, 17].indexOf(b) !== -1) {
+                        TW_Calc.TombolaExporter.exportData(prize, tombolaId, category);
+                        TW_Calc.TombolaExporter.saveData(prize, tombolaId, category);
 
-                        var category = a.stages.length - 1;
-                        var prize = a.stages[category].rewards.item;
-                        var level = -1;
+                    } else if (eventType === 'DayOfDead') {
+
+                        category = a.stages.length - 1;
+                        prize = a.stages[category].rewards.item;
 
                         if (a.action === 'gamble') {
                             level = Number(a.card) === 1 ? 'Left_card' : 'Right_card'; //a.card: left card is 1 and right card is 0
                             localStorage.setItem('TWCalc_Tombola_currentStage', category);
-                            TW_Calc.TombolaExporter.exportData(prize, b, category, level);
+                            this.exportData(prize, tombolaId, category, level);
                         } else if (a.action === 'bribe' || a.action === 'change') {
                             level = 'After_bribe';
-                            TW_Calc.TombolaExporter.Spins(b, 1, false);
-                            TW_Calc.TombolaExporter.exportData(prize, b, category, level);
+                            this.Spins(tombolaId, 1, false);
+                            this.exportData(prize, tombolaId, category, level);
                         } else if (a.action === 'end') {
-                            TW_Calc.TombolaExporter.Spins(b, 0, true);
+                            this.Spins(tombolaId, 0, true);
                             category = localStorage.getItem('TWCalc_Tombola_currentStage');
-                            TW_Calc.TombolaExporter.saveData(prize, b, category);
+                            this.saveData(prize, tombolaId, category);
                         }
 
-                    } else if ([7, 8, 13, 14, 15, 16, 19].indexOf(b) !== -1) {
-
-                        TW_Calc.TombolaExporter.level = a.construction_id;
+                    } else if (eventType === 'Easter' || eventType === 'Independence' || eventType === 'Octoberfest') {
 
                         //easter & independence: a.outcome & a.enhance
                         //octoberfest: a.failed, normal: without outcome, after bribe: a.outcome ...& a.enhance
-
                         if (a && !a.failed && (a.itemId || a.outcome)) {
 
-                            var prize = a.itemId || a.outcome && a.outcome.itemId;
                             var c = a.itemEnhance || a.outcome && a.outcome.itemEnhance;
+                            prize = a.itemId || a.outcome && a.outcome.itemId;
+                            level = a.construction_id || a.enhance;
 
-                            var category = 0;
+                            category = 0;
+
                             switch (c) {
                                 case 25:
                                     category = 1;
@@ -2926,10 +2948,8 @@ window.TWCalc_inject = function () {
                                     break;
                             }
 
-                            var level = TW_Calc.TombolaExporter.level || a.enhance;
-
-                            TW_Calc.TombolaExporter.exportData(prize, b, category, level);
-                            TW_Calc.TombolaExporter.saveData(prize, b, category);
+                            this.exportData(prize, tombolaId, category, level);
+                            this.saveData(prize, tombolaId, category);
                         }
 
                     }
@@ -2947,16 +2967,18 @@ window.TWCalc_inject = function () {
                     free: 0
                 };
 
-                var lkey = "TWCalc_Tombola_Spins_" + id + cYear;
+                var l_key = "TWCalc_Tombola_Spins_" + id + cYear;
 
-                if (localStorage.getItem(lkey) !== null)
-                    a = JSON.parse(localStorage.getItem(lkey));
+                if (localStorage.getItem(l_key) !== null)
+                    a = JSON.parse(localStorage.getItem(l_key));
 
-                if (t === true)
+                if (t === true) {
                     a.total++;
+                }
+
                 a.free += s;
 
-                localStorage.setItem(lkey, JSON.stringify(a));
+                localStorage.setItem(l_key, JSON.stringify(a));
 
             };
 
