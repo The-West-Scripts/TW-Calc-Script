@@ -187,7 +187,7 @@ window.TWCalc_inject = function () {
          * These languages can be fetched from tw-calc.net
          * @type {[string,string,string,string,string,string,string,string,string,string,string,string,string,string,string]}
          */
-        TW_Calc.AvailableLangs = ["sk_SK", "cs_CZ", "es_ES", "pt_BR", "pl_PL", "sv_SE", "hu_HU", "ro_RO", "tr_TR", "nn_NO", "it_IT", "de_DE", "nl_NL", "ru_RU", "el_GR"];
+        TW_Calc.AvailableLangs = ["sk_SK", "cs_CZ", "es_ES", "pt_BR", "pl_PL", "sv_SE", "hu_HU", "ro_RO", "tr_TR", "nn_NO", "it_IT", "de_DE", "nl_NL", "ru_RU", "el_GR", "fr_FR"];
 
         TW_Calc.loadPack = function (a) {
 
