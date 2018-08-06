@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.35
+// @version 1.36
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -71,7 +71,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.35",
+            version: "1.36",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -181,13 +181,13 @@ window.TWCalc_inject = function () {
 
         TW_Calc.langs = {};
 
-        TW_Calc.langs["en_US"] = {"lang_0":"No","lang_1":"Yes","lang_2":"with premium","lang_3":"Settings","lang_4":"Skills","lang_5":"Leadership","lang_6":"Hiding","lang_7":"Stamina","lang_8":"Dodging","lang_9":"Aiming","lang_14":"Attack","lang_15":"Defence","lang_18":"Position on map","lang_20":"The tower of your character","lang_21":"Ground","lang_22":"Tower - level","lang_27":"Calculate","lang_28":"Health","lang_29":"Health points","lang_30":"Level","lang_31":"Fortbattle attack","lang_32":"Character","lang_33":"Fortbattle defence","lang_34":"Other","lang_35":"Delete","lang_36":"Save","lang_37":"Set time","lang_38":"Greenhorn","lang_39":"Dueller","lang_40":"Adventurer","lang_41":"Soldier","lang_42":"Worker","lang_43":"Player name","lang_44":"Game world","lang_45":"Player level","lang_46":"Character class","lang_49":"Health","lang_50":"Attack","lang_51":"Defense","lang_52":"Gameworld","lang_61":"Health","lang_62":"Alarmclock settings","lang_63":"Calculate the highest and lowest duelling level you are able to duel","lang_64":"Calculate the amount of experiences gained from a duel","lang_66":"Your duelling level","lang_67":"Calculate","lang_68":"Highest possible duelling level","lang_69":"Lowest possible duelling level","lang_70":"Duelling level of your opponent","lang_71":"Duel motivation","lang_72":"How to write a date? Example:","lang_77":"for The-West Calc is a new version available, please click ok to update the Userscript","lang_78":"TW-Calc Update needed","lang_79":"Current version","lang_80":"Later","lang_81":"Your note","lang_82":"Time","lang_83":"TW-Calc Alarm clock","lang_86":"Victory: You gain","lang_87":"experience and","lang_88":"Successfully saved","lang_89":"Your notes has been successfully deleted","lang_90":"Alarm Clock not set (BAD SYNTAX)","lang_91":"Alarm clock set","lang_92":"Cancel","lang_93":"TW-Calc Alarm clock - settings","lang_94":"Alarm clock","lang_95":"Enter URL adress of your sound. For example: https:\/\/tw-calc.net\/script\/budik.mp3","lang_96":"Alarm clock set","lang_97":"Melody of alarm clock: Alarm1, Alarm2","lang_98":"Health points","lang_100":"Full energy in","lang_101":"hours and","lang_102":"minutes","lang_103":"Experience points","lang_104":"Full health in","lang_105":"Transfer fee","lang_106":"Transfer fee","lang_107":"Transfer amount","lang_108":"Add bank fees calculator (during transfer) to the bank window","lang_109":"Add energy&health refill calculators","lang_110":"duel experience.","lang_111":"New version","lang_112":"Whats new","lang_113":"Edit","lang_114":"Duelling level","lang_115":"Duleable","lang_116":"Distance","lang_117":"Center map","lang_118":"Town","lang_122":"Note","lang_123":"Really?","lang_124":"Actually empty","lang_140":"Resistance","lang_141":"Damage","lang_143":"Loading","lang_146":"All your saved jobs will be removed. Are you sure you want to do it?","lang_147":"Close (Saved automatically)","lang_148":"Reset jobs","lang_149":"Reset","lang_150":"Add or remove Jobs","lang_151":"Search for job","lang_152":"Job list","lang_153":"Replace native craft window in the menu by Westcalc craft window","lang_154":"Open duel window","lang_157":"Name","lang_159":"Importing...","lang_160":"Own skills","lang_161":"New equipment","lang_162":"Close","lang_163":"Add","lang_164":"Current clothing will be added as new equipment.","lang_165":"Successfull","lang_166":"Name...","lang_167":"Job","lang_169":"Show configuration of this set","lang_170":"Wardrobe","lang_171":"Remove this set","lang_172":"Create","lang_173":"Tombola analyser","lang_174":"Travelling fair","lang_175":"Add wardrobe to the game","lang_176":"Hide unavailable materials","lang_177":"Craft","lang_178":"Toggle all recipes","lang_179":"Field cook","lang_180":"Tonic peddler","lang_181":"Blacksmith","lang_182":"Master Saddler","lang_183":"Crafting","lang_184":"Add Westcalc icon to the right menu","lang_185":"Position of Job bar","lang_186":"Top","lang_187":"Bottom","lang_188":"In right panel","lang_189":"Hide","lang_190":"without premium","lang_191":"Position of duel panel","lang_192":"Show the crafting product","lang_193":"Setting Traps","lang_194":"Valentine's Day","lang_195":"Easter","lang_196":"Independence Day","lang_197":"Octoberfest","lang_198":"Day of the Dead","lang_199":"Defeat: You lose","lang_200":"Energy\n","lang_201":"Weapon damage","lang_202":"Cloth bonus","lang_203":"Wall - level","lang_204":"Accept the quest to see the quest giver","lang_205":"Show quest giver on map","lang_206":"Show the quest on TW-Calc.net","lang_207":"Wear all","lang_208":"Create or select set from the menu","lang_209":"Learn","lang_210":"Notepad","lang_211":"Import","lang_212":"My Character","lang_213":"Tombola","lang_214":"Battle Calc","lang_215":"Duel Calc","lang_216":"Settings","lang_217":"BB Code","lang_218":"Refresh the page to apply changes."};
+        TW_Calc.langs["en_US"] = {"lang_0":"No","lang_1":"Yes","lang_2":"with premium","lang_3":"Settings","lang_4":"Skills","lang_5":"Leadership","lang_6":"Hiding","lang_7":"Stamina","lang_8":"Dodging","lang_9":"Aiming","lang_14":"Attack","lang_15":"Defence","lang_18":"Position on map","lang_20":"The tower of your character","lang_21":"Ground","lang_22":"Tower - level","lang_27":"Calculate","lang_28":"Health","lang_29":"Health points","lang_30":"Level","lang_31":"Fortbattle attack","lang_32":"Character","lang_33":"Fortbattle defence","lang_34":"Other","lang_35":"Delete","lang_36":"Save","lang_37":"Set time","lang_38":"Greenhorn","lang_39":"Dueller","lang_40":"Adventurer","lang_41":"Soldier","lang_42":"Worker","lang_43":"Player name","lang_44":"Game world","lang_45":"Player level","lang_46":"Character class","lang_49":"Health","lang_50":"Attack","lang_51":"Defense","lang_52":"Gameworld","lang_61":"Health","lang_62":"Alarmclock settings","lang_63":"Calculate the highest and lowest duelling level you are able to duel","lang_64":"Calculate the amount of experiences gained from a duel","lang_66":"Your duelling level","lang_67":"Calculate","lang_68":"Highest possible duelling level","lang_69":"Lowest possible duelling level","lang_70":"Duelling level of your opponent","lang_71":"Duel motivation","lang_72":"How to write a date? Example:","lang_77":"for The-West Calc is a new version available, please click ok to update the Userscript","lang_78":"TW-Calc Update needed","lang_79":"Current version","lang_80":"Later","lang_81":"Your note","lang_82":"Time","lang_83":"TW-Calc Alarm clock","lang_86":"Victory: You gain","lang_87":"experience and","lang_88":"Successfully saved","lang_89":"Your notes has been successfully deleted","lang_90":"Alarm Clock not set (BAD SYNTAX)","lang_91":"Alarm clock set","lang_92":"Cancel","lang_93":"TW-Calc Alarm clock - settings","lang_94":"Alarm clock","lang_95":"Enter URL adress of your sound. For example: https:\/\/tw-calc.net\/script\/budik.mp3","lang_96":"Alarm clock set","lang_97":"Melody of alarm clock: Alarm1, Alarm2","lang_98":"Health points","lang_100":"Full energy in","lang_101":"hours and","lang_102":"minutes","lang_103":"Experience points","lang_104":"Full health in","lang_105":"Transfer fee","lang_106":"Transfer fee","lang_107":"Transfer amount","lang_108":"Add bank fees calculator (during transfer) to the bank window","lang_109":"Add energy&health refill calculators","lang_110":"duel experience.","lang_111":"New version","lang_112":"Whats new","lang_113":"Edit","lang_114":"Duelling level","lang_115":"Duleable","lang_116":"Distance","lang_117":"Center map","lang_118":"Town","lang_122":"Note","lang_123":"Really?","lang_124":"Actually empty","lang_140":"Resistance","lang_141":"Damage","lang_143":"Loading","lang_146":"All your saved jobs will be removed. Are you sure you want to do it?","lang_147":"Close (Saved automatically)","lang_148":"Reset jobs","lang_149":"Reset","lang_150":"Add or remove Jobs","lang_151":"Search for job","lang_152":"Job list","lang_153":"Replace native craft window in the menu by Westcalc craft window","lang_154":"Open duel window","lang_157":"Name","lang_159":"Importing...","lang_160":"Own skills","lang_161":"New equipment","lang_162":"Close","lang_163":"Add","lang_164":"Current clothing will be added as new equipment.","lang_165":"Successfull","lang_166":"Name...","lang_167":"Job","lang_169":"Show configuration of this set","lang_170":"Wardrobe","lang_171":"Remove this set","lang_172":"Create","lang_173":"Tombola analyser","lang_174":"Travelling fair","lang_175":"Add wardrobe to the game","lang_176":"Hide unavailable materials","lang_177":"Craft","lang_178":"Toggle all recipes","lang_179":"Field cook","lang_180":"Tonic peddler","lang_181":"Blacksmith","lang_182":"Master Saddler","lang_183":"Crafting","lang_184":"Add Westcalc icon to the right menu","lang_185":"Position of Job bar","lang_186":"Top","lang_187":"Bottom","lang_188":"In right panel","lang_189":"Hide","lang_190":"without premium","lang_191":"Position of duel panel","lang_192":"Show the crafting product","lang_193":"Setting Traps","lang_194":"Valentine's Day","lang_195":"Easter","lang_196":"Independence Day","lang_197":"Octoberfest","lang_198":"Day of the Dead","lang_199":"Defeat: You lose","lang_200":"Energy\n","lang_201":"Weapon damage","lang_202":"Cloth bonus","lang_203":"Wall - level","lang_204":"Accept the quest to see the quest giver","lang_205":"Show quest giver on map","lang_206":"Show the quest on TW-Calc.net","lang_207":"Wear all","lang_208":"Create or select set from the menu","lang_209":"Learn","lang_210":"Notepad","lang_211":"Import","lang_212":"My Character","lang_213":"Tombola","lang_214":"Battle Calc","lang_215":"Duel Calc","lang_216":"Settings","lang_217":"BB Code","lang_218":"Refresh the page to apply changes.","lang_219":"No shop with this item found"};
 
         /**
          * These languages can be fetched from tw-calc.net
          * @type {[string,string,string,string,string,string,string,string,string,string,string,string,string,string,string]}
          */
-        TW_Calc.AvailableLangs = ["sk_SK", "cs_CZ", "es_ES", "pt_BR", "pl_PL", "sv_SE", "hu_HU", "ro_RO", "tr_TR", "nn_NO", "it_IT", "de_DE", "nl_NL", "ru_RU", "el_GR"];
+        TW_Calc.AvailableLangs = ["sk_SK", "cs_CZ", "es_ES", "pt_BR", "pl_PL", "sv_SE", "hu_HU", "ro_RO", "tr_TR", "nn_NO", "it_IT", "de_DE", "nl_NL", "ru_RU", "el_GR", "fr_FR"];
 
         TW_Calc.loadPack = function (a) {
 
@@ -1613,16 +1613,16 @@ window.TWCalc_inject = function () {
          * Quests
          * @type {{}}
          */
-        TW_Calc.Quests = {};
+        TW_Calc.Quests = {
+            loading: false,
+            townsList: null,
+        };
 
         TW_Calc.Quests.questEmployer = function (nr) {
 
             try {
-
-                Ajax.get('map', 'get_minimap', {}, function (json) {
-                    if (json.error)
-                        return new UserMessage(json.msg).show();
-                    var tmpObj = json.quest_locations[nr];
+                TW_Calc.NearestJob.getMap(function (map) {
+                    var tmpObj = map.quest_locations[nr];
                     if (isDefined(tmpObj))
                         Map.center(tmpObj[0][0], tmpObj[0][1]);
                     else
@@ -1632,6 +1632,76 @@ window.TWCalc_inject = function () {
             } catch (e) {
 
                 new TW_Calc.Error(e, 'TW_Calc.QuestsquestEmployer').show();
+
+            }
+
+        };
+
+        TW_Calc.Quests.findShop = function (id, shop) {
+
+            try {
+                var that = this;
+                if (that.loading)
+                    return;
+                that.loading = true;
+                var processShop = function (pt) {
+                    var town = that.townsList[pt];
+                    if (town[shop].includes(id)) {
+                        Trader.open(shop, town.town_id, town.x, town.y);
+                        that.loading = false;
+                    } else
+                        loadShop(++pt);
+                }
+                var requestShop = function (rt) {
+                    var town = that.townsList[rt];
+                    $.get('game.php?window=building_' + shop + '&town_id=' + town.town_id, function (json) {
+                        town[shop] = [];
+                        for (var i of json.trader_inv)
+                            town[shop].push(i.item_id);
+                        processShop(rt);
+                    });
+                }
+                var loadShop = function (lt) {
+                        var town = that.townsList[lt];
+                        if (!town) {
+                            that.loading = false;
+                            return new UserMessage(TW_Calc.getTranslation(219)).show();
+                        }
+                        if (!town[shop])
+                            requestShop(lt);
+                        else
+                            processShop(lt);
+                };
+                var loadTowns = function (map) {
+                    new UserMessage(TW_Calc.getTranslation(143), 'success').show();
+                    if (that.townsList)
+                        return loadShop(0);
+                    that.townsList = [];
+                    var home = Character.homeTown.town_id;
+                    for (var x in map.towns) {
+                        var town = map.towns[x];
+                        if (town.member_count && town.town_points > 2000 && town.town_id != home)
+                            that.townsList.push({
+                              town_id: town.town_id,
+                              x: town.x,
+                              y: town.y,
+                              dist: Map.calcWayTime(Character.position, town)
+                            });
+                    }
+                    that.townsList.sort(function(a, b){return a.dist - b.dist;});
+                    if (home)
+                        that.townsList.unshift(Character.homeTown);
+                    loadShop(0);
+                };
+                var mapData = TW_Calc.NearestJob.map;
+                if (!mapData)
+                    TW_Calc.NearestJob.getMap(loadTowns);
+                else
+                    loadTowns(mapData);
+
+            } catch (e) {
+
+                new TW_Calc.Error(e, 'TW_Calc.findShop').show();
 
             }
 
@@ -1647,15 +1717,30 @@ window.TWCalc_inject = function () {
 
                     var mmLink = '';
                     var tmpObj = null;
-
-                    if (jsRequirement && jsRequirement.id && jsRequirement.type === 'inventory_changed') {
+                    var reqtypes = ['inventory_changed', 'wear_changed'];
+                    var shops = {
+                        head: 'tailor',
+                        body: 'tailor',
+                        foot: 'tailor',
+                        pants: 'tailor',
+                        right_arm: 'gunsmith',
+                        left_arm: 'gunsmith',
+                        neck: 'general',
+                        animal: 'general',
+                        belt: 'general',
+                    };
+                    
+                    if (jsRequirement && jsRequirement.id && reqtypes.indexOf(jsRequirement.type) > -1) {
 
                         tmpObj = ItemManager.get(jsRequirement.id);
-
-                        if (isDefined(tmpObj) && tmpObj.spec_type === 'crafting') {
+                        var inShop = shops[tmpObj.type];
+                        
+                        if (tmpObj.spec_type === 'crafting') {
                             return '<span class="quest_craftlink" style="cursor: pointer;" title=\'' + TW_Calc.getTranslation(192) + '\' onclick="TW_Calc.Craft.window.showRecipe(' + tmpObj.item_id + ')"><img src="/images/items/yield/toolbox.png" width="16"/></span>&nbsp;';
-                        } else if (isDefined(tmpObj) && tmpObj.spec_type === 'mapdrop') {
+                        } else if (tmpObj.spec_type === 'mapdrop') {
                             mmLink += '<span class="tw2gui-iconset tw2gui-icon-hammer" style="display: inline-block; cursor: pointer; vertical-align: middle; margin-right: 2px;" onclick="TW_Calc.NearestJob.findByProductId(' + tmpObj.item_id + ')"></span>';
+                        } else if (tmpObj.traderlevel && tmpObj.traderlevel < 21 && inShop) {
+                            mmLink += '<span class="tw2gui-iconset tw2gui-icon-home" style="display: inline-block; cursor: pointer; vertical-align: middle; margin-right: 2px;" onclick="TW_Calc.Quests.findShop(' + tmpObj.item_id + ',\'' + inShop + '\')"></span>';
                         }
 
                     } else if (jsRequirement && jsRequirement.type === 'task-finish-walk') {
@@ -1774,11 +1859,13 @@ window.TWCalc_inject = function () {
         TW_Calc.NearestJob.getMap = function (callback) {
 
             Ajax.get("map", "get_minimap", {}, function (data) {
+                if (data.error)
+                    return new UserMessage(data.msg).show();
 
                 TW_Calc.NearestJob.map = data;
 
                 if (typeof callback === "function") {
-                    callback();
+                    callback(data);
                 }
 
             });
@@ -3076,20 +3163,21 @@ window.TWCalc_inject = function () {
 
                 try {
 
-                    var combi = wofId + year;
-                    var obj = TW_Calc.TombolaExporter.createObjectFromStorage(combi);
+                    var tombolaId = wofId + (year ? '_' + year : '');
+                    var obj = TW_Calc.TombolaExporter.createObjectFromStorage(tombolaId);
 
                     if (obj && TW_Calc.TombolaExporter.wof.hasOwnProperty(wofId)) {
 
-                        var valentines = [12,18];
+                        var valentines = [12, 18];
                         var valentine = valentines.indexOf(wofId) > -1;
-                        var dotds = [11,17];
+                        var dotds = [11, 17];
                         var dotd = dotds.indexOf(wofId) > -1;
 
-                        $('#tab_tombola>.tw2gui_scrollpane>.tw2gui_scrollpane_clipper>.tw2gui_scrollpane_clipper_contentpane').append('<h2 style="margin-left: 0; padding-top: 0;"><span id="TW_Calc_TombolaExporter_Tab_Groupframe_' + combi + '"><a target="_blank" href="' + TW_Calc.website + '/tombola/' + combi + '">' + TW_Calc.TombolaExporter.wof[wofId] + year + '</a>:</span></h2>');
+
+                        $('#tab_tombola>.tw2gui_scrollpane>.tw2gui_scrollpane_clipper>.tw2gui_scrollpane_clipper_contentpane').append('<h2 style="margin-left: 0; padding-top: 0;"><span id="TW_Calc_TombolaExporter_Tab_Groupframe_' + tombolaId + '"><a target="_blank" href="' + TW_Calc.website + '/tombola/' + tombolaId + '">' + TW_Calc.TombolaExporter.wof[wofId] + (year ? ' ' + year : '') + '</a>:</span></h2>');
 
                         var getBackground = function (bg, i) {
-                            var html = '<div id="TW_Calc_TombolaExporter_Tab_' + combi + '_Items_' + i + '" style="background:' + bg + '; float: left; width: 636px; margin: 5px; padding: 10px; border: 3px solid #a49e97; border-radius: 8px; box-shadow: 0 0 20px inset; opacity: 0.9; left: 0; right: 0; top: 0; bottom: 0;"></div>';
+                            var html = '<div id="TW_Calc_TombolaExporter_Tab_' + tombolaId + '_Items_' + i + '" style="background:' + bg + '; float: left; width: 636px; margin: 5px; padding: 10px; border: 3px solid #a49e97; border-radius: 8px; box-shadow: 0 0 20px inset; opacity: 0.9; left: 0; right: 0; top: 0; bottom: 0;"></div>';
                             $('#tab_tombola>.tw2gui_scrollpane>.tw2gui_scrollpane_clipper>.tw2gui_scrollpane_clipper_contentpane').append(html);
                         };
 
@@ -3099,21 +3187,21 @@ window.TWCalc_inject = function () {
                             var itemObj = ItemManager.get(id);
                             var count = Number(COUNT);
                             var item = new tw2widget.InventoryItem(itemObj).setCount(count).setShowcompare(false).getMainDiv();
-                            $('#TW_Calc_TombolaExporter_Tab_' + combi + '_Items_' + i).append(item);
+                            $('#TW_Calc_TombolaExporter_Tab_' + tombolaId + '_Items_' + i).append(item);
                         };
 
                         if (valentine) {
-                            var a = JSON.parse(localStorage.getItem("TWCalc_Tombola_Spins_" + combi)) || {
+                            var a = JSON.parse(localStorage.getItem("TWCalc_Tombola_Spins_" + tombolaId)) || {
                                 total: 0,
                                 free: 0
                             };
-                            $('#TW_Calc_TombolaExporter_Tab_Groupframe_' + combi).append('<span style="font-size: 15px;text-align: right;margin-left: 35px;">' + a.free + ' free spins of ' + a.total + ' total spins</span></h2>');
+                            $('#TW_Calc_TombolaExporter_Tab_Groupframe_' + tombolaId).append('<span style="font-size: 15px;text-align: right;margin-left: 35px;">' + a.free + ' free spins of ' + a.total + ' total spins</span></h2>');
                         } else if (dotd) {
-                            var a2 = JSON.parse(localStorage.getItem("TWCalc_Tombola_Spins_" + combi)) || {
+                            var a2 = JSON.parse(localStorage.getItem("TWCalc_Tombola_Spins_" + tombolaId)) || {
                                 total: 0,
                                 free: 0
                             };
-                            $('#TW_Calc_TombolaExporter_Tab_Groupframe_' + combi).append('<span style="font-size: 15px;text-align: right;margin-left: 35px;">' + a2.free + ' times bribed at ' + a2.total + ' total games</span></h2>');
+                            $('#TW_Calc_TombolaExporter_Tab_Groupframe_' + tombolaId).append('<span style="font-size: 15px;text-align: right;margin-left: 35px;">' + a2.free + ' times bribed at ' + a2.total + ' total games</span></h2>');
                         }
                         for (var i = 0; i < obj.length; i++) {
 
@@ -3141,8 +3229,10 @@ window.TWCalc_inject = function () {
 
                                 getBackground(bg, i);
 
-                                for (var l in oi)
+                                for (var l in oi) {
                                     getItem(l, oi[l], i);
+                                }
+
                             }
                         }
 
@@ -3157,31 +3247,29 @@ window.TWCalc_inject = function () {
 
                 try {
 
-                    TW_Calc.TombolaExporter.Tab.Scrollpane = new west.gui.Scrollpane();
+                    this.Scrollpane = new west.gui.Scrollpane();
 
-                    $('.tw2gui_scrollpane_clipper>.tw2gui_scrollpane_clipper_contentpane', TW_Calc.TombolaExporter.Tab.Scrollpane.getMainDiv()).css('float', 'left');
+                    $('.tw2gui_scrollpane_clipper>.tw2gui_scrollpane_clipper_contentpane', this.Scrollpane.getMainDiv()).css('float', 'left');
 
-                    $(TW_Calc.TombolaExporter.Tab.Scrollpane.getMainDiv()).css({
+                    $(this.Scrollpane.getMainDiv()).css({
                         "height": "360px",
                         "top": "10px",
                         "left": "5px",
                         "width": "688px"
                     });
 
-                    $('#tab_tombola').empty();
+                    $('#tab_tombola').html(this.Scrollpane.getMainDiv());
 
-                    $('#tab_tombola').append(TW_Calc.TombolaExporter.Tab.Scrollpane.getMainDiv());
 
-                    TW_Calc.TombolaExporter.Tab.load(1, ''); //travelling fair
-                    TW_Calc.TombolaExporter.Tab.load(19, '_2018'); //easter
-                    TW_Calc.TombolaExporter.Tab.load(18, '_2018'); //valentine
-                    TW_Calc.TombolaExporter.Tab.load(17, '_2017'); //dayofthedead
-                    TW_Calc.TombolaExporter.Tab.load(16, '_2017'); //octoberfest
-                    TW_Calc.TombolaExporter.Tab.load(14, '_2017'); //independence
-                    TW_Calc.TombolaExporter.Tab.load(13, '_2017'); //easter
-                    TW_Calc.TombolaExporter.Tab.load(12, '_2017'); //valentine
-                    TW_Calc.TombolaExporter.Tab.load(11, '_2016'); //dayofthedead
-                    TW_Calc.TombolaExporter.Tab.load(15, '_2016'); //octoberfest
+                    for (var key in localStorage) {
+                        if (localStorage.hasOwnProperty(key)) {
+                            var match = key.match(/TWCalc_Tombola_(\d+)(_(\d+))?/);
+                            console.log(match);
+                            if (match) {
+                                this.load(Number(match[1]), match[3] || '');
+                            }
+                        }
+                    }
 
                 } catch (e) {
                     new TW_Calc.Error(e, 'TombolaExporter.Tab.launch').show();
