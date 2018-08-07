@@ -1656,8 +1656,8 @@ window.TWCalc_inject = function () {
                     var town = that.townsList[rt];
                     $.get('game.php?window=building_' + shop + '&town_id=' + town.town_id, function (json) {
                         town[shop] = [];
-                        for (var i of json.trader_inv)
-                            town[shop].push(i.item_id);
+                        for (var i = 0; i < json.trader_inv.length; i++)
+                            town[shop].push(json.trader_inv[i].item_id);
                         processShop(rt);
                     });
                 }
