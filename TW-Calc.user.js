@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.36
+// @version 1.37
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -71,7 +71,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.36",
+            version: "1.37",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -1656,8 +1656,8 @@ window.TWCalc_inject = function () {
                     var town = that.townsList[rt];
                     $.get('game.php?window=building_' + shop + '&town_id=' + town.town_id, function (json) {
                         town[shop] = [];
-                        for (var i of json.trader_inv)
-                            town[shop].push(i.item_id);
+                        for (var i = 0; i < json.trader_inv.length; i++)
+                            town[shop].push(json.trader_inv[i].item_id);
                         processShop(rt);
                     });
                 }
