@@ -1355,7 +1355,7 @@ window.TWCalc_inject = function () {
             try {
 
                 var myProfession = recipe.profession_id === Character.professionId;
-                var productId = ItemManager.get(recipeId).craftitem;
+                var productId = recipe.craftitem;
                 var hasProducts = true;
 
                 var items = [];
@@ -1416,11 +1416,11 @@ window.TWCalc_inject = function () {
                     amount_data.push(calc_amount.craftable);
                 }
 
-                var maxCraftable = Array.min(amount_data);
+                var maxCraftable = recipe.blocktime ? 1 : Array.min(amount_data);
                 var isLearned = TW_Calc.Craft.professionsCache[5].indexOf(recipeId) !== -1;
                 var craftable = myProfession && hasProducts && isLearned;
                 var parent = $("#TWCalcRecipe_" + recipeId);
-                var difficult = Crafting.getRecipeColor(ItemManager.get(recipeId));
+                var difficult = Crafting.getRecipeColor(recipe);
                 var lastCraft = TW_Calc.Craft.dataLastCraft[recipeId];
                 var canBeLearned = myProfession && Bag.items_by_id.hasOwnProperty(recipeId) && !isLearned;
 
