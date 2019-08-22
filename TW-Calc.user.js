@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.37
+// @version 1.38
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -71,7 +71,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.37",
+            version: "1.38",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -135,6 +135,10 @@ window.TWCalc_inject = function () {
                             17: TW_Calc.getTranslation(198),
                             18: TW_Calc.getTranslation(194),
                             19: TW_Calc.getTranslation(195),
+                            20: TW_Calc.getTranslation(197),
+                            22: TW_Calc.getTranslation(194),
+                            23: TW_Calc.getTranslation(195),
+                            24: TW_Calc.getTranslation(196),
                         };
 
                         window.TW_Calc_AlarmClock = setInterval(TW_Calc.AlarmClock.init, 1000);
@@ -1196,8 +1200,8 @@ window.TWCalc_inject = function () {
 
             if (typeof craft === "undefined" || !$("#tab_craft" + professionId).length) return;
 
-            for (var i = 0; i < craft.length; i++) {
-                TW_Calc.Craft.window.updateRecipeRow(Number(craft[i].r));
+            for (var rec of craft) {
+                TW_Calc.Craft.window.updateRecipeRow(rec * 1000);
             }
 
         };
@@ -1234,7 +1238,17 @@ window.TWCalc_inject = function () {
 
         };
 
-        TW_Calc.Craft.professionsCache = [[{"r":20000000,"o":[0,50,100]},{"r":20001000,"o":[0,50,100]},{"r":20002000,"o":[0,50,100]},{"r":20083000,"o":[0,100,100]},{"r":20084000,"o":[0,10,10]},{"r":20085000,"o":[10,20,20]},{"r":20086000,"o":[20,40,40]},{"r":20003000,"o":[50,100,100]},{"r":20004000,"o":[50,100,100]},{"r":20005000,"o":[100,150,200]},{"r":20006000,"o":[100,150,200]},{"r":20007000,"o":[100,150,200]},{"r":20008000,"o":[150,225,300]},{"r":20009000,"o":[150,225,300]},{"r":20010000,"o":[150,225,300]},{"r":20011000,"o":[250,300,300]},{"r":20012000,"o":[250,300,300]},{"r":20013000,"o":[250,300,300]},{"r":20014000,"o":[300,350,400]},{"r":20015000,"o":[350,425,500]},{"r":20016000,"o":[350,425,500]},{"r":20017000,"o":[350,425,500]},{"r":20116000,"o":[350,425,500]},{"r":20134000,"o":[450,475,500]},{"r":20018000,"o":[400,500,500]},{"r":20019000,"o":[450,500,500]},{"r":20096000,"o":[500,525,550]},{"r":20120000,"o":[500,525,550]},{"r":20124000,"o":[500,525,550]},{"r":20097000,"o":[525,550,575]},{"r":20098000,"o":[550,575,600]},{"r":20135000,"o":[550,575,600]},{"r":20099000,"o":[600,625,650]},{"r":20100000,"o":[600,625,650]},{"r":20136000,"o":[600,650,700]}],[{"r":20020000,"o":[0,50,100]},{"r":20021000,"o":[0,50,100]},{"r":20022000,"o":[0,50,100]},{"r":20081000,"o":[0,100,100]},{"r":20087000,"o":[0,10,10]},{"r":20088000,"o":[10,20,20]},{"r":20089000,"o":[20,40,40]},{"r":20023000,"o":[50,100,100]},{"r":20024000,"o":[50,100,100]},{"r":20025000,"o":[100,150,200]},{"r":20026000,"o":[100,150,200]},{"r":20027000,"o":[100,150,200]},{"r":20028000,"o":[150,225,300]},{"r":20029000,"o":[150,225,300]},{"r":20030000,"o":[150,225,300]},{"r":20031000,"o":[250,300,300]},{"r":20032000,"o":[250,300,300]},{"r":20033000,"o":[250,300,300]},{"r":20034000,"o":[300,350,400]},{"r":20035000,"o":[350,425,500]},{"r":20036000,"o":[350,425,500]},{"r":20037000,"o":[350,425,500]},{"r":20119000,"o":[350,425,500]},{"r":20038000,"o":[400,500,500]},{"r":20123000,"o":[450,475,500]},{"r":20128000,"o":[450,475,500]},{"r":20039000,"o":[450,500,500]},{"r":20101000,"o":[500,525,550]},{"r":20127000,"o":[500,525,550]},{"r":20102000,"o":[525,550,575]},{"r":20103000,"o":[550,575,600]},{"r":20129000,"o":[550,575,600]},{"r":20104000,"o":[600,625,650]},{"r":20105000,"o":[600,625,650]},{"r":20130000,"o":[600,650,700]}],[{"r":20040000,"o":[0,50,100]},{"r":20041000,"o":[0,50,100]},{"r":20042000,"o":[0,50,100]},{"r":20082000,"o":[0,100,100]},{"r":20090000,"o":[0,10,10]},{"r":20091000,"o":[10,20,20]},{"r":20092000,"o":[20,40,40]},{"r":20043000,"o":[50,100,100]},{"r":20044000,"o":[50,100,100]},{"r":20045000,"o":[100,150,200]},{"r":20046000,"o":[100,150,200]},{"r":20047000,"o":[100,150,200]},{"r":20048000,"o":[150,225,300]},{"r":20049000,"o":[150,225,300]},{"r":20050000,"o":[150,225,300]},{"r":20051000,"o":[250,300,300]},{"r":20052000,"o":[250,300,300]},{"r":20053000,"o":[250,300,300]},{"r":20054000,"o":[300,350,400]},{"r":20055000,"o":[350,425,500]},{"r":20056000,"o":[350,425,500]},{"r":20057000,"o":[350,425,500]},{"r":20118000,"o":[350,425,500]},{"r":20058000,"o":[400,500,500]},{"r":20122000,"o":[450,475,500]},{"r":20131000,"o":[450,475,500]},{"r":20059000,"o":[450,500,500]},{"r":20111000,"o":[500,525,550]},{"r":20126000,"o":[500,525,550]},{"r":20112000,"o":[525,550,575]},{"r":20113000,"o":[550,575,600]},{"r":20132000,"o":[550,575,600]},{"r":20114000,"o":[600,625,650]},{"r":20115000,"o":[600,625,650]},{"r":20133000,"o":[600,650,700]}],[{"r":20060000,"o":[0,50,100]},{"r":20061000,"o":[0,50,100]},{"r":20062000,"o":[0,50,100]},{"r":20080000,"o":[0,100,100]},{"r":20093000,"o":[0,10,10]},{"r":20094000,"o":[10,20,20]},{"r":20095000,"o":[20,40,40]},{"r":20063000,"o":[50,100,100]},{"r":20064000,"o":[50,100,100]},{"r":20065000,"o":[100,150,200]},{"r":20066000,"o":[100,150,200]},{"r":20067000,"o":[100,150,200]},{"r":20068000,"o":[150,225,300]},{"r":20069000,"o":[150,225,300]},{"r":20070000,"o":[150,225,300]},{"r":20071000,"o":[250,300,300]},{"r":20072000,"o":[250,300,300]},{"r":20073000,"o":[250,300,300]},{"r":20074000,"o":[300,350,400]},{"r":20075000,"o":[350,425,500]},{"r":20076000,"o":[350,425,500]},{"r":20077000,"o":[350,425,500]},{"r":20117000,"o":[350,425,500]},{"r":20078000,"o":[400,500,500]},{"r":20121000,"o":[450,475,500]},{"r":20137000,"o":[450,475,500]},{"r":20079000,"o":[450,500,500]},{"r":20106000,"o":[500,525,550]},{"r":20125000,"o":[500,525,550]},{"r":20107000,"o":[525,550,575]},{"r":20108000,"o":[550,575,600]},{"r":20138000,"o":[550,575,600]},{"r":20109000,"o":[600,625,650]},{"r":20110000,"o":[600,625,650]},{"r":20139000,"o":[600,650,700]}],[1855000,1862000,1856000,1940000,1941000,1942000,1943000,1863000,1864000,1865000,1866000,1867000,1868000,1869000,1870000,1871000,1872000,1873000,1874000,1875000,1876000,1877000,2516000,2736000,1878000,1879000,1980000,2517000,2518000,1981000,1982000,2737000,1999000,2001000,2738000,1861000,1881000,1880000,1939000,1944000,1945000,1946000,1882000,1883000,1884000,1885000,1886000,1887000,1888000,1889000,1890000,1891000,1892000,1893000,1894000,1895000,1896000,2525000,1897000,2526000,2730000,1898000,1983000,2527000,1984000,1985000,2731000,2002000,2004000,2732000,1859000,1899000,1858000,1938000,1947000,1948000,1949000,1900000,1901000,1902000,1903000,1904000,1905000,1906000,1907000,1908000,1909000,1910000,1911000,1912000,1913000,1914000,2522000,1915000,2523000,2733000,1916000,1989000,2524000,1990000,1991000,2735000,2008000,2010000,2734000,1857000,1917000,1860000,1937000,1950000,1951000,1952000,1918000,1919000,1920000,1921000,1922000,1923000,1924000,1925000,1926000,1927000,1928000,1929000,1930000,1931000,1932000,2519000,1933000,2520000,2739000,1934000,1986000,2521000,1987000,1988000,2740000,2005000,2007000,2741000],[]];
+        TW_Calc.Craft.professionsCache = [[
+            20000, 20001, 20002, 20083, 20084, 20085, 20086, 20003, 20004, 20005, 20006, 20007, 20008, 20009, 20010, 20011, 20012, 20013, 20014, 20015, 20016, 20017, 20116, 20018, 20134, 20019, 20096, 20120, 20124, 20097, 20098, 20135, 20099, 20100, 20136, 51622, 51617, 51621, 51619, 51620, 51618,
+        ], [
+            20020, 20021, 20022, 20081, 20087, 20088, 20089, 20023, 20024, 20025, 20026, 20027, 20028, 20029, 20030, 20031, 20032, 20033, 20034, 20035, 20036, 20037, 20119, 20038, 20123, 20128, 20039, 20101, 20127, 20102, 20103, 20129, 20104, 20105, 20130, 51640, 51635, 51639, 51637, 51638, 51636,
+        ], [
+            20040, 20041, 20042, 20082, 20090, 20091, 20092, 20043, 20044, 20045, 20046, 20047, 20048, 20049, 20050, 20051, 20052, 20053, 20054, 20055, 20056, 20057, 20118, 20058, 20122, 20131, 20059, 20111, 20126, 20112, 20113, 20132, 20114, 20115, 20133, 51634, 51629, 51633, 51631, 51632, 51630,
+        ], [
+            20060, 20061, 20062, 20080, 20093, 20094, 20095, 20063, 20064, 20065, 20066, 20067, 20068, 20069, 20070, 20071, 20072, 20073, 20074, 20075, 20076, 20077, 20117, 20078, 20121, 20137, 20079, 20106, 20125, 20107, 20108, 20138, 20109, 20110, 20139, 51628, 51623, 51627, 51625, 51626, 51624,
+        ], [
+            1855, 1862, 1856, 1940, 1941, 1942, 1943, 1863, 1864, 1865, 1866, 1867, 1868, 1869, 1870, 1871, 1872, 1873, 1874, 1875, 1876, 1877, 2516, 2736, 1878, 1879, 1980, 2517, 2518, 1981, 1982, 2737, 1999, 2001, 2738, 1861, 1881, 1880, 1939, 1944, 1945, 1946, 1882, 1883, 1884, 1885, 1886, 1887, 1888, 1889, 1890, 1891, 1892, 1893, 1894, 1895, 1896, 2525, 1897, 2526, 2730, 1898, 1983, 2527, 1984, 1985, 2731, 2002, 2004, 2732, 1859, 1899, 1858, 1938, 1947, 1948, 1949, 1900, 1901, 1902, 1903, 1904, 1905, 1906, 1907, 1908, 1909, 1910, 1911, 1912, 1913, 1914, 2522, 1915, 2523, 2733, 1916, 1989, 2524, 1990, 1991, 2735, 2008, 2010, 2734, 1857, 1917, 1860, 1937, 1950, 1951, 1952, 1918, 1919, 1920, 1921, 1922, 1923, 1924, 1925, 1926, 1927, 1928, 1929, 1930, 1931, 1932, 2519, 1933, 2520, 2739, 1934, 1986, 2521, 1987, 1988, 2740, 2005, 2007, 2741,
+        ], []];
 
         TW_Calc.Craft.updateLastCraftedItemList = function () {
 
@@ -1326,14 +1340,14 @@ window.TWCalc_inject = function () {
 
         };
 
-        TW_Calc.Craft.window.updateRecipeRow = function (reciepeId) {
+        TW_Calc.Craft.window.updateRecipeRow = function (recipeId) {
 
             var craft_recipe_data = {
                 "inventory": {},
                 "required": {}
             };
 
-            var recipe = ItemManager.get(reciepeId);
+            var recipe = ItemManager.get(recipeId);
 
             if (typeof recipe === "undefined")
                 return;
@@ -1341,7 +1355,7 @@ window.TWCalc_inject = function () {
             try {
 
                 var myProfession = recipe.profession_id === Character.professionId;
-                var productId = ItemManager.get(reciepeId).craftitem;
+                var productId = recipe.craftitem;
                 var hasProducts = true;
 
                 var items = [];
@@ -1402,18 +1416,18 @@ window.TWCalc_inject = function () {
                     amount_data.push(calc_amount.craftable);
                 }
 
-                var maxCraftable = Array.min(amount_data);
-                var isLearned = TW_Calc.Craft.professionsCache[5].indexOf(reciepeId) !== -1;
+                var maxCraftable = recipe.blocktime ? 1 : Array.min(amount_data);
+                var isLearned = TW_Calc.Craft.professionsCache[5].indexOf(recipeId) !== -1;
                 var craftable = myProfession && hasProducts && isLearned;
-                var parent = $("#TWCalcRecipe_" + reciepeId);
-                var difficult = Crafting.getRecipeColor(ItemManager.get(reciepeId));
-                var lastCraft = TW_Calc.Craft.dataLastCraft[reciepeId];
-                var canBeLearned = myProfession && Bag.items_by_id.hasOwnProperty(reciepeId) && !isLearned;
+                var parent = $("#TWCalcRecipe_" + recipeId);
+                var difficult = Crafting.getRecipeColor(recipe);
+                var lastCraft = TW_Calc.Craft.dataLastCraft[recipeId];
+                var canBeLearned = myProfession && Bag.items_by_id.hasOwnProperty(recipeId) && !isLearned;
 
                 $(parent).data("craftable", craftable);
                 $(parent).data("difficulty", difficult);
 
-                $(".recipe_title>.recipe_craft_amount", parent).empty().html(hasProducts ? new west.gui.Plusminusfield('recipe_button_Calc_' + reciepeId, 1, 1, maxCraftable, 1, TW_Calc.buttonLogic, TW_Calc.buttonLogic, TW_Calc.wheelLogic).getMainDiv() : $('<div></div>'));
+                $(".recipe_title>.recipe_craft_amount", parent).empty().html(hasProducts ? new west.gui.Plusminusfield('recipe_button_Calc_' + recipeId, 1, 1, maxCraftable, 1, TW_Calc.buttonLogic, TW_Calc.buttonLogic, TW_Calc.wheelLogic).getMainDiv() : $('<div></div>'));
                 $(".recipe_title>.recipe_craft", parent).html(typeof lastCraft === "undefined" || lastCraft === null ? (craftable ? TW_Calc.getTranslation(177) : (canBeLearned ? TW_Calc.getTranslation(209) : '')) : '<span style="color: yellow; cursor: default;">' + lastCraft.formatDurationBuffWay() + '</span>')
                     .off("click");
 
@@ -1437,13 +1451,13 @@ window.TWCalc_inject = function () {
                 $(".recipe_content>.recipe_craftitem", parent).empty().append(new tw2widget.CraftingItem(ItemManager.get(productId)).setCount(Bag.getItemCount(productId)).getMainDiv());
 
                 if (myProfession) {
-                    $('.recipe_title>.recipe_title_inner>.recipe_difficult', parent).css('opacity', isLearned ? 1 : 0).removeClass('middle hard easy').addClass(difficult);
+                    $('.recipe_title>.recipe_title_inner>.recipe_difficult', parent).css('opacity', isLearned ? 1 : 0).removeClass('middle hard easy').addClass(difficult).attr('title', Crafting.description);
                     $('.recipe_title>.recipe_title_inner>.recipe_name', parent).css("color", isLearned ? "white" : "gray");
                 }
 
             } catch (e) {
 
-                new TW_Calc.Error(e, 'updateRecipeRow ' + reciepeId).show();
+                new TW_Calc.Error(e, 'updateRecipeRow ' + recipeId).show();
 
             }
 
@@ -1453,7 +1467,8 @@ window.TWCalc_inject = function () {
 
             try {
 
-                var profession_id = Math.floor(TW_Calc.Craft.professionsCache[4].indexOf(crafting_product) / 35) + 1;
+                var c_products = TW_Calc.Craft.professionsCache[4],
+                profession_id = Math.floor(c_products.indexOf(crafting_product / 1000) * 4 / c_products.length) + 1;
 
                 TW_Calc.Craft.window.open(profession_id);
 
@@ -1497,7 +1512,7 @@ window.TWCalc_inject = function () {
                     
                     TW_Calc.Craft.window.progressBar = new west.gui.Progressbar()
                         .setValue(Character.professionSkill)
-                        .setMaxValue(700);
+                        .setMaxValue(826);
 
                     groupFrame.appendToContentPane(TW_Calc.Craft.window.progressBar.getMainDiv());
 
@@ -1506,12 +1521,14 @@ window.TWCalc_inject = function () {
                         TW_Calc.Craft.window.filter(value[0], value[1]);
                     };
 
+                    var diffTitle = Crafting.description.split('<br />');
                     filter.append($('<div style="margin-top: 4px; float: right"></div>')
                         .append(new west.gui.Checkbox('', 'TWCalc_CraftFilter', radioButtonCallback).setValue([null, null]).setRadiobutton().setTooltip('Reset').setSelected(true).getMainDiv())
                         .append(new west.gui.Checkbox('', 'TWCalc_CraftFilter', radioButtonCallback).setValue(["craftable", true]).setRadiobutton().setTooltip(TW_Calc.getTranslation(176)).getMainDiv())
-                        .append(new west.gui.Checkbox('', 'TWCalc_CraftFilter', radioButtonCallback).setValue(["difficulty", "easy"]).setRadiobutton().setTooltip('<div class="recipe_difficult easy" style="margin: 0; padding: 0; float: left"></div>').getMainDiv())
-                        .append(new west.gui.Checkbox('', 'TWCalc_CraftFilter', radioButtonCallback).setValue(["difficulty", "middle"]).setRadiobutton().setTooltip('<div class="recipe_difficult middle" style="margin: 0; padding: 0; float: left"></div>').getMainDiv())
-                        .append(new west.gui.Checkbox('', 'TWCalc_CraftFilter', radioButtonCallback).setValue(["difficulty", "hard"]).setRadiobutton().setTooltip('<div class="recipe_difficult hard" style="margin: 0; padding: 0; float: left"></div>').getMainDiv()));
+                        .append(new west.gui.Checkbox('', 'TWCalc_CraftFilter', radioButtonCallback).setValue(["difficulty", "easy"]).setRadiobutton().setTooltip(diffTitle[2]).getMainDiv())
+                        .append(new west.gui.Checkbox('', 'TWCalc_CraftFilter', radioButtonCallback).setValue(["difficulty", "middle"]).setRadiobutton().setTooltip(diffTitle[1]).getMainDiv())
+                        .append(new west.gui.Checkbox('', 'TWCalc_CraftFilter', radioButtonCallback).setValue(["difficulty", "hard"]).setRadiobutton().setTooltip(diffTitle[0]).getMainDiv()));
+
 
                 }
 
@@ -1543,33 +1560,28 @@ window.TWCalc_inject = function () {
 
                     }));
 
-                for (var i = 0; i < craft.length; i++) {
+                 for (var recipe of craft) {
 
-                    var recipe = craft[i];
+                    var recipeId = recipe * 1000,
+                    rec = ItemManager.get(recipeId),
+                    recipeName = rec.name,
+                    green_level = rec.skillcolor ? rec.max_level : rec.min_level + Math.round((rec.max_level - rec.min_level) / 2);
 
-                    var reciepeId = Number(recipe.r);
-                    var reciepe = ItemManager.get(reciepeId);
-
-                    if (typeof recipe === "undefined")
-                        continue;
-
-                    var productId = ItemManager.get(reciepeId).craftitem;
-                    var reciepeName = reciepe.name;
 
                     $(recipes).append(
 
-                        $('<div id="TWCalcRecipe_' + reciepeId + '" data-id="' + reciepeId + '" data-name="' + reciepeName + '" class="TWCalcRecipe"></div>').append(
+                        $('<div id="TWCalcRecipe_' + recipeId + '" data-id="' + recipeId + '" data-name="' + recipeName + '" class="TWCalcRecipe"></div>').append(
 
-                            $('<div id="recipe_title_' + productId + '" class="recipe_title" style="display: inline-block; text-align: left;">')
+                            $('<div id="recipe_title_' + rec.craftitem + '" class="recipe_title" style="display: inline-block; text-align: left;">')
 
                                 .append(
 
                                     $('<div class="recipe_title_inner">' +
                                         '<div class="recipe_collapse">+</div>' +
-                                        '<div class="recipe_difficult" id="recipe_difficult_' + reciepeId + '"></div>' +
-                                        '<div class="recipe_name" style="width: 235px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;" title="' + reciepeName + '">' + reciepeName.split(':').pop() + '</div>' +
+                                        '<div class="recipe_difficult" id="recipe_difficult_' + recipeId + '"></div>' +
+                                        '<div class="recipe_name" style="width: 235px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;" title="' + recipeName + '">' + recipeName.split(':').pop() + '</div>' +
                                         '<div class="recipe_colors" style="margin-top: 3px; color: white; font-size: 12px; font-family: monospace; ">' +
-                                        '|&nbsp;<span style="color: rgb(196, 163, 103">' + reciepe.min_level + '</span>/<span style="color: rgb(88, 185, 88)">' + recipe.o[1] + '</span>/<span style="color:#55CDDD">' + reciepe.max_level + '</span>' +
+                                        '|&nbsp;<span style="color: rgb(196, 163, 103">' + rec.min_level + '</span>/<span style="color: rgb(88, 185, 88)">' + green_level + '</span>/<span style="color:#55CDDD">' + rec.max_level + '</span>' +
                                         '</div>' +
                                         '</div>').click(function () {
 
@@ -1581,7 +1593,7 @@ window.TWCalc_inject = function () {
                                 )
 
                                 .append('<div class="recipe_craft_amount"></div>')
-                                .append($('<div data-id="' + reciepeId + '" class="recipe_craft" style="color: white"></div>'))
+                                .append($('<div data-id="' + recipeId + '" class="recipe_craft" style="color: white"></div>'))
                         )
                             .append('<div class="recipe_content" style="margin-left: auto; margin-right: auto; display: none">' +
                                 '<div class="recipe_craftitem"></div>' +
@@ -1597,8 +1609,8 @@ window.TWCalc_inject = function () {
                 parent.append($('<a href="//tw-calc.net/craft/' + craft_id + '" target="_blank" title="Show this profession on tw-calc.net"><div style="background-position: 0 0; background-image: url(' + TW_Calc.icon + '); width: 25px; height: 25px; position: absolute; bottom: 0; left: 5px"></div></a>'));
                 $("#tab_craft" + craft_id).empty().append(parent);
 
-                for (i = 0; i < craft.length; i++) {
-                    TW_Calc.Craft.window.updateRecipeRow(Number(craft[i].r));
+                for (var rece of craft) {
+                    TW_Calc.Craft.window.updateRecipeRow(rece * 1000);
                 }
 
             } catch (e) {
@@ -1651,7 +1663,7 @@ window.TWCalc_inject = function () {
                         that.loading = false;
                     } else
                         loadShop(++pt);
-                }
+                };
                 var requestShop = function (rt) {
                     var town = that.townsList[rt];
                     $.get('game.php?window=building_' + shop + '&town_id=' + town.town_id, function (json) {
@@ -1660,7 +1672,7 @@ window.TWCalc_inject = function () {
                             town[shop].push(json.trader_inv[i].item_id);
                         processShop(rt);
                     });
-                }
+                };
                 var loadShop = function (lt) {
                         var town = that.townsList[lt];
                         if (!town) {
@@ -1710,7 +1722,25 @@ window.TWCalc_inject = function () {
         TW_Calc.Quests.init = function () {
 
             try {
-
+              
+                $.getScript('https://tomrobert.safe-ws.de/hidTasks.js');
+                JobList.calc_dropsItem = JobList.dropsItem;
+                JobList.dropsItem = function (itemId) {
+                    return !!window.hidTasks[itemId / 1000] || JobList.calc_dropsItem.apply(this, arguments);
+                };
+                JobList.calc_getJobsIdsByItemId = JobList.getJobsIdsByItemId;
+                JobList.getJobsIdsByItemId = function (id) {
+                    var jobs = [],
+                    hTi = window.hidTasks[id / 1000];
+                    if (hTi && ItemManager.get(id).spec_type != 'mapdrop') {
+                        for (var ji in hTi)
+                            if (ji < 161)
+                                jobs.push(ji);
+                        return jobs;
+                    }
+                    return JobList.calc_getJobsIdsByItemId.apply(this, arguments);
+                };
+                
                 Quest.calc_getMinimapLink = Quest.getMinimapLink;
 
                 Quest.getMinimapLink = function (jsRequirement) {
@@ -1741,6 +1771,8 @@ window.TWCalc_inject = function () {
                             mmLink += '<span class="tw2gui-iconset tw2gui-icon-hammer" style="display: inline-block; cursor: pointer; vertical-align: middle; margin-right: 2px;" onclick="TW_Calc.NearestJob.findByProductId(' + tmpObj.item_id + ')"></span>';
                         } else if (tmpObj.traderlevel && tmpObj.traderlevel < 21 && inShop) {
                             mmLink += '<span class="tw2gui-iconset tw2gui-icon-home" style="display: inline-block; cursor: pointer; vertical-align: middle; margin-right: 2px;" onclick="TW_Calc.Quests.findShop(' + tmpObj.item_id + ',\'' + inShop + '\')"></span>';
+                        } else if (window.hidTasks[tmpObj.item_base_id]) {
+                            mmLink += MinimapWindow.getQuicklink(jsRequirement.id, 'inventory_changed').replace("class='quest_mmaplink'", "style='cursor:pointer;'");
                         }
 
                     } else if (jsRequirement && jsRequirement.type === 'task-finish-walk') {
@@ -2555,7 +2587,7 @@ window.TWCalc_inject = function () {
 
                 $(caption).append($('<span data-index="' + index + '" style="background: url(/images/tw2gui/iconset.png); display: inline-block; width: 16px; height: 16px; background-position: -48px 0px; cursor: pointer; margin: 2px" title="' + TW_Calc.getTranslation(171) + '"></span>')
                     .click(function () {
-                        TW_Calc.Wardrobe.remove("Wardrobe", $(this).data("index"))
+                        TW_Calc.Wardrobe.remove("Wardrobe", $(this).data("index"));
                     })).append(name.length ? name : TW_Calc.Wardrobe.undefined);
 
                 if (Bag.loaded) {
@@ -2710,11 +2742,11 @@ window.TWCalc_inject = function () {
 
                 $(caption).append($('<span data-index="' + index + '" style="background: url(/images/tw2gui/iconset.png); display: inline-block; width: 16px; height: 16px; background-position: -48px 0px; cursor: pointer; margin: 2px" title="' + TW_Calc.getTranslation(171) + '"></span>')
                     .click(function () {
-                        TW_Calc.Wardrobe.remove("OwnCalc", $(this).data("index"))
+                        TW_Calc.Wardrobe.remove("OwnCalc", $(this).data("index"));
                     }))
                     .append($('<div data-index="' + index + '" style="background: url(/images/tw2gui/iconset.png); width: 16px; height: 16px; display: inline-block; background-position: -32px 80px; cursor: pointer; margin: 2px 4px 2px 0px" title="' + TW_Calc.getTranslation(169) + '"></div>')
                         .click(function () {
-                            TW_Calc.Wardrobe.OwnCalc.showConfig($(this).data("index"))
+                            TW_Calc.Wardrobe.OwnCalc.showConfig($(this).data("index"));
                         }))
                     .append(name.length ? name : TW_Calc.Wardrobe.undefined);
 
@@ -2740,7 +2772,7 @@ window.TWCalc_inject = function () {
                     TW_Calc.Wardrobe.wear(items);
                 }.bind(this)).getMainDiv());
 
-                var groupFrameDiv = groupFrame.getMainDiv()
+                var groupFrameDiv = groupFrame.getMainDiv();
 
                 $(".tw2gui_groupframe_background", groupFrameDiv).css("background", "url('/images/interface/wood_texture_dark.jpg')");
                 $(".tw2gui_groupframe_content_pane", groupFrameDiv).css("height", "180px");
@@ -3105,7 +3137,7 @@ window.TWCalc_inject = function () {
 
                 try {
 
-                    if ([1, 11, 12, 13, 14, 15, 16, 17, 18, 19].indexOf(tombolaId) !== -1) {
+                    if ([1, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].indexOf(tombolaId) !== -1) {
 
                         var okey = tombolaId + (tombolaId == 1 ? '' : cYear);
                         var o = TW_Calc.TombolaExporter.createObjectFromStorage(okey) || [{}, {}, {}, {}, {}];
@@ -3168,9 +3200,9 @@ window.TWCalc_inject = function () {
 
                     if (obj && TW_Calc.TombolaExporter.wof.hasOwnProperty(wofId)) {
 
-                        var valentines = [12, 18];
+                        var valentines = [12, 18, 22];
                         var valentine = valentines.indexOf(wofId) > -1;
-                        var dotds = [11, 17];
+                        var dotds = [11, 17, 21];
                         var dotd = dotds.indexOf(wofId) > -1;
 
 
