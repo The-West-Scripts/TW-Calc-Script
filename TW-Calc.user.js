@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.38
+// @version 1.39
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -71,7 +71,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.38",
+            version: "1.39",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -1512,7 +1512,7 @@ window.TWCalc_inject = function () {
                     
                     TW_Calc.Craft.window.progressBar = new west.gui.Progressbar()
                         .setValue(Character.professionSkill)
-                        .setMaxValue(826);
+                        .setMaxValue(850);
 
                     groupFrame.appendToContentPane(TW_Calc.Craft.window.progressBar.getMainDiv());
 
