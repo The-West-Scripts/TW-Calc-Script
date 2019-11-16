@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.39
+// @version 1.40
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -71,7 +71,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.39",
+            version: "1.40",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -87,7 +87,7 @@ window.TWCalc_inject = function () {
             Wardrobe_bannedLocales: ["hu_HU"],
             ShowUntranslated: false,
             UseLocalLanguagePack: false,
-            ShowLogs: false,
+            ShowLogs: Game.environment == 'alpha',
             bottomImg: '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',
             icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAZCAMAAABEio12AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAMAUExURQ4BAFtKL2pSN0IqEDcjDTQgDDAdBxQCACcSABsSCmVMNVc3IA8DAEw+MRcMBmBJMSEYDychGUUoFh0KAHNcP0EvHwoAAFpKOFVBJVRCKHxlUYhwV081GzAlGzghFB4VDGBHIy0XA1A3J3hQJ41oQlxJKCYfFYx3ZSwcDm9FJIBXMHlQH6B7VopoPE1BOj0qE1pFJ5RmKhoSC083H2ZNPHZcOZt3TpRmRWRSQV1OMVlKMFZEJzEiBlNDKUU1LW1XPZZ8bIhWNigXD5l0RHlYMXNILYRjOqp7RZh/YYVtU6iGXZRlNI1eLT4cA3BNMraEUGA+FJV3X5RlPYlcOWBMLEg4HmtbRGJFI0gyHYVTNW1ROZd0TKCNZaaTa2dBGlAsEpFzW4x2XnlVO3RHJl1HKF1INKJ+V3piQYJdN////000FR8GABoGAPn18kgxF/X08i8bBNHJwTIdCPPx8DYcAyELAR4UCkYgAlQ7HjQcDsm1omJPNDkeE9rV0FQ0FdrOwx0OA2NKLFAuFlQ6IywTBCITBUcmCy0XCTAWAquek0kwIT8nEXJHJSYYDHNnWmJBIlw7ITokCycTBEkpEunm49/TyOTb1KGVh11DKl9ILl5IJ3ZSLjsoGZGDdjwiG6+SejQiFDoeBVk/Jlg2HVAzJScKAC8bDkgqGhMAAIRrT19IOVA7NIdwW8rBtmU9G2lOMGtKIkwrDeTh4HJCG7uUdJhjNNTLxINPKryvpWhELLCZhZtyTUQdBKGFZeDX0Laqn9TNyHhdRFQoGkEqHm9JNIxdLY11XlU1Gp6MgXxVL2A8Gd3Y1GA4HaWZjtLGunpKJntHHsO7tGY4FcKvm4JZL2QvCkweBqyYipJdPX1jSNPPzDkpFbixrNG+qNnRy1lDM21VR5WJg7CAUYd2aXlwaFw2E72hiXhjTmpMKlVGN8bBvJdoPYRZPXFTPL+SZK6ln4JtYPLs5urbz8qslXBPItC9r5R5aL+1rYhdSqCLdm1CIquDaV4lCujg1mVJJMWpjVXPAa8AAADcdFJOU+v+/v7s/uvs7P6vr/2v/uz+/a/rr/7rr8j+r6+t/q/rr+z+r6/s66/9r3jO6+uvyO2v6/3+66qvr+3tr8jtr6/rr6+vocivyNnr68jI7a+v6uui68jI7aLtyOvr6evZ6/2h6+v49fbr9v/////////////////////////////////////+///////////////////////////+///////////////////////////+//////////////////////////////////////////////////////////5vmyxZAAAEkElEQVQYGQXBeUxTBwAH4N+7etGbtlBKLUWq6ISJaBSELVwuLioaJJku02k8NhPMnDrFzSsSnZubV7Y5/9hkW7LFIwuTaSaSaQaoEfFEDqEFKi09aOn5aPvat+8j5ha0x4qmABfMtigASGaP5GEIKblbGmZVplHTOEwP5QBQRgzKEAJRTT8MKwC4AQAAdIGYMJZe4NEH2MK/AR3SIm6YbYUcG9FSHJHtJiScgAQSYD5lEme2nW8433AhBeDnlo5NOedWxY8fEOi1dd8Ta7UXPrrmPjKRic3E2/cPNQENyJgGRC7g4raML4Qpkltzc+CERcyOCQo90UAGPDoxbBl24HgDJXI5Lkrnx+O+9bl3Pg5tyK45uaQqqzmjpIOt9JE9E2x4eJ75QSPpWmwN5Ne1LE3sUlKE+HDaEACM9CT6Vl5tH2qeqLp/7+IroXdtj9IDAGmdSVmfpNVjcfS6rcVDLBmNvLydD2xNY5rgfUsMTPachuazRq2iAq8PA7qzlRtxJWch8Gb5cxTUlNaTSpzFAPBrueoScMgB/LIXkNo3q4jfNWIdgHOtXoD/D2gOA+W3HQ9IAuAAAP65wKAXiH4LzOS2PwM4+V8AqmcTQOdzIN4PuCmTlYR+OzQAHnECCaYh0GAa8NE/wmSk4QFgN82n4QZdgBeA1MwsI/lxWk4BtVPM01IAy1cDqLZeAU8lvOsAAFS3GoBsNYBT3lGOIkH8EGSBaLFzZArAyywA7uiO+TOQSfykBXTZY5l7AJT2ALhsgHOMlAFZ0kIUOIzTz49iN/31Qmxm8mj/mHWymAnshKVbnRxYiVpdfCfq1z0UVJOUZYIvTB2seTTNcUQH02l2eRgJTTtMo0Rxt0/6FDaf/JaBGre0VnsrpIzCNGSnEnSDLjc/N2n0p8tkNb0WubbsxtJJVYB/3RRbEvMxkuI2tSiaoFldbDDZTlwNPiaVYYWzX2TVuJJCp/OuGB5Ph6RDJIkO61pxI35EVRHUIPk5kkY4bWmhLuEsPSVi25bPsAfjqgWd7zPWfdpwUXeECR5951loxUSlSOvYGim71bjIF5ujfKPtyfKldfkbSD935IPuqhzp+ha4J8iTV0qaU/uleRifzdTz439W7Tk45xSCxv5+o+vYMdVtaqiPJpUKfzv6XfwIdt+kAQcB429Tz87OUsr/GMxGtK/0FE7ubwckOlzbVTEswWOSiNytg33l4nv4Bgs4lCqwYseyInrVFIylr6Hu6tqHfYgCl9yIns4tsT9ZRPIp/6395GWDLafy+Is10X9HN353gFhE3FFMmu1f5rT4txzKea+W38UNt+4c9BMvk4lGQh3ZImE18AK8BKyYLenSesWAcvB6o/GRQj5mjNvkc/pQ+wA+kZE24H6K1gabsyMhAoD0k3TBRrSEwcvS3pUG8npF7Bnl3qYTX8n++RBzeeIYwVvrUWYgNjkHHJkQxoTSXtNkRO/MgFCKHrpG22/AdUUIKYAkUzDMQxsHWu9YE6Diene05AUdId18KEuVmkeIBWqXuoziHLSv6BVJasl0pKhyNafMnmkxR9QC/n+f2e8W3vECWAAAAABJRU5ErkJggg==',
             imgUrl: "//westzz.innogamescdn.com/",
@@ -119,7 +119,7 @@ window.TWCalc_inject = function () {
                         TW_Calc.Craft.init();
                         TW_Calc.BattleCalc.init();
                         TW_Calc.Interface.init();
-                        if (Game.environment != 'alpha')
+                        if (!TW_Calc.ShowLogs)
                             TW_Calc.Chests.init();
                         TW_Calc.Quests.init();
                         TW_Calc.TombolaExporter.init();
@@ -139,6 +139,10 @@ window.TWCalc_inject = function () {
                             22: TW_Calc.getTranslation(194),
                             23: TW_Calc.getTranslation(195),
                             24: TW_Calc.getTranslation(196),
+                        };
+                        
+                        TW_Calc.TombolaExporter.wofName = function (evNum) {
+                            return TW_Calc.getTranslation(evNum * 1 + 193);
                         };
 
                         window.TW_Calc_AlarmClock = setInterval(TW_Calc.AlarmClock.init, 1000);
@@ -2989,9 +2993,7 @@ window.TWCalc_inject = function () {
 
             TW_Calc.TombolaExporter.createData = function (a, z) {
 
-                if (TW_Calc.ShowLogs) {
-                    console.log(z, a);
-                }
+                if (TW_Calc.ShowLogs) console.log(z, a);
 
                 try {
 
@@ -3003,7 +3005,7 @@ window.TWCalc_inject = function () {
                         eventType = this.getCurrentEvent(),
                         level = -1;
 
-                    console.log(tombolaId, eventType);
+                    if (TW_Calc.ShowLogs) console.log(tombolaId, eventType);
                     // Travelling circus
                     if (tombolaId === 1) {
 
@@ -3013,7 +3015,7 @@ window.TWCalc_inject = function () {
                         TW_Calc.TombolaExporter.exportData(prize, tombolaId, category);
                         TW_Calc.TombolaExporter.saveData(prize, tombolaId, category);
 
-                    } else if (eventType === 'Hearts') {
+                    } else if (a && a.prize) {
 
                         prize = a.prize.itemId;
                         category = 0;
@@ -3022,9 +3024,9 @@ window.TWCalc_inject = function () {
                         TW_Calc.TombolaExporter.Spins(tombolaId, isFree, true);
 
                         TW_Calc.TombolaExporter.exportData(prize, tombolaId, category);
-                        TW_Calc.TombolaExporter.saveData(prize, tombolaId, category);
+                        TW_Calc.TombolaExporter.saveData(prize, tombolaId, category, 1);
 
-                    } else if (eventType === 'DayOfDead') {
+                    } else if (a && a.cost) {
 
                         category = a.stages.length - 1;
                         prize = a.stages[category].rewards.item;
@@ -3040,13 +3042,13 @@ window.TWCalc_inject = function () {
                         } else if (a.action === 'end') {
                             this.Spins(tombolaId, 0, true);
                             category = localStorage.getItem('TWCalc_Tombola_currentStage');
-                            this.saveData(prize, tombolaId, category);
+                            this.saveData(prize, tombolaId, category, 5);
                         }
 
-                    } else if (eventType === 'Easter' || eventType === 'Independence' || eventType === 'Octoberfest') {
+                    } else if (eventType) {
 
                         //easter & independence: a.outcome & a.enhance
-                        //octoberfest: a.failed, normal: without outcome, after bribe: a.outcome ...& a.enhance
+                        //octoberfest: a.failed, normal: a.itemId & a.itemEnhance, after bribe: a.outcome & a.enhance
                         if (a && !a.failed && (a.itemId || a.outcome)) {
 
                             var c = a.itemEnhance || a.outcome && a.outcome.itemEnhance;
@@ -3068,7 +3070,7 @@ window.TWCalc_inject = function () {
                             }
 
                             this.exportData(prize, tombolaId, category, level);
-                            this.saveData(prize, tombolaId, category);
+                            this.saveData(prize, tombolaId, category, (a.streak ? 2 : a.states ? 3 : 4));
                         }
 
                     }
@@ -3103,7 +3105,7 @@ window.TWCalc_inject = function () {
 
             TW_Calc.TombolaExporter.exportData = function (prize, id, category, level) {
 
-                if (TW_Calc.ShowLogs) console.log('Level: ', level);
+                if (TW_Calc.ShowLogs) return console.log('Level: ', level);
 
                 if (typeof(level) !== "undefined" && level !== -1) {
 
@@ -3133,22 +3135,19 @@ window.TWCalc_inject = function () {
 
             };
 
-            TW_Calc.TombolaExporter.saveData = function (prize, tombolaId, category) {
+            TW_Calc.TombolaExporter.saveData = function (prize, tombolaId, category, evNum) {
 
                 try {
 
-                    if ([1, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].indexOf(tombolaId) !== -1) {
+                    var okey = tombolaId + (tombolaId == 1 ? '' : cYear + '_' + evNum);
+                    var o = TW_Calc.TombolaExporter.createObjectFromStorage(okey) || [{}, {}, {}, {}, {}];
 
-                        var okey = tombolaId + (tombolaId == 1 ? '' : cYear);
-                        var o = TW_Calc.TombolaExporter.createObjectFromStorage(okey) || [{}, {}, {}, {}, {}];
+                    if (o[category].hasOwnProperty(prize))
+                        o[category][prize] ++;
+                    else
+                        o[category][prize] = 1;
 
-                        if (o[category].hasOwnProperty(prize))
-                            o[category][prize] ++;
-                        else
-                            o[category][prize] = 1;
-
-                        localStorage.setItem('TWCalc_Tombola_' + okey, JSON.stringify(o));
-                    }
+                    localStorage.setItem('TWCalc_Tombola_' + okey, JSON.stringify(o));
 
                 } catch (e) {
                     new TW_Calc.Error(e, 'TombolaExporter.saveData').show();
@@ -3191,22 +3190,23 @@ window.TWCalc_inject = function () {
 
             TW_Calc.TombolaExporter.Tab = {};
 
-            TW_Calc.TombolaExporter.Tab.load = function (wofId, year) {
+            TW_Calc.TombolaExporter.Tab.load = function (wofId, year, evNum) {
 
                 try {
 
                     var tombolaId = wofId + (year ? '_' + year : '');
-                    var obj = TW_Calc.TombolaExporter.createObjectFromStorage(tombolaId);
+                    that = TW_Calc.TombolaExporter;
+                    var obj = that.createObjectFromStorage(tombolaId + (evNum ? '_' + evNum : ''));
 
-                    if (obj && TW_Calc.TombolaExporter.wof.hasOwnProperty(wofId)) {
+                    if (obj && (that.wof.hasOwnProperty(wofId) || evNum)) {
 
                         var valentines = [12, 18, 22];
-                        var valentine = valentines.indexOf(wofId) > -1;
+                        var valentine = valentines.indexOf(wofId) > -1 || evNum == '1';
                         var dotds = [11, 17, 21];
-                        var dotd = dotds.indexOf(wofId) > -1;
+                        var dotd = dotds.indexOf(wofId) > -1 || evNum == '5';
 
 
-                        $('#tab_tombola>.tw2gui_scrollpane>.tw2gui_scrollpane_clipper>.tw2gui_scrollpane_clipper_contentpane').append('<h2 style="margin-left: 0; padding-top: 0;"><span id="TW_Calc_TombolaExporter_Tab_Groupframe_' + tombolaId + '"><a target="_blank" href="' + TW_Calc.website + '/tombola/' + tombolaId + '">' + TW_Calc.TombolaExporter.wof[wofId] + (year ? ' ' + year : '') + '</a>:</span></h2>');
+                        $('#tab_tombola>.tw2gui_scrollpane>.tw2gui_scrollpane_clipper>.tw2gui_scrollpane_clipper_contentpane').append('<h2 style="margin-left: 0; padding-top: 0;"><span id="TW_Calc_TombolaExporter_Tab_Groupframe_' + tombolaId + '"><a target="_blank" href="' + TW_Calc.website + '/tombola/' + tombolaId + '">' + (that.wof[wofId] || that.wofName(evNum) ) + (year ? ' ' + year : '') + '</a>:</span></h2>');
 
                         var getBackground = function (bg, i) {
                             var html = '<div id="TW_Calc_TombolaExporter_Tab_' + tombolaId + '_Items_' + i + '" style="background:' + bg + '; float: left; width: 636px; margin: 5px; padding: 10px; border: 3px solid #a49e97; border-radius: 8px; box-shadow: 0 0 20px inset; opacity: 0.9; left: 0; right: 0; top: 0; bottom: 0;"></div>';
@@ -3295,11 +3295,9 @@ window.TWCalc_inject = function () {
 
                     for (var key in localStorage) {
                         if (localStorage.hasOwnProperty(key)) {
-                            var match = key.match(/TWCalc_Tombola_(\d+)(_(\d+))?/);
-                            console.log(match);
-                            if (match) {
-                                this.load(Number(match[1]), match[3] || '');
-                            }
+                            var match = key.match(/TWCalc_Tombola_(\d+)(?:_(\d+))?(?:_(\d))?/);
+                            if (TW_Calc.ShowLogs) console.log(match);
+                            if (match) this.load(Number(match[1]), match[2] || '', match[3] || '');
                         }
                     }
 
@@ -3322,10 +3320,11 @@ window.TWCalc_inject = function () {
         TW_Calc.Chests.send = function (chestId, resObj) {
 
             try {
-                if (TW_Calc.ShowLogs) console.log({
-                    chest: chestId,
-                    result: resObj.msg.effects
-                });
+                if (TW_Calc.ShowLogs)
+                    console.log({
+                        chest: chestId,
+                        result: resObj.msg.effects
+                    });
 
                 for (var i = 0; i < resObj.msg.effects.length; i += 1) {
                     var res = resObj.msg.effects[i];
@@ -3585,7 +3584,7 @@ window.TWCalc_inject = function () {
 
                 if (duelBar === 1 || topBar === 2) {
                     $("#user-interface").append('<div id="WESTCALC_TOP_BAR" class="bottom" style="text-align: center; left: 50%; margin-top: 10px; max-width: 620px; position: absolute; top: 44px; z-index: 2; -webkit-transform: translateX(-50%); -moz-transform: translateX(-50%); -ms-transform: translateX(-50%); -o-transform: translateX(-50%); transform: translateX(-50%);"></div>');
-                    $('#user-interface>.first-purchase').remove();
+                    $('#user-interface>.first-purchase').css({'height':'50px', 'margin-top':0, 'z-index':15});
                 }
 
                 if (duelBar === 2 || topBar === 1 || topBar === 5) {
