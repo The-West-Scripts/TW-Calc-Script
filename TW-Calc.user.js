@@ -1495,7 +1495,7 @@ window.TWCalc_inject = function () {
                     
                     TW_Calc.Craft.window.progressBar = new west.gui.Progressbar()
                         .setValue(Character.professionSkill)
-                        .setMaxValue(826);
+                        .setMaxValue(850);
 
                     groupFrame.appendToContentPane(TW_Calc.Craft.window.progressBar.getMainDiv());
 
