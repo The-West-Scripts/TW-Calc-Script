@@ -124,27 +124,6 @@ window.TWCalc_inject = function () {
                         TW_Calc.Quests.init();
                         TW_Calc.TombolaExporter.init();
 
-                        TW_Calc.TombolaExporter.wof = {
-                            1: TW_Calc.getTranslation(174),
-                            11: TW_Calc.getTranslation(198),
-                            12: TW_Calc.getTranslation(194),
-                            13: TW_Calc.getTranslation(195),
-                            14: TW_Calc.getTranslation(196),
-                            15: TW_Calc.getTranslation(197),
-                            16: TW_Calc.getTranslation(197),
-                            17: TW_Calc.getTranslation(198),
-                            18: TW_Calc.getTranslation(194),
-                            19: TW_Calc.getTranslation(195),
-                            20: TW_Calc.getTranslation(197),
-                            22: TW_Calc.getTranslation(194),
-                            23: TW_Calc.getTranslation(195),
-                            24: TW_Calc.getTranslation(196),
-                        };
-                        
-                        TW_Calc.TombolaExporter.wofName = function (evNum) {
-                            return TW_Calc.getTranslation(evNum * 1 + 193);
-                        };
-
                         window.TW_Calc_AlarmClock = setInterval(TW_Calc.AlarmClock.init, 1000);
 
                         if (TW_Calc.Settings.get("TransferFeeCalc", true)) {
@@ -1516,7 +1495,7 @@ window.TWCalc_inject = function () {
                     
                     TW_Calc.Craft.window.progressBar = new west.gui.Progressbar()
                         .setValue(Character.professionSkill)
-                        .setMaxValue(850);
+                        .setMaxValue(826);
 
                     groupFrame.appendToContentPane(TW_Calc.Craft.window.progressBar.getMainDiv());
 
@@ -2974,6 +2953,23 @@ window.TWCalc_inject = function () {
 
             };
 
+            TW_Calc.TombolaExporter.wof = {
+                1: -19,
+                11: 5,
+                12: 1,
+                13: 2,
+                14: 3,
+                15: 4,
+                16: 4,
+                17: 5,
+                18: 1,
+                19: 2,
+            };
+            
+            TW_Calc.TombolaExporter.wofName = function (evNum) {
+                return TW_Calc.getTranslation(evNum * 1 + 193);
+            };
+
             TW_Calc.TombolaExporter.eventTypes = {
                 Easter: {},
                 Independence: {},
@@ -3194,19 +3190,18 @@ window.TWCalc_inject = function () {
 
                 try {
 
-                    var tombolaId = wofId + (year ? '_' + year : '');
-                    that = TW_Calc.TombolaExporter;
-                    var obj = that.createObjectFromStorage(tombolaId + (evNum ? '_' + evNum : ''));
+                    var tombolaId = wofId + (year ? '_' + year : ''),
+                    that = TW_Calc.TombolaExporter,
+                    obj = that.createObjectFromStorage(tombolaId + (evNum ? '_' + evNum : '')),
+                    evNumb = that.wof[wofId] || evNum;
 
-                    if (obj && (that.wof.hasOwnProperty(wofId) || evNum)) {
+                    if (obj && evNumb) {
 
-                        var valentines = [12, 18, 22];
-                        var valentine = valentines.indexOf(wofId) > -1 || evNum == '1';
-                        var dotds = [11, 17, 21];
-                        var dotd = dotds.indexOf(wofId) > -1 || evNum == '5';
+                        var valentine = evNumb == '1',
+                        dotd = evNumb == '5';
 
 
-                        $('#tab_tombola>.tw2gui_scrollpane>.tw2gui_scrollpane_clipper>.tw2gui_scrollpane_clipper_contentpane').append('<h2 style="margin-left: 0; padding-top: 0;"><span id="TW_Calc_TombolaExporter_Tab_Groupframe_' + tombolaId + '"><a target="_blank" href="' + TW_Calc.website + '/tombola/' + tombolaId + '">' + (that.wof[wofId] || that.wofName(evNum) ) + (year ? ' ' + year : '') + '</a>:</span></h2>');
+                        $('#tab_tombola>.tw2gui_scrollpane>.tw2gui_scrollpane_clipper>.tw2gui_scrollpane_clipper_contentpane').append('<h2 style="margin-left: 0; padding-top: 0;"><span id="TW_Calc_TombolaExporter_Tab_Groupframe_' + tombolaId + '"><a target="_blank" href="' + TW_Calc.website + '/tombola/' + tombolaId + '">' + that.wofName(evNumb) + (year ? ' ' + year : '') + '</a>:</span></h2>');
 
                         var getBackground = function (bg, i) {
                             var html = '<div id="TW_Calc_TombolaExporter_Tab_' + tombolaId + '_Items_' + i + '" style="background:' + bg + '; float: left; width: 636px; margin: 5px; padding: 10px; border: 3px solid #a49e97; border-radius: 8px; box-shadow: 0 0 20px inset; opacity: 0.9; left: 0; right: 0; top: 0; bottom: 0;"></div>';
