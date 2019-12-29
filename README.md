@@ -1,17 +1,8 @@
 # TW-Calc-Script
-UserScript for online browser game The-West 
 
-Issues
-------
+UserScript for online browser game The-West
 
-Feel free to submit issues and enhancement requests.
+## Official Website
 
-Contributing
-------------
-
- 1. **Fork** the repo on GitHub
- 2. **Clone** the project to your own machine
- 3. **Commit** changes to your own branch
- 4. **Push** your work back up to your fork
- 5. Submit a **Pull request** so that we can review your changes
+Official website of this script is available at [https://tw-calc.net/about-script](https://tw-calc.net/about-script)
 
