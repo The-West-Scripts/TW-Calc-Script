@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name The-West Calc
-// @version 1.41
+// @version 1.42
 // @description The-West Battle Calc, Notepad, Battle stats, Duel Calc, Duel list, Craft list, Job list, Wardrobe, Tombola analyser
 // @author theTim, Tom Robert
 // @website http://tw-calc.net
@@ -71,7 +71,7 @@ window.TWCalc_inject = function () {
 
         window.TW_Calc = {
             scriptName: "The-West Calc",
-            version: "1.41",
+            version: "1.42",
             gameMAX: Game.version.toString(),
             author: ["MarcusJohnyEvans", "Tom Robert"],
             gameMIN: "1.36",
@@ -386,9 +386,7 @@ window.TWCalc_inject = function () {
         };
 
         TW_Calc.doImport = function () {
-
-            $.getScript(TW_Calc.website + "/public/import/doImport.js");
-
+            $.getScript(TW_Calc.website + "/doImport.js");
         };
 
         TW_Calc.buttonLogic = function (event) {
