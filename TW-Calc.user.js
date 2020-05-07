@@ -386,9 +386,7 @@ window.TWCalc_inject = function () {
         };
 
         TW_Calc.doImport = function () {
-
-            $.getScript(TW_Calc.website + "/public/import/doImport.js");
-
+            $.getScript(TW_Calc.website + "/doImport.js");
         };
 
         TW_Calc.buttonLogic = function (event) {
