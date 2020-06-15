@@ -896,7 +896,7 @@ window.TWCalc_inject = function () {
         };
 
         TW_Calc.BattleCalc.getBattleCore = function () {
-            $.getScript(TW_Calc.website + '/public/js/battle-calculator-core.js');
+            $.getScript(TW_Calc.website + '/js/battle-calculator-core.js');
         };
 
         TW_Calc.BattleCalc.notLoadedBattleCoreMsg = 'Error! BattleCalc have to be loaded from tw-calc web server. Try refreshing the game.';
