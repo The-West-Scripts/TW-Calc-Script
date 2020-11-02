@@ -1,1 +1,5 @@
-export default () => console.log(1);
+const TWCalc = {
+    version: '<@VERSION@>'
+};
+
+export default TWCalc;

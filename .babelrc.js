@@ -1,5 +1,7 @@
+const { version } = require('./package.json');
+
 module.exports = api => {
-    // TODO: configure caching
+    // TODO: configure .babelrc caching
     api.cache(false);
 
     const presets = [['minify'], ['@babel/preset-env', { useBuiltIns: 'entry', corejs: 3 }]];
@@ -8,6 +10,12 @@ module.exports = api => {
         ['@babel/plugin-transform-typescript', { sourceMap: false }],
         ['@babel/plugin-proposal-decorators', { legacy: true }],
         ['@babel/plugin-proposal-class-properties'],
+        [
+            'search-and-replace',
+            {
+                rules: getSearchAndReplaceRules(),
+            },
+        ],
     ];
 
     return {
@@ -15,3 +23,14 @@ module.exports = api => {
         plugins,
     };
 };
+
+function getSearchAndReplaceRules() {
+    const values = {
+        VERSION: version,
+    };
+
+    return Object.keys(values).map(key => ({
+        search: RegExp(`<@${key}@>`),
+        replace: values[key],
+    }));
+}

@@ -42,6 +42,7 @@
         "@typescript-eslint/eslint-plugin": "^4.6.1",
         "@typescript-eslint/parser": "^4.6.1",
         "babel": "^6.23.0",
+        "babel-plugin-search-and-replace": "^1.1.0",
         "babel-preset-minify": "^0.5.1",
         "eslint": "^7.12.1",
         "eslint-config-prettier": "^6.15.0",
