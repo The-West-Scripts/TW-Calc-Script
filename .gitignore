@@ -1,1 +1,14 @@
+# IDE
 .idea/
+
+# dist
+dist
+
+# npm
+node_modules
+
+# OS
+.DS_Store
+
+# eslint
+.eslintcache

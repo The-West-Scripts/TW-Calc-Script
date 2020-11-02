@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "sourceMap": true,
+
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+
+        "strict": true,
+        "suppressImplicitAnyIndexErrors": true,
+
+        "isolatedModules": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+
+        "lib": ["es2015", "dom"]
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "dist"]
+}
