@@ -46,6 +46,7 @@
         "eslint": "^7.12.1",
         "eslint-config-prettier": "^6.15.0",
         "eslint-plugin-prettier": "^3.1.4",
+        "eslint-plugin-sort-imports-es6-autofix": "^0.5.0",
         "husky": "^4.3.0",
         "lint-staged": "^10.5.1",
         "prettier": "^2.1.2",
