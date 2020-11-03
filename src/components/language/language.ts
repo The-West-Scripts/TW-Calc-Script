@@ -47,7 +47,12 @@ export class Language implements Component {
         this.use(this.storage.getObject(StorageKey.languagePack));
     }
 
-    getTranslation(id: string): string {
+    /**
+     * Returns a translation. If the language pack is not loaded yet
+     * return en_us translation.
+     * @param id
+     */
+    getTranslation(id: number): string {
         const languagePack = this.languagePack;
         if (languagePack && languagePack[`lang_${id}`]) {
             return languagePack[`lang_${id}`];

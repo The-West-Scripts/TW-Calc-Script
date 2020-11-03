@@ -11,6 +11,10 @@ export class Storage {
         return this.getValue(key, defaultValue, toString);
     }
 
+    getNumber(key: StorageKey, defaultValue?: number): number {
+        return this.getValue(key, defaultValue, Number);
+    }
+
     getObject<T>(key: StorageKey, defaultValue?: T): T {
         return this.getValue(key, defaultValue, JSON.parse);
     }
@@ -21,6 +25,10 @@ export class Storage {
 
     setObject<T>(key: StorageKey, value: T): void {
         this.addItem(key, JSON.stringify(value));
+    }
+
+    setNumber(key: StorageKey, value: number): void {
+        this.addItem(key, value.toString());
     }
 
     has(key: StorageKey): boolean {
