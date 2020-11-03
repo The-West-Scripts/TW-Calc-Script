@@ -14,9 +14,10 @@
         "isolatedModules": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "noImplicitAny": true,
 
         "lib": ["es2015", "dom"]
     },
-    "include": ["src"],
+    "include": ["src", "tests"],
     "exclude": ["node_modules", "dist"]
 }

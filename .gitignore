@@ -3,6 +3,7 @@
 
 # dist
 dist
+test/support/dist
 
 # npm
 node_modules

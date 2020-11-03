@@ -17,11 +17,15 @@
     },
     "overrides": [
         {
-            "files": ["rollup.config.js"],
+            "files": ["**/*.js"],
+            "rules": {
+                "@typescript-eslint/no-var-requires": 0
+            },
             "env": {
                 "browser": false,
                 "node": true
             }
         }
-    ]
+    ],
+    "ignorePatterns": [".babelrc.js"]
 }
