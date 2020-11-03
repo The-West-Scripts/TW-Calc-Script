@@ -63,6 +63,14 @@ export class Language implements Component {
         return en_us[`lang_${id}`] || 'undefined';
     }
 
+    getTranslator(): string {
+        const languagePack = this.languagePack;
+        if (languagePack && languagePack.translator) {
+            return languagePack.translator;
+        }
+        return this.config.author;
+    }
+
     /**
      * Loads language pack from the server and saves it to storage.
      * @param languagePack

@@ -17,8 +17,11 @@ module.exports = api => {
 };
 
 function getSearchAndReplaceRules() {
+    const { version, author, contributors } = require('./package.json');
     const values = {
         VERSION: version,
+        AUTHOR: author,
+        CONTRIBUTORS: contributors.join(', '),
     };
 
     return Object.keys(values).map(key => ({
