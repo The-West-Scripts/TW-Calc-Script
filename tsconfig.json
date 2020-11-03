@@ -16,6 +16,8 @@
         "noUnusedParameters": true,
         "noImplicitAny": true,
 
+        "allowSyntheticDefaultImports": true,
+
         "lib": ["es2015", "dom"]
     },
     "include": ["src", "tests"],

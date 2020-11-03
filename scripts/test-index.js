@@ -5,7 +5,7 @@ const fs = require('fs');
 const rootPath = path.join(__dirname, '..');
 const srcPath = path.join(rootPath, 'src');
 const testSupportPath = path.join(rootPath, 'tests/support');
-const outPath = path.join(testSupportPath, 'dist');
+const outPath = path.join(rootPath, 'tests/support/dist');
 
 const indexContents = fs.readFileSync(path.join(testSupportPath, 'index.ts'), { flag: 'r', encoding: 'utf8' });
 

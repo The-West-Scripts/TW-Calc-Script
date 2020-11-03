@@ -2,7 +2,11 @@ import 'core-js/features/map';
 import 'reflect-metadata';
 
 import { bootstrap } from './bootstrap';
+import { container } from 'tsyringe';
 import { TWCalcPublicApi } from './tw-calc.types';
+
+container.register('window', { useValue: window });
+container.register('localStorage', { useValue: localStorage });
 
 export default injectScript<TWCalcPublicApi>(bootstrap, location);
 
