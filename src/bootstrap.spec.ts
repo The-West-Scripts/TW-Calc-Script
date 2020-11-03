@@ -9,6 +9,11 @@ describe('bootstrap', () => {
             useValue: {
                 Game: { version: '2.136' },
                 $: $,
+                TheWestApi: {
+                    register: () => ({
+                        setGui: () => undefined,
+                    }),
+                },
             },
         });
     });

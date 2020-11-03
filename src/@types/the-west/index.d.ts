@@ -1,5 +1,6 @@
 export interface Game {
     locale: string;
+    version: string;
 }
 
 export namespace tw2gui {
@@ -96,6 +97,28 @@ export interface WindowManager {
     open(id: string, title: string, classes: string): tw2gui.Window;
 }
 
+export interface TheWestApi {
+    register: (
+        key: string,
+        name: string,
+        minVersion: string,
+        maxVersion: string,
+        author: string,
+        website: string,
+    ) => GameScript;
+}
+
+export interface GameScript {
+    key: string;
+    name: string;
+    minVersion: string;
+    maxVersion: string;
+    author: string;
+    website: string;
+
+    setGui(content: string): void;
+}
+
 export interface TheWestWindow extends Window {
     Game: Game;
     $: JQueryStatic;
@@ -104,4 +127,5 @@ export interface TheWestWindow extends Window {
     MessageHint: MessageHintConstructor;
     MessageError: MessageErrorConstructor;
     wman: WindowManager;
+    TheWestApi: TheWestApi;
 }
