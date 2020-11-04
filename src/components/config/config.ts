@@ -11,6 +11,11 @@ export class Config {
     public readonly website = 'https://tw-calc.net';
     public readonly showUntranslated = false;
     public readonly logPrefix = 'TW-Calc';
+    public readonly birthday = {
+        enabled: true,
+        date: '2012/12/16',
+    };
+    public readonly cdn = '//westzz.innogamescdn.com/';
     public readonly languages = [
         'sk_SK',
         'cs_CZ',

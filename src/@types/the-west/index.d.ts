@@ -7,6 +7,8 @@ export interface Game {
 export namespace tw2gui {
     export interface Dialog {
         addButton(text: string, cb: () => void): Dialog;
+        setTitle(title: string): Dialog;
+        setText(text: string): Dialog;
 
         show(): void;
     }
@@ -15,7 +17,7 @@ export namespace tw2gui {
         SYS_WARNING: string;
         SYS_OK: string;
 
-        new (title: string, text: string, type: string): Dialog;
+        new (title?: string, text?: string, type?: string): Dialog;
     }
 
     export interface Combobox<T> {

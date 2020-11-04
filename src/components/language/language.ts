@@ -36,11 +36,12 @@ export class Language implements Component {
             return;
         }
 
-        this.languagePack = this.storage.getObject<LanguagePack>(StorageKey.languagePack);
         const updateDate = new Date(this.storage.getString(StorageKey.languagePackLastUpdate));
         const today = new Date();
         const diffDays = Math.ceil(Math.abs(today.getTime() - updateDate.getTime()) / (1000 * 3600 * 24));
 
+        // check if the language pack from storage is not too old
+        // if yes, fetch the new one
         if (diffDays > 5) {
             // fetch lang pack
             this.logger.log('language pack is too old');
@@ -48,7 +49,13 @@ export class Language implements Component {
             return;
         }
         // use old lang pack from local storage
-        this.use(this.storage.getObject(StorageKey.languagePack));
+        this.logger.log('using language pack from storage');
+        try {
+            this.use(this.storage.getObject(StorageKey.languagePack));
+        } catch (e) {
+            this.logger.error('error while loading a language pack, using en_us...', e);
+            this.use(en_us);
+        }
     }
 
     /**
@@ -83,7 +90,7 @@ export class Language implements Component {
         if (this.languagePack) {
             return this.logger.warn('not overwriting language pack since it is already loaded');
         }
-
+        this.logger.log('loading and storing language pack...', languagePack);
         this.storage.setObject(StorageKey.languagePack, languagePack);
 
         const today = new Date();

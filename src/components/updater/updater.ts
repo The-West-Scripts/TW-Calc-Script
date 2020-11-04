@@ -44,11 +44,11 @@ export class Updater implements Component {
 
             if (
                 !this.storage.has(StorageKey.languagePackReset) ||
-                this.storage.getNumber(StorageKey.languagePackReset) !== updaterResponse.reset_language_pack
+                this.storage.getNumber(StorageKey.languagePackReset) !== Number(updaterResponse.reset_language_pack)
             ) {
                 this.logger.log('language pack reset');
                 this.storage.remove(StorageKey.languagePackLastUpdate);
-                this.storage.setNumber(StorageKey.languagePackReset, updaterResponse.reset_language_pack);
+                this.storage.setString(StorageKey.languagePackReset, updaterResponse.reset_language_pack);
             }
         } catch (err) {
             this.logger.error(

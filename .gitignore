@@ -4,6 +4,7 @@
 # dist
 dist
 test/support/dist
+dist/original/TW-Calc.user.js
 
 # npm
 node_modules

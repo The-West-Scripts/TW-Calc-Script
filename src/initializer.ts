@@ -1,3 +1,4 @@
+import { Birthday } from './components/birthday/birthday';
 import { Config } from './components/config/config';
 import { Gui } from './components/gui/gui';
 import { Importer } from './components/importer/importer';
@@ -21,6 +22,7 @@ export class Initializer {
         public readonly gui: Gui,
         public readonly westCalcWindow: WestCalcWindow,
         public readonly logger: Logger,
+        public readonly birthday: Birthday,
         @inject('window') public readonly window: TheWestWindow,
     ) {
         this.logger.log('initializing tw-calc...');
@@ -29,6 +31,7 @@ export class Initializer {
             this.gui.init();
             this.settings.init();
             this.updater.init();
+            this.birthday.init();
         });
     }
 
@@ -52,7 +55,7 @@ export class Initializer {
             );
 
         const content = this.window.$(`<div></div>`).append(links)
-            .append(`<div style="font-size: 16px; text-align: center; margin-bottom: 15px">If you like our webpage and script, please donate for server costsand further development, we will be very grateful to you. We are funding everything from our own resources. All your donations will be appreciated and used in best way possible to ensure future development of this script.<div style="font-weight: bold; font-size: 20px;">Thank you!</div></div>
+            .append(`<div style="font-size: 16px; text-align: center; margin-bottom: 15px">If you like our webpage and script, please donate for server costsand further development, we will be very grateful to you. We are funding everything from our own resources. All your donations will be appreciated and used in best way possible to ensure future development of this script.<div style="font-weight: bold; font-size: 20px; font-family: Georgia, 'Times New Roman'; margin: 4px;">Thank you!</div></div>
             <div style="text-align: center"><form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top"><input type="hidden" name="cmd" value="_s-xclick"><input type="hidden" name="hosted_button_id" value="LRG4X3PGMYHZY"><input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"><img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1"></form></div>`);
 
         api.setGui(content);
