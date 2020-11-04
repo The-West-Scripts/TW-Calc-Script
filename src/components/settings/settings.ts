@@ -1,17 +1,18 @@
 import { Component } from '../component.types';
 import { Config } from '../config/config';
 import { ErrorLog } from '../error-log/error-log';
-import {inject, injectable} from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { Language } from '../language/language';
+import { Logger } from '../logger/logger';
 import { NearestJob } from '../nearest-job/nearest-job';
-import { Setting, SettingAppearance, SettingBoolean, SettingNumber, SettingValues } from './settings.types';
+import { SettingAppearance, SettingBoolean, SettingController, SettingNumber, SettingValues } from './settings.types';
 import { Storage } from '../storage/storage';
 import { StorageKey } from '../storage/storage.types';
-import { TheWestWindow, tw2gui } from '../../@types/the-west';
+import { TheWestWindow } from '../../@types/the-west';
 import { WestCalcWindow } from '../west-calc-window/west-calc-window';
 import { WestCalcWindowTab } from '../west-calc-window/west-calc-window.types';
 
-@injectable()
+@singleton()
 export class Settings implements Component {
     private appearance?: Array<SettingAppearance>;
     private defaults: SettingValues = {
@@ -31,10 +32,14 @@ export class Settings implements Component {
         private readonly nearestJob: NearestJob,
         private readonly errorLog: ErrorLog,
         private readonly config: Config,
+        private readonly logger: Logger,
         @inject('window') private readonly window: TheWestWindow,
     ) {
         this.westCalcWindow.addTab(WestCalcWindowTab.Settings, {
-            translationId: 0, // TODO:
+            title: {
+                type: 'translation',
+                translation: 216,
+            },
             open: () => this.open(),
         });
     }
@@ -101,7 +106,7 @@ export class Settings implements Component {
     open(): void {
         const { west } = this.window;
         const mainDiv = this.westCalcWindow.getTabMainDiv(WestCalcWindowTab.Settings);
-        const elements: Array<{ name: Setting; controller: tw2gui.Combobox<number> | tw2gui.Checkbox }> = [];
+        const elements: Array<SettingController> = [];
         const settings = this.appearance;
 
         if (!settings) {
@@ -118,7 +123,7 @@ export class Settings implements Component {
                         this.save(elements);
                     });
 
-                elements.push({ name: name, controller: checkbox });
+                elements.push({ ...appearance, controller: checkbox });
                 mainDiv.append(checkbox.getMainDiv());
                 mainDiv.append('</br>');
             } else if (isNumberSetting(appearance)) {
@@ -134,7 +139,8 @@ export class Settings implements Component {
                     this.save(elements);
                 });
 
-                elements.push({ name: name, controller: combobox });
+                elements.push({ ...appearance, controller: combobox });
+                mainDiv.append(combobox.getMainDiv());
                 mainDiv.append(`<span>${translation}</span>`);
                 mainDiv.append(combobox.getMainDiv);
                 mainDiv.append('</br>');
@@ -144,7 +150,7 @@ export class Settings implements Component {
         this.window
             .$(mainDiv)
             .append(
-                `<p style="text-align: right; margin-bottom: 5px">${this.language.getTranslation(218)}<b>(F5)</b></p>`,
+                `<p style="text-align: right; margin-bottom: 5px">${this.language.getTranslation(218)}<b> (F5)</b></p>`,
             )
             .append('<hr>')
             .append('</br>')
@@ -161,19 +167,20 @@ export class Settings implements Component {
                     .getMainDiv(),
             )
             .append(
-                `</br><div style="margin-top: 5px; font-weight: bold;">Translated by ${this.language.getTranslator()}.&nbsp;Thanks for the translation! Script version: + ${
+                `</br><div style="margin-top: 8px;">Translated by <b>${this.language.getTranslator()}</b>.&nbsp;Thanks for the translation! Version: <b>v${
                     this.config.version
-                }</div>`,
+                }</b></div>`,
             );
     }
 
-    save(settings: Array<{ name: Setting; controller: tw2gui.Combobox<number> | tw2gui.Checkbox }>): void {
+    save(settings: Array<SettingController>): void {
         const output: Record<string, number | boolean> = {};
 
         settings.forEach(setting => {
-            output[setting.name] = setting.controller.getValue();
+            output[setting.name] = getValue(setting);
         });
 
+        this.logger.log('saving settings...', output);
         this.storage.setObject(StorageKey.settings, output);
         this.window.MessageSuccess(this.language.getTranslation(88)).show();
     }
@@ -188,8 +195,16 @@ export class Settings implements Component {
                 return value;
             }
         }
-        // default values does not exist
         return this.defaults[setting];
+    }
+}
+
+function getValue(setting: SettingController) {
+    if (isBooleanSetting(setting)) {
+        // TODO: improve typings
+        return (setting.controller as any).isSelected();
+    } else if (isNumberSetting(setting)) {
+        return setting.controller.getValue();
     }
 }
 

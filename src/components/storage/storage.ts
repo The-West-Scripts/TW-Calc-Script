@@ -40,7 +40,7 @@ export class Storage {
     }
 
     private getItem(key: StorageKey): string | null {
-        return this.localStorage.getItem(key);
+        return this.localStorage.getItem(getKey(key));
     }
 
     private addItem(key: StorageKey, value: string) {

@@ -1,7 +1,7 @@
 import { Config } from '../config/config';
-import { injectable } from 'tsyringe';
+import { singleton } from 'tsyringe';
 
-@injectable()
+@singleton()
 export class Importer {
     constructor(private readonly config: Config) {}
 

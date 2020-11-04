@@ -1,5 +1,7 @@
-import 'core-js/features/map';
+// IMPORTANT! DO NOT REORDER THIS IMPORT, ./path MUST BE IMPORTED FIRST!
+import './patch';
 import 'reflect-metadata';
+import 'regenerator-runtime/runtime';
 
 import { bootstrap } from './bootstrap';
 import { container } from 'tsyringe';
@@ -8,7 +10,7 @@ import { TWCalcPublicApi } from './tw-calc.types';
 container.register('window', { useValue: window });
 container.register('localStorage', { useValue: localStorage });
 
-export default injectScript<TWCalcPublicApi>(bootstrap, location);
+export default window['TW_Calc'] = injectScript<TWCalcPublicApi>(bootstrap, location);
 
 function injectScript<T>(script: () => T, location: Location): T {
     const { href } = location;

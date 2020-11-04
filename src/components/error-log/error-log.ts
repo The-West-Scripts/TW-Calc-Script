@@ -1,6 +1,6 @@
-import { injectable } from 'tsyringe';
+import { singleton } from 'tsyringe';
 
-@injectable()
+@singleton()
 export class ErrorLog {
     open(): void {}
 }

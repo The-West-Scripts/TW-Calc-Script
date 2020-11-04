@@ -1,14 +1,16 @@
 import en_us from './en_us';
 import { Component } from '../component.types';
 import { Config } from '../config/config';
-import { inject, injectable } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { LanguagePack } from './language.types';
 import { Logger } from '../logger/logger';
 import { Storage } from '../storage/storage';
 import { StorageKey } from '../storage/storage.types';
 import { TheWestWindow } from '../../@types/the-west';
 
-@injectable()
+const fetchTimeout = 4000;
+
+@singleton()
 export class Language implements Component {
     private languagePack?: LanguagePack;
     private cb?: () => void;
@@ -25,6 +27,7 @@ export class Language implements Component {
      * Fetch the language pack from server.
      */
     init(cb: () => void): void {
+        this.logger.log('initializing language service...');
         this.cb = cb;
 
         if (!this.storage.has(StorageKey.languagePackLastUpdate) || !this.storage.has(StorageKey.languagePack)) {
@@ -40,6 +43,7 @@ export class Language implements Component {
 
         if (diffDays > 5) {
             // fetch lang pack
+            this.logger.log('language pack is too old');
             this.fetch();
             return;
         }
@@ -89,6 +93,11 @@ export class Language implements Component {
     }
 
     private use(languagePack: LanguagePack): void {
+        if (this.languagePack) {
+            // language pack is already set
+            // and the callback was called
+            return;
+        }
         this.languagePack = languagePack;
         if (!this.cb) {
             throw new Error('callback is not defined, was init method called?');
@@ -97,6 +106,7 @@ export class Language implements Component {
     }
 
     private fetch(): void {
+        this.logger.log('fetching language pack from the server...');
         const locale = this.getAvailableLocale();
 
         this.window.$.ajax({
@@ -109,16 +119,11 @@ export class Language implements Component {
                 '&' +
                 this.config.version,
             dataType: 'jsonp',
-            timeout: 4000,
-            complete: (_, status) => {
-                if (status === 'success' || status === 'notmodified') {
-                    // a callback from jsonp request will call TW_Calc.loadPack
-                    return;
-                }
-                this.logger.error(`unable to fetch language pack from the server, en_US will be used`);
-                this.use(en_us);
-            },
+            timeout: fetchTimeout,
         });
+
+        // if after 4000ms, the language pack is still not loaded, use en_US
+        setTimeout(() => this.use(en_us), fetchTimeout);
     }
 
     private getAvailableLocale(): string {

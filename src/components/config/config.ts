@@ -1,6 +1,6 @@
-import { injectable } from 'tsyringe';
+import { singleton } from 'tsyringe';
 
-@injectable()
+@singleton()
 export class Config {
     public readonly scriptName = 'The-West Calc';
     public readonly scriptShortName = 'tw-calc';
@@ -10,6 +10,7 @@ export class Config {
     public readonly contributors = '<@CONTRIBUTORS@>'.split(', ');
     public readonly website = 'https://tw-calc.net';
     public readonly showUntranslated = false;
+    public readonly logPrefix = 'TW-Calc';
     public readonly languages = [
         'sk_SK',
         'cs_CZ',

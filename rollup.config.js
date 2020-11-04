@@ -17,7 +17,6 @@ const bannerConfig = {
 };
 
 const extensions = ['.js', '.ts'];
-
 const { ENV = 'dev' } = process.env;
 
 const pluginTerser = terser.terser({
@@ -29,7 +28,7 @@ const pluginTerser = terser.terser({
 module.exports = {
     input: 'src/index.ts',
     output: {
-        file: 'dist/TW_Calc.js',
+        file: 'dist/TW_Calc.user.js',
         format: 'iife',
         name: 'TW_Calc',
         sourcemap: false,
@@ -39,13 +38,13 @@ module.exports = {
             browser: true,
             extensions,
         }),
+        typescript({ sourceMap: false, tsconfig: 'tsconfig.json' }),
         commonjs({
             include: /node_modules/,
         }),
-        typescript({ sourceMap: false, tsconfig: 'tsconfig.json' }),
         babel.babel({ babelHelpers: 'runtime', extensions, exclude: /node_modules/ }),
         ...(ENV === 'prod' ? [pluginTerser] : []),
-        ...(ENV !== 'test' ? [banner()] : []),
+        ...(ENV !== 'test' ? [patchMap(), banner()] : []),
     ],
 };
 
@@ -64,4 +63,19 @@ function banner() {
         }
         return banner;
     }
+}
+
+/**
+ * Because The-West replaces global Map variable with the in-game Map, and our dependency (tysringe) is using it.
+ * We expose _Map from the script to the global scope and then we replace all usages of new Map( with new _Map(.
+ *
+ * @return {{name: string, renderChunk(*): *}|*}
+ */
+function patchMap() {
+    return {
+        name: 'banner',
+        renderChunk(code) {
+            return code.toString().replace(/new Map/g, 'new _Map');
+        },
+    };
 }

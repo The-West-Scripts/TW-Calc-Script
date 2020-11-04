@@ -1,3 +1,5 @@
+import { tw2gui } from '../../@types/the-west';
+
 export type Setting = SettingBoolean | SettingNumber;
 
 export enum SettingBoolean {
@@ -34,6 +36,16 @@ export interface SettingAppearance<SettingName extends Setting = Setting> {
     translation: string;
     behaviour: SettingBehaviour<SettingName>;
 }
+
+export interface SettingController<SettingName extends Setting = Setting> extends SettingAppearance<SettingName> {
+    controller: Controller<SettingName>;
+}
+
+export type Controller<SettingName extends Setting = Setting> = SettingName extends SettingBoolean
+    ? tw2gui.Checkbox
+    : SettingName extends SettingNumber
+    ? tw2gui.Combobox<any>
+    : never;
 
 export interface SettingCheckbox {
     type: 'checkbox';

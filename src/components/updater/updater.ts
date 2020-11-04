@@ -1,5 +1,6 @@
+import { Component } from '../component.types';
 import { Config } from '../config/config';
-import { inject, injectable } from 'tsyringe';
+import { inject, singleton } from 'tsyringe';
 import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
 import { Storage } from '../storage/storage';
@@ -7,8 +8,8 @@ import { StorageKey } from '../storage/storage.types';
 import { TheWestWindow } from '../../@types/the-west';
 import { UpdaterResponse } from './updater.types';
 
-@injectable()
-export class Updater {
+@singleton()
+export class Updater implements Component {
     constructor(
         @inject('window') private window: TheWestWindow,
         private readonly config: Config,
@@ -16,6 +17,21 @@ export class Updater {
         private readonly language: Language,
         private readonly storage: Storage,
     ) {}
+
+    init(): void {
+        this.window.$.get(
+            this.config.website + '/service/updater',
+            {
+                name: this.window.Character.name,
+                id: this.window.Character.playerId,
+                world: this.window.Game.gameURL,
+                locale: this.window.Game.locale,
+                TWCalc: this.config.version,
+            },
+            () => undefined,
+            'jsonp',
+        );
+    }
 
     callback(updaterResponse: UpdaterResponse): void {
         try {
@@ -30,9 +46,9 @@ export class Updater {
                 !this.storage.has(StorageKey.languagePackReset) ||
                 this.storage.getNumber(StorageKey.languagePackReset) !== updaterResponse.reset_language_pack
             ) {
-                this.storage.remove(StorageKey.languagePackLastUpdate);
-                this.storage.setNumber(StorageKey.languagePackLastUpdate, updaterResponse.reset_language_pack);
                 this.logger.log('language pack reset');
+                this.storage.remove(StorageKey.languagePackLastUpdate);
+                this.storage.setNumber(StorageKey.languagePackReset, updaterResponse.reset_language_pack);
             }
         } catch (err) {
             this.logger.error(

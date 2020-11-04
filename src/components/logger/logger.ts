@@ -1,16 +1,21 @@
-import { injectable } from 'tsyringe';
+import { Config } from '../config/config';
+import { ENV } from '../../constants';
+import { inject, singleton } from 'tsyringe';
 import { LogMethod } from './logger.types';
 
-@injectable()
+@singleton()
 export class Logger {
-    constructor(private console: Console = console, private logPrefix: string = 'TW-Calc') {}
+    constructor(@inject('window') private window: Window & { console: Console }, private config: Config) {}
 
     error(...args: any[]): void {
         this.print('error', args);
     }
 
     log(...args: any[]): void {
-        this.print('log', args);
+        // log is disabled in the production
+        if ((ENV as string) !== 'prod') {
+            this.print('log', args);
+        }
     }
 
     warn(...args: any[]): void {
@@ -18,7 +23,10 @@ export class Logger {
     }
 
     debug(...args: any[]): void {
-        this.print('debug', args);
+        // debug is disabled in the production
+        if ((ENV as string) !== 'prod') {
+            this.print('debug', args);
+        }
     }
 
     private print(method: LogMethod, args: any[]): void {
@@ -28,11 +36,11 @@ export class Logger {
             args.unshift(this.getMessagePrefix());
         }
 
-        this.console[method](...args);
+        this.window.console[method](...args);
     }
 
     private getMessagePrefix(): string {
         const date = new Date().toUTCString();
-        return `${this.logPrefix} [${date}]`;
+        return `${this.config.logPrefix} [${date}]`;
     }
 }

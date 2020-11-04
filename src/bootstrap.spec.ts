@@ -14,6 +14,7 @@ describe('bootstrap', () => {
                         setGui: () => undefined,
                     }),
                 },
+                console: console,
             },
         });
     });

@@ -23,5 +23,5 @@ export function bootstrap(): TWCalcPublicApi {
 
 function setUpdaterCallback(updater: Updater) {
     const window = container.resolve<TheWestWindow>('window');
-    window['TWCalc_updaterCallback'] = updater.callback;
+    window['TWCalc_updaterCallback'] = updater.callback.bind(updater);
 }

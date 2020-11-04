@@ -1,6 +1,7 @@
 export interface Game {
     locale: string;
     version: string;
+    gameURL: string;
 }
 
 export namespace tw2gui {
@@ -75,6 +76,10 @@ export namespace tw2gui {
 
         setMiniTitle(title: string): Window;
         setTitle(title: string): Window;
+        addTab(title: string, id: string): Window;
+        addTab(title: string, id: string, onActivate: () => void): Window;
+        activateTab(id: string): Window;
+        appendToContentPane(content: JQuery | string): Window;
     }
 }
 
@@ -116,7 +121,12 @@ export interface GameScript {
     author: string;
     website: string;
 
-    setGui(content: string): void;
+    setGui(content: JQuery): void;
+}
+
+export interface Character {
+    name: string;
+    playerId: number;
 }
 
 export interface TheWestWindow extends Window {
@@ -128,4 +138,5 @@ export interface TheWestWindow extends Window {
     MessageError: MessageErrorConstructor;
     wman: WindowManager;
     TheWestApi: TheWestApi;
+    Character: Character;
 }
