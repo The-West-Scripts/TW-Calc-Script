@@ -1,19 +1,16 @@
 export interface TW2WindowOptions {
     reloadable?: boolean;
-    title?: string;
+    title?: TW2WindowPlainText | TW2WindowTranslation;
 }
 
 export interface TW2WindowTabOption {
-    title: TW2WindowTabPlainText | TW2WindowTabTranslation;
+    title: TW2WindowPlainText | TW2WindowTranslation;
     open: () => void;
 }
 
-export interface TW2WindowTabPlainText {
-    type: 'text';
-    value: string;
-}
+export type TW2WindowPlainText = string;
 
-export interface TW2WindowTabTranslation {
+export interface TW2WindowTranslation {
     type: 'translation';
     translation: number;
 }

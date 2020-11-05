@@ -1,10 +1,13 @@
 import { Component } from '../component.types';
 import { inject, singleton } from 'tsyringe';
+import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
 import { SettingBoolean } from '../settings/settings.types';
 import { Settings } from '../settings/settings';
 import { TheWestWindow } from '../../@types/the-west';
 import { twCalcIcon } from './tw-calc.icon';
+import { wardrobeIcon } from './wardrobe.icon';
+import { WardrobeWindow } from '../wardrobe-window/wardrobe-window';
 import { WestCalcWindow } from '../west-calc-window/west-calc-window';
 
 @singleton()
@@ -15,7 +18,9 @@ export class Gui implements Component {
         @inject('window') private window: TheWestWindow,
         private settings: Settings,
         private westCalcWindow: WestCalcWindow,
+        private wardrobeWindow: WardrobeWindow,
         private logger: Logger,
+        private language: Language,
     ) {
         // renamed from TWCalcButtons
         this.uiMenuContainer = this.window.$('<div class="ui_menucontainer" id="TWCalc_Buttons"></div>');
@@ -39,6 +44,22 @@ export class Gui implements Component {
                 .on('mouseout', rightMenuButtonLogicMouseOut(this.window.$));
 
             this.uiMenuContainer.append(westCalcButton);
+        }
+
+        if (this.settings.get(SettingBoolean.Wardrobe)) {
+            const wardrobeButton = this.window
+                .$(
+                    `<div class="menulink" title="${this.language.getTranslation(
+                        170,
+                    )}" style="background-position: 0 0; background-image: url(data:image/png;data:;base64,${wardrobeIcon})"></div>`,
+                )
+                .on('click', () => {
+                    this.wardrobeWindow.open();
+                })
+                .on('mouseover', rightMenuButtonLogicMouseOver(this.window.$))
+                .on('mouseout', rightMenuButtonLogicMouseOut(this.window.$));
+
+            this.uiMenuContainer.append(wardrobeButton);
         }
 
         this.window.$(this.uiMenuContainer).append('<div class="menucontainer_bottom"></div>');

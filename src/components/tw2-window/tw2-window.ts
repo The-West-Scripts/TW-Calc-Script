@@ -1,7 +1,7 @@
 import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
 import { TheWestWindow, tw2gui } from '../../@types/the-west';
-import { TW2WindowOptions, TW2WindowTabOption } from './tw2-window.types';
+import { TW2WindowOptions, TW2WindowPlainText, TW2WindowTabOption, TW2WindowTranslation } from './tw2-window.types';
 
 const defaultOptions: TW2WindowOptions = {
     reloadable: true,
@@ -39,15 +39,16 @@ export class TW2Window<Tab extends string = string> {
         if (!this.options.reloadable) {
             additionalClasses.push('noreload');
         }
-        this.win = this.window.wman.open(this.id, this.options.title || '', additionalClasses.join(' '));
+        this.win = this.window.wman.open(
+            this.id,
+            getTitle(this.language, this.options.title),
+            additionalClasses.join(' '),
+        );
 
         const tabKeys = Object.keys(this.tabs);
         tabKeys.forEach(tab => {
             const tabOptions = this.tabs[tab] as TW2WindowTabOption;
-            const title =
-                tabOptions.title.type === 'translation'
-                    ? this.language.getTranslation(tabOptions.title.translation)
-                    : tabOptions.title.value;
+            const title = getTitle(this.language, tabOptions.title);
 
             this.tw2win
                 .addTab(title, tab)
@@ -103,4 +104,11 @@ export class TW2Window<Tab extends string = string> {
         // fade in the desired content pane
         $(`div.tw2gui_window_content_pane > #tab_${tab}`, this.getMainDiv()).fadeIn();
     }
+}
+
+function getTitle(language: Language, title?: TW2WindowPlainText | TW2WindowTranslation): string {
+    if (typeof title != 'object') {
+        return title || '';
+    }
+    return language.getTranslation(title.translation);
 }
