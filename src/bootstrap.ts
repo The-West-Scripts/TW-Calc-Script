@@ -5,7 +5,8 @@ import { TWCalcPublicApi } from './tw-calc.types';
 import { Updater } from './components/updater/updater';
 
 export function bootstrap(): TWCalcPublicApi {
-    const { importer, config, language, updater } = container.resolve(Initializer);
+    const initializer = container.resolve(Initializer);
+    const { importer, config, language, updater } = initializer;
 
     // set updater callback on the global scope
     setUpdaterCallback(updater);
@@ -18,6 +19,7 @@ export function bootstrap(): TWCalcPublicApi {
         loadPack: languagePack => {
             language.loadPack(languagePack);
         },
+        _initializer: initializer,
     };
 }
 

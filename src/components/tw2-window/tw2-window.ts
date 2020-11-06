@@ -1,7 +1,7 @@
 import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
 import { TheWestWindow, tw2gui } from '../../@types/the-west';
-import { TW2WindowOptions, TW2WindowPlainText, TW2WindowTabOption, TW2WindowTranslation } from './tw2-window.types';
+import { TW2WindowOptions, TW2WindowPlainText, TW2WindowTranslation, TW2WindowView } from './tw2-window.types';
 
 const defaultOptions: TW2WindowOptions = {
     reloadable: true,
@@ -10,7 +10,7 @@ const defaultOptions: TW2WindowOptions = {
 export class TW2Window<Tab extends string = string> {
     protected readonly $: JQueryStatic;
     protected options: TW2WindowOptions;
-    protected readonly tabs: Partial<Record<Tab, TW2WindowTabOption>> = {};
+    protected readonly views: Partial<Record<Tab, TW2WindowView<Tab>>> = {};
 
     private win?: tw2gui.Window;
 
@@ -33,25 +33,22 @@ export class TW2Window<Tab extends string = string> {
     }
 
     public open(tab?: Tab): void {
-        this.logger.log(`open window "${this.id}"...`, this.options, this.tabs);
+        this.logger.log(`open window "${this.id}"...`, this.options, this.views);
 
         const additionalClasses = [];
         if (!this.options.reloadable) {
             additionalClasses.push('noreload');
         }
-        this.win = this.window.wman.open(
-            this.id,
-            getTitle(this.language, this.options.title),
-            additionalClasses.join(' '),
-        );
+        const title = getTitle(this.language, this.options.title) || '';
+        this.win = this.window.wman.open(this.id, title, additionalClasses.join(' ')).setMiniTitle(title);
 
-        const tabKeys = Object.keys(this.tabs);
+        const tabKeys = Object.keys(this.views);
         tabKeys.forEach(tab => {
-            const tabOptions = this.tabs[tab] as TW2WindowTabOption;
-            const title = getTitle(this.language, tabOptions.title);
+            const tabOptions = this.views[tab];
+            const tabTitle = getTitle(this.language, tabOptions.title) || '';
 
             this.tw2win
-                .addTab(title, tab)
+                .addTab(tabTitle, tab)
                 .appendToContentPane(
                     $(`<div id="tab_${tab}" style="display: none; overflow: hidden; margin: 18px 12px;"></div>`),
                 );
@@ -81,17 +78,17 @@ export class TW2Window<Tab extends string = string> {
     }
 
     public setTab(tab: Tab): void {
-        const tabOptions = this.tabs[tab];
+        const tabOptions = this.views[tab];
         if (typeof tabOptions !== 'undefined') {
-            tabOptions.open();
+            this.getTabMainDiv(tabOptions.key).append(tabOptions.getMainDiv());
             this.showTab(tab);
         } else {
             throw new Error(`Tab "${tab}" does not exist!`);
         }
     }
 
-    public addTab(tab: Tab, option: TW2WindowTabOption): void {
-        this.tabs[tab] = option;
+    protected addView(view: TW2WindowView<Tab>): void {
+        this.views[view.key] = view;
     }
 
     private showTab(tab: Tab): void {
@@ -106,9 +103,9 @@ export class TW2Window<Tab extends string = string> {
     }
 }
 
-function getTitle(language: Language, title?: TW2WindowPlainText | TW2WindowTranslation): string {
+function getTitle(language: Language, title?: TW2WindowPlainText | TW2WindowTranslation): string | undefined {
     if (typeof title != 'object') {
-        return title || '';
+        return title;
     }
     return language.getTranslation(title.translation);
 }

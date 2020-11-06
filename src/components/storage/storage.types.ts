@@ -4,4 +4,5 @@ export enum StorageKey {
     languagePackReset = 'LANGUAGE_PACK_RESET', // renamed from LANG_PACK_RESET
     settings = 'Settings',
     birthday = 'Birthday', // renamed from BDAY
+    jobList = 'jobList',
 }

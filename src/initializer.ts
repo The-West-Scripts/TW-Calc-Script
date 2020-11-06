@@ -31,7 +31,6 @@ export class Initializer {
         this.init();
         this.language.init(() => {
             this.gui.init();
-            this.settings.init();
             this.updater.init();
             this.birthday.init();
             this.nearestJobs.init();

@@ -3,14 +3,15 @@ export interface TW2WindowOptions {
     title?: TW2WindowPlainText | TW2WindowTranslation;
 }
 
-export interface TW2WindowTabOption {
-    title: TW2WindowPlainText | TW2WindowTranslation;
-    open: () => void;
-}
-
 export type TW2WindowPlainText = string;
 
 export interface TW2WindowTranslation {
     type: 'translation';
     translation: number;
+}
+
+export interface TW2WindowView<Tab> {
+    key: Tab;
+    title: TW2WindowPlainText | TW2WindowTranslation;
+    getMainDiv(): JQuery;
 }

@@ -66,6 +66,7 @@
         "rollup": "^2.33.1",
         "rollup-plugin-terser": "^7.0.2",
         "run-all": "^1.0.1",
+        "ts-essentials": "^7.0.1",
         "typescript": "^4.0.5"
     },
     "husky": {
