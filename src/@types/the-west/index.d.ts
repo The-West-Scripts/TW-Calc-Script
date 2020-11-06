@@ -68,6 +68,8 @@ export namespace tw2gui {
         TYPE_SUCCESS: 'success';
         TYPE_ERROR: 'error';
         TYPE_HINT: 'hint';
+
+        new (data: any): UserMessage;
     }
 
     export interface Window {
@@ -131,6 +133,19 @@ export interface Character {
     playerId: number;
 }
 
+export interface Ajax {
+    get: <T extends any>(
+        window: string,
+        ajax: string,
+        param: Record<string, string>,
+        callback: (data: T) => void,
+    ) => void;
+}
+
+export namespace TheWest {
+    export type Map = any;
+}
+
 export interface TheWestWindow extends Window {
     Game: Game;
     $: JQueryStatic;
@@ -141,4 +156,6 @@ export interface TheWestWindow extends Window {
     wman: WindowManager;
     TheWestApi: TheWestApi;
     Character: Character;
+    Ajax: Ajax;
+    UserMessage: tw2gui.UserMessageConstructor;
 }

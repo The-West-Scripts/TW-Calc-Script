@@ -5,6 +5,7 @@ import { Importer } from './components/importer/importer';
 import { inject, singleton } from 'tsyringe';
 import { Language } from './components/language/language';
 import { Logger } from './components/logger/logger';
+import { NearestJobs } from './components/nearest-jobs/nearest-jobs';
 import { Settings } from './components/settings/settings';
 import { TheWestWindow } from './@types/the-west';
 import { Updater } from './components/updater/updater';
@@ -23,6 +24,7 @@ export class Initializer {
         public readonly westCalcWindow: WestCalcWindow,
         public readonly logger: Logger,
         public readonly birthday: Birthday,
+        public readonly nearestJobs: NearestJobs,
         @inject('window') public readonly window: TheWestWindow,
     ) {
         this.logger.log('initializing tw-calc...');
@@ -32,6 +34,7 @@ export class Initializer {
             this.settings.init();
             this.updater.init();
             this.birthday.init();
+            this.nearestJobs.init();
         });
     }
 

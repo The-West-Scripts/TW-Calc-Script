@@ -11,7 +11,7 @@ export enum SettingBoolean {
 }
 
 export enum SettingNumber {
-    TopBar = 'TopBar', // renamed from topBar
+    NearestJobsBar = 'NearestJobsBar', // renamed from topBar
     DuelBar = 'DuelBar', // renamed from duelBar
 }
 
@@ -21,7 +21,7 @@ export interface SettingValues {
     [SettingBoolean.TransferFeeCalc]: boolean;
     [SettingBoolean.XpHpEnergyCalc]: boolean;
     [SettingBoolean.WestCalc]: boolean;
-    [SettingNumber.TopBar]: number;
+    [SettingNumber.NearestJobsBar]: number;
     [SettingNumber.DuelBar]: number;
 }
 

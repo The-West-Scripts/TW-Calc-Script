@@ -2,7 +2,9 @@ import { Component } from '../component.types';
 import { inject, singleton } from 'tsyringe';
 import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
-import { SettingBoolean } from '../settings/settings.types';
+import { nearestJobsIcon } from './nearest-jobs.icon';
+import { NearestJobsList } from '../nearest-jobs/nearest-jobs-list';
+import { SettingBoolean, SettingNumber } from '../settings/settings.types';
 import { Settings } from '../settings/settings';
 import { TheWestWindow } from '../../@types/the-west';
 import { twCalcIcon } from './tw-calc.icon';
@@ -19,6 +21,7 @@ export class Gui implements Component {
         private settings: Settings,
         private westCalcWindow: WestCalcWindow,
         private wardrobeWindow: WardrobeWindow,
+        private nearestJobsList: NearestJobsList,
         private logger: Logger,
         private language: Language,
     ) {
@@ -44,6 +47,22 @@ export class Gui implements Component {
                 .on('mouseout', rightMenuButtonLogicMouseOut(this.window.$));
 
             this.uiMenuContainer.append(westCalcButton);
+        }
+
+        if (this.settings.get(SettingNumber.NearestJobsBar) === 3) {
+            const nearestJobsButton = this.window
+                .$(
+                    `<div class="menulink" title="${this.language.getTranslation(
+                        152,
+                    )}" style="background-position: 0 0; background-image: url(data:image/jpeg;base64,${nearestJobsIcon})"></div>`,
+                )
+                .on('click', () => {
+                    this.nearestJobsList.open();
+                })
+                .on('mouseover', rightMenuButtonLogicMouseOver(this.window.$))
+                .on('mouseout', rightMenuButtonLogicMouseOut(this.window.$));
+
+            this.uiMenuContainer.append(nearestJobsButton);
         }
 
         if (this.settings.get(SettingBoolean.Wardrobe)) {

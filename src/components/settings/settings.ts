@@ -4,13 +4,13 @@ import { ErrorLog } from '../error-log/error-log';
 import { inject, singleton } from 'tsyringe';
 import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
-import { NearestJob } from '../nearest-job/nearest-job';
 import { SettingAppearance, SettingBoolean, SettingController, SettingNumber, SettingValues } from './settings.types';
 import { Storage } from '../storage/storage';
 import { StorageKey } from '../storage/storage.types';
 import { TheWestWindow } from '../../@types/the-west';
 import { WestCalcWindow } from '../west-calc-window/west-calc-window';
 import { WestCalcWindowTab } from '../west-calc-window/west-calc-window.types';
+import { NearestJobsDialog } from '../nearest-jobs/nearest-jobs-dialog';
 
 @singleton()
 export class Settings implements Component {
@@ -21,7 +21,7 @@ export class Settings implements Component {
         [SettingBoolean.TransferFeeCalc]: true,
         [SettingBoolean.XpHpEnergyCalc]: true,
         [SettingBoolean.WestCalc]: true,
-        [SettingNumber.TopBar]: 1,
+        [SettingNumber.NearestJobsBar]: 1,
         [SettingNumber.DuelBar]: 1,
     };
 
@@ -29,7 +29,7 @@ export class Settings implements Component {
         private readonly language: Language,
         private readonly westCalcWindow: WestCalcWindow,
         private readonly storage: Storage,
-        private readonly nearestJob: NearestJob,
+        private readonly nearestJobsDialog: NearestJobsDialog,
         private readonly errorLog: ErrorLog,
         private readonly config: Config,
         private readonly logger: Logger,
@@ -72,7 +72,7 @@ export class Settings implements Component {
                 behaviour: { type: 'checkbox' },
             },
             {
-                name: SettingNumber.TopBar,
+                name: SettingNumber.NearestJobsBar,
                 translation: this.language.getTranslation(185),
                 behaviour: {
                     type: 'combobox',
@@ -81,7 +81,7 @@ export class Settings implements Component {
                         { value: 5, translation: this.language.getTranslation(187) },
                         { value: 2, translation: this.language.getTranslation(186) },
                         { value: 3, translation: this.language.getTranslation(188) },
-                        { value: 4, translation: this.language.getTranslation(189) },
+                        { value: 4, translation: this.language.getTranslation(189) }, // hidden
                     ],
                 },
             },
@@ -157,7 +157,7 @@ export class Settings implements Component {
             .append(
                 new west.gui.Button()
                     .setCaption(this.language.getTranslation(152))
-                    .click(() => this.nearestJob.open())
+                    .click(() => this.nearestJobsDialog.open())
                     .getMainDiv(),
             )
             .append(
