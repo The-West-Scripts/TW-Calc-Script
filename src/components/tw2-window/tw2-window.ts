@@ -28,7 +28,7 @@ export class TW2Window<Tab extends string = string> {
         protected logger: Logger,
         options: Partial<TW2WindowOptions> = {},
     ) {
-        this.options = Object.assign(defaultOptions, options);
+        this.options = Object.assign({}, defaultOptions, options);
         this.$ = window.$;
     }
 

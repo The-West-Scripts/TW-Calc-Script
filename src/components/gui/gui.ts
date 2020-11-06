@@ -8,9 +8,9 @@ import { SettingBoolean, SettingNumber } from '../settings/settings.types';
 import { Settings } from '../settings/settings';
 import { TheWestWindow } from '../../@types/the-west';
 import { twCalcIcon } from './tw-calc.icon';
+import { Wardrobe } from '../wardrobe/wardrobe';
 import { wardrobeIcon } from './wardrobe.icon';
-import { WardrobeWindow } from '../wardrobe-window/wardrobe-window';
-import { WestCalcWindow } from '../west-calc-window/west-calc-window';
+import { WestCalc } from '../west-calc/west-calc';
 
 @singleton()
 export class Gui implements Component {
@@ -19,8 +19,8 @@ export class Gui implements Component {
     constructor(
         @inject('window') private window: TheWestWindow,
         private settings: Settings,
-        private westCalcWindow: WestCalcWindow,
-        private wardrobeWindow: WardrobeWindow,
+        private westCalc: WestCalc,
+        private wardrobe: Wardrobe,
         private nearestJobsList: NearestJobsList,
         private logger: Logger,
         private language: Language,
@@ -38,10 +38,10 @@ export class Gui implements Component {
         if (this.settings.get(SettingBoolean.WestCalc)) {
             const westCalcButton = this.window
                 .$(
-                    `<div class="menulink" title="The-West Calc" style="background-position: 0 0; background-image: url(${twCalcIcon});""></div>`,
+                    `<div class="menulink" title="The-West Calc" style="background-position: 0 0; background-image: url(${twCalcIcon});"></div>`,
                 )
                 .on('click', () => {
-                    this.westCalcWindow.open();
+                    this.westCalc.window.open();
                 })
                 .on('mouseover', rightMenuButtonLogicMouseOver(this.window.$))
                 .on('mouseout', rightMenuButtonLogicMouseOut(this.window.$));
@@ -54,7 +54,7 @@ export class Gui implements Component {
                 .$(
                     `<div class="menulink" title="${this.language.getTranslation(
                         152,
-                    )}" style="background-position: 0 0; background-image: url(data:image/jpeg;base64,${nearestJobsIcon})"></div>`,
+                    )}" style="background-position: 0 0; background-image: url(${nearestJobsIcon});"></div>`,
                 )
                 .on('click', () => {
                     this.nearestJobsList.open();
@@ -70,10 +70,10 @@ export class Gui implements Component {
                 .$(
                     `<div class="menulink" title="${this.language.getTranslation(
                         170,
-                    )}" style="background-position: 0 0; background-image: url(data:image/png;data:;base64,${wardrobeIcon})"></div>`,
+                    )}" style="background-position: 0 0; background-image: url(${wardrobeIcon});"></div>`,
                 )
                 .on('click', () => {
-                    this.wardrobeWindow.open();
+                    this.wardrobe.window.open();
                 })
                 .on('mouseover', rightMenuButtonLogicMouseOver(this.window.$))
                 .on('mouseout', rightMenuButtonLogicMouseOut(this.window.$));

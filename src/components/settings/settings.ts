@@ -4,13 +4,13 @@ import { ErrorLog } from '../error-log/error-log';
 import { inject, singleton } from 'tsyringe';
 import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
+import { NearestJobsDialog } from '../nearest-jobs/nearest-jobs-dialog';
 import { SettingAppearance, SettingBoolean, SettingController, SettingNumber, SettingValues } from './settings.types';
 import { Storage } from '../storage/storage';
 import { StorageKey } from '../storage/storage.types';
 import { TheWestWindow } from '../../@types/the-west';
-import { WestCalcWindow } from '../west-calc-window/west-calc-window';
-import { WestCalcWindowTab } from '../west-calc-window/west-calc-window.types';
-import { NearestJobsDialog } from '../nearest-jobs/nearest-jobs-dialog';
+import { WestCalc } from '../west-calc/west-calc';
+import { WestCalcWindowTab } from '../west-calc/west-calc-window.types';
 
 @singleton()
 export class Settings implements Component {
@@ -27,7 +27,7 @@ export class Settings implements Component {
 
     constructor(
         private readonly language: Language,
-        private readonly westCalcWindow: WestCalcWindow,
+        private readonly westCalc: WestCalc,
         private readonly storage: Storage,
         private readonly nearestJobsDialog: NearestJobsDialog,
         private readonly errorLog: ErrorLog,
@@ -35,7 +35,7 @@ export class Settings implements Component {
         private readonly logger: Logger,
         @inject('window') private readonly window: TheWestWindow,
     ) {
-        this.westCalcWindow.addTab(WestCalcWindowTab.Settings, {
+        this.westCalc.window.addTab(WestCalcWindowTab.Settings, {
             title: {
                 type: 'translation',
                 translation: 216,
@@ -105,7 +105,7 @@ export class Settings implements Component {
      */
     open(): void {
         const { west } = this.window;
-        const mainDiv = this.westCalcWindow.getTabMainDiv(WestCalcWindowTab.Settings);
+        const mainDiv = this.westCalc.window.getTabMainDiv(WestCalcWindowTab.Settings);
         const elements: Array<SettingController> = [];
         const settings = this.appearance;
 
@@ -163,7 +163,7 @@ export class Settings implements Component {
             .append(
                 new west.gui.Button()
                     .setCaption('Error Log')
-                    .click(() => this.errorLog.open())
+                    .click(() => this.errorLog.window.open())
                     .getMainDiv(),
             )
             .append(

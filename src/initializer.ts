@@ -9,8 +9,8 @@ import { NearestJobs } from './components/nearest-jobs/nearest-jobs';
 import { Settings } from './components/settings/settings';
 import { TheWestWindow } from './@types/the-west';
 import { Updater } from './components/updater/updater';
-import { WestCalcWindow } from './components/west-calc-window/west-calc-window';
-import { WestCalcWindowTab } from './components/west-calc-window/west-calc-window.types';
+import { WestCalc } from './components/west-calc/west-calc';
+import { WestCalcWindowTab } from './components/west-calc/west-calc-window.types';
 
 @singleton()
 export class Initializer {
@@ -21,7 +21,7 @@ export class Initializer {
         public readonly updater: Updater,
         public readonly settings: Settings,
         public readonly gui: Gui,
-        public readonly westCalcWindow: WestCalcWindow,
+        public readonly westCalc: WestCalc,
         public readonly logger: Logger,
         public readonly birthday: Birthday,
         public readonly nearestJobs: NearestJobs,
@@ -54,7 +54,7 @@ export class Initializer {
             .append(
                 this.window
                     .$(`<a href="javascript: void(0)">${this.language.getTranslation(3)}</a>`)
-                    .on('click', () => this.westCalcWindow.open(WestCalcWindowTab.Settings)),
+                    .on('click', () => this.westCalc.window.open(WestCalcWindowTab.Settings)),
             );
 
         const content = this.window.$(`<div></div>`).append(links)

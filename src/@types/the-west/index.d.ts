@@ -1,9 +1,3 @@
-export interface Game {
-    locale: string;
-    version: string;
-    gameURL: string;
-}
-
 export namespace tw2gui {
     export interface Dialog {
         addButton(text: string, cb: () => void): Dialog;
@@ -102,10 +96,6 @@ export interface West {
     gui: WestGui;
 }
 
-export interface WindowManager {
-    open(id: string, title: string, classes: string): tw2gui.Window;
-}
-
 export interface TheWestApi {
     register: (
         key: string,
@@ -128,11 +118,6 @@ export interface GameScript {
     setGui(content: JQuery): void;
 }
 
-export interface Character {
-    name: string;
-    playerId: number;
-}
-
 export interface Ajax {
     get: <T extends any>(
         window: string,
@@ -143,19 +128,34 @@ export interface Ajax {
 }
 
 export namespace TheWest {
+    export interface WindowManager {
+        open(id: string, title: string, classes: string): tw2gui.Window;
+    }
+
+    export interface Game {
+        locale: string;
+        version: string;
+        gameURL: string;
+    }
+
     export type Map = any;
+
+    export interface Character {
+        name: string;
+        playerId: number;
+    }
 }
 
 export interface TheWestWindow extends Window {
-    Game: Game;
+    Game: TheWest.Game;
     $: JQueryStatic;
     west: West;
     MessageSuccess: MessageSuccessConstructor;
     MessageHint: MessageHintConstructor;
     MessageError: MessageErrorConstructor;
-    wman: WindowManager;
+    wman: TheWest.WindowManager;
     TheWestApi: TheWestApi;
-    Character: Character;
+    Character: TheWest.Character;
     Ajax: Ajax;
     UserMessage: tw2gui.UserMessageConstructor;
 }
