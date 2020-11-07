@@ -106,10 +106,11 @@ export class Language implements Component {
             return;
         }
         this.languagePack = languagePack;
-        if (!this.cb) {
+        const callback = this.cb;
+        if (!callback) {
             throw new Error('callback is not defined, was init method called?');
         }
-        this.cb();
+        setTimeout(() => callback());
     }
 
     private fetch(): void {

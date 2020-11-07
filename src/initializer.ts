@@ -8,6 +8,7 @@ import { Logger } from './components/logger/logger';
 import { NearestJobs } from './components/nearest-jobs/nearest-jobs';
 import { Settings } from './components/settings/settings';
 import { TheWestWindow } from './@types/the-west';
+import { TombolaExporter } from './components/tombola-exporter/tombola-exporter';
 import { Updater } from './components/updater/updater';
 import { WestCalc } from './components/west-calc/west-calc';
 import { WestCalcWindowTab } from './components/west-calc/west-calc-window.types';
@@ -25,6 +26,7 @@ export class Initializer {
         public readonly logger: Logger,
         public readonly birthday: Birthday,
         public readonly nearestJobs: NearestJobs,
+        public readonly tombolaExporter: TombolaExporter,
         @inject('window') public readonly window: TheWestWindow,
     ) {
         this.logger.log('initializing tw-calc...');
@@ -34,6 +36,7 @@ export class Initializer {
             this.updater.init();
             this.birthday.init();
             this.nearestJobs.init();
+            this.tombolaExporter.init();
         });
     }
 

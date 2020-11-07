@@ -5,4 +5,5 @@ export enum StorageKey {
     settings = 'Settings',
     birthday = 'Birthday', // renamed from BDAY
     jobList = 'jobList',
+    tombola = 'Tombola',
 }
