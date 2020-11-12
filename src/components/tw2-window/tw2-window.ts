@@ -48,7 +48,7 @@ export class TW2Window<Tab extends string = string> {
             const tabTitle = getTitle(this.language, tabOptions.title) || '';
 
             this.tw2win
-                .addTab(tabTitle, tab)
+                .addTab(tabTitle, tab, () => this.setTab(tab as Tab))
                 .appendToContentPane(
                     $(`<div id="tab_${tab}" style="display: none; overflow: hidden; margin: 18px 12px;"></div>`),
                 );
@@ -73,15 +73,10 @@ export class TW2Window<Tab extends string = string> {
         return this.$(`.${this.id}`);
     }
 
-    public getTabMainDiv(tab: Tab): JQuery {
-        return this.$(`.tw2gui_window_content_pane > #tab_${tab}`, this.getMainDiv());
-    }
-
     public setTab(tab: Tab): void {
         const tabOptions = this.views[tab];
         if (typeof tabOptions !== 'undefined') {
-            this.getTabMainDiv(tabOptions.key).append(tabOptions.getMainDiv());
-            this.showTab(tab);
+            this.showTab(tab, tabOptions as TW2WindowView<Tab>);
         } else {
             throw new Error(`Tab "${tab}" does not exist!`);
         }
@@ -91,13 +86,23 @@ export class TW2Window<Tab extends string = string> {
         this.views[view.key] = view;
     }
 
-    private showTab(tab: Tab): void {
+    private getTabMainDiv(tab: Tab): JQuery {
+        return this.$(`.tw2gui_window_content_pane > #tab_${tab}`, this.getMainDiv());
+    }
+
+    private showTab<T extends Tab>(tab: T, tabOptions: TW2WindowView<T>): void {
+        // set content to the main div
+        this.getTabMainDiv(tabOptions.key).empty().append(tabOptions.getMainDiv());
         // activate the desired tab
         this.tw2win.activateTab(tab);
         // hide all content panes
         $(`div.tw2gui_window_content_pane > *`, this.getMainDiv()).each(function () {
             $(this).hide();
         });
+        // if initialization function is defined, call it
+        if (typeof tabOptions.init === 'function') {
+            tabOptions.init();
+        }
         // fade in the desired content pane
         $(`div.tw2gui_window_content_pane > #tab_${tab}`, this.getMainDiv()).fadeIn();
     }

@@ -12,7 +12,7 @@ import { TW2WindowTranslation, TW2WindowView } from '../tw2-window/tw2-window.ty
 import { WestCalcWindowTab } from '../west-calc/west-calc-window.types';
 
 @singleton()
-export class SettingsView implements TW2WindowView<WestCalcWindowTab.Settings> {
+export class SettingsView implements TW2WindowView<WestCalcWindowTab> {
     key = WestCalcWindowTab.Settings;
     title: TW2WindowTranslation = {
         type: 'translation',

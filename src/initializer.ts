@@ -8,10 +8,9 @@ import { Logger } from './components/logger/logger';
 import { NearestJobs } from './components/nearest-jobs/nearest-jobs';
 import { Settings } from './components/settings/settings';
 import { TheWestWindow } from './@types/the-west';
-import { TombolaExporter } from './components/tombola-exporter/tombola-exporter';
+import { TombolaExporter } from './components/tombola/tombola-exporter';
 import { Updater } from './components/updater/updater';
 import { WestCalc } from './components/west-calc/west-calc';
-import { WestCalcWindowTab } from './components/west-calc/west-calc-window.types';
 
 @singleton()
 export class Initializer {
@@ -54,9 +53,9 @@ export class Initializer {
             .append(`<a href="${website}">${website}</a>`)
             .append(`</br></br>`)
             .append(
-                this.window
-                    .$(`<a href="javascript: void(0)">${this.language.getTranslation(3)}</a>`)
-                    .on('click', () => this.westCalc.window.open(WestCalcWindowTab.Settings)),
+                `<a href="javascript: TW_Calc._window.open('settings'); void(0)">${this.language.getTranslation(
+                    3,
+                )}</a>`,
             );
 
         const content = this.window.$(`<div></div>`).append(links)

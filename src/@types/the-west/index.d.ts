@@ -7,6 +7,15 @@ export namespace tw2gui {
         show(): void;
     }
 
+    export interface Groupframe {
+        appendToContentPane(content: JQuery | string): Groupframe;
+        getMainDiv(): JQuery;
+    }
+
+    export interface GroupframeConstructor {
+        new (): Groupframe;
+    }
+
     export interface DialogConstructor {
         SYS_WARNING: string;
         SYS_OK: string;
@@ -32,6 +41,11 @@ export namespace tw2gui {
         setWidth(width: number): Textfield;
         setPlaceholder(text: string): Textfield;
         getMainDiv(): JQuery;
+        onlyNumeric(): Textfield;
+        getValue(): string;
+        setValue(val: string | number): Textfield;
+        setLabel(label: JQuery | string): Textfield;
+        addKeyUpListener(cb: () => void): Textfield;
     }
 
     export interface TextfieldConstructor {
@@ -138,6 +152,7 @@ export interface WestGui {
     Scrollpane: tw2gui.ScrollpaneConstructor;
     Textfield: tw2gui.TextfieldConstructor;
     Selectbox: tw2gui.SelectboxConstructor;
+    Groupframe: tw2gui.GroupframeConstructor;
 }
 
 export interface West {
@@ -174,6 +189,8 @@ export interface Character {
     name: string;
     playerId: number;
     position: { x: number; y: number };
+    duelLevel: number;
+    duelMotivation: number;
 }
 
 export interface TaskQueue {

@@ -19,6 +19,7 @@ export function bootstrap(): TWCalcPublicApi {
         loadPack: languagePack => {
             language.loadPack(languagePack);
         },
+        _window: initializer.westCalc.window,
         _initializer: initializer,
     };
 }

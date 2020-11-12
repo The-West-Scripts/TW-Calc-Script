@@ -15,3 +15,9 @@ Official website of this script is available at [https://tw-calc.net/about-scrip
 ### Setup
 
 1. Install dependencies - `npm install`
+
+---
+
+**Author: [Timotej Zaťko](https://github.com/timzatko)**
+
+Contributors: [TomRobert](https://github.com/TomRobert)
