@@ -1,4 +1,6 @@
+import { CatchErrors } from '../error-tracker/catch-errors';
 import { Component } from '../component.types';
+import { ErrorTracker } from '../error-tracker/error-tracker';
 import { inject, singleton } from 'tsyringe';
 import { Job, MapAjaxResponse, TheWestWindow } from '../../@types/the-west';
 import { Language } from '../language/language';
@@ -27,12 +29,14 @@ export class NearestJobs implements Component {
         private readonly storage: Storage,
         private readonly logger: Logger,
         private readonly language: Language,
+        public readonly errorTracker: ErrorTracker,
     ) {
         this.dialog = new NearestJobsDialog(this, window, language, this.logger);
         this.bar = new NearestJobsBar(this, window, settings);
         this.list = new NearestJobsList(this, window, language);
     }
 
+    @CatchErrors('Birthday.init')
     init(): void {
         // nearest job bar is hidden
         if (this.settings.get(SettingNumber.NearestJobsBar) === 4) {

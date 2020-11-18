@@ -1,5 +1,7 @@
+import { CatchErrors } from '../error-tracker/catch-errors';
 import { Component } from '../component.types';
 import { Config } from '../config/config';
+import { ErrorTracker } from '../error-tracker/error-tracker';
 import { inject, singleton } from 'tsyringe';
 import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
@@ -16,8 +18,10 @@ export class Updater implements Component {
         private readonly logger: Logger,
         private readonly language: Language,
         private readonly storage: Storage,
+        public readonly errorTracker: ErrorTracker,
     ) {}
 
+    @CatchErrors('Updater.init')
     init(): void {
         this.window.$.get(
             this.config.website + '/service/updater',

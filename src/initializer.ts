@@ -1,5 +1,7 @@
 import { Birthday } from './components/birthday/birthday';
+import { CatchErrors } from './components/error-tracker/catch-errors';
 import { Config } from './components/config/config';
+import { ErrorTracker } from './components/error-tracker/error-tracker';
 import { Gui } from './components/gui/gui';
 import { Importer } from './components/importer/importer';
 import { inject, singleton } from 'tsyringe';
@@ -26,19 +28,23 @@ export class Initializer {
         public readonly birthday: Birthday,
         public readonly nearestJobs: NearestJobs,
         public readonly tombolaExporter: TombolaExporter,
+        public readonly errorTracker: ErrorTracker,
         @inject('window') public readonly window: TheWestWindow,
     ) {
-        this.logger.log('initializing tw-calc...');
-        this.init();
-        this.language.init(() => {
-            this.gui.init();
-            this.updater.init();
-            this.birthday.init();
-            this.nearestJobs.init();
-            this.tombolaExporter.init();
+        this.errorTracker.execute(() => {
+            this.logger.log('initializing tw-calc...');
+            this.init();
+            this.language.init(() => {
+                this.gui.init();
+                this.updater.init();
+                this.birthday.init();
+                this.nearestJobs.init();
+                this.tombolaExporter.init();
+            });
         });
     }
 
+    @CatchErrors('Initializer.init')
     init(): void {
         const gameMin = '1.36';
         const gameMax = this.window.Game.version.toString();

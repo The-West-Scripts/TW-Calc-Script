@@ -1,5 +1,7 @@
+import { CatchErrors } from '../error-tracker/catch-errors';
 import { Component } from '../component.types';
 import { DuelBar } from '../duel-bar/duel-bar';
+import { ErrorTracker } from '../error-tracker/error-tracker';
 import { inject, singleton } from 'tsyringe';
 import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
@@ -20,18 +22,20 @@ export class Gui implements Component {
 
     constructor(
         @inject('window') private window: TheWestWindow,
-        private settings: Settings,
-        private westCalc: WestCalc,
-        private wardrobe: Wardrobe,
-        private nearestJobs: NearestJobs,
-        private duelBar: DuelBar,
-        private logger: Logger,
-        private language: Language,
+        private readonly settings: Settings,
+        private readonly westCalc: WestCalc,
+        private readonly wardrobe: Wardrobe,
+        private readonly nearestJobs: NearestJobs,
+        private readonly duelBar: DuelBar,
+        private readonly logger: Logger,
+        private readonly language: Language,
+        public readonly errorTracker: ErrorTracker,
     ) {
         // renamed from TWCalcButtons
         this.uiMenuContainer = this.window.$('<div class="ui_menucontainer" id="TWCalc_Buttons"></div>');
     }
 
+    @CatchErrors('Gui.init')
     init(): void {
         this.logger.log('initializing gui...');
         this.initUiMenu();

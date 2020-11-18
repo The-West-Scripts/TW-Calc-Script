@@ -1,4 +1,6 @@
+import { CatchErrors } from '../error-tracker/catch-errors';
 import { Component } from '../component.types';
+import { ErrorTracker } from '../error-tracker/error-tracker';
 import { inject, singleton } from 'tsyringe';
 import { Logger } from '../logger/logger';
 import { StorageKey } from '../storage/storage.types';
@@ -11,8 +13,10 @@ export class TombolaExporter implements Component {
         @inject('localStorage') private readonly localStorage: WindowLocalStorage['localStorage'],
         private readonly storage: TWCalcStorage,
         private readonly logger: Logger,
+        public readonly errorTracker: ErrorTracker,
     ) {}
 
+    @CatchErrors('Birthday.init')
     init(): void {
         this.migrate();
     }

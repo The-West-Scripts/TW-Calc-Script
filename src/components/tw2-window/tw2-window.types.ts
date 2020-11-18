@@ -1,6 +1,7 @@
 export interface TW2WindowOptions {
     reloadable?: boolean;
     title?: TW2WindowPlainText | TW2WindowTranslation;
+    size?: { width: number; height: number };
 }
 
 export type TW2WindowPlainText = string;

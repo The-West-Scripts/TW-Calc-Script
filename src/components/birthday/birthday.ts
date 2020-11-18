@@ -1,4 +1,7 @@
+import { CatchErrors } from '../error-tracker/catch-errors';
+import { Component } from '../component.types';
 import { Config } from '../config/config';
+import { ErrorTracker } from '../error-tracker/error-tracker';
 import { inject, singleton } from 'tsyringe';
 import { Logger } from '../logger/logger';
 import { Storage } from '../storage/storage';
@@ -6,7 +9,7 @@ import { StorageKey } from '../storage/storage.types';
 import { TheWestWindow } from '../../@types/the-west';
 
 @singleton()
-export class Birthday {
+export class Birthday implements Component {
     private readonly date: Date;
 
     constructor(
@@ -14,10 +17,12 @@ export class Birthday {
         private config: Config,
         private storage: Storage,
         private logger: Logger,
+        public readonly errorTracker: ErrorTracker,
     ) {
         this.date = new Date(config.birthday.date);
     }
 
+    @CatchErrors('Birthday.init')
     init(): void {
         if (!this.config.birthday.enabled) {
             return;

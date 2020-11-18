@@ -1,3 +1,4 @@
+import { Importer } from './importer';
 import { inject, singleton } from 'tsyringe';
 import { TheWestWindow } from '../../@types/the-west';
 import { TW2WindowTranslation, TW2WindowView } from '../tw2-window/tw2-window.types';
@@ -11,9 +12,13 @@ export class ImporterView implements TW2WindowView<WestCalcWindowTab> {
         translation: 211,
     };
 
-    constructor(@inject('window') private readonly window: TheWestWindow) {}
+    constructor(@inject('window') private readonly window: TheWestWindow, private readonly importer: Importer) {}
+
+    init(): void {
+        this.importer.start();
+    }
 
     getMainDiv(): JQuery {
-        return this.window.$('<div></div>');
+        return this.window.$('<div id="TW_Calc_Importer"></div>');
     }
 }

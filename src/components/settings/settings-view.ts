@@ -1,6 +1,6 @@
 import { Config } from '../config/config';
 import { DuelBarPosition } from '../duel-bar/duel-bar.types';
-import { ErrorLog } from '../error-log/error-log';
+import { ErrorTracker } from '../error-tracker/error-tracker';
 import { inject, singleton } from 'tsyringe';
 import { isBooleanSetting, isNumberSetting, Settings } from './settings';
 import { Language } from '../language/language';
@@ -24,7 +24,7 @@ export class SettingsView implements TW2WindowView<WestCalcWindowTab> {
         private readonly language: Language,
         private readonly settings: Settings,
         private readonly nearestJobs: NearestJobs,
-        private readonly errorLog: ErrorLog,
+        private readonly errorTracker: ErrorTracker,
         private readonly config: Config,
     ) {}
 
@@ -88,7 +88,7 @@ export class SettingsView implements TW2WindowView<WestCalcWindowTab> {
             .append(
                 new west.gui.Button()
                     .setCaption('Error Log')
-                    .click(() => this.errorLog.window.open())
+                    .click(() => this.errorTracker.open())
                     .getMainDiv(),
             )
             .append(

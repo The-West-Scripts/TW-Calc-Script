@@ -24,7 +24,7 @@ export class TW2Window<Tab extends string = string> {
     constructor(
         public readonly id: string,
         protected window: TheWestWindow,
-        protected language: Language,
+        protected language: Language | null,
         protected logger: Logger,
         options: Partial<TW2WindowOptions> = {},
     ) {
@@ -41,6 +41,11 @@ export class TW2Window<Tab extends string = string> {
         }
         const title = getTitle(this.language, this.options.title) || '';
         this.win = this.window.wman.open(this.id, title, additionalClasses.join(' ')).setMiniTitle(title);
+
+        if (this.options.size) {
+            const { width, height } = this.options.size;
+            this.win.setSize(width, height);
+        }
 
         const tabKeys = Object.keys(this.views);
         tabKeys.forEach(tab => {
@@ -108,9 +113,12 @@ export class TW2Window<Tab extends string = string> {
     }
 }
 
-function getTitle(language: Language, title?: TW2WindowPlainText | TW2WindowTranslation): string | undefined {
+function getTitle(language: Language | null, title?: TW2WindowPlainText | TW2WindowTranslation): string | undefined {
     if (typeof title != 'object') {
         return title;
+    }
+    if (!language) {
+        return 'undefined';
     }
     return language.getTranslation(title.translation);
 }

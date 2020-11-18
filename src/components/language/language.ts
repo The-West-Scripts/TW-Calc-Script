@@ -1,6 +1,7 @@
 import en_us from './en_us';
 import { Component } from '../component.types';
 import { Config } from '../config/config';
+import { ErrorTracker } from '../error-tracker/error-tracker';
 import { inject, singleton } from 'tsyringe';
 import { LanguagePack } from './language.types';
 import { Logger } from '../logger/logger';
@@ -20,6 +21,7 @@ export class Language implements Component {
         private readonly config: Config,
         private readonly storage: Storage,
         private readonly logger: Logger,
+        public readonly errorTracker: ErrorTracker,
     ) {}
 
     /**

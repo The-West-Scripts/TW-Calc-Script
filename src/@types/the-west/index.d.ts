@@ -117,6 +117,7 @@ export namespace tw2gui {
         addTab(title: string, id: string, onActivate: () => void): Window;
         activateTab(id: string): Window;
         appendToContentPane(content: JQuery | string): Window;
+        setSize(width: number, height: number): Window;
     }
 
     export interface VerticalBar {
@@ -142,6 +143,19 @@ export namespace tw2gui {
     export type MessageSuccessConstructor = (text: string) => tw2gui.UserMessage;
     export type MessageErrorConstructor = (text: string) => tw2gui.UserMessage;
     export type MessageHintConstructor = (text: string) => tw2gui.UserMessage;
+
+    export interface Textarea {
+        setWidth(width: number): Textarea;
+        setHeight(height: number): Textarea;
+        setReadonly(): Textarea;
+        setContent(content: string): Textarea;
+        setId(id: string): Textarea;
+        getMainDiv(): JQuery;
+    }
+
+    export interface TextareaConstructor {
+        new (): Textarea;
+    }
 }
 
 export interface WestGui {
@@ -153,6 +167,7 @@ export interface WestGui {
     Textfield: tw2gui.TextfieldConstructor;
     Selectbox: tw2gui.SelectboxConstructor;
     Groupframe: tw2gui.GroupframeConstructor;
+    Textarea: tw2gui.TextareaConstructor;
 }
 
 export interface West {
@@ -270,7 +285,32 @@ export interface TaskJobConstructor {
     new (jobId: number, x: number, y: number, duration: number): TaskJob;
 }
 
+export interface OnGoingEntry {
+    init(
+        image?: string,
+        callback?: () => void,
+        priority?: number,
+        tick_end?: unknown,
+        tick_interval?: unknown,
+    ): OnGoingEntry;
+    setTooltip(tooltip: string): OnGoingEntry;
+    setImageClass(cls: string): OnGoingEntry;
+}
+
+export interface OnGoingEntryConstructor {
+    new (): OnGoingEntry;
+}
+
+export interface NotiBar {
+    add(entry: OnGoingEntry): void;
+}
+
+export interface WestUi {
+    NotiBar: NotiBar;
+}
+
 export interface TheWestWindow extends Window {
+    console: Console;
     Game: Game;
     $: JQueryStatic;
     west: West;
@@ -289,4 +329,6 @@ export interface TheWestWindow extends Window {
     Map: Map;
     JobWindow: JobWindow;
     TaskJob: TaskJobConstructor;
+    OnGoingEntry: OnGoingEntryConstructor;
+    WestUi: WestUi;
 }
