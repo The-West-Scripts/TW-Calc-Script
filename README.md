@@ -1,5 +1,7 @@
 # TW-Calc-Script
 
+[![CI](https://github.com/The-West-Scripts/TW-Calc-Script/workflows/CI/badge.svg?branch=v2)](https://github.com/The-West-Scripts/TW-Calc-Script/actions?query=workflow%3ACI)
+
 UserScript for online browser game The-West
 
 ## Official Website
