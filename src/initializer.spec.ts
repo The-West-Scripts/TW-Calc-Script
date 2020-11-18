@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import DependencyContainer from 'tsyringe/dist/typings/types/dependency-container';
 import { container } from 'tsyringe';
-import { Game, GameScript, TheWestWindow } from './@types/the-west';
+import { Game, GameScript, TheWestApi, TheWestWindow } from './@types/the-west';
 import { Initializer } from './initializer';
 import { Mock } from 'ts-mocks';
 import { Updater } from './components/updater/updater';
@@ -39,6 +39,10 @@ describe('Initializer', () => {
         });
     });
 
+    afterEach(() => {
+        container.clearInstances();
+    });
+
     it('should catch errors in constructor', () => {
         const initializer = dependencyContainer.resolve(Initializer);
         updaterMock.extend({
@@ -50,12 +54,14 @@ describe('Initializer', () => {
         expect(initializer).toBeTruthy();
     });
 
-    it('should catch errors in constructor', () => {
+    it('should catch errors in init', () => {
         const initializer = dependencyContainer.resolve(Initializer);
-        updaterMock.extend({
-            init() {
-                throw new Error();
-            },
+        windowMock.extend({
+            TheWestApi: new Mock<TheWestApi>({
+                register() {
+                    throw new Error();
+                },
+            }).Object,
         });
 
         expect(initializer).toBeTruthy();

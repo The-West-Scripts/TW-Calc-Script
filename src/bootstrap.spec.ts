@@ -30,6 +30,10 @@ describe('bootstrap', () => {
         });
     });
 
+    afterEach(() => {
+        container.clearInstances();
+    });
+
     it('should bootstrap components', () => {
         const twCalcObject = bootstrap(dependencyContainer);
 
