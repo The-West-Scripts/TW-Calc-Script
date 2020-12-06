@@ -13,7 +13,7 @@ export interface TW2WindowTranslation {
 
 export interface TW2WindowView<Tab> {
     key: Tab;
-    title: TW2WindowPlainText | TW2WindowTranslation;
+    title: TW2WindowPlainText | TW2WindowTranslation | undefined;
     getMainDiv(): JQuery;
     init?(): void;
 }

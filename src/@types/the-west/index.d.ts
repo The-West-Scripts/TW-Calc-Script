@@ -206,6 +206,7 @@ export interface Character {
     position: { x: number; y: number };
     duelLevel: number;
     duelMotivation: number;
+    professionId: number | null;
 }
 
 export interface TaskQueue {
@@ -309,6 +310,15 @@ export interface WestUi {
     NotiBar: NotiBar;
 }
 
+export interface Bag {
+    handleChanges: (changes: unknown, from: unknown) => void;
+    updateChanges: (changes: unknown, from: unknown) => void;
+}
+
+export interface Crafting {
+    updateResources: () => void;
+}
+
 export interface TheWestWindow extends Window {
     console: Console;
     Game: Game;
@@ -331,4 +341,6 @@ export interface TheWestWindow extends Window {
     TaskJob: TaskJobConstructor;
     OnGoingEntry: OnGoingEntryConstructor;
     WestUi: WestUi;
+    Bag: Bag;
+    Crafting: Crafting;
 }

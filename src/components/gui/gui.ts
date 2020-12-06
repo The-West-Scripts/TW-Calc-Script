@@ -15,6 +15,7 @@ import { twCalcIcon } from './tw-calc.icon';
 import { Wardrobe } from '../wardrobe/wardrobe';
 import { wardrobeIcon } from './wardrobe.icon';
 import { WestCalc } from '../west-calc/west-calc';
+import { Craft } from '../craft/craft';
 
 @singleton()
 export class Gui implements Component {
@@ -29,6 +30,7 @@ export class Gui implements Component {
         private readonly duelBar: DuelBar,
         private readonly logger: Logger,
         private readonly language: Language,
+        private readonly craft: Craft,
         public readonly errorTracker: ErrorTracker,
     ) {
         // renamed from TWCalcButtons
@@ -40,6 +42,7 @@ export class Gui implements Component {
         this.logger.log('initializing gui...');
         this.initUiMenu();
         this.initBottomBar();
+        this.initCraftButton();
     }
 
     private initUiMenu() {
@@ -112,19 +115,32 @@ export class Gui implements Component {
                     bottom: 97px;"></div>`,
         );
         // append to bottom bar
-        $('#ui_bottombar').append(bottomBar);
+        this.window.$('#ui_bottombar').append(bottomBar);
 
         setInterval(() => {
             // stop animation if there is any
-            $(bottomBar).stop();
+            this.window.$(bottomBar).stop();
             // start the new animation
-            $(bottomBar).animate({ bottom: getBottomBarPositionY(this.window) }, 500);
+            this.window.$(bottomBar).animate({ bottom: getBottomBarPositionY(this.window) }, 500);
         }, 500);
 
         if (this.nearestJobs.isPosition('down')) {
             const nearestJobsDiv = this.window.$('<div></div>');
-            $(bottomBar).append(nearestJobsDiv);
+            this.window.$(bottomBar).append(nearestJobsDiv);
             this.nearestJobs.bar.appendTo(nearestJobsDiv);
+        }
+    }
+
+    private initCraftButton(): void {
+        const professionId = this.window.Character.professionId;
+
+        if (this.settings.get(SettingBoolean.MenuCraftButton) && professionId !== null) {
+            this.window
+                .$('.button.crafting.background')
+                .off('click')
+                .on('click', () => {
+                    this.craft.window.open(professionId);
+                });
         }
     }
 }

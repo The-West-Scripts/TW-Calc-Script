@@ -7,7 +7,7 @@ const defaultOptions: TW2WindowOptions = {
     reloadable: true,
 };
 
-export class TW2Window<Tab extends string = string> {
+export class TW2Window<Tab extends string | number = string> {
     protected readonly $: JQueryStatic;
     protected options: TW2WindowOptions;
     protected readonly views: Partial<Record<Tab, TW2WindowView<Tab>>> = {};
@@ -99,7 +99,7 @@ export class TW2Window<Tab extends string = string> {
         // set content to the main div
         this.getTabMainDiv(tabOptions.key).empty().append(tabOptions.getMainDiv());
         // activate the desired tab
-        this.tw2win.activateTab(tab);
+        this.tw2win.activateTab(tab.toString());
         // hide all content panes
         $(`div.tw2gui_window_content_pane > *`, this.getMainDiv()).each(function () {
             $(this).hide();
