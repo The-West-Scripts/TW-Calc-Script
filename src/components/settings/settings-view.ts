@@ -49,7 +49,9 @@ export class SettingsView implements TW2WindowView<WestCalcWindowTab> {
                     });
 
                 elements.push({ ...appearance, controller: checkbox });
-                mainDiv.append($(`<div style="margin: 3px 0"></div>`).append(checkbox.getMainDiv()));
+                mainDiv.append(
+                    $(`<div style="margin: 3px 0" id="TWCalc_Setting_${name}"></div>`).append(checkbox.getMainDiv()),
+                );
             } else if (isNumberSetting(appearance)) {
                 const { behaviour, translation, name } = appearance;
                 const combobox = new west.gui.Combobox<number>(`TWCalc_${name}`);
@@ -65,7 +67,7 @@ export class SettingsView implements TW2WindowView<WestCalcWindowTab> {
 
                 elements.push({ ...appearance, controller: combobox });
 
-                const row = $(`<div style="margin: 2px 0"></div>`);
+                const row = $(`<div style="margin: 2px 0" id="TWCalc_Settings_${name}"></div>`);
                 row.append(`<span>${translation}&nbsp;&nbsp;</span>`);
                 row.append(combobox.getMainDiv());
 

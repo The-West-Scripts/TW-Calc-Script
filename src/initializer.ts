@@ -1,6 +1,7 @@
 import { Birthday } from './components/birthday/birthday';
 import { CatchErrors } from './components/error-tracker/catch-errors';
 import { Config } from './components/config/config';
+import { DuelBar } from './components/duel-bar/duel-bar';
 import { ErrorTracker } from './components/error-tracker/error-tracker';
 import { Gui } from './components/gui/gui';
 import { Importer } from './components/importer/importer';
@@ -29,6 +30,7 @@ export class Initializer {
         public readonly nearestJobs: NearestJobs,
         public readonly tombolaExporter: TombolaExporter,
         public readonly errorTracker: ErrorTracker,
+        public readonly duelBar: DuelBar,
         @inject('window') public readonly window: TheWestWindow,
     ) {
         this.errorTracker.execute(() => {
@@ -39,6 +41,7 @@ export class Initializer {
                 this.updater.init();
                 this.birthday.init();
                 this.nearestJobs.init();
+                this.duelBar.init();
                 this.tombolaExporter.init();
             });
         });

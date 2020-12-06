@@ -5,6 +5,7 @@ import { ImporterView } from '../importer/importer-view';
 import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
 import { NotepadView } from '../notepad/notepad-view';
+import { SettingBoolean, SettingNumber } from '../settings/settings.types';
 import { SettingsView } from '../settings/settings-view';
 import { TheWestWindow } from '../../@types/the-west';
 import { TombolaView } from '../tombola/tombola-view';
@@ -38,5 +39,20 @@ export class WestCalcWindow extends TW2Window<WestCalcWindowTab> {
 
     open(tab?: WestCalcWindowTab): void {
         super.open(tab);
+    }
+
+    openSettings(highlight?: SettingBoolean | SettingNumber): void {
+        this.open(WestCalcWindowTab.Settings);
+
+        if (highlight) {
+            setTimeout(() => {
+                this.getMainDiv()
+                    .find('#TWCalc_Settings_' + highlight)
+                    .css({
+                        'background-color': 'rgb(255 255 0 / 0.5)',
+                        'font-weight': 'bold',
+                    });
+            });
+        }
     }
 }

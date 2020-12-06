@@ -25,9 +25,7 @@ export class NearestJobsBar {
         const scrollPane = new this.window.west.gui.Scrollpane();
         scrollPane.verticalBar.hide();
 
-        const bar = $(
-            `<div style="width: 510px; height: 61px; margin-left: auto; margin-right: auto; text-align: left;"></div>`,
-        );
+        const bar = $(`<div style="width: 510px; height: 61px; margin: 4px auto 4px auto; text-align: left;"></div>`);
 
         if (this.settings.get(SettingNumber.NearestJobsBar) === NearestJobsBarPosition.down) {
             bar.css({

@@ -1,5 +1,6 @@
 import { CatchErrors } from '../error-tracker/catch-errors';
 import { Component } from '../component.types';
+import { Craft } from '../craft/craft';
 import { DuelBar } from '../duel-bar/duel-bar';
 import { ErrorTracker } from '../error-tracker/error-tracker';
 import { inject, singleton } from 'tsyringe';
@@ -15,7 +16,6 @@ import { twCalcIcon } from './tw-calc.icon';
 import { Wardrobe } from '../wardrobe/wardrobe';
 import { wardrobeIcon } from './wardrobe.icon';
 import { WestCalc } from '../west-calc/west-calc';
-import { Craft } from '../craft/craft';
 
 @singleton()
 export class Gui implements Component {
@@ -42,6 +42,7 @@ export class Gui implements Component {
         this.logger.log('initializing gui...');
         this.initUiMenu();
         this.initBottomBar();
+        this.initTopBar();
         this.initCraftButton();
     }
 
@@ -96,8 +97,50 @@ export class Gui implements Component {
         this.window.$('#ui_menubar').append(this.uiMenuContainer);
     }
 
+    private initTopBar(): void {
+        if (!this.nearestJobs.isPosition('up') && !this.duelBar.isPosition('up')) {
+            return;
+        }
+        // remove that hanging premium thing
+        setInterval(() => {
+            this.window.$('.first-purchase').remove();
+        }, 500);
+
+        const topBar = $(
+            `<div id="TWCalc_TopBar" style="
+                    text-align: center;                      
+                    left: 50%;
+                    margin-top: 10px;
+                    max-width: 620px;
+                    position: absolute;
+                    top: 44px;
+                    z-index: 69;
+                    -webkit-transform: translateX(-50%);
+                    -moz-transform: translateX(-50%);
+                    -ms-transform: translateX(-50%);
+                    -o-transform: translateX(-50%);
+                    transform: translateX(-50%);"></div>`,
+        );
+        // append to user interface
+        this.window.$('#user-interface').append(topBar);
+
+        if (this.nearestJobs.isPosition('up')) {
+            this.logger.log('add nearest jobs bar up');
+            const nearestJobsDiv = this.window.$('<div></div>');
+            this.window.$(topBar).append(nearestJobsDiv);
+            this.nearestJobs.bar.appendTo(nearestJobsDiv);
+        }
+
+        if (this.duelBar.isPosition('up')) {
+            this.logger.log('add duel bar up');
+            const duelBarDiv = this.window.$('<div></div>');
+            this.window.$(topBar).append(duelBarDiv);
+            this.duelBar.appendTo(duelBarDiv);
+        }
+    }
+
     private initBottomBar() {
-        if (!this.nearestJobs.isPosition('down') || !this.duelBar.isPosition('down')) {
+        if (!this.nearestJobs.isPosition('down') && !this.duelBar.isPosition('down')) {
             return;
         }
 
@@ -124,7 +167,15 @@ export class Gui implements Component {
             this.window.$(bottomBar).animate({ bottom: getBottomBarPositionY(this.window) }, 500);
         }, 500);
 
+        if (this.duelBar.isPosition('down')) {
+            this.logger.log('add duel bar up');
+            const duelBarDiv = this.window.$('<div></div>');
+            this.window.$(bottomBar).append(duelBarDiv);
+            this.duelBar.appendTo(duelBarDiv);
+        }
+
         if (this.nearestJobs.isPosition('down')) {
+            this.logger.log('add nearest jobs bar up');
             const nearestJobsDiv = this.window.$('<div></div>');
             this.window.$(bottomBar).append(nearestJobsDiv);
             this.nearestJobs.bar.appendTo(nearestJobsDiv);

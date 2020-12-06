@@ -1,3 +1,9 @@
+declare global {
+    interface Number {
+        formatDuration: () => number;
+    }
+}
+
 export namespace tw2gui {
     export interface Dialog {
         addButton(text: string, cb: () => void): Dialog;
@@ -198,6 +204,7 @@ export type Map = {
     PopupHandler: {
         getJobPopup(job: Job): string;
     };
+    calcWayTime: (a: { x: number; y: number }, b: { x: number; y: number }) => number;
 };
 
 export interface Character {
@@ -319,6 +326,18 @@ export interface Crafting {
     updateResources: () => void;
 }
 
+export interface Player {
+    h: string;
+}
+
+export interface SaloonWindow {
+    startDuel: (playerId: number) => void;
+}
+
+export interface PlayerProfileWindow {
+    open: (playerId: number) => void;
+}
+
 export interface TheWestWindow extends Window {
     console: Console;
     Game: Game;
@@ -343,4 +362,7 @@ export interface TheWestWindow extends Window {
     WestUi: WestUi;
     Bag: Bag;
     Crafting: Crafting;
+    Player: Player;
+    SaloonWindow: SaloonWindow;
+    PlayerProfileWindow: PlayerProfileWindow;
 }
