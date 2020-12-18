@@ -15,6 +15,7 @@ export class Config {
         enabled: false,
         date: '2012/12/16',
     };
+    public readonly donations = false;
     public readonly cdn = '//westzz.innogamescdn.com/';
     public readonly languages = [
         'sk_SK',
