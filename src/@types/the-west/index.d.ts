@@ -214,6 +214,14 @@ export interface Character {
     duelLevel: number;
     duelMotivation: number;
     professionId: number | null;
+    health: number;
+    maxHealth: number;
+    healthRegen: number;
+    energy: number;
+    maxEnergy: number;
+    energyRegen: number;
+    getExperience4Level(): number;
+    getMaxExperience4Level(): number;
 }
 
 export interface TaskQueue {

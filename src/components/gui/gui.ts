@@ -16,6 +16,7 @@ import { twCalcIcon } from './tw-calc.icon';
 import { Wardrobe } from '../wardrobe/wardrobe';
 import { wardrobeIcon } from './wardrobe.icon';
 import { WestCalc } from '../west-calc/west-calc';
+import {XpHpEnergyCalculator} from "./xp-hp-energy-calculator";
 
 @singleton()
 export class Gui implements Component {
@@ -31,6 +32,7 @@ export class Gui implements Component {
         private readonly logger: Logger,
         private readonly language: Language,
         private readonly craft: Craft,
+        private readonly xpHpEnergyCalculator: XpHpEnergyCalculator,
         public readonly errorTracker: ErrorTracker,
     ) {
         // renamed from TWCalcButtons
@@ -44,6 +46,7 @@ export class Gui implements Component {
         this.initBottomBar();
         this.initTopBar();
         this.initCraftButton();
+        this.xpHpEnergyCalculator.init();
     }
 
     private initUiMenu() {
