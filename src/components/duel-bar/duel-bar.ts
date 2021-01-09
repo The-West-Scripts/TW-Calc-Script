@@ -94,7 +94,7 @@ export class DuelBar implements Component {
             const title = 'Duel ' + player.player_name + ' (' + wayTime.formatDuration() + ')';
             const avatar = this.window.$(`
                 <div style="display: inline-block; margin-right: 5px; cursor:pointer; position:relative; float: left;">
-                    ${player.avatar}
+                    <div class="duel-bar-avatar">${player.avatar}</div>
                     <div style="color: #F8C57C; top: 5px; position: absolute; text-align: center; width: 100%; font-weight: bold; text-shadow: 1px 1px 1px black; font-size: 11px;">
                         ${player.duellevel}                    
                     </div>
@@ -111,7 +111,7 @@ export class DuelBar implements Component {
             });
 
             avatar
-                .find('.avatar_pic')
+                .find('.duel-bar-avatar')
                 .attr('title', title)
                 .on('click', e => {
                     e.stopPropagation();
