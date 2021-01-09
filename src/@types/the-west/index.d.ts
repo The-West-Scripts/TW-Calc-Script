@@ -346,6 +346,13 @@ export interface PlayerProfileWindow {
     open: (playerId: number) => void;
 }
 
+export interface BankWindow {
+    DOM: string;
+    Transfer: { fee: number };
+}
+
+export type FormatMoneyFunction = (number: number) => number;
+
 export interface TheWestWindow extends Window {
     console: Console;
     Game: Game;
@@ -373,4 +380,6 @@ export interface TheWestWindow extends Window {
     Player: Player;
     SaloonWindow: SaloonWindow;
     PlayerProfileWindow: PlayerProfileWindow;
+    BankWindow: BankWindow;
+    format_money: FormatMoneyFunction;
 }

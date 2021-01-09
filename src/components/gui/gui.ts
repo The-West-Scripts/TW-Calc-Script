@@ -1,3 +1,4 @@
+import { BankFeesCalculator } from './bank-fees-calculator';
 import { CatchErrors } from '../error-tracker/catch-errors';
 import { Component } from '../component.types';
 import { Craft } from '../craft/craft';
@@ -33,6 +34,7 @@ export class Gui implements Component {
         private readonly language: Language,
         private readonly craft: Craft,
         private readonly xpHpEnergyCalculator: XpHpEnergyCalculator,
+        private readonly bankFeesCalculator: BankFeesCalculator,
         public readonly errorTracker: ErrorTracker,
     ) {
         // renamed from TWCalcButtons
@@ -47,6 +49,7 @@ export class Gui implements Component {
         this.initTopBar();
         this.initCraftButton();
         this.xpHpEnergyCalculator.init();
+        this.bankFeesCalculator.init();
     }
 
     private initUiMenu() {
