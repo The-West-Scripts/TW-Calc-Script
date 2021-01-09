@@ -1,6 +1,10 @@
 import { Component } from '../component.types';
 
-export type CatchErrors<TargetObject extends Component = Component> = (target: TargetObject, propertyKey: string | symbol, descriptor: PropertyDescriptor) => void;
+export type CatchErrors<TargetObject extends Component = Component> = (
+    target: TargetObject,
+    propertyKey: string | symbol,
+    descriptor: PropertyDescriptor,
+) => void;
 
 export interface CatchErrorsOptions<TargetObject extends Component> {
     component?: string;
@@ -9,8 +13,12 @@ export interface CatchErrorsOptions<TargetObject extends Component> {
 
 export function CatchErrors(): CatchErrors;
 export function CatchErrors(component: string): CatchErrors;
-export function CatchErrors<TargetObject extends Component = Component>(options: CatchErrorsOptions<TargetObject>): CatchErrors<TargetObject>;
-export function CatchErrors<TargetObject extends Component = Component>(parameter?: string | CatchErrorsOptions<TargetObject>): CatchErrors<TargetObject> {
+export function CatchErrors<TargetObject extends Component = Component>(
+    options: CatchErrorsOptions<TargetObject>,
+): CatchErrors<TargetObject>;
+export function CatchErrors<TargetObject extends Component = Component>(
+    parameter?: string | CatchErrorsOptions<TargetObject>,
+): CatchErrors<TargetObject> {
     let component: string | undefined = undefined;
     let callback: ((object: TargetObject) => void) | undefined = undefined;
 

@@ -16,7 +16,7 @@ import { twCalcIcon } from './tw-calc.icon';
 import { Wardrobe } from '../wardrobe/wardrobe';
 import { wardrobeIcon } from './wardrobe.icon';
 import { WestCalc } from '../west-calc/west-calc';
-import {XpHpEnergyCalculator} from "./xp-hp-energy-calculator";
+import { XpHpEnergyCalculator } from './xp-hp-energy-calculator';
 
 @singleton()
 export class Gui implements Component {

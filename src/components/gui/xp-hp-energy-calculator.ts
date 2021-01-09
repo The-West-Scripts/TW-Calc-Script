@@ -1,12 +1,12 @@
-import { Component } from '../component.types';
-import { inject, registry, singleton } from 'tsyringe';
-import { TheWestWindow } from '../../@types/the-west';
 import { CatchErrors } from '../error-tracker/catch-errors';
+import { Component } from '../component.types';
 import { ErrorTracker } from '../error-tracker/error-tracker';
+import { inject, registry, singleton } from 'tsyringe';
 import { Language } from '../language/language';
-import { Settings } from '../settings/settings';
-import { SettingBoolean } from '../settings/settings.types';
 import { Logger } from '../logger/logger';
+import { SettingBoolean } from '../settings/settings.types';
+import { Settings } from '../settings/settings';
+import { TheWestWindow } from '../../@types/the-west';
 
 @singleton()
 @registry([
@@ -26,13 +26,6 @@ export class XpHpEnergyCalculator implements Component {
         private readonly logger: Logger,
         public readonly errorTracker: ErrorTracker,
     ) {}
-
-    init(): any {
-        if (this.settings.get(SettingBoolean.XpHpEnergyCalc)) {
-            this.logger.log('initializing xp, hp and energy ui indicator...');
-            this.interval = this.window.setInterval(this.inject.bind(this), this.timeout);
-        }
-    }
 
     @CatchErrors<XpHpEnergyCalculator>({
         component: 'XpHpEnergyCalc.inject',
@@ -118,7 +111,7 @@ export class XpHpEnergyCalculator implements Component {
 
         const uiEnergyBar = this.window.$('#ui_character_container > .energy_bar');
 
-        if (Number(uiEnergyBar.data('energy', characterEnergy)) !== characterEnergy) {
+        if (Number(uiEnergyBar.data('energy')) !== characterEnergy) {
             this.logger.log('updating energy indicator...');
             uiEnergyBar.data('energy', characterEnergy);
             uiEnergyBar
@@ -150,6 +143,13 @@ export class XpHpEnergyCalculator implements Component {
                               this.language.getTranslation(102)
                             : ''),
                 );
+        }
+    }
+
+    init(): any {
+        if (this.settings.get(SettingBoolean.XpHpEnergyCalc)) {
+            this.logger.log('initializing xp, hp and energy ui indicator...');
+            this.interval = this.window.setInterval(this.inject.bind(this), this.timeout);
         }
     }
 }

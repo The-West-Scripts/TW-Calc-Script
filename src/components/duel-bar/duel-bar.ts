@@ -175,15 +175,15 @@ function loadNearbyPlayers(
     maxPlayers: number,
     callback: (players: Array<DuelWindowPlayer>) => void,
 ): void {
-    loadRecursive([]);
+    loadRecursive([], 0);
 
     ////////////
 
-    function loadRecursive(output: Array<DuelWindowPlayer>) {
+    function loadRecursive(output: Array<DuelWindowPlayer>, page: number) {
         window.$.post(
             '/game.php?window=duel&action=search_op&h=' + window.Player.h,
             {
-                page: 1,
+                page,
             },
             (response: { oplist: { pclist: Array<DuelWindowPlayer> } }) => {
                 const players = response.oplist.pclist;
@@ -194,11 +194,11 @@ function loadNearbyPlayers(
                     }
                 });
 
-                if (output.length === maxPlayers) {
+                if (output.length >= maxPlayers || !players.length) {
                     sortPlayersByDistance(window, output);
                     callback(output);
                 } else {
-                    loadRecursive(output);
+                    loadRecursive(output, page + 1);
                 }
             },
             'json',
