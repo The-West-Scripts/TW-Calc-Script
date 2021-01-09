@@ -26,7 +26,7 @@ export class Language implements Component {
 
     /**
      * Initialize the language service.
-     * Fetch the language pack from server.
+     * Fetch the language pack from the server.
      */
     init(cb: () => void): void {
         this.logger.log('initializing language service...');

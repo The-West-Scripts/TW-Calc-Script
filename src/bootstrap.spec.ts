@@ -28,6 +28,10 @@ describe('bootstrap', () => {
         dependencyContainer.register('window', {
             useValue: windowMock.Object,
         });
+
+        // TODO: remove these registrations by proper mocking of Initializer
+        dependencyContainer.register('onGoingEntry', { useValue: Mock.ANY_FUNC });
+        dependencyContainer.register('timeout', { useValue: 0 });
     });
 
     afterEach(() => {

@@ -2,11 +2,12 @@ import { asErrorObject } from './catch-errors';
 import { Config } from '../config/config';
 import { ErrorLogWindow } from './error-log-window';
 import { ErrorWindow } from './error-window';
-import { inject, singleton } from 'tsyringe';
+import { inject, registry, singleton } from 'tsyringe';
 import { Logger } from '../logger/logger';
 import { OnGoingEntry, TheWestWindow } from '../../@types/the-west';
 
 @singleton()
+@registry([{ token: 'onGoingEntry', useValue: onGoingEntry }])
 export class ErrorTracker {
     private readonly log: Array<Error> = [];
 
@@ -15,6 +16,7 @@ export class ErrorTracker {
 
     constructor(
         @inject('window') private readonly window: TheWestWindow,
+        @inject('onGoingEntry') private readonly onGoingEntryFunction: typeof onGoingEntry,
         private readonly logger: Logger,
         private readonly config: Config,
     ) {
@@ -27,7 +29,7 @@ export class ErrorTracker {
         this.log.push(error);
         this.logger.error(error);
         this.window.WestUi.NotiBar.add(
-            onGoingEntry(this.window, () => {
+            this.onGoingEntryFunction(this.window, () => {
                 this.errorWindow.show(error, component);
             }),
         );
