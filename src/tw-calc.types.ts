@@ -4,6 +4,7 @@ import { WestCalcWindow } from './components/west-calc/west-calc-window';
 
 export interface TWCalcPublicApi {
     version: string;
+    website: string;
     doImport: () => void;
     loadPack: (languagePack: LanguagePack) => void;
     _window: WestCalcWindow;

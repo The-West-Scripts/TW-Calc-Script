@@ -11,8 +11,11 @@ export function bootstrap(dependencyContainer: DependencyContainer): TWCalcPubli
     // set updater callback on the global scope
     setUpdaterCallback(dependencyContainer, updater);
 
+    const { version, website } = config;
+
     return {
-        version: config.version,
+        version,
+        website,
         doImport: () => {
             importer.start();
         },
