@@ -49,6 +49,7 @@ describe('Initializer', () => {
         });
         languageMock = new Mock<Language>({
             init: (cb: () => void) => (languageInitCallback = cb),
+            getTranslation: () => '',
         });
         battleCalcMock = new Mock<BattleCalc>({
             init: Mock.ANY_FUNC,
