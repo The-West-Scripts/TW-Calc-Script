@@ -1,3 +1,4 @@
+import { BattleCalc } from './components/battle-calc/battle-calc';
 import { Birthday } from './components/birthday/birthday';
 import { CatchErrors } from './components/error-tracker/catch-errors';
 import { Config } from './components/config/config';
@@ -31,6 +32,7 @@ export class Initializer {
         public readonly tombolaExporter: TombolaExporter,
         public readonly errorTracker: ErrorTracker,
         public readonly duelBar: DuelBar,
+        public readonly battleCalc: BattleCalc,
         @inject('window') public readonly window: TheWestWindow,
     ) {
         this.errorTracker.execute(() => {
@@ -43,6 +45,7 @@ export class Initializer {
                 this.nearestJobs.init();
                 this.duelBar.init();
                 this.tombolaExporter.init();
+                this.battleCalc.init();
             });
         });
     }

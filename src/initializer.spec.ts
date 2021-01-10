@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import DependencyContainer from 'tsyringe/dist/typings/types/dependency-container';
+import { BattleCalc } from './components/battle-calc/battle-calc';
 import { Birthday } from './components/birthday/birthday';
 import { Character, Game, GameScript, NotiBar, TheWestApi, TheWestWindow, WestUi } from './@types/the-west';
 import { container } from 'tsyringe';
@@ -21,6 +22,7 @@ describe('Initializer', () => {
     let duelBarMock: Mock<DuelBar>;
     let tombolaExporterMock: Mock<TombolaExporter>;
     let languageMock: Mock<Language>;
+    let battleCalcMock: Mock<BattleCalc>;
     let windowMock: Mock<TheWestWindow>;
     let languageInitCallback: () => void;
 
@@ -47,6 +49,9 @@ describe('Initializer', () => {
         });
         languageMock = new Mock<Language>({
             init: (cb: () => void) => (languageInitCallback = cb),
+        });
+        battleCalcMock = new Mock<BattleCalc>({
+            init: Mock.ANY_FUNC,
         });
 
         windowMock = new Mock<TheWestWindow>({
@@ -76,6 +81,7 @@ describe('Initializer', () => {
         dependencyContainer.register(DuelBar, { useValue: duelBarMock.Object });
         dependencyContainer.register(TombolaExporter, { useValue: tombolaExporterMock.Object });
         dependencyContainer.register(Language, { useValue: languageMock.Object });
+        dependencyContainer.register(BattleCalc, { useValue: battleCalcMock.Object });
         dependencyContainer.register('localStorage', { useValue: localStorage });
         dependencyContainer.register('window', {
             useValue: windowMock.Object,
@@ -113,9 +119,14 @@ describe('Initializer', () => {
 
     it('should initialize other components', () => {
         dependencyContainer.resolve(Initializer);
-        const initFunctions = [guiMock, birthdayMock, nearestJobsMock, duelBarMock, tombolaExporterMock].map(
-            component => component.Object.init,
-        );
+        const initFunctions = [
+            guiMock,
+            birthdayMock,
+            nearestJobsMock,
+            duelBarMock,
+            tombolaExporterMock,
+            battleCalcMock,
+        ].map(component => component.Object.init);
 
         expect(languageMock.Object.init).toHaveBeenCalled();
         initFunctions.forEach(fn => expect(fn).not.toHaveBeenCalled());

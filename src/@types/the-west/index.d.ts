@@ -220,6 +220,8 @@ export interface Character {
     energy: number;
     maxEnergy: number;
     energyRegen: number;
+    charClass: string;
+    level: number;
     getExperience4Level(): number;
     getMaxExperience4Level(): number;
 }
@@ -353,6 +355,15 @@ export interface BankWindow {
 
 export type FormatMoneyFunction = (number: number) => number;
 
+export interface CharacterSkill {
+    name: string;
+    getPointsWithBonus(): number;
+}
+
+export interface CharacterSkills {
+    skills: Record<string, CharacterSkill>;
+}
+
 export interface TheWestWindow extends Window {
     console: Console;
     Game: Game;
@@ -381,5 +392,6 @@ export interface TheWestWindow extends Window {
     SaloonWindow: SaloonWindow;
     PlayerProfileWindow: PlayerProfileWindow;
     BankWindow: BankWindow;
+    CharacterSkills: CharacterSkills;
     format_money: FormatMoneyFunction;
 }

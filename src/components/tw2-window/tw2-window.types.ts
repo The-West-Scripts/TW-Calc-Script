@@ -14,6 +14,12 @@ export interface TW2WindowTranslation {
 export interface TW2WindowView<Tab> {
     key: Tab;
     title: TW2WindowPlainText | TW2WindowTranslation | undefined;
+    /**
+     * getMainDiv() method is called only once, when the window is created and opened.
+     */
     getMainDiv(): JQuery;
+    /**
+     * init method is called when the tab of the view is clicked and view is shown.
+     */
     init?(): void;
 }

@@ -1,5 +1,5 @@
 import { BattleCalcView } from '../battle-calc/battle-calc-view';
-import { CharacterView } from '../character/character-view';
+import { CharacterView } from '../battle-calc/character-view';
 import { DuelCalcView } from '../duel-calc/duel-calc-view';
 import { ImporterView } from '../importer/importer-view';
 import { inject, singleton } from 'tsyringe';
