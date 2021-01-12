@@ -92,41 +92,41 @@ export class CharacterView implements TW2WindowView<WestCalcWindowTab> {
 
         groupFrame.appendToContentPane(
             $(
-                '<table style="width: 100%; height: 180px; font-size: 14px">' +
+                '<table style="width: 100%; height: 180px; font-size: 16px">' +
                     '<tr>' +
                     '<td style="width: 33%">' +
-                    '<div style="font-weight: bold; font-size: 16px; color: darkred;">' +
+                    '<div style="margin: 6px 0; font-weight: bold; font-size: 18px; color: darkred;">' +
                     this.language.getTranslation(31) +
                     '</div>' +
-                    '<div style="display: inline-block; font-weight: bold; width: 50%;">' +
+                    '<div style="margin: 4px 0"><div style="font-weight: bold; margin: 2px 0; font-size: 15px">' +
                     this.language.getTranslation(14) +
-                    '</div><div id="data-attack-hit"></div>' +
-                    '<div style="display: inline-block; font-weight: bold; width: 50%;">' +
+                    '</div><div id="data-attack-hit"></div></div>' +
+                    '<div style="margin: 4px 0"><div style="font-weight: bold; margin: 2px 0; font-size: 15px">' +
                     this.language.getTranslation(51) +
-                    '</div><div id="data-attack-dodge"></div>' +
-                    '<div style="display: inline-block; font-weight: bold; width: 50%;">' +
+                    '</div><div id="data-attack-dodge"></div></div>' +
+                    '<div style="margin: 4px 0"><div style="font-weight: bold; margin: 2px 0; font-size: 15px">' +
                     this.language.getTranslation(140) +
-                    '</div><div id="data-attack-resistance"></div>' +
+                    '</div><div id="data-attack-resistance"></div></div>' +
                     '</td><td style="width: 33%">' +
-                    '<div style="font-weight: bold; font-size: 16px; color: darkblue;">' +
+                    '<div style="margin: 6px 0; font-weight: bold; font-size: 18px; color: darkblue;">' +
                     this.language.getTranslation(33) +
                     '</div>' +
-                    '<div style="display: inline-block; font-weight: bold; width: 50%;">' +
+                    '<div style="margin: 4px 0"><div style="font-weight: bold; margin: 2px 0; font-size: 15px">' +
                     this.language.getTranslation(14) +
-                    '</div><div id="data-defense-hit"></div>' +
-                    '<div style="display: inline-block; font-weight: bold; width: 50%;">' +
+                    '</div><div id="data-defense-hit"></div></div>' +
+                    '<div style="margin: 4px 0"><div style="font-weight: bold; margin: 2px 0; font-size: 15px">' +
                     this.language.getTranslation(51) +
-                    '</div><div id="data-defense-dodge"></div>' +
-                    '<div style="display: inline-block; font-weight: bold; width: 50%;">' +
+                    '</div><div id="data-defense-dodge"></div></div>' +
+                    '<div style="margin: 4px 0"><div style="font-weight: bold; margin: 2px 0; font-size: 15px">' +
                     this.language.getTranslation(140) +
-                    '</div><div id="data-defense-resistance"></div>' +
+                    '</div><div id="data-defense-resistance"></div></div>' +
                     '</td><td style="width: 33%">' +
-                    '<div style="font-weight: bold;">' +
+                    '<div style="margin: 4px 0"><div style="font-weight: bold; margin: 2px 0; font-size: 15px">' +
                     this.language.getTranslation(28) +
-                    ': </div><span><span id="data-health"></span> HP</span>' +
-                    '<div style="font-weight: bold;">' +
+                    ': </div><span><span id="data-health"></span> HP</span></div>' +
+                    '<div style="margin: 4px 0"><div style="font-weight: bold; margin: 2px 0; font-size: 15px">' +
                     this.language.getTranslation(141) +
-                    ': </div><span id="data-damage"></span>' +
+                    ': </div><span id="data-damage"></span></div>' +
                     '</td>' +
                     '</tr>' +
                     '</table>',
