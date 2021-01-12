@@ -76,7 +76,7 @@ export class DuelCalcView implements TW2WindowView<WestCalcWindowTab> {
         const motivationInput = new this.window.west.gui.Textfield()
             .setId('TWCalc_DuelLevelMotivation')
             .setWidth(100)
-            .setLabel(`<img src="images/job/motivation.png"> ${this.language.getTranslation(71)}`)
+            .setLabel(`<img alt="motivation" src="images/job/motivation.png"> ${this.language.getTranslation(71)}`)
             .onlyNumeric()
             .setValue(!duelMotivation ? 100 : duelMotivation * 100);
 

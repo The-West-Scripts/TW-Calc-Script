@@ -1,7 +1,9 @@
-import { BattleCalcInput, BattleCalcWindow } from './battle-calc.types';
+import { BattleCalc } from './battle-calc';
+import { BattleCalcInput } from './battle-calc.types';
 import { Config } from '../config/config';
 import { inject, singleton } from 'tsyringe';
 import { Language } from '../language/language';
+import { TheWestWindow } from '../../@types/the-west';
 import { TW2WindowTranslation, TW2WindowView } from '../tw2-window/tw2-window.types';
 import { WestCalcWindowTab } from '../west-calc/west-calc-window.types';
 
@@ -14,17 +16,18 @@ export class CharacterView implements TW2WindowView<WestCalcWindowTab> {
     };
 
     constructor(
-        @inject('window') private readonly window: BattleCalcWindow,
+        @inject('window') private readonly window: TheWestWindow,
         private readonly config: Config,
         private readonly language: Language,
+        private readonly battleCalc: BattleCalc,
     ) {}
 
     init(): void {
-        const battleCalcDiv = this.window.$('#BattleCalc');
+        const { Character, Premium, CharacterSkills } = this.window;
+        const battleCalcDiv = this.window.$('#BattleCalcCharacterView');
         if (!battleCalcDiv.length) {
             return;
         }
-        const { Character, Premium, CharacterSkills, BattleCalc } = this.window;
 
         const input: BattleCalcInput = {
             charClass: Character.charClass,
@@ -49,7 +52,7 @@ export class CharacterView implements TW2WindowView<WestCalcWindowTab> {
             },
         };
 
-        const output = BattleCalc.coreCalc(input, true);
+        const output = this.battleCalc.getInstance().coreCalc(input, true);
 
         this.window.$(`#data-attack-hit`, battleCalcDiv).text(output.attack.hit);
         this.window.$(`#data-attack-dodge`, battleCalcDiv).text(output.attack.dodge);
@@ -62,11 +65,11 @@ export class CharacterView implements TW2WindowView<WestCalcWindowTab> {
     }
 
     getMainDiv(): JQuery {
-        if (!this.window.hasOwnProperty('BattleCalc') || typeof this.window['BattleCalc'] === 'undefined') {
+        if (!this.battleCalc.isAvailable()) {
             return $('<div>Battle calc core script is not loaded, try refreshing the game.</div>');
         }
 
-        const html = $('<div id="BattleCalc"></div>');
+        const html = $('<div id="BattleCalcCharacterView"></div>');
         const skills = ['health', 'dodge', 'hide', 'aim', 'pitfall', 'leadership'];
         const skillsContainer = new this.window.west.gui.Groupframe();
 

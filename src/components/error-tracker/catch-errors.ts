@@ -33,7 +33,7 @@ export function CatchErrors<TargetObject extends Component = Component>(
 
         descriptor.value = function (this: TargetObject) {
             try {
-                originalMethod.bind(this, ...Array.from(arguments))();
+                return originalMethod.bind(this, ...Array.from(arguments))();
             } catch (e: any) {
                 const error = asErrorObject(e);
                 this.errorTracker.track(error, component);

@@ -32,10 +32,10 @@ export namespace tw2gui {
     export interface Combobox<T> {
         setWidth(width: number): Combobox<T>;
         addItem(value: T, label: string): Combobox<T>;
-        select(option: number): Combobox<T>;
+        select(option: T): Combobox<T>;
         getMainDiv(): JQuery;
         getValue(): T;
-        addListener(cb: (value: T) => void): Combobox<T>;
+        addListener(cb: (this: Combobox<T>, value: T) => void): Combobox<T>;
     }
 
     export interface ComboboxConstructor {
@@ -52,6 +52,7 @@ export namespace tw2gui {
         setValue(val: string | number): Textfield;
         setLabel(label: JQuery | string): Textfield;
         addKeyUpListener(cb: () => void): Textfield;
+        addListener(cb: (this: Textfield) => void, ctx?: unknown, data?: unknown): Textfield;
     }
 
     export interface TextfieldConstructor {
@@ -81,7 +82,7 @@ export namespace tw2gui {
         setSelected(state: boolean): Checkbox;
         setEnabled(state: boolean): Checkbox;
         getValue(): boolean;
-        setCallback(cb: () => void): Checkbox;
+        setCallback(cb: (this: Checkbox) => void): Checkbox;
         getMainDiv(): JQuery;
     }
 

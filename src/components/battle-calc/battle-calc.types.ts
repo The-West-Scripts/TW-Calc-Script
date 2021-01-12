@@ -36,5 +36,25 @@ export interface BattleCoreCalc {
 }
 
 export interface BattleCalcWindow extends TheWestWindow {
-    BattleCalc: BattleCoreCalc;
+    BattleCalc?: BattleCoreCalc;
+}
+
+export interface BattleCalcViewInput {
+    health: number;
+    dodge: number;
+    hide: number;
+    aim: number;
+    pitfall: number;
+    leadership: number;
+    weaponMin: number;
+    weaponMax: number;
+    level: number;
+    charClass: string;
+    mapPosition: number;
+    premium: boolean;
+    charTower: boolean;
+    hitBonus: number;
+    dodgeBonus: number;
+    resistanceBonus: number;
+    damageBonus: number;
 }
