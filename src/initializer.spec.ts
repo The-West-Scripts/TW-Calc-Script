@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import DependencyContainer from 'tsyringe/dist/typings/types/dependency-container';
+import { AlarmClock } from './components/notepad/alarm-clock';
 import { BattleCalc } from './components/battle-calc/battle-calc';
 import { Birthday } from './components/birthday/birthday';
 import { Character, Game, GameScript, NotiBar, TheWestApi, TheWestWindow, WestUi } from './@types/the-west';
@@ -23,6 +24,7 @@ describe('Initializer', () => {
     let tombolaExporterMock: Mock<TombolaExporter>;
     let languageMock: Mock<Language>;
     let battleCalcMock: Mock<BattleCalc>;
+    let alarmClockMock: Mock<AlarmClock>;
     let windowMock: Mock<TheWestWindow>;
     let languageInitCallback: () => void;
 
@@ -54,6 +56,9 @@ describe('Initializer', () => {
         battleCalcMock = new Mock<BattleCalc>({
             init: Mock.ANY_FUNC,
         });
+        alarmClockMock = new Mock<AlarmClock>({
+            init: Mock.ANY_FUNC,
+        });
 
         windowMock = new Mock<TheWestWindow>({
             Character: new Mock<Character>().Object,
@@ -83,6 +88,7 @@ describe('Initializer', () => {
         dependencyContainer.register(TombolaExporter, { useValue: tombolaExporterMock.Object });
         dependencyContainer.register(Language, { useValue: languageMock.Object });
         dependencyContainer.register(BattleCalc, { useValue: battleCalcMock.Object });
+        dependencyContainer.register(AlarmClock, { useValue: alarmClockMock.Object });
         dependencyContainer.register('localStorage', { useValue: localStorage });
         dependencyContainer.register('window', {
             useValue: windowMock.Object,
@@ -127,6 +133,7 @@ describe('Initializer', () => {
             duelBarMock,
             tombolaExporterMock,
             battleCalcMock,
+            alarmClockMock,
         ].map(component => component.Object.init);
 
         expect(languageMock.Object.init).toHaveBeenCalled();

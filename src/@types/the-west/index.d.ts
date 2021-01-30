@@ -6,7 +6,7 @@ declare global {
 
 export namespace tw2gui {
     export interface Dialog {
-        addButton(text: string, cb: () => void): Dialog;
+        addButton(text: string, cb?: () => void): Dialog;
         setTitle(title: string): Dialog;
         setText(text: string): Dialog;
 
@@ -158,6 +158,7 @@ export namespace tw2gui {
         setContent(content: string): Textarea;
         setId(id: string): Textarea;
         getMainDiv(): JQuery;
+        getContent(): string;
     }
 
     export interface TextareaConstructor {

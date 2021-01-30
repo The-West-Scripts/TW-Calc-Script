@@ -7,4 +7,6 @@ export enum StorageKey {
     jobList = 'jobList',
     tombola = 'Tombola',
     battleCalc = 'BattleCalc',
+    alarmClock = 'AlarmClock',
+    notepad = 'notepad',
 }

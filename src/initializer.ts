@@ -1,3 +1,4 @@
+import { AlarmClock } from './components/notepad/alarm-clock';
 import { BattleCalc } from './components/battle-calc/battle-calc';
 import { Birthday } from './components/birthday/birthday';
 import { CatchErrors } from './components/error-tracker/catch-errors';
@@ -33,6 +34,7 @@ export class Initializer {
         public readonly errorTracker: ErrorTracker,
         public readonly duelBar: DuelBar,
         public readonly battleCalc: BattleCalc,
+        public readonly alarmClock: AlarmClock,
         @inject('window') public readonly window: TheWestWindow,
     ) {
         this.errorTracker.execute(() => {
@@ -46,6 +48,7 @@ export class Initializer {
                 this.duelBar.init();
                 this.tombolaExporter.init();
                 this.battleCalc.init();
+                this.alarmClock.init();
             });
         });
     }

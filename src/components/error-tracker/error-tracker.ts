@@ -50,6 +50,10 @@ export class ErrorTracker {
         );
     }
 
+    /**
+     * Execute a function immediately and catch errors.
+     * @param fn
+     */
     execute(fn: () => void): void {
         try {
             fn();

@@ -1,4 +1,5 @@
 import { BattleCalcWindow, BattleCoreCalc } from './battle-calc.types';
+import { CatchErrors } from '../error-tracker/catch-errors';
 import { Component } from '../component.types';
 import { Config } from '../config/config';
 import { ErrorTracker } from '../error-tracker/error-tracker';
@@ -13,6 +14,7 @@ export class BattleCalc implements Component {
         public readonly errorTracker: ErrorTracker,
     ) {}
 
+    @CatchErrors('BattleCalc.init')
     init(): void {
         this.window.$.getScript(this.config.website + '/js/battle-calculator-core.js');
     }
