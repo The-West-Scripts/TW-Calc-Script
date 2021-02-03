@@ -32,7 +32,7 @@ export class NearestJobs implements Component {
         public readonly errorTracker: ErrorTracker,
     ) {
         this.dialog = new NearestJobsDialog(this, window, language, this.logger);
-        this.bar = new NearestJobsBar(this, window, settings);
+        this.bar = new NearestJobsBar(this, window, settings, language);
         this.list = new NearestJobsList(this, window, language);
     }
 

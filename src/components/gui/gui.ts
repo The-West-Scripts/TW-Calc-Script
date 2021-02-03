@@ -131,7 +131,7 @@ export class Gui implements Component {
         this.window.$('#user-interface').append(topBar);
 
         if (this.nearestJobs.isPosition('up')) {
-            this.logger.log('add nearest jobs bar up');
+            this.logger.log('add the nearest jobs bar up');
             const nearestJobsDiv = this.window.$('<div></div>');
             this.window.$(topBar).append(nearestJobsDiv);
             this.nearestJobs.bar.appendTo(nearestJobsDiv);
@@ -181,7 +181,7 @@ export class Gui implements Component {
         }
 
         if (this.nearestJobs.isPosition('down')) {
-            this.logger.log('add nearest jobs bar up');
+            this.logger.log('add the nearest jobs bar down');
             const nearestJobsDiv = this.window.$('<div></div>');
             this.window.$(bottomBar).append(nearestJobsDiv);
             this.nearestJobs.bar.appendTo(nearestJobsDiv);
