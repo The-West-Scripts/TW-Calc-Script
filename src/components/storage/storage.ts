@@ -52,7 +52,7 @@ export class Storage {
         if (value) {
             return parseValue(value);
         }
-        if (defaultValue) {
+        if (typeof defaultValue !== "undefined") {
             return defaultValue;
         }
         throw new Error(`Storage value for key "${key}" does not exist!`);
