@@ -22,12 +22,17 @@ export class Craft implements Component {
         private readonly logger: Logger,
         public readonly errorTracker: ErrorTracker,
     ) {
-        this.window = new CraftWindow(this.theWestWindow, this.language, this.logger, this.recipes);
+        this.window = new CraftWindow(this.theWestWindow, this.errorTracker, this.language, this.logger, this.recipes);
     }
 
     @CatchErrors('Craft.init')
     init(): void {
         this.updateLastCraft();
+    }
+
+    @CatchErrors('Craft.open')
+    open(professionId: number): void {
+        this.window.open({ tab: professionId });
     }
 
     private updateLastCraft() {

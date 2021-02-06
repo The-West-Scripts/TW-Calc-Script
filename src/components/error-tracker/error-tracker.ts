@@ -20,8 +20,8 @@ export class ErrorTracker {
         private readonly logger: Logger,
         private readonly config: Config,
     ) {
-        this.errorWindow = new ErrorWindow(window, logger);
-        this.errorLogWindow = new ErrorLogWindow(window, logger);
+        this.errorWindow = new ErrorWindow(window, this, logger);
+        this.errorLogWindow = new ErrorLogWindow(window, this, logger);
     }
 
     track(error: Error, component?: string): void {

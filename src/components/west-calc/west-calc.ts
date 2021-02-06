@@ -1,6 +1,7 @@
 import { BattleCalcView } from '../battle-calc/battle-calc-view';
 import { CharacterView } from '../battle-calc/character-view';
 import { DuelCalcView } from '../duel-calc/duel-calc-view';
+import { ErrorTracker } from '../error-tracker/error-tracker';
 import { ImporterView } from '../importer/importer-view';
 import { inject, singleton } from 'tsyringe';
 import { Language } from '../language/language';
@@ -17,6 +18,7 @@ export class WestCalc {
 
     constructor(
         @inject('window') window: TheWestWindow,
+        errorTracker: ErrorTracker,
         language: Language,
         logger: Logger,
         notepadView: NotepadView,
@@ -29,6 +31,7 @@ export class WestCalc {
     ) {
         this.window = new WestCalcWindow(
             window,
+            errorTracker,
             language,
             logger,
             notepadView,

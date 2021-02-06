@@ -91,7 +91,7 @@ export class Gui implements Component {
                     )}" style="background-position: 0 0; background-image: url(${wardrobeIcon});"></div>`,
                 )
                 .on('click', () => {
-                    this.wardrobe.window.open();
+                    this.wardrobe.open();
                 })
                 .on('mouseover', rightMenuButtonLogicMouseOver(this.window.$))
                 .on('mouseout', rightMenuButtonLogicMouseOut(this.window.$));
@@ -196,7 +196,7 @@ export class Gui implements Component {
                 .$('.button.crafting.background')
                 .off('click')
                 .on('click', () => {
-                    this.craft.window.open(professionId);
+                    this.craft.open(professionId);
                 });
         }
     }

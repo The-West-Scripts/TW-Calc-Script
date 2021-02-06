@@ -79,8 +79,6 @@ export class NotepadView implements TW2WindowView<WestCalcWindowTab>, Component 
             .show();
     }
 
-    init(): any {}
-
     getMainDiv(): JQuery {
         const { west, $ } = this.window;
 

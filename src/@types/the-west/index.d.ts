@@ -9,7 +9,14 @@ export namespace tw2gui {
         addButton(text: string, cb?: () => void): Dialog;
         setTitle(title: string): Dialog;
         setText(text: string): Dialog;
+        show(): void;
+    }
 
+    export interface TextInputDialog {
+        addButton(text: string, cb?: (value: string) => void): TextInputDialog;
+        setTitle(title: string): TextInputDialog;
+        setText(text: string): TextInputDialog;
+        setPlaceholder(placeholder: string): TextInputDialog;
         show(): void;
     }
 
@@ -23,10 +30,15 @@ export namespace tw2gui {
     }
 
     export interface DialogConstructor {
+        SYS_ERROR: string;
         SYS_WARNING: string;
         SYS_OK: string;
 
         new (title?: string, text?: string | JQuery, type?: string): Dialog;
+    }
+
+    export interface TextInputDialogConstructor {
+        new (title?: string, text?: string | JQuery, type?: string): TextInputDialog;
     }
 
     export interface Combobox<T> {
@@ -59,14 +71,14 @@ export namespace tw2gui {
         new (): Textfield;
     }
 
-    export interface Selectbox {
+    export interface Selectbox<ValueType = number> {
         divMain: JQuery;
 
-        setHeader(title: string): Selectbox;
-        addItem(value: number, label: string): Selectbox;
-        addListener(callback: (value: number) => void): Selectbox;
-        setWidth(width: number): Selectbox;
-        show(element: JQuery.ClickEvent): Selectbox;
+        setHeader(title: string): Selectbox<ValueType>;
+        addItem(value: ValueType, label: string): Selectbox<ValueType>;
+        addListener(callback: (value: ValueType) => void): Selectbox<ValueType>;
+        setWidth(width: ValueType): Selectbox<ValueType>;
+        show(element: JQuery.ClickEvent): Selectbox<ValueType>;
     }
 
     export interface SelectboxConstructor {
@@ -124,7 +136,9 @@ export namespace tw2gui {
         addTab(title: string, id: string, onActivate: () => void): Window;
         activateTab(id: string): Window;
         appendToContentPane(content: JQuery | string): Window;
+        destroy(): Window;
         setSize(width: number, height: number): Window;
+        bringToTop(): Window;
     }
 
     export interface VerticalBar {
@@ -147,9 +161,9 @@ export namespace tw2gui {
         new (): Scrollpane;
     }
 
-    export type MessageSuccessConstructor = (text: string) => tw2gui.UserMessage;
-    export type MessageErrorConstructor = (text: string) => tw2gui.UserMessage;
-    export type MessageHintConstructor = (text: string) => tw2gui.UserMessage;
+    export type MessageSuccessConstructor = (text?: string) => tw2gui.UserMessage;
+    export type MessageErrorConstructor = (text?: string) => tw2gui.UserMessage;
+    export type MessageHintConstructor = (text?: string) => tw2gui.UserMessage;
 
     export interface Textarea {
         setWidth(width: number): Textarea;
@@ -176,6 +190,7 @@ export interface WestGui {
     Selectbox: tw2gui.SelectboxConstructor;
     Groupframe: tw2gui.GroupframeConstructor;
     Textarea: tw2gui.TextareaConstructor;
+    TextInputDialog: tw2gui.TextInputDialogConstructor;
 }
 
 export interface West {
@@ -184,6 +199,7 @@ export interface West {
 
 export interface WindowManager {
     open(id: string, title: string, classes: string): tw2gui.Window;
+    getById(id: string): tw2gui.Window | undefined;
 }
 
 export interface Game {
@@ -251,7 +267,7 @@ export interface Premium {
 }
 
 export interface Item {
-    id: number;
+    item_id: number;
 }
 
 export interface ItemManager {
@@ -329,9 +345,16 @@ export interface WestUi {
     NotiBar: NotiBar;
 }
 
+export interface InventoryItem {
+    obj: Item;
+}
+
 export interface Bag {
-    handleChanges: (changes: unknown, from: unknown) => void;
-    updateChanges: (changes: unknown, from: unknown) => void;
+    loaded: boolean;
+    loadItems: () => void;
+    handleChanges(changes: unknown, from: unknown): void;
+    updateChanges(changes: unknown, from: unknown): void;
+    getItemByItemId(itemId: number): InventoryItem;
 }
 
 export interface Crafting {
@@ -366,6 +389,40 @@ export interface CharacterSkills {
     skills: Record<string, CharacterSkill>;
 }
 
+export type WearSlotKey =
+    | 'animal'
+    | 'belt'
+    | 'body'
+    | 'foot'
+    | 'head'
+    | 'neck'
+    | 'pants'
+    | 'right_arm'
+    | 'yield'
+    | 'left_arm';
+
+export interface Wear {
+    wear: Record<WearSlotKey, InventoryItem>;
+    slots: Array<string>;
+    item_ids: Array<number>;
+    window: tw2gui.Window;
+
+    open(): void;
+    carry(item: InventoryItem): void;
+}
+
+export interface TW2WidgetInventoryItem {
+    getMainDiv(): JQuery;
+}
+
+export interface TW2WidgetInventoryItemConstructor {
+    new (item: Item): TW2WidgetInventoryItem;
+}
+
+export interface TW2Widget {
+    InventoryItem: TW2WidgetInventoryItemConstructor;
+}
+
 export interface TheWestWindow extends Window {
     console: Console;
     Game: Game;
@@ -395,5 +452,7 @@ export interface TheWestWindow extends Window {
     PlayerProfileWindow: PlayerProfileWindow;
     BankWindow: BankWindow;
     CharacterSkills: CharacterSkills;
+    Wear: Wear;
     format_money: FormatMoneyFunction;
+    tw2widget: TW2Widget;
 }

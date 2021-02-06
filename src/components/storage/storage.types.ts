@@ -9,4 +9,5 @@ export enum StorageKey {
     battleCalc = 'BattleCalc',
     alarmClock = 'AlarmClock',
     notepad = 'notepad',
+    wardrobe = 'Wardrobe',
 }

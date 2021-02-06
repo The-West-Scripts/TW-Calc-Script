@@ -1,11 +1,12 @@
+import { ErrorTracker } from './error-tracker';
 import { Logger } from '../logger/logger';
 import { TheWestWindow } from '../../@types/the-west';
 import { TW2Window } from '../tw2-window/tw2-window';
 
 export class ErrorLogWindow extends TW2Window {
-    constructor(window: TheWestWindow, logger: Logger) {
+    constructor(window: TheWestWindow, errorTracker: ErrorTracker, logger: Logger) {
         // do not import language service because of circular dependencies
-        super('TWCalcErrorLog', window, null, logger, {
+        super('TWCalcErrorLog', errorTracker, window, null, logger, {
             title: 'TW-Calc ErrorLog',
         });
     }
