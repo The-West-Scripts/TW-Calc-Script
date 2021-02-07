@@ -46,7 +46,7 @@ export class WardrobeView {
     }
 
     @CatchErrors('WardrobeView.addWear')
-    private addWear(name: string): WardrobeWearable {
+    private addWardrobeWearable(name: string): WardrobeWearable {
         const { Wear, MessageSuccess } = this.window;
         const items = Object.values(Wear.wear).map(item => {
             return item.obj.item_id;
@@ -78,8 +78,8 @@ export class WardrobeView {
                         .setText(this.language.getTranslation(164))
                         .setPlaceholder(this.language.getTranslation(166))
                         .addButton(this.language.getTranslation(163), value => {
-                            const wear = this.addWear(value);
-                            callback(wear.id);
+                            const wearable = this.addWardrobeWearable(value);
+                            callback(wearable.id);
                         })
                         .addButton(this.language.getTranslation(162))
                         .show();

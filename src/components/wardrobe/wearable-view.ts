@@ -34,7 +34,7 @@ export class WearableView implements TW2WindowFactoryView {
         this.content = this.window.$('<div></div>');
         this.actions = $('<div></div>');
         this.caption = $(
-            '<div style="font-size: 20px; font-family: Georgia, \'Times New Roman\', serif; text-shadow: 1px 1px 0 #FFCC66, 1px 1px 2px #000000; text-transform: capitalize;"></div>',
+            '<div style="font-size: 16px; font-family: Georgia, \'Times New Roman\', serif; text-shadow: 1px 1px 0 #FFCC66, 1px 1px 2px #000000; text-transform: capitalize;"></div>',
         );
 
         const iconRemove = $(`<div style="
@@ -160,6 +160,11 @@ export class WearableView implements TW2WindowFactoryView {
     show(fromListFallback: boolean): void;
     show(param: number | boolean): void {
         this.errorTracker.execute(() => {
+            // reset gui elements
+            this.actions.empty();
+            this.caption.empty();
+
+            // get wearable id
             let wearableId: number | undefined;
             if (typeof param === 'number') {
                 wearableId = param;
@@ -171,8 +176,6 @@ export class WearableView implements TW2WindowFactoryView {
                 }
                 if (!list.length || !param) {
                     this.headerLeft.css('visibility', 'hidden');
-                    this.actions.empty();
-                    this.caption.empty();
                     this.content.html(
                         '<div style="margin: 15px; text-align: center; font-weight: bold">' +
                             this.language.getTranslation(208) +
@@ -258,6 +261,6 @@ export class WearableView implements TW2WindowFactoryView {
     }
 }
 
-function getViewName(name?: string): string {
+export function getViewName(name?: string): string {
     return name || 'unnamed';
 }

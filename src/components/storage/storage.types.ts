@@ -10,4 +10,5 @@ export enum StorageKey {
     alarmClock = 'AlarmClock',
     notepad = 'notepad',
     wardrobe = 'Wardrobe',
+    ownCalc = 'OwnCalc',
 }

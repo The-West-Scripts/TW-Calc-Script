@@ -1,3 +1,5 @@
+import ClickEvent = JQuery.ClickEvent;
+
 declare global {
     interface Number {
         formatDuration: () => number;
@@ -6,10 +8,15 @@ declare global {
 
 export namespace tw2gui {
     export interface Dialog {
+        divMain: JQuery;
+
         addButton(text: string, cb?: () => void): Dialog;
         setTitle(title: string): Dialog;
         setText(text: string): Dialog;
-        show(): void;
+        setWidth(width: number): Dialog;
+        setHeight(height: number): Dialog;
+        getMainDiv(): JQuery;
+        show(): Dialog;
     }
 
     export interface TextInputDialog {
@@ -195,6 +202,7 @@ export interface WestGui {
 
 export interface West {
     gui: WestGui;
+    item: WestItemUtilities;
 }
 
 export interface WindowManager {
@@ -268,6 +276,7 @@ export interface Premium {
 
 export interface Item {
     item_id: number;
+    type: string;
 }
 
 export interface ItemManager {
@@ -347,6 +356,10 @@ export interface WestUi {
 
 export interface InventoryItem {
     obj: Item;
+    getType(): string;
+    getItemBaseId(): number;
+    getItemLevel(): number;
+    getId(): number;
 }
 
 export interface Bag {
@@ -355,6 +368,7 @@ export interface Bag {
     handleChanges(changes: unknown, from: unknown): void;
     updateChanges(changes: unknown, from: unknown): void;
     getItemByItemId(itemId: number): InventoryItem;
+    getItemsByItemIds(itemIdList: Array<number>): Array<InventoryItem>;
 }
 
 export interface Crafting {
@@ -380,13 +394,50 @@ export interface BankWindow {
 
 export type FormatMoneyFunction = (number: number) => number;
 
-export interface CharacterSkill {
-    name: string;
+export type SkillKey =
+    | 'aim'
+    | 'animal'
+    | 'appearance'
+    | 'build'
+    | 'dodge'
+    | 'endurance'
+    | 'finger_dexterity'
+    | 'health'
+    | 'hide'
+    | 'leadership'
+    | 'pitfall'
+    | 'punch'
+    | 'reflex'
+    | 'repair'
+    | 'ride'
+    | 'show'
+    | 'swim'
+    | 'tactic'
+    | 'tough'
+    | 'trade';
+
+export interface Skill<T extends SkillKey> {
+    name: T;
     getPointsWithBonus(): number;
+    getSkillPMBox(
+        id: string,
+        guiStorageObj: any,
+        pmOptions: {
+            id: string;
+            min_value: number;
+            start_value: number;
+            max_value: number;
+            extra_points: number;
+            callbackPlus: (event: ClickEvent) => void;
+            callbackMinus: (event: ClickEvent) => void;
+        },
+    ): JQuery;
 }
 
 export interface CharacterSkills {
-    skills: Record<string, CharacterSkill>;
+    allSkillKeys: Array<SkillKey>;
+    skills: Record<SkillKey, Skill<SkillKey>>;
+    getSkill<T extends SkillKey>(key: T): Skill<T>;
 }
 
 export type WearSlotKey =
@@ -409,6 +460,7 @@ export interface Wear {
 
     open(): void;
     carry(item: InventoryItem): void;
+    get(type: string): InventoryItem;
 }
 
 export interface TW2WidgetInventoryItem {
@@ -421,6 +473,25 @@ export interface TW2WidgetInventoryItemConstructor {
 
 export interface TW2Widget {
     InventoryItem: TW2WidgetInventoryItemConstructor;
+}
+
+export interface Set {
+    key: string;
+}
+
+export interface BestSet {
+    items: Array<number>;
+    sets: Array<Set>;
+    getItems(): Array<number>;
+}
+
+export interface Calculator {
+    getBestSet(skills: Record<SkillKey, number>, jobId?: number): BestSet;
+    getBestItems(skills: Record<SkillKey, number>, onlyWearable: boolean): Array<Item>;
+}
+
+export interface WestItemUtilities {
+    Calculator: Calculator;
 }
 
 export interface TheWestWindow extends Window {
