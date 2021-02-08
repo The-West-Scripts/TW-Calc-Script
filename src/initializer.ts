@@ -2,6 +2,7 @@ import { AlarmClock } from './components/notepad/alarm-clock';
 import { BattleCalc } from './components/battle-calc/battle-calc';
 import { Birthday } from './components/birthday/birthday';
 import { CatchErrors } from './components/error-tracker/catch-errors';
+import { Chests } from './components/chests/chests';
 import { Config } from './components/config/config';
 import { DuelBar } from './components/duel-bar/duel-bar';
 import { ErrorTracker } from './components/error-tracker/error-tracker';
@@ -35,6 +36,7 @@ export class Initializer {
         public readonly duelBar: DuelBar,
         public readonly battleCalc: BattleCalc,
         public readonly alarmClock: AlarmClock,
+        public readonly chests: Chests,
         @inject('window') public readonly window: TheWestWindow,
     ) {
         this.errorTracker.execute(() => {
@@ -49,6 +51,7 @@ export class Initializer {
                 this.tombolaExporter.init();
                 this.battleCalc.init();
                 this.alarmClock.init();
+                this.chests.init();
             });
         });
     }

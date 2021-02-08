@@ -494,6 +494,21 @@ export interface WestItemUtilities {
     Calculator: Calculator;
 }
 
+export interface ItemUse {
+    doIt: (itemId: number, callback: () => void) => void;
+}
+
+export interface ItemUseWindowXHRResponse {
+    error: boolean;
+    msg: {
+        changes: Array<{ item_id: number; inv_id: number; count: number }>;
+        cooldown: number;
+        effects: Array<{ type: string; items: Array<{ item_id: number; count: number }> }>;
+        itemCooldown: number;
+        itemLifetime: number;
+    };
+}
+
 export interface TheWestWindow extends Window {
     console: Console;
     Game: Game;
@@ -526,4 +541,5 @@ export interface TheWestWindow extends Window {
     Wear: Wear;
     format_money: FormatMoneyFunction;
     tw2widget: TW2Widget;
+    ItemUse: ItemUse;
 }

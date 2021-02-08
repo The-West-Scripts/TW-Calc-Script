@@ -22,6 +22,7 @@ export function bootstrap(dependencyContainer: DependencyContainer): TWCalcPubli
         loadPack: languagePack => {
             language.loadPack(languagePack);
         },
+        trackChest: (...args) => initializer.chests.trackChest(...args),
         _window: initializer.westCalc.window,
         _initializer: initializer,
     };

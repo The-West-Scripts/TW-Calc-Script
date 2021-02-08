@@ -4,6 +4,7 @@ import { AlarmClock } from './components/notepad/alarm-clock';
 import { BattleCalc } from './components/battle-calc/battle-calc';
 import { Birthday } from './components/birthday/birthday';
 import { Character, Game, GameScript, NotiBar, TheWestApi, TheWestWindow, WestUi } from './@types/the-west';
+import { Chests } from './components/chests/chests';
 import { container } from 'tsyringe';
 import { DuelBar } from './components/duel-bar/duel-bar';
 import { Gui } from './components/gui/gui';
@@ -25,6 +26,7 @@ describe('Initializer', () => {
     let languageMock: Mock<Language>;
     let battleCalcMock: Mock<BattleCalc>;
     let alarmClockMock: Mock<AlarmClock>;
+    let chestsMock: Mock<Chests>;
     let windowMock: Mock<TheWestWindow>;
     let languageInitCallback: () => void;
 
@@ -59,6 +61,9 @@ describe('Initializer', () => {
         alarmClockMock = new Mock<AlarmClock>({
             init: Mock.ANY_FUNC,
         });
+        chestsMock = new Mock<Chests>({
+            init: Mock.ANY_FUNC,
+        });
 
         windowMock = new Mock<TheWestWindow>({
             Character: new Mock<Character>().Object,
@@ -89,6 +94,7 @@ describe('Initializer', () => {
         dependencyContainer.register(Language, { useValue: languageMock.Object });
         dependencyContainer.register(BattleCalc, { useValue: battleCalcMock.Object });
         dependencyContainer.register(AlarmClock, { useValue: alarmClockMock.Object });
+        dependencyContainer.register(Chests, { useValue: chestsMock.Object });
         dependencyContainer.register('localStorage', { useValue: localStorage });
         dependencyContainer.register('window', {
             useValue: windowMock.Object,
@@ -134,6 +140,7 @@ describe('Initializer', () => {
             tombolaExporterMock,
             battleCalcMock,
             alarmClockMock,
+            chestsMock,
         ].map(component => component.Object.init);
 
         expect(languageMock.Object.init).toHaveBeenCalled();
