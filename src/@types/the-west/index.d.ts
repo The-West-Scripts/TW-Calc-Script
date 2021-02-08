@@ -268,6 +268,7 @@ export interface Job {
 export interface JobList {
     getJobById(id: number): Job;
     getSortedJobs(prop: string): Array<Job>;
+    getJobsIdsByItemId(itemId: number): Array<Job>;
 }
 
 export interface Premium {
@@ -307,12 +308,14 @@ export interface GameScript {
 }
 
 export interface Ajax {
-    get: <T extends any>(
+    get<T extends any>(window: string, ajax: string, param: Record<string, string>, callback: (data: T) => void): void;
+    remoteCallMode<T extends any>(
         window: string,
-        ajax: string,
-        param: Record<string, string>,
+        mode: string,
+        param: Record<string, any>,
         callback: (data: T) => void,
-    ) => void;
+        view?: string,
+    ): void;
 }
 
 export interface MapAjaxResponse {
@@ -507,6 +510,56 @@ export interface ItemUseWindowXHRResponse {
         itemCooldown: number;
         itemLifetime: number;
     };
+}
+
+export interface JobViewWindowXHRResponse {
+    id: number;
+    prem_cost: number;
+    prem_buy: boolean;
+    has_prem: boolean;
+    itembonus: number;
+    jobSkillPoints: number;
+    maxdmg: number;
+    danger: number;
+    minMaxItemVal: number[];
+    motivation: number;
+    is_gold: boolean;
+    is_silver: boolean;
+    stage: {
+        stage: number;
+        progress: number;
+        malus: number;
+    };
+    durations: Array<{
+        cost: number;
+        money: number;
+        xp: number;
+        luck: number;
+        items: Array<{
+            prop: number;
+            probBonus: number;
+            itemid: number;
+            random: boolean;
+            buyCost: number;
+        }>;
+        duration: number;
+        featured_money: number;
+        featured_xp: number;
+    }>;
+    stageRewards: Array<{
+        cost: number;
+        money: number;
+        xp: number;
+        luck: number;
+        items: Array<{
+            prop: number;
+            probBonus: number;
+            itemid: number;
+            random: boolean;
+            buyCost: number;
+        }>;
+        duration: number;
+    }>;
 }
 
 export interface TheWestWindow extends Window {

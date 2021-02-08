@@ -2,7 +2,7 @@ import { CatchErrors } from '../error-tracker/catch-errors';
 import { Component } from '../component.types';
 import { ErrorTracker } from '../error-tracker/error-tracker';
 import { inject, singleton } from 'tsyringe';
-import { Job, MapAjaxResponse, TheWestWindow } from '../../@types/the-west';
+import { Job, JobViewWindowXHRResponse, MapAjaxResponse, TheWestWindow } from '../../@types/the-west';
 import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
 import { NearestJobsBar } from './nearest-jobs-bar';
@@ -36,31 +36,96 @@ export class NearestJobs implements Component {
         this.list = new NearestJobsList(this, window, language);
     }
 
-    @CatchErrors('Birthday.init')
+    @CatchErrors('NearestJobs.init')
     init(): void {
         // nearest job bar is hidden
         if (this.settings.get(SettingNumber.NearestJobsBar) === 4) {
             return;
         }
         // fetch the map at the initialization
-        this.getMap();
+        this.getMinimap();
+    }
+
+    @CatchErrors('NearestJobs.openJobWindowByProductId')
+    openJobWindowByProductId(itemId: number): void {
+        this.getMinimap(map => {
+            this.errorTracker.execute(() => {
+                this.logger.log(`finding the best nearby job for item = ${itemId}`);
+                const { JobList, MessageError } = this.window;
+                const lastPosition = getPlayerLastPosition(this.window);
+                if (!lastPosition) {
+                    return MessageError("Unable to get player's latest position!");
+                }
+                // get job is for that item
+                const jobIds = JobList.getJobsIdsByItemId(itemId);
+                // based on that job ids get data of those jobs nearest to the player
+                const jobPromiseList: Array<Promise<JobViewWindowXHRResponse>> = [];
+                jobIds.forEach(job => {
+                    const nearestJob = findNearestJob(job, lastPosition, map);
+                    if (!nearestJob) {
+                        return;
+                    }
+                    jobPromiseList.push(this.getJobWindow(job.id, { x: nearestJob.x, y: nearestJob.y }));
+                });
+                if (!jobPromiseList.length) {
+                    throw new Error('Unable to find nearby jobs!');
+                }
+                const jobs = Promise.all(jobPromiseList);
+                jobs.then(jobViews => {
+                    this.logger.log(`found nearby job views for item = ${itemId}`, jobViews);
+                    this.errorTracker.execute(() => {
+                        let bestLuck = -Infinity;
+                        let bestJobIndex = -1;
+                        // find job with best luck for that item
+                        jobViews.forEach((jobView, index) => {
+                            const luck = getJobProductLuck(jobView, itemId);
+                            // the item id is not optainable from the job, this case should not happen
+                            if (luck === false) {
+                                return;
+                            }
+                            if (luck > bestLuck) {
+                                bestLuck = luck;
+                                bestJobIndex = index;
+                            }
+                        });
+                        // finally open the window!
+                        const bestJobView = jobViews[bestJobIndex];
+                        this.logger.log(`found best job for item = ${itemId}`, bestJobView);
+                        this.addTaskOrShowJobWindow(bestJobView.id, { type: 'window' });
+                    });
+                });
+            });
+        });
     }
 
     search(jobId: number): void {
-        this.addTask(jobId, {
+        this.addTaskOrShowJobWindow(jobId, {
             type: 'window',
         });
     }
 
     start(jobId: number, duration: number): void {
-        this.addTask(jobId, {
+        this.addTaskOrShowJobWindow(jobId, {
             type: 'startJob',
             duration: duration,
         });
     }
 
-    addTask(jobId: number, taskType: { type: 'startJob'; duration: number } | { type: 'window' }): void {
-        this.getMap(map => {
+    getJobWindow(jobId: number, coordinates: { x: number; y: number }): Promise<JobViewWindowXHRResponse> {
+        return new Promise(resolve => {
+            this.window.Ajax.remoteCallMode<JobViewWindowXHRResponse>(
+                'job',
+                'job',
+                { jobId, x: coordinates.x, y: coordinates.y },
+                jobView => {
+                    resolve(jobView);
+                },
+            );
+        });
+    }
+
+    addTaskOrShowJobWindow(jobId: number, taskType: { type: 'startJob'; duration: number } | { type: 'window' }): void {
+        this.getMinimap(map => {
             const jobPosition = this.find(jobId, map);
             if (!jobPosition) {
                 this.logger.error('Unable to find the nearest job!', jobId, map, jobPosition);
@@ -136,9 +201,15 @@ export class NearestJobs implements Component {
         return settings === NearestJobsBarPosition.right;
     }
 
-    private getMap(cb?: (map: MapAjaxResponse) => void, showUserMessage = false): void {
+    /**
+     * Fetch minimap data if not fetched already.
+     * @param callback to call when the data are fetched
+     * @param showUserMessage
+     * @private
+     */
+    private getMinimap(callback?: (map: MapAjaxResponse) => void, showUserMessage = false): void {
         if (typeof this.map !== 'undefined') {
-            return cb?.(this.map);
+            return callback?.(this.map);
         }
 
         if (showUserMessage) {
@@ -150,7 +221,7 @@ export class NearestJobs implements Component {
                 return new this.window.UserMessage('Unable to fetch the map!').show();
             }
             this.map = data;
-            cb?.(data);
+            callback?.(data);
         });
     }
 }
@@ -198,4 +269,13 @@ function findNearestJob(
     });
 
     return jobs[0];
+}
+
+function getJobProductLuck(job: JobViewWindowXHRResponse, productId: number): number | false {
+    const jobDurations = job.durations[2]; // 2 = is one-hour job chance
+    const jobProduct = jobDurations.items.find(item => item.itemid === productId);
+    if (!jobProduct) {
+        return false;
+    }
+    return jobProduct.prop + jobProduct.probBonus;
 }
