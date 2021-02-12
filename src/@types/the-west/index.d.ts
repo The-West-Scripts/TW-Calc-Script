@@ -230,7 +230,8 @@ export type Map = {
     PopupHandler: {
         getJobPopup(job: Job): string;
     };
-    calcWayTime: (a: { x: number; y: number }, b: { x: number; y: number }) => number;
+    calcWayTime(a: { x: number; y: number }, b: { x: number; y: number }): number;
+    center(x: number, y: number): void;
 };
 
 export interface Character {
@@ -240,6 +241,11 @@ export interface Character {
     duelLevel: number;
     duelMotivation: number;
     professionId: number | null;
+    homeTown: {
+        town_id: number;
+        x: number;
+        y: number;
+    };
     health: number;
     maxHealth: number;
     healthRegen: number;
@@ -266,9 +272,10 @@ export interface Job {
 }
 
 export interface JobList {
+    dropsItem(itemId: number): boolean;
     getJobById(id: number): Job;
     getSortedJobs(prop: string): Array<Job>;
-    getJobsIdsByItemId(itemId: number): Array<Job>;
+    getJobsIdsByItemId(itemId: number): Array<number>;
 }
 
 export interface Premium {
@@ -277,7 +284,10 @@ export interface Premium {
 
 export interface Item {
     item_id: number;
+    item_base_id: number;
     type: string;
+    traderlevel: number;
+    spec_type: string;
 }
 
 export interface ItemManager {
@@ -318,9 +328,21 @@ export interface Ajax {
     ): void;
 }
 
+export interface Town {
+    alliance_id: number;
+    member_count: number;
+    name: string | null;
+    town_id: number;
+    town_points: number;
+    x: number;
+    y: number;
+}
+
 export interface MapAjaxResponse {
     error: boolean;
     job_groups: any;
+    quest_locations: Record<number, Array<Array<number>>>;
+    towns: Record<number, Town>;
 }
 
 export interface JobWindow {
@@ -512,6 +534,18 @@ export interface ItemUseWindowXHRResponse {
     };
 }
 
+export interface TownShopWindowXHRResponse {
+    charge: number;
+    image: string;
+    level: number;
+    town_name: string;
+    trader_inv: Array<{ item_id: number }>;
+}
+
+export interface TownShopWindowXHRErrorResponse {
+    error: string;
+}
+
 export interface JobViewWindowXHRResponse {
     id: number;
     prem_cost: number;
@@ -562,6 +596,30 @@ export interface JobViewWindowXHRResponse {
     }>;
 }
 
+export interface Trader {
+    open(shop: string, town_id: number, x: number, y: number): void;
+}
+
+export interface Quest {
+    id: number;
+    el: JQuery;
+}
+
+export interface JSRequirement {
+    id: number;
+    type: string;
+    value: string;
+}
+
+export interface QuestConstructor {
+    render(this: Quest): void;
+    getMinimapLink(jsRequirement: JSRequirement): string;
+}
+
+export interface MinimapWindow {
+    getQuicklink(id: number, type: string): string;
+}
+
 export interface TheWestWindow extends Window {
     console: Console;
     Game: Game;
@@ -595,4 +653,7 @@ export interface TheWestWindow extends Window {
     format_money: FormatMoneyFunction;
     tw2widget: TW2Widget;
     ItemUse: ItemUse;
+    Trader: Trader;
+    Quest: QuestConstructor;
+    MinimapWindow: MinimapWindow;
 }

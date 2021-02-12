@@ -3,6 +3,7 @@ import { Component } from '../component.types';
 import { ErrorTracker } from '../error-tracker/error-tracker';
 import { inject, singleton } from 'tsyringe';
 import { Job, JobViewWindowXHRResponse, MapAjaxResponse, TheWestWindow } from '../../@types/the-west';
+import { jobListMonkeyPatch } from './job-list-patch';
 import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
 import { NearestJobsBar } from './nearest-jobs-bar';
@@ -38,7 +39,9 @@ export class NearestJobs implements Component {
 
     @CatchErrors('NearestJobs.init')
     init(): void {
-        // nearest job bar is hidden
+        // monkey patch job list
+        jobListMonkeyPatch(this.window);
+        // the nearest job bar is hidden
         if (this.settings.get(SettingNumber.NearestJobsBar) === 4) {
             return;
         }
@@ -46,8 +49,8 @@ export class NearestJobs implements Component {
         this.getMinimap();
     }
 
-    @CatchErrors('NearestJobs.openJobWindowByProductId')
-    openJobWindowByProductId(itemId: number): void {
+    @CatchErrors('NearestJobs.openNearestJobWindowByProductId')
+    openNearestJobWindowByProductId(itemId: number): void {
         this.getMinimap(map => {
             this.errorTracker.execute(() => {
                 this.logger.log(`finding the best nearby job for item = ${itemId}`);
@@ -60,13 +63,15 @@ export class NearestJobs implements Component {
                 const jobIds = JobList.getJobsIdsByItemId(itemId);
                 // based on that job ids get data of those jobs nearest to the player
                 const jobPromiseList: Array<Promise<JobViewWindowXHRResponse>> = [];
-                jobIds.forEach(job => {
-                    const nearestJob = findNearestJob(job, lastPosition, map);
-                    if (!nearestJob) {
-                        return;
-                    }
-                    jobPromiseList.push(this.getJobWindow(job.id, { x: nearestJob.x, y: nearestJob.y }));
-                });
+                jobIds
+                    .map(jobId => JobList.getJobById(jobId))
+                    .forEach(job => {
+                        const nearestJob = findNearestJob(job, lastPosition, map);
+                        if (!nearestJob) {
+                            return;
+                        }
+                        jobPromiseList.push(this.getJobWindow(job.id, { x: nearestJob.x, y: nearestJob.y }));
+                    });
                 if (!jobPromiseList.length) {
                     throw new Error('Unable to find nearby jobs!');
                 }
@@ -98,12 +103,46 @@ export class NearestJobs implements Component {
         });
     }
 
+    /**
+     * Fetch minimap data if not fetched already.
+     * @param callback to call when the data are fetched
+     * @param showUserMessage
+     */
+    @CatchErrors('NearestJobs.getMinimap')
+    getMinimap(callback?: (map: MapAjaxResponse) => void, showUserMessage = false): void {
+        if (typeof this.map !== 'undefined') {
+            return callback?.(this.map);
+        }
+
+        if (showUserMessage) {
+            new this.window.UserMessage(this.language.getTranslation(143), 'success').show();
+        }
+
+        this.window.Ajax.get<MapAjaxResponse>('map', 'get_minimap', {}, (data): void => {
+            if (data.error) {
+                return new this.window.UserMessage('Unable to fetch the map!').show();
+            }
+            this.map = data;
+            callback?.(data);
+        });
+    }
+
+    @CatchErrors('NearestJobs.startNearestJob')
+    startNearestJob(jobId: number): void {
+        this.start(jobId, 3600);
+    }
+
     search(jobId: number): void {
         this.addTaskOrShowJobWindow(jobId, {
             type: 'window',
         });
     }
 
+    /**
+     * Start a job.
+     * @param jobId
+     * @param duration in seconds
+     */
     start(jobId: number, duration: number): void {
         this.addTaskOrShowJobWindow(jobId, {
             type: 'startJob',
@@ -199,30 +238,6 @@ export class NearestJobs implements Component {
             return settings === NearestJobsBarPosition.up;
         }
         return settings === NearestJobsBarPosition.right;
-    }
-
-    /**
-     * Fetch minimap data if not fetched already.
-     * @param callback to call when the data are fetched
-     * @param showUserMessage
-     * @private
-     */
-    private getMinimap(callback?: (map: MapAjaxResponse) => void, showUserMessage = false): void {
-        if (typeof this.map !== 'undefined') {
-            return callback?.(this.map);
-        }
-
-        if (showUserMessage) {
-            new this.window.UserMessage(this.language.getTranslation(143), 'success').show();
-        }
-
-        this.window.Ajax.get<MapAjaxResponse>('map', 'get_minimap', {}, (data): void => {
-            if (data.error) {
-                return new this.window.UserMessage('Unable to fetch the map!').show();
-            }
-            this.map = data;
-            callback?.(data);
-        });
     }
 }
 

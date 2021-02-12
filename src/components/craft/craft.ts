@@ -35,6 +35,11 @@ export class Craft implements Component {
         this.window.open({ tab: professionId });
     }
 
+    @CatchErrors('Craft.openCraftRecipeWindow')
+    openCraftRecipeWindow(recipeId: number): void {
+        this.logger.log(`show recipe id = ${recipeId}`);
+    }
+
     private updateLastCraft() {
         this.theWestWindow.$.get(
             'game.php',

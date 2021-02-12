@@ -9,6 +9,11 @@ export interface TWCalcPublicApi {
     doImport: () => void;
     loadPack: (languagePack: LanguagePack) => void;
     trackChest: (chestId: number, resOb: ItemUseWindowXHRResponse) => void;
+    openCraftRecipeWindow: (itemId: number) => void;
+    openNearestJobWindowByProductId: (itemId: number) => void;
+    openShopWindowByItemId: (itemId: number) => void;
+    findQuestEmployer: (questEmployer: number) => void;
+    startNearestJob: (jobId: number) => void;
     _window: WestCalcWindow;
     _initializer: Initializer;
 }

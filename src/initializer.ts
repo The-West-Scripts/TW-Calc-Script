@@ -4,6 +4,7 @@ import { Birthday } from './components/birthday/birthday';
 import { CatchErrors } from './components/error-tracker/catch-errors';
 import { Chests } from './components/chests/chests';
 import { Config } from './components/config/config';
+import { Craft } from './components/craft/craft';
 import { DuelBar } from './components/duel-bar/duel-bar';
 import { ErrorTracker } from './components/error-tracker/error-tracker';
 import { Gui } from './components/gui/gui';
@@ -12,6 +13,7 @@ import { inject, singleton } from 'tsyringe';
 import { Language } from './components/language/language';
 import { Logger } from './components/logger/logger';
 import { NearestJobs } from './components/nearest-jobs/nearest-jobs';
+import { Quests } from './components/quests/quests';
 import { Settings } from './components/settings/settings';
 import { TheWestWindow } from './@types/the-west';
 import { TombolaExporter } from './components/tombola/tombola-exporter';
@@ -37,6 +39,8 @@ export class Initializer {
         public readonly battleCalc: BattleCalc,
         public readonly alarmClock: AlarmClock,
         public readonly chests: Chests,
+        public readonly quests: Quests,
+        public readonly craft: Craft,
         @inject('window') public readonly window: TheWestWindow,
     ) {
         this.errorTracker.execute(() => {
@@ -52,6 +56,8 @@ export class Initializer {
                 this.battleCalc.init();
                 this.alarmClock.init();
                 this.chests.init();
+                this.quests.init();
+                this.craft.init();
             });
         });
     }

@@ -23,6 +23,12 @@ export function bootstrap(dependencyContainer: DependencyContainer): TWCalcPubli
             language.loadPack(languagePack);
         },
         trackChest: (...args) => initializer.chests.trackChest(...args),
+        openCraftRecipeWindow: (itemId: number) => initializer.craft.openCraftRecipeWindow(itemId),
+        openNearestJobWindowByProductId: (itemId: number) =>
+            initializer.nearestJobs.openNearestJobWindowByProductId(itemId),
+        openShopWindowByItemId: (itemId: number) => initializer.quests.openShopWindowByItemId(itemId),
+        findQuestEmployer: (questEmployer: number) => initializer.quests.findQuestEmployer(questEmployer),
+        startNearestJob: (jobId: number) => initializer.nearestJobs.startNearestJob(jobId),
         _window: initializer.westCalc.window,
         _initializer: initializer,
     };

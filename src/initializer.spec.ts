@@ -6,12 +6,14 @@ import { Birthday } from './components/birthday/birthday';
 import { Character, Game, GameScript, NotiBar, TheWestApi, TheWestWindow, WestUi } from './@types/the-west';
 import { Chests } from './components/chests/chests';
 import { container } from 'tsyringe';
+import { Craft } from './components/craft/craft';
 import { DuelBar } from './components/duel-bar/duel-bar';
 import { Gui } from './components/gui/gui';
 import { Initializer } from './initializer';
 import { Language } from './components/language/language';
 import { Mock } from 'ts-mocks';
 import { NearestJobs } from './components/nearest-jobs/nearest-jobs';
+import { Quests } from './components/quests/quests';
 import { TombolaExporter } from './components/tombola/tombola-exporter';
 import { Updater } from './components/updater/updater';
 
@@ -27,6 +29,8 @@ describe('Initializer', () => {
     let battleCalcMock: Mock<BattleCalc>;
     let alarmClockMock: Mock<AlarmClock>;
     let chestsMock: Mock<Chests>;
+    let questsMock: Mock<Quests>;
+    let craftMock: Mock<Craft>;
     let windowMock: Mock<TheWestWindow>;
     let languageInitCallback: () => void;
 
@@ -64,6 +68,12 @@ describe('Initializer', () => {
         chestsMock = new Mock<Chests>({
             init: Mock.ANY_FUNC,
         });
+        questsMock = new Mock<Quests>({
+            init: Mock.ANY_FUNC,
+        });
+        craftMock = new Mock<Craft>({
+            init: Mock.ANY_FUNC,
+        });
 
         windowMock = new Mock<TheWestWindow>({
             Character: new Mock<Character>().Object,
@@ -95,6 +105,8 @@ describe('Initializer', () => {
         dependencyContainer.register(BattleCalc, { useValue: battleCalcMock.Object });
         dependencyContainer.register(AlarmClock, { useValue: alarmClockMock.Object });
         dependencyContainer.register(Chests, { useValue: chestsMock.Object });
+        dependencyContainer.register(Quests, { useValue: questsMock.Object });
+        dependencyContainer.register(Craft, { useValue: craftMock.Object });
         dependencyContainer.register('localStorage', { useValue: localStorage });
         dependencyContainer.register('window', {
             useValue: windowMock.Object,
@@ -141,6 +153,8 @@ describe('Initializer', () => {
             battleCalcMock,
             alarmClockMock,
             chestsMock,
+            questsMock,
+            craftMock,
         ].map(component => component.Object.init);
 
         expect(languageMock.Object.init).toHaveBeenCalled();
