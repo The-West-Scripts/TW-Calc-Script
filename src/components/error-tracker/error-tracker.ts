@@ -54,12 +54,13 @@ export class ErrorTracker {
      * Execute a function immediately and catch errors.
      * @param fn
      */
-    execute(fn: () => void): void {
+    execute<T>(fn: () => T): T | undefined {
         try {
-            fn();
+            return fn();
         } catch (e: any) {
             const error = asErrorObject(e);
             this.track(error);
+            return undefined;
         }
     }
 

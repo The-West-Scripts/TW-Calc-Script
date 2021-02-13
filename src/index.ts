@@ -6,10 +6,12 @@ import 'regenerator-runtime/runtime';
 import DependencyContainer from 'tsyringe/dist/typings/types/dependency-container';
 import { bootstrap } from './bootstrap';
 import { container } from 'tsyringe';
+import { tw2patch } from './tw2-patch';
 import { TWCalcPublicApi } from './tw-calc.types';
 
 container.register('window', { useValue: window });
 container.register('localStorage', { useValue: localStorage });
+container.register('tw2patch', { useValue: tw2patch });
 
 export default window['TW_Calc'] = injectScript<TWCalcPublicApi>(bootstrap, location);
 

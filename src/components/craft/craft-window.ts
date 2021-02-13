@@ -1,45 +1,38 @@
-import { Bag, TheWestWindow } from '../../@types/the-west';
-import { CraftView } from './craft-view';
-import { CraftWindowTab } from './craft-window.types';
+import { CatchErrors } from '../error-tracker/catch-errors';
+import { CraftService, craftTranslations } from './craft-service';
+import { CraftViewFactory } from './craft-view-factory';
+import { CraftWindowTab, CraftWindowTabInitOptions } from './craft-window.types';
 import { ErrorTracker } from '../error-tracker/error-tracker';
 import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
-import { Recipes } from './craft.types';
+import { TheWestWindow } from '../../@types/the-west';
 import { TW2Window } from '../tw2-window/tw2-window';
 import { TW2WindowOpenOptions } from '../tw2-window/tw2-window.types';
 
-export class CraftWindow extends TW2Window<CraftWindowTab> {
+export class CraftWindow extends TW2Window<CraftWindowTab, CraftWindowTabInitOptions> {
     constructor(
         readonly window: TheWestWindow,
-        readonly errorTracker: ErrorTracker,
         language: Language,
         logger: Logger,
-        // @ts-ignore
-        private readonly recipes: Recipes,
+        private readonly craftViewFactory: CraftViewFactory,
+        private readonly craftService: CraftService,
+        public readonly errorTracker: ErrorTracker,
     ) {
         super('TWCalcCraft', errorTracker, window, language, logger, {
             title: { type: 'translation', translation: 183 },
         });
 
         for (let i = 1; i <= 4; i++) {
-            this.addView(CraftView.of(i, this.window));
+            this.addView(
+                this.craftViewFactory.getWindowView(i, { type: 'translation', translation: craftTranslations[i] }),
+            );
         }
     }
 
-    open(options?: Partial<TW2WindowOpenOptions<CraftWindowTab>>): void {
+    @CatchErrors('CraftWindow.open')
+    open(options?: Partial<TW2WindowOpenOptions<CraftWindowTab, CraftWindowTabInitOptions>>): void {
         super.open(options);
-        handleBagChanges(this.window, this.updateResources);
+        // update last crafted recipes, since we do it only on script init
+        this.craftService.update();
     }
-
-    private updateResources() {
-        // TODO: implement
-    }
-}
-
-function handleBagChanges(window: TheWestWindow, callback: () => void): void {
-    window.Bag.updateChanges = function (this: Bag, changes: unknown, from: unknown) {
-        this.handleChanges(changes, from);
-        window.Crafting.updateResources();
-        callback();
-    };
 }

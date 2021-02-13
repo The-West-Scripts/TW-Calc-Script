@@ -112,6 +112,7 @@ describe('Initializer', () => {
             useValue: windowMock.Object,
         });
         dependencyContainer.register('onGoingEntry', { useValue: Mock.ANY_FUNC });
+        dependencyContainer.register('tw2patch', { useValue: Mock.ANY_FUNC });
     });
 
     afterEach(() => {

@@ -19,10 +19,13 @@ const defaultOptions: MarkOptional<TW2WindowOptions, 'title'> = {
     content: { marginLeft: 12, marginBottom: 12, marginTop: 12, marginRight: 12 },
 };
 
-export class TW2Window<Tab extends string | number = string> {
+export class TW2Window<Tab extends string | number = string, TabInitOptions = undefined> {
     protected readonly $: JQueryStatic;
     protected options: Required<TW2WindowOptions>;
-    protected readonly views: Partial<Record<Tab, TW2WindowView<Tab>>> = {};
+    protected readonly views: Record<Tab, TW2WindowView<Tab, TabInitOptions>> = {} as Record<
+        Tab,
+        TW2WindowView<Tab, TabInitOptions>
+    >;
 
     private win?: tw2gui.Window;
 
@@ -46,7 +49,7 @@ export class TW2Window<Tab extends string | number = string> {
     }
 
     @CatchErrors('TW2Window.open')
-    public open(options?: Partial<TW2WindowOpenOptions<Tab>>): void {
+    public open(options?: Partial<TW2WindowOpenOptions<Tab, TabInitOptions>>): void {
         this.logger.log(`open window "${this.id}"...`, this.options, this.views);
 
         const additionalClasses = [];
@@ -61,28 +64,39 @@ export class TW2Window<Tab extends string | number = string> {
             this.win.setSize(width, height);
         }
 
-        const tabKeys = Object.keys(this.views);
-        tabKeys.forEach(tab => {
-            const tabOptions = this.views[tab];
-            const tabTitle = getTitle(this.language, tabOptions.title) || '';
+        const tabs = Object.values<TW2WindowView<Tab, TabInitOptions>>(this.views);
+        tabs.forEach(tab => {
+            const tabTitle = getTitle(this.language, tab.title) || '';
 
             const { marginLeft, marginRight, marginTop, marginBottom } = this.options.content;
             this.tw2win
-                .addTab(tabTitle, tab, () => this.setTab(tab as Tab))
+                .addTab(tabTitle, tab.key.toString(), () => this.setTab(tab.key, 'tabSwitch'))
                 .appendToContentPane(
                     this.window.$(
-                        `<div id="tab_${tab}" style="display: none; overflow: hidden; margin: ${marginTop}px ${marginLeft}px ${marginBottom}px ${marginRight}px"></div>`,
+                        `<div id="tab_${tab.key}" style="display: none; overflow: hidden; margin: ${marginTop}px ${marginLeft}px ${marginBottom}px ${marginRight}px"></div>`,
                     ),
                 );
         });
 
+        // call destroy action when window is destroyed
+        this.win.addEventListener('WINDOW_DESTROY', () => {
+            tabs.forEach(tab => {
+                this.errorTracker.execute(() => {
+                    if (!tab.destroy) {
+                        return;
+                    }
+                    tab?.destroy();
+                });
+            });
+        });
+
         // if provided, show the tab from args
         if (options && options.tab) {
-            this.setTab(options.tab);
+            this.setTab(options.tab, 'windowOpen', options.tabInitOptions);
         } else {
             // show the first tab
-            if (tabKeys.length) {
-                this.setTab(tabKeys[0] as Tab);
+            if (tabs.length) {
+                this.setTab(tabs[0].key, 'windowOpen');
             }
         }
 
@@ -110,35 +124,64 @@ export class TW2Window<Tab extends string | number = string> {
     }
 
     @CatchErrors('TW2Window.setTab')
-    public setTab(tab: Tab): void {
+    public setTab(tab: Tab, trigger: 'windowOpen' | 'tabSwitch', tabInitOptions?: TabInitOptions): void {
         const tabOptions = this.views[tab];
+        this.logger.log(`set tab = ${tab}`, tab, tabOptions, tabInitOptions);
         if (typeof tabOptions !== 'undefined') {
-            this.showTab(tab, tabOptions as TW2WindowView<Tab>);
+            // If loader is enabled
+            if (tabOptions.loader) {
+                this.getWindow().showLoader();
+                const timeout = trigger === 'tabSwitch' ? 50 : 500; // Higher timeout because of slow window rendering
+                // It is more natural, when the desired tab is already activated
+                this.tw2win.activateTab(tab.toString());
+                // Show tab in the timeout, so the window is rendered at first and loader is visible if needed
+                setTimeout(() => {
+                    this.showTab(tab, tabOptions as TW2WindowView<Tab, TabInitOptions>, tabInitOptions);
+                    this.getWindow().hideLoader();
+                }, timeout);
+            } else {
+                this.showTab(tab, tabOptions as TW2WindowView<Tab, TabInitOptions>, tabInitOptions);
+            }
         } else {
             throw new Error(`Tab "${tab}" does not exist!`);
         }
     }
 
-    protected addView(view: TW2WindowView<Tab>): void {
+    protected addView(view: TW2WindowView<Tab, TabInitOptions>): void {
         this.views[view.key] = view;
+    }
+
+    private getWindow(): tw2gui.Window {
+        if (!this.win) {
+            throw new Error('Window object does not exist!');
+        }
+        return this.win;
     }
 
     private getTabMainDiv(tab: Tab): JQuery {
         return this.$(`.tw2gui_window_content_pane > #tab_${tab}`, this.getMainDiv());
     }
 
-    private showTab<T extends Tab>(tab: T, tabOptions: TW2WindowView<T>): void {
-        // set content to the main div
-        this.getTabMainDiv(tabOptions.key).empty().append(tabOptions.getMainDiv());
+    private showTab<T extends Tab>(
+        tab: T,
+        tabOptions: TW2WindowView<T, TabInitOptions>,
+        tabInitOptions?: TabInitOptions,
+    ): void {
         // activate the desired tab
         this.tw2win.activateTab(tab.toString());
+        // set content to the main div
+        const mainDiv = this.errorTracker.execute(() => tabOptions.getMainDiv());
+        this.getTabMainDiv(tabOptions.key)
+            .empty()
+            .append(mainDiv || '');
         // hide all content panes
         $(`div.tw2gui_window_content_pane > *`, this.getMainDiv()).each(function () {
             $(this).hide();
         });
         // if initialization function is defined, call it
         if (typeof tabOptions.init === 'function') {
-            tabOptions.init();
+            const tabInit = tabOptions.init;
+            this.errorTracker.execute(() => tabInit(tabInitOptions));
         }
         // fade in the desired content pane
         $(`div.tw2gui_window_content_pane > #tab_${tab}`, this.getMainDiv()).fadeIn();

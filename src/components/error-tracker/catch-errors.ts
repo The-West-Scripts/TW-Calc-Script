@@ -1,4 +1,8 @@
-import { Component } from '../component.types';
+import { ErrorTracker } from './error-tracker';
+
+interface Component {
+    errorTracker: ErrorTracker;
+}
 
 export type CatchErrors<TargetObject extends Component = Component> = (
     target: TargetObject,

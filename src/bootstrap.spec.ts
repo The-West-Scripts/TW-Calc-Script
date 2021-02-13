@@ -2,7 +2,7 @@ import $ from 'jquery';
 import DependencyContainer from 'tsyringe/dist/typings/types/dependency-container';
 import { bootstrap } from './bootstrap';
 import { container } from 'tsyringe';
-import { Game, GameScript, TheWestWindow } from './@types/the-west';
+import { Game, GameScript, NotiBar, TheWestWindow, WestUi } from './@types/the-west';
 import { Mock } from 'ts-mocks';
 
 describe('bootstrap', () => {
@@ -21,6 +21,11 @@ describe('bootstrap', () => {
                         setGui: () => undefined,
                     }).Object,
             },
+            WestUi: new Mock<WestUi>({
+                NotiBar: new Mock<NotiBar>({
+                    add: Mock.ANY_FUNC,
+                }).Object,
+            }).Object,
             console: console,
         });
 
@@ -32,6 +37,7 @@ describe('bootstrap', () => {
         // TODO: remove these registrations by proper mocking of Initializer
         dependencyContainer.register('onGoingEntry', { useValue: Mock.ANY_FUNC });
         dependencyContainer.register('timeout', { useValue: 0 });
+        dependencyContainer.register('tw2patch', { useValue: Mock.ANY_FUNC });
     });
 
     afterEach(() => {

@@ -1,12 +1,24 @@
-import ClickEvent = JQuery.ClickEvent;
-
 declare global {
     interface Number {
         formatDuration: () => number;
+        formatDurationBuffWay(): () => string;
     }
 }
 
 export namespace tw2gui {
+    export interface Progressbar {
+        divMain: JQuery;
+
+        getValue(): number;
+        setMaxValue(value: number): Progressbar;
+        setValue(value: number): Progressbar;
+        getMainDiv(): JQuery;
+    }
+
+    export interface ProgressbarConstructor {
+        new (): Progressbar;
+    }
+
     export interface Dialog {
         divMain: JQuery;
 
@@ -92,21 +104,23 @@ export namespace tw2gui {
         new (): Selectbox;
     }
 
-    export interface Checkbox {
-        setId(id: string): Checkbox;
-        setId(id: string, groupClass: string): Checkbox;
+    export interface Checkbox<T = boolean> {
+        setId(id: string): Checkbox<T>;
+        setId(id: string, groupClass: string): Checkbox<T>;
         isSelected(): boolean;
-        setRadiobutton(): Checkbox;
-        setLabel(label: string): Checkbox;
-        setSelected(state: boolean): Checkbox;
-        setEnabled(state: boolean): Checkbox;
-        getValue(): boolean;
-        setCallback(cb: (this: Checkbox) => void): Checkbox;
+        setRadiobutton(): Checkbox<T>;
+        setLabel(label: string): Checkbox<T>;
+        setSelected(state: boolean, noCallback?: boolean): Checkbox<T>;
+        setEnabled(state: boolean): Checkbox<T>;
+        setTooltip(tooltip: string): Checkbox<T>;
+        setValue(value: T): Checkbox<T>;
+        getValue(): T;
+        setCallback(cb: (this: Checkbox<T>) => void): Checkbox<T>;
         getMainDiv(): JQuery;
     }
 
     export interface CheckboxConstructor {
-        new (label: string): Checkbox;
+        new <T = boolean>(label: string, group?: string, callback?: (this: Checkbox<T>) => void): Checkbox<T>;
     }
 
     export interface Button {
@@ -145,7 +159,10 @@ export namespace tw2gui {
         appendToContentPane(content: JQuery | string): Window;
         destroy(): Window;
         setSize(width: number, height: number): Window;
+        showLoader(): undefined;
+        hideLoader(): unknown;
         bringToTop(): Window;
+        addEventListener(type: string, callback: (window: Window) => void): Window;
     }
 
     export interface VerticalBar {
@@ -159,9 +176,14 @@ export namespace tw2gui {
     export interface Scrollpane {
         divMain: JQuery;
         verticalBar: VerticalBar;
+        clipPane: JQuery;
+        contentPane: JQuery;
 
         appendContent(content: JQuery): Scrollpane;
         getMainDiv(): JQuery;
+        scrollTo(x: number, y: number, absolute: boolean): Scrollpane;
+        scrollToTop(): void;
+        scrollToEnd(): void;
     }
 
     export interface ScrollpaneConstructor {
@@ -185,6 +207,35 @@ export namespace tw2gui {
     export interface TextareaConstructor {
         new (): Textarea;
     }
+
+    export interface Plusminusfield {
+        divMain: JQuery;
+        enabled: boolean;
+
+        setMin(min: number): Plusminusfield;
+        setMax(max: number): Plusminusfield;
+        setValue(value: number): Plusminusfield;
+        setEnabled(isEnabled: boolean): Plusminusfield;
+        getMax(): number;
+        getMin(): number;
+        getValue(): number;
+        togglePlus(): Plusminusfield;
+        toggleMinus(): Plusminusfield;
+        getMainDiv(): JQuery;
+    }
+
+    export interface PlusminusfieldConstructor {
+        new (
+            id: string,
+            start_value: number,
+            min_value: number,
+            max_value: number,
+            extra_points: number,
+            callbackPlus: (event: JQuery.ClickEvent<JQuery, { obj: Plusminusfield }>) => void,
+            callbackMinus: (event: JQuery.ClickEvent<JQuery, { obj: Plusminusfield }>) => void,
+            callbackWheel: (event: Event, delte: number, button: Plusminusfield) => void,
+        ): Plusminusfield;
+    }
 }
 
 export interface WestGui {
@@ -198,6 +249,8 @@ export interface WestGui {
     Groupframe: tw2gui.GroupframeConstructor;
     Textarea: tw2gui.TextareaConstructor;
     TextInputDialog: tw2gui.TextInputDialogConstructor;
+    Progressbar: tw2gui.ProgressbarConstructor;
+    Plusminusfield: tw2gui.PlusminusfieldConstructor;
 }
 
 export interface West {
@@ -241,6 +294,7 @@ export interface Character {
     duelLevel: number;
     duelMotivation: number;
     professionId: number | null;
+    professionSkill: number | null;
     homeTown: {
         town_id: number;
         x: number;
@@ -256,6 +310,8 @@ export interface Character {
     level: number;
     getExperience4Level(): number;
     getMaxExperience4Level(): number;
+    updateDailyTask(type: string, value: number): void;
+    setProfessionSkill(value: number): void;
 }
 
 export interface TaskQueue {
@@ -283,16 +339,25 @@ export interface Premium {
 }
 
 export interface Item {
+    name: string;
+    craftitem: number;
+    profession_id: number;
     item_id: number;
     item_base_id: number;
-    type: string;
+    type: 'recipe' | string;
     traderlevel: number;
     spec_type: string;
+    skillcolor: unknown;
+    max_level: number;
+    min_level: number;
+    resources?: Array<{ item: number | Item; count: number }>; // recipe resouces
+    blocktime?: number; // cooldown after the recipe is crafted
 }
 
 export interface ItemManager {
     isLoaded(): boolean;
     get(id: number): Item;
+    getByBaseId(id: number): Item;
 }
 
 export interface TheWestApi {
@@ -319,10 +384,17 @@ export interface GameScript {
 
 export interface Ajax {
     get<T extends any>(window: string, ajax: string, param: Record<string, string>, callback: (data: T) => void): void;
-    remoteCallMode<T extends any>(
+    remoteCallMode<T extends any, D = Record<string, unknown>>(
         window: string,
         mode: string,
-        param: Record<string, any>,
+        param: D,
+        callback: (data: T) => void,
+        view?: string,
+    ): void;
+    remoteCall<T extends any, D = Record<string, unknown>>(
+        window: string,
+        action: string,
+        param: D,
         callback: (data: T) => void,
         view?: string,
     ): void;
@@ -387,17 +459,29 @@ export interface InventoryItem {
     getId(): number;
 }
 
-export interface Bag {
-    loaded: boolean;
-    loadItems: () => void;
-    handleChanges(changes: unknown, from: unknown): void;
-    updateChanges(changes: unknown, from: unknown): void;
-    getItemByItemId(itemId: number): InventoryItem;
-    getItemsByItemIds(itemIdList: Array<number>): Array<InventoryItem>;
+export interface BagChange {
+    item_id: 1899000;
+    inv_id: 132048195;
+    count: 277;
 }
 
+export interface Bag {
+    loaded: boolean;
+    items_by_id: Record<number, InventoryItem>;
+    loadItems: () => void;
+    handleChanges(changes: Array<BagChange>, from: unknown): void;
+    updateChanges(changes: Array<BagChange>, from: unknown): void;
+    getItemByItemId(itemId: number): InventoryItem;
+    getItemsByItemIds(itemIdList: Array<number>): Array<InventoryItem>;
+    getItemCount(item_id: number): number;
+}
+
+export type CraftingRecipeDifficulty = 'easy' | 'medium' | 'hard';
+
 export interface Crafting {
-    updateResources: () => void;
+    description: string;
+    updateResources(): void;
+    getRecipeColor(item: Item): CraftingRecipeDifficulty;
 }
 
 export interface Player {
@@ -453,8 +537,8 @@ export interface Skill<T extends SkillKey> {
             start_value: number;
             max_value: number;
             extra_points: number;
-            callbackPlus: (event: ClickEvent) => void;
-            callbackMinus: (event: ClickEvent) => void;
+            callbackPlus: (event: JQuery.ClickEvent) => void;
+            callbackMinus: (event: JQuery.ClickEvent) => void;
         },
     ): JQuery;
 }
@@ -488,16 +572,30 @@ export interface Wear {
     get(type: string): InventoryItem;
 }
 
-export interface TW2WidgetInventoryItem {
-    getMainDiv(): JQuery;
-}
+export namespace tw2widget {
+    export interface CraftingItem {
+        obj: Item;
+        setCount(count: number): CraftingItem;
+        setRequired(bagCount: number, requiredCount: number): CraftingItem;
+        getMainDiv(): JQuery;
+    }
 
-export interface TW2WidgetInventoryItemConstructor {
-    new (item: Item): TW2WidgetInventoryItem;
+    export interface CraftingItemConstructor {
+        new (item: Item): CraftingItem;
+    }
+
+    export interface InventoryItem {
+        getMainDiv(): JQuery;
+    }
+
+    export interface InventoryItemConstructor {
+        new (item: Item): InventoryItem;
+    }
 }
 
 export interface TW2Widget {
-    InventoryItem: TW2WidgetInventoryItemConstructor;
+    InventoryItem: tw2widget.InventoryItemConstructor;
+    CraftingItem: tw2widget.CraftingItemConstructor;
 }
 
 export interface Set {
@@ -520,7 +618,8 @@ export interface WestItemUtilities {
 }
 
 export interface ItemUse {
-    doIt: (itemId: number, callback: () => void) => void;
+    use(itemId: number, callback: () => void, type: string): void;
+    doIt(itemId: number, callback: () => void): void;
 }
 
 export interface ItemUseWindowXHRResponse {
@@ -542,8 +641,25 @@ export interface TownShopWindowXHRResponse {
     trader_inv: Array<{ item_id: number }>;
 }
 
-export interface TownShopWindowXHRErrorResponse {
-    error: string;
+export interface CraftingWindowStartCraftXHRResponse {
+    error: false;
+    msg: {
+        profession_skill: number;
+        count: number;
+        msg: string;
+    };
+}
+
+export interface CraftingWindowXHRResponse {
+    error: false;
+    recipes_content: Array<{ item_id: number; last_craft: number | null }>;
+    profession_maxskill: number;
+    profession_skill: number;
+}
+
+export interface XHRErrorResponse {
+    error: true;
+    msg: string;
 }
 
 export interface JobViewWindowXHRResponse {
@@ -608,7 +724,7 @@ export interface Quest {
 export interface JSRequirement {
     id: number;
     type: string;
-    value: string;
+    value?: string;
 }
 
 export interface QuestConstructor {
@@ -618,6 +734,19 @@ export interface QuestConstructor {
 
 export interface MinimapWindow {
     getQuicklink(id: number, type: string): string;
+}
+
+export interface EventHandler {
+    signal(event: string): void;
+}
+
+export interface ItemPopup {
+    bindTo(el: JQuery): void;
+    getXHTML(): string;
+}
+
+export interface ItemPopupConstructor {
+    new (item: Item): ItemPopup;
 }
 
 export interface TheWestWindow extends Window {
@@ -656,4 +785,6 @@ export interface TheWestWindow extends Window {
     Trader: Trader;
     Quest: QuestConstructor;
     MinimapWindow: MinimapWindow;
+    EventHandler: EventHandler;
+    ItemPopup: ItemPopupConstructor;
 }

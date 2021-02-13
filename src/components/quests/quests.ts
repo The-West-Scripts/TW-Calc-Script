@@ -4,8 +4,8 @@ import {
     Map,
     TheWestWindow,
     Town,
-    TownShopWindowXHRErrorResponse,
     TownShopWindowXHRResponse,
+    XHRErrorResponse,
 } from '../../@types/the-west';
 import { Component } from '../component.types';
 import { Config } from '../config/config';
@@ -77,7 +77,7 @@ function getShop($: JQueryStatic, shopType: string, townId: number): Promise<Arr
     return new Promise<Array<number>>((resolve, reject) => {
         $.get(
             'game.php?window=building_' + shopType + '&town_id=' + townId,
-            (json: TownShopWindowXHRResponse | TownShopWindowXHRErrorResponse) => {
+            (json: TownShopWindowXHRResponse | XHRErrorResponse) => {
                 if ('error' in json) {
                     return reject();
                 }

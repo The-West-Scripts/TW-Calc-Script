@@ -189,14 +189,14 @@ export class Gui implements Component {
     }
 
     private initCraftButton(): void {
-        const professionId = this.window.Character.professionId;
+        const hasProfession = this.window.Character.professionId != null;
 
-        if (this.settings.get(SettingBoolean.MenuCraftButton) && professionId !== null) {
+        if (this.settings.get(SettingBoolean.MenuCraftButton) && hasProfession) {
             this.window
                 .$('.button.crafting.background')
                 .off('click')
                 .on('click', () => {
-                    this.craft.open(professionId);
+                    this.craft.open();
                 });
         }
     }

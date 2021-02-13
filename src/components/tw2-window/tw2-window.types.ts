@@ -12,9 +12,13 @@ export interface TW2WindowTranslation {
     translation: number;
 }
 
-export interface TW2WindowView<Tab> {
+export interface TW2WindowView<Tab, InitOptions = undefined> {
     key: Tab;
     title: TW2WindowPlainText | TW2WindowTranslation | undefined;
+    /**
+     * Whether show loader when switch tab.
+     */
+    loader?: boolean;
     /**
      * getMainDiv() method is call when tab is opened.
      */
@@ -22,7 +26,11 @@ export interface TW2WindowView<Tab> {
     /**
      * init method is called after getMainDiv() is called.
      */
-    init?(): void;
+    init?(initOptions?: InitOptions): void;
+    /**
+     * destroy method is called when window is destroyed.
+     */
+    destroy?(): void;
 }
 
 export interface TW2WindowFactoryView {
@@ -34,7 +42,8 @@ export interface TW2WindowPosition {
     y: number;
 }
 
-export interface TW2WindowOpenOptions<Tab> {
+export interface TW2WindowOpenOptions<Tab, TabInitOptions = undefined> {
     tab: Tab;
     position: TW2WindowPosition;
+    tabInitOptions?: TabInitOptions;
 }

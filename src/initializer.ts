@@ -17,6 +17,7 @@ import { Quests } from './components/quests/quests';
 import { Settings } from './components/settings/settings';
 import { TheWestWindow } from './@types/the-west';
 import { TombolaExporter } from './components/tombola/tombola-exporter';
+import { tw2patch } from './tw2-patch';
 import { Updater } from './components/updater/updater';
 import { WestCalc } from './components/west-calc/west-calc';
 
@@ -42,10 +43,12 @@ export class Initializer {
         public readonly quests: Quests,
         public readonly craft: Craft,
         @inject('window') public readonly window: TheWestWindow,
+        @inject('tw2patch') public readonly patch: typeof tw2patch,
     ) {
         this.errorTracker.execute(() => {
             this.logger.log('initializing tw-calc...');
             this.init();
+            this.patch(this.window);
             this.language.init(() => {
                 this.gui.init();
                 this.updater.init();

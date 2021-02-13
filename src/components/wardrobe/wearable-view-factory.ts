@@ -26,6 +26,7 @@ export class WearableViewFactory {
         return {
             key,
             title,
+            loader: true,
             init() {
                 wearableView.show(true);
             },
