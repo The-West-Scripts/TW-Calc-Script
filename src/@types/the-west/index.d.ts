@@ -179,7 +179,8 @@ export namespace tw2gui {
         clipPane: JQuery;
         contentPane: JQuery;
 
-        appendContent(content: JQuery): Scrollpane;
+        appendContent(content: JQuery | string): Scrollpane;
+        getContentPane(): JQuery;
         getMainDiv(): JQuery;
         scrollTo(x: number, y: number, absolute: boolean): Scrollpane;
         scrollToTop(): void;
@@ -253,9 +254,91 @@ export interface WestGui {
     Plusminusfield: tw2gui.PlusminusfieldConstructor;
 }
 
+export type WofPaySpin = unknown;
+export type WofPaySpinHandler = unknown;
+
+export interface Wof {
+    id: number;
+    mode: unknown;
+    name: string;
+    notibar: unknown;
+    prizes: unknown;
+    title: string;
+    type: 'heartswof' | string;
+    window: tw2gui.Window;
+}
+
+export interface WofContext {
+    divMain: JQuery;
+    paySpin: WofPaySpin;
+    paySpinHandler: WofPaySpinHandler;
+    rewards: Array<number>;
+    title: string;
+    type: string;
+    window_: tw2gui.Window;
+    wof: Wof;
+}
+
+export interface WheelofFortuneGambleXHRResponse {
+    coupons: number;
+    exchange_rewards: Array<Array<number>>;
+    free: number;
+    nuggets: number;
+    // easter
+    prize?: {
+        itemEnchance: number;
+        itemId: number;
+    };
+    picked?: [number, number]; // travelling fair only
+    // easter & independence tombolas: outcome & enhance
+    // octoberfest: failed, normal: itemId & itemEnhance, after a bribe: outcome & enhance
+    failed?: boolean;
+    outcome?: { itemEnhance: number; itemId: number };
+    construction_id?: number; // independence day
+    streak?: number; // easter
+    cost?: unknown; // dotd
+    stages?: Array<{ rewards: { item: number } }>; // dotd
+    itemId?: number;
+    itemEnhance?: number;
+    enhance?: number;
+}
+
+export interface WheelofFortune {
+    process(
+        action: string,
+        data: WofData,
+        callback: (this: WofContext, response: WheelofFortuneGambleXHRResponse) => void,
+        context: WofContext,
+        window: tw2gui.Window,
+        errorCallback: () => void,
+    ): void;
+}
+
+export interface WheelofFortuneConsructor {
+    new (): WheelofFortune;
+}
+
+export interface WofData {
+    wofid: number;
+}
+
+export interface WofDotdCardgameWindow {
+    requestData(action: string, data: WofData, callback: (response: WheelofFortuneGambleXHRResponse) => void): void;
+}
+
+export interface WofDotdCardgameWindowConstructor {
+    new (): WofDotdCardgameWindow;
+}
+
+export interface WofObject {
+    WheelofFortune: WheelofFortuneConsructor;
+    WofDotdCardgameWindow: WofDotdCardgameWindowConstructor;
+}
+
 export interface West {
     gui: WestGui;
     item: WestItemUtilities;
+    wof: WofObject;
 }
 
 export interface WindowManager {
@@ -267,6 +350,7 @@ export interface Game {
     locale: string;
     version: string;
     gameURL: string;
+    sesData: Record<string, unknown>;
 }
 
 export interface Task {
@@ -585,6 +669,8 @@ export namespace tw2widget {
     }
 
     export interface InventoryItem {
+        setCount(count: number): InventoryItem;
+        setShowcompare(enabled: boolean): InventoryItem;
         getMainDiv(): JQuery;
     }
 

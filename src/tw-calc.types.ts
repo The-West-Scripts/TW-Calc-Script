@@ -1,3 +1,4 @@
+import { AllTombolaInfo } from './components/tombola/tombola-exporter.types';
 import { Initializer } from './initializer';
 import { ItemUseWindowXHRResponse } from './@types/the-west';
 import { LanguagePack } from './components/language/language.types';
@@ -14,6 +15,7 @@ export interface TWCalcPublicApi {
     openShopWindowByItemId: (itemId: number) => void;
     findQuestEmployer: (questEmployer: number) => void;
     startNearestJob: (jobId: number) => void;
+    addTombolaInfo: (tombola: AllTombolaInfo) => void;
     _window: WestCalcWindow;
     _initializer: Initializer;
 }

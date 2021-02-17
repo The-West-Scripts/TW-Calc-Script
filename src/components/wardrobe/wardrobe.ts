@@ -27,7 +27,6 @@ export class Wardrobe {
     open(): void {
         const { wman, Wear } = this.window;
         const wearWindow = wman.getById('wear');
-        const inventoryWindow = wman.getById('inventory');
 
         // if not already opened, open wear window
         if (typeof wearWindow === 'undefined') {
@@ -38,9 +37,12 @@ export class Wardrobe {
         }
 
         // and destroy inventory window
-        if (typeof inventoryWindow !== 'undefined') {
-            inventoryWindow.destroy();
-        }
+        setTimeout(() => {
+            const inventoryWindow = wman.getById('inventory');
+            if (typeof inventoryWindow !== 'undefined') {
+                inventoryWindow.destroy();
+            }
+        });
 
         this.wardrobeWindow.open({ position: this.getWearWindowPosition() });
     }

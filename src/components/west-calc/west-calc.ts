@@ -9,7 +9,7 @@ import { Logger } from '../logger/logger';
 import { NotepadView } from '../notepad/notepad-view';
 import { SettingsView } from '../settings/settings-view';
 import { TheWestWindow } from '../../@types/the-west';
-import { TombolaView } from '../tombola/tombola-view';
+import { TombolaViewFactory } from '../tombola/tombola-view-factory';
 import { WestCalcWindow } from './west-calc-window';
 
 @singleton()
@@ -26,7 +26,7 @@ export class WestCalc {
         characterView: CharacterView,
         battleCalcView: BattleCalcView,
         duelCalcView: DuelCalcView,
-        tombolaView: TombolaView,
+        tombolaViewFactory: TombolaViewFactory,
         settingsView: SettingsView,
     ) {
         this.window = new WestCalcWindow(
@@ -39,7 +39,7 @@ export class WestCalc {
             characterView,
             battleCalcView,
             duelCalcView,
-            tombolaView,
+            tombolaViewFactory,
             settingsView,
         );
     }

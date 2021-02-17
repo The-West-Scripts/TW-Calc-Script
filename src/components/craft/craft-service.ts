@@ -107,7 +107,7 @@ export class CraftService implements Component {
         this.onBagChangeCallbacks.push(callback);
         return () => {
             // filter callbacks
-            this.onBagChangeCallbacks.filter(otherCallback => otherCallback !== callback);
+            this.onBagChangeCallbacks = this.onBagChangeCallbacks.filter(otherCallback => otherCallback !== callback);
         };
     }
 }

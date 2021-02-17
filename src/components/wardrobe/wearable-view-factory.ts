@@ -27,8 +27,9 @@ export class WearableViewFactory {
             key,
             title,
             loader: true,
-            init() {
+            init({ loadCallback }) {
                 wearableView.show(true);
+                loadCallback();
             },
             getMainDiv: (): JQuery => {
                 wearableView = WearableView.of(config, this.window, this.logger, this.language, this.errorTracker);

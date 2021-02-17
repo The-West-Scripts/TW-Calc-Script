@@ -43,7 +43,7 @@ export class CraftView {
         public readonly errorTracker: ErrorTracker,
     ) {
         const { west, Character, $ } = this.window;
-
+        this.logger.log('initializing craft view...');
         this.progressBar = new west.gui.Progressbar().setValue(Character.professionSkill || 0);
 
         // Search input

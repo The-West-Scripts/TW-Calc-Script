@@ -12,6 +12,14 @@ export interface TW2WindowTranslation {
     translation: number;
 }
 
+export interface TW2WindowTabInitOptions<InitOptions> {
+    /*
+     * Load callback is used to hide the loader
+     */
+    loadCallback: () => void;
+    options?: InitOptions;
+}
+
 export interface TW2WindowView<Tab, InitOptions = undefined> {
     key: Tab;
     title: TW2WindowPlainText | TW2WindowTranslation | undefined;
@@ -26,7 +34,7 @@ export interface TW2WindowView<Tab, InitOptions = undefined> {
     /**
      * init method is called after getMainDiv() is called.
      */
-    init?(initOptions?: InitOptions): void;
+    init?(initOptions: TW2WindowTabInitOptions<InitOptions>): void;
     /**
      * destroy method is called when window is destroyed.
      */

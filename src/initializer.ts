@@ -80,7 +80,7 @@ export class Initializer {
             .append(`<a href="${website}">${website}</a>`)
             .append(`</br></br>`)
             .append(
-                `<a href="javascript: TW_Calc._window.open('settings'); void(0)">${this.language.getTranslation(
+                `<a href="javascript: TW_Calc._window.open({ tab: 'settings' }); void(0)">${this.language.getTranslation(
                     3,
                 )}</a>`,
             );

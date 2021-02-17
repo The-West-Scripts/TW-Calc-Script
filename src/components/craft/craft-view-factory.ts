@@ -22,20 +22,22 @@ export class CraftViewFactory {
         key: CraftWindowTab,
         title: TW2WindowTranslation,
     ): TW2WindowView<CraftWindowTab, CraftWindowTabInitOptions> {
+        this.logger.log('get window view of craft profession...', key);
         let craftView: CraftView;
         return {
             key,
             title,
             loader: true,
-            init: initOptions => {
-                if (!craftView || typeof initOptions === 'undefined') {
-                    return;
+            init: ({ loadCallback, options }) => {
+                if (!craftView || typeof options === 'undefined') {
+                    return loadCallback();
                 }
                 setTimeout(() => {
                     this.errorTracker.execute(() => {
-                        craftView.show(initOptions.showRecipe.id);
+                        craftView.show(options.showRecipe.id);
                     });
                 }, 250);
+                loadCallback();
             },
             destroy: () => {
                 if (!craftView) {

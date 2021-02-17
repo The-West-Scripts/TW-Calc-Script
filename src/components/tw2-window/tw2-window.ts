@@ -136,11 +136,18 @@ export class TW2Window<Tab extends string | number = string, TabInitOptions = un
                 this.tw2win.activateTab(tab.toString());
                 // Show tab in the timeout, so the window is rendered at first and loader is visible if needed
                 setTimeout(() => {
-                    this.showTab(tab, tabOptions as TW2WindowView<Tab, TabInitOptions>, tabInitOptions);
-                    this.getWindow().hideLoader();
+                    this.showTab(
+                        tab,
+                        tabOptions as TW2WindowView<Tab, TabInitOptions>,
+                        () => {
+                            // Hide the loader when the callback is called
+                            this.getWindow().hideLoader();
+                        },
+                        tabInitOptions,
+                    );
                 }, timeout);
             } else {
-                this.showTab(tab, tabOptions as TW2WindowView<Tab, TabInitOptions>, tabInitOptions);
+                this.showTab(tab, tabOptions as TW2WindowView<Tab, TabInitOptions>, () => undefined, tabInitOptions);
             }
         } else {
             throw new Error(`Tab "${tab}" does not exist!`);
@@ -165,6 +172,7 @@ export class TW2Window<Tab extends string | number = string, TabInitOptions = un
     private showTab<T extends Tab>(
         tab: T,
         tabOptions: TW2WindowView<T, TabInitOptions>,
+        loadCallback: () => void,
         tabInitOptions?: TabInitOptions,
     ): void {
         // activate the desired tab
@@ -179,10 +187,11 @@ export class TW2Window<Tab extends string | number = string, TabInitOptions = un
             $(this).hide();
         });
         // if initialization function is defined, call it
-        if (typeof tabOptions.init === 'function') {
-            const tabInit = tabOptions.init;
-            this.errorTracker.execute(() => tabInit(tabInitOptions));
-        }
+        this.errorTracker.execute(() => {
+            if (typeof tabOptions.init === 'function') {
+                tabOptions.init({ loadCallback, options: tabInitOptions });
+            }
+        });
         // fade in the desired content pane
         $(`div.tw2gui_window_content_pane > #tab_${tab}`, this.getMainDiv()).fadeIn();
     }

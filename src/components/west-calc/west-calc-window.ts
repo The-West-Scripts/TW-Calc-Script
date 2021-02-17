@@ -9,7 +9,7 @@ import { NotepadView } from '../notepad/notepad-view';
 import { SettingBoolean, SettingNumber } from '../settings/settings.types';
 import { SettingsView } from '../settings/settings-view';
 import { TheWestWindow } from '../../@types/the-west';
-import { TombolaView } from '../tombola/tombola-view';
+import { TombolaViewFactory } from '../tombola/tombola-view-factory';
 import { TW2Window } from '../tw2-window/tw2-window';
 import { TW2WindowOpenOptions } from '../tw2-window/tw2-window.types';
 import { WestCalcWindowTab } from './west-calc-window.types';
@@ -25,7 +25,7 @@ export class WestCalcWindow extends TW2Window<WestCalcWindowTab> {
         characterView: CharacterView,
         battleCalcView: BattleCalcView,
         duelCalcView: DuelCalcView,
-        tombolaView: TombolaView,
+        tombolaViewFactory: TombolaViewFactory,
         settingsView: SettingsView,
     ) {
         // renamed from "TWCalc_window"
@@ -36,7 +36,7 @@ export class WestCalcWindow extends TW2Window<WestCalcWindowTab> {
         this.addView(characterView);
         this.addView(battleCalcView);
         this.addView(duelCalcView);
-        this.addView(tombolaView);
+        this.addView(tombolaViewFactory.getWindowView());
         this.addView(settingsView);
     }
 

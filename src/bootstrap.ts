@@ -1,4 +1,5 @@
 import DependencyContainer from 'tsyringe/dist/typings/types/dependency-container';
+import { AllTombolaInfo } from './components/tombola/tombola-exporter.types';
 import { Initializer } from './initializer';
 import { TheWestWindow } from './@types/the-west';
 import { TWCalcPublicApi } from './tw-calc.types';
@@ -29,6 +30,7 @@ export function bootstrap(dependencyContainer: DependencyContainer): TWCalcPubli
         openShopWindowByItemId: (itemId: number) => initializer.quests.openShopWindowByItemId(itemId),
         findQuestEmployer: (questEmployer: number) => initializer.quests.findQuestEmployer(questEmployer),
         startNearestJob: (jobId: number) => initializer.nearestJobs.startNearestJob(jobId),
+        addTombolaInfo: (tombola: AllTombolaInfo) => initializer.tombolaExporter.addTombolaInfo(tombola),
         _window: initializer.westCalc.window,
         _initializer: initializer,
     };
