@@ -1,0 +1,26 @@
+name: Deploy
+
+on:
+    release:
+        types:
+            - published
+
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 14
+            - name: Download release assets
+              run: |
+                  mkdir -p dist
+                  curl -s "https://api.github.com/repos/$GITHUB_REPOSITORY/releases/tags/$(echo $GITHUB_REF | grep -oE "[^/]+$")" |
+                  grep "browser_download_url" | cut -d : -f 2,3 | tr -d '"' | wget -P dist -qi -
+            - name: Deploy
+              env:
+                  TW_CALC_API_KEY: ${{ secrets.TW_CALC_API_KEY }}
+                  REF: ${{ github.ref }}
+              run: |
+                  chmod +x ./ci/deploy.sh && ./ci/deploy.sh

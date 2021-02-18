@@ -1,0 +1,89 @@
+name: CI
+
+on:
+    push:
+        branches:
+            - '*'
+        tags:
+            - v*
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 14
+            - run: npm ci
+            - run: npm run lint
+            - run: npm run tsc
+
+    test:
+        runs-on: ubuntu-latest
+
+        needs: lint
+
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 14
+            - run: npm ci
+            - run: npm run test
+
+    build:
+        runs-on: ubuntu-latest
+
+        needs: test
+
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 14
+            - run: npm ci
+            - run: npm run build
+              env:
+                  CI: true
+            - uses: actions/upload-artifact@v1
+              with:
+                  name: dist
+                  path: dist
+
+    release:
+        if: startsWith(github.ref, 'refs/tags/v')
+        runs-on: ubuntu-latest
+        needs: build
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-python@v2
+              with:
+                  python-version: 3.8
+            - uses: actions/download-artifact@v1
+              with:
+                  name: dist
+            - name: Prepare Release
+              run: |
+                  echo "USERSCRIPT_PATH=$(find dist -type f -name '*.user.js')" >> $GITHUB_ENV
+                  echo "USERSCRIPT_NAME=$(find dist -type f -name '*.user.js' -exec basename {} \;)" >> $GITHUB_ENV
+            - name: Create Release
+              id: create_release
+              uses: actions/create-release@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+              with:
+                  tag_name: ${{ github.ref }}
+                  release_name: Release ${{ github.ref }}
+                  draft: true
+                  prerelease: false
+            - name: Upload Release Asset (.user.js)
+              id: upload-release-asset-tar-gz
+              uses: actions/upload-release-asset@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  upload_url: ${{ steps.create_release.outputs.upload_url }}
+                  asset_path: ${{ env.USERSCRIPT_PATH }}
+                  asset_name: ${{ env.USERSCRIPT_NAME }}
+                  asset_content_type: application/javascript
