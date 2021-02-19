@@ -1,4 +1,7 @@
+import { ENV } from '../../constants';
 import { singleton } from 'tsyringe';
+
+export type Environment = 'prod' | 'dev' | 'test';
 
 @singleton()
 export class Config {
@@ -35,4 +38,5 @@ export class Config {
         'el_GR',
         'fr_FR',
     ];
+    public readonly env: Environment = ENV as Environment;
 }

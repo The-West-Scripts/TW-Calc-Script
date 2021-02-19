@@ -24,7 +24,7 @@ export class Logger {
 
     debug(...args: any[]): void {
         // debug is disabled in the production
-        if ((ENV as string) !== 'prod') {
+        if (this.config.env !== 'prod') {
             this.print('debug', args);
         }
     }
