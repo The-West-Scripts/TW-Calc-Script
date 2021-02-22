@@ -1,6 +1,7 @@
 import { AllTombolaInfo, Tombola, TombolaInfo } from './tombola-exporter.types';
 import { Config } from '../config/config';
 import { inject, singleton } from 'tsyringe';
+import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
 import { TheWestWindow, tw2gui } from '../../@types/the-west';
 import { TombolaExporter } from './tombola-exporter';
@@ -16,6 +17,7 @@ export class TombolaView {
         @inject('window') private readonly window: TheWestWindow,
         private logger: Logger,
         private config: Config,
+        private language: Language,
         private tombolaExporter: TombolaExporter,
     ) {
         const { west, $ } = this.window;
@@ -28,8 +30,14 @@ export class TombolaView {
         this.scrollpane = new west.gui.Scrollpane();
     }
 
-    static of(window: TheWestWindow, logger: Logger, config: Config, tombolaExporter: TombolaExporter): TombolaView {
-        return new TombolaView(window, logger, config, tombolaExporter);
+    static of(
+        window: TheWestWindow,
+        logger: Logger,
+        config: Config,
+        language: Language,
+        tombolaExporter: TombolaExporter,
+    ): TombolaView {
+        return new TombolaView(window, logger, config, language, tombolaExporter);
     }
 
     show(loadCallback: () => void): void {
@@ -57,7 +65,9 @@ export class TombolaView {
             } else {
                 this.scrollpane.appendContent(
                     $(
-                        '<div style="text-align: center; padding: 24px; font-weight: bold">No tombola data was tracked so far...</div>',
+                        '<div style="text-align: center; padding: 24px; font-weight: bold">' +
+                            this.language.getTranslation(221) +
+                            '...</div>',
                     ),
                 );
                 this.navigation.remove();

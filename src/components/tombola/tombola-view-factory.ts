@@ -1,5 +1,6 @@
 import { Config } from '../config/config';
 import { inject, singleton } from 'tsyringe';
+import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
 import { TheWestWindow } from '../../@types/the-west';
 import { TombolaExporter } from './tombola-exporter';
@@ -13,6 +14,7 @@ export class TombolaViewFactory {
         @inject('window') private readonly window: TheWestWindow,
         private readonly logger: Logger,
         private readonly config: Config,
+        private readonly language: Language,
         private readonly tombola: TombolaExporter,
     ) {}
 
@@ -29,7 +31,7 @@ export class TombolaViewFactory {
                 tombolaView.show(loadCallback);
             },
             getMainDiv: (): JQuery => {
-                tombolaView = TombolaView.of(this.window, this.logger, this.config, this.tombola);
+                tombolaView = TombolaView.of(this.window, this.logger, this.config, this.language, this.tombola);
                 return tombolaView.getMainDiv();
             },
         };

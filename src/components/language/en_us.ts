@@ -165,4 +165,6 @@ export default {
     lang_217: 'BB Code',
     lang_218: 'Refresh the page to apply changes.',
     lang_219: 'No shop with this item found',
+    lang_220: 'Search...',
+    lang_221: 'No tombola spins were tacked so far',
 };
