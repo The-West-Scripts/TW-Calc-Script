@@ -127,9 +127,7 @@ export class TombolaView {
             if (!entries.length) {
                 return;
             }
-            entries.forEach(([itemId, itemCount]) =>
-                container.append(getItem(this.window, Number(itemId), itemCount)),
-            );
+            entries.forEach(([itemId, itemCount]) => container.append(getItem(this.window, Number(itemId), itemCount)));
             content.append(container);
         });
 
