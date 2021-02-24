@@ -54,7 +54,7 @@ export class TombolaView {
                 .setWidth(250);
             tombolaList.forEach(tombola => {
                 // only if user has tombola
-                const tombolaName = `${tombola.year}- ${this.tombolaExporter.getEventTranslation(tombola.type)}`;
+                const tombolaName = `${tombola.year} - ${this.tombolaExporter.getEventTranslation(tombola.type)}`;
                 combobox.addItem(tombola.id, tombolaName);
             });
             // if user has some tombola data
@@ -123,7 +123,11 @@ export class TombolaView {
 
         Object.entries(levels).forEach(([levelId, level]) => {
             const container = getContainer(this.window, Number(levelId));
-            Object.entries(level).forEach(([itemId, itemCount]) =>
+            const entries = Object.entries(level);
+            if (!entries.length) {
+                return;
+            }
+            entries.forEach(([itemId, itemCount]) =>
                 container.append(getItem(this.window, Number(itemId), itemCount)),
             );
             content.append(container);
