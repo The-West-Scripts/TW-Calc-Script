@@ -3,6 +3,7 @@ import { Component } from '../component.types';
 import { Config } from '../config/config';
 import { ErrorTracker } from '../error-tracker/error-tracker';
 import { inject, singleton } from 'tsyringe';
+import { InvisibleError } from '../error-tracker/invisible-error';
 import { ItemUseWindowXHRResponse, TheWestWindow } from '../../@types/the-west';
 import { Logger } from '../logger/logger';
 
@@ -18,18 +19,22 @@ export class Chests implements Component {
     @CatchErrors('Chests.init')
     init(): any {
         const originalFn = this.window.ItemUse.doIt;
+        let newStr: string | undefined;
         try {
             const str = originalFn.toString();
             const pos = str.indexOf('Bag.updateChanges(res.msg.changes);');
-            const newStr = str.substr(0, pos) + 'TW_Calc.trackChest(itemId,res);' + str.substr(pos);
-            this.logger.log('patching the chest handler...', newStr);
-            eval('ItemUse.doIt = ' + newStr);
+            const body = str.substr(0, pos) + 'TW_Calc.trackChest(itemId,res);' + str.substr(pos);
+            this.logger.log('patching the chest handler...', body);
+            newStr = 'ItemUse.doIt = ' + body;
+            eval(newStr);
         } catch (e) {
-            this.logger.error('error while patching the chest handler');
+            this.logger.error('error while patching the chest handler', newStr);
             // rollback
             this.window.ItemUse.doIt = originalFn;
+            // add the patched code to the error message
+            e.message = `${e.message}\n\n${newStr}`;
             // propagate error, so it is caught and tracked later
-            throw e;
+            throw InvisibleError.of(e);
         }
     }
 

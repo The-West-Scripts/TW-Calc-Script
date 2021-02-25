@@ -3,6 +3,7 @@ import { Config } from '../config/config';
 import { ErrorLogWindow } from './error-log-window';
 import { ErrorWindow } from './error-window';
 import { inject, registry, singleton } from 'tsyringe';
+import { InvisibleError } from './invisible-error';
 import { Logger } from '../logger/logger';
 import { OnGoingEntry, TheWestWindow } from '../../@types/the-west';
 
@@ -24,20 +25,27 @@ export class ErrorTracker {
         this.errorLogWindow = new ErrorLogWindow(window, this, logger);
     }
 
+    private static isErrorNoficationVisible(error: Error): boolean {
+        return !(error instanceof InvisibleError);
+    }
+
     track(error: Error, component?: string): void {
         this.logger.debug('tracking error...', error);
         this.log.push(error);
         this.logger.error(error);
-        this.window.WestUi.NotiBar.add(
-            this.onGoingEntryFunction(this.window, () => {
-                this.errorWindow.show(error, component);
-            }),
-        );
+        // show error notification (if not an invisible error)
+        if (ErrorTracker.isErrorNoficationVisible(error)) {
+            this.window.WestUi.NotiBar.add(
+                this.onGoingEntryFunction(this.window, () => {
+                    this.errorWindow.show(error, component);
+                }),
+            );
+        }
         // send to tw-calc net
         this.window.$.get(
             this.config.website + '/service/send-error',
             {
-                errorCode: component ? `${component} | ${error.toString()}` : error.toString(),
+                errorCode: component ? `${component} | ${toString(error)}` : toString(error),
                 name: this.window.Character.name,
                 id: this.window.Character.playerId,
                 server: this.window.Game.gameURL,
@@ -67,6 +75,11 @@ export class ErrorTracker {
     open(): void {
         this.errorLogWindow.show(this.log);
     }
+}
+
+function toString(error: Error): string {
+    // Trim the length to 1024 because of URL length limitation
+    return `${error.toString()}\n${error.stack}`.substr(0, 1024);
 }
 
 function onGoingEntry(window: TheWestWindow, cb: () => void): OnGoingEntry {
