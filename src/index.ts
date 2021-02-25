@@ -13,12 +13,35 @@ container.register('window', { useValue: window });
 container.register('localStorage', { useValue: localStorage });
 container.register('tw2patch', { useValue: tw2patch });
 
-export default window['TW_Calc'] = injectScript<TWCalcPublicApi>(bootstrap, location);
+inject<TWCalcPublicApi>(bootstrap, window, location);
 
-function injectScript<T>(script: (dependencyContainer: DependencyContainer) => T, location: Location): T {
+// inject script when the game is ready
+function inject<T>(
+    bootstrapper: (dependencyContainer: DependencyContainer) => T,
+    window: Window,
+    location: Location,
+): NodeJS.Timeout {
+    const injectInterval = setInterval(() => {
+        if (!isGameReady(window)) {
+            return;
+        }
+        // clear the injector interval
+        clearInterval(injectInterval);
+        // inject the script
+        window['TW_Calc'] = injectScript<T>(bootstrapper, location);
+    }, 250);
+    return injectInterval;
+}
+
+function isGameReady(window: Window): boolean {
+    // jquery must be loaded
+    return typeof window['$'] !== 'undefined';
+}
+
+function injectScript<T>(bootstrapper: (dependencyContainer: DependencyContainer) => T, location: Location): T {
     const { href } = location;
     if ((href.indexOf('.the-west.') != -1 || href.indexOf('.tw.innogames.') != -1) && href.indexOf('game.php') != -1) {
-        return script(container);
+        return bootstrapper(container);
     }
     throw new Error('TW-Calc must be loaded in the game!');
 }

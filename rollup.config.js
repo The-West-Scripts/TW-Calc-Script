@@ -11,6 +11,7 @@ const path = require('path');
 const { version, author, contributors } = require('./package.json');
 
 const bannerPath = path.join(__dirname, 'banner.js');
+const injectorPath = path.join(__dirname, 'injector.js');
 const bannerConfig = {
     version,
     author: [author, ...contributors].join(', '),
@@ -30,7 +31,6 @@ module.exports = {
     output: {
         file: 'dist/TW_Calc.user.js',
         format: 'iife',
-        name: 'TW_Calc',
         sourcemap: false,
     },
     plugins: [
@@ -43,10 +43,23 @@ module.exports = {
             include: /node_modules/,
         }),
         babel.babel({ babelHelpers: 'runtime', extensions, exclude: /node_modules/ }),
+        ...(ENV !== 'test' ? [injector()] : []),
         ...(ENV === 'prod' ? [pluginTerser] : []),
         ...(ENV !== 'test' ? [patchMap(), banner()] : []),
     ],
 };
+
+// Injector for combatibility with the Greasemonkey on Firefox
+// https://stackoverflow.com/questions/13485122/accessing-variables-from-greasemonkey-to-page-vice-versa/13485650#13485650
+function injector() {
+    return {
+        name: 'injector',
+        renderChunk(code) {
+            let injector = fs.readFileSync(injectorPath, { flat: 'r', encoding: 'utf8' });
+            return `var TWCalcJS = function() {${code}};\n${injector}`;
+        },
+    };
+}
 
 function banner() {
     return {
