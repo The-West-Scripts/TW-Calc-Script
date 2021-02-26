@@ -79,7 +79,7 @@ export class TombolaView {
 
     getMainDiv(): JQuery {
         const { $ } = this.window;
-        const scrollpane = $('<div style="height: 350px"></div>').append(this.scrollpane.getMainDiv());
+        const scrollpane = $('<div style="height: 308px"></div>').append(this.scrollpane.getMainDiv());
         return $('<div></div>').append(this.navigation).append(scrollpane);
     }
 
@@ -103,7 +103,7 @@ export class TombolaView {
 
     private getContent(tombolaInfo: TombolaInfo, tombola: Tombola): JQuery {
         const { $ } = this.window;
-        const content = $('<div></div>');
+        const content = $('<div style="overflow: auto;"></div>');
         const { spins, levels } = tombola;
 
         if (tombolaInfo.type === 'valentine') {
