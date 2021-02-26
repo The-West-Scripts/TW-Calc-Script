@@ -49,17 +49,17 @@ export class AlarmClock implements Component {
             this.language.getTranslation(83),
             '<div><embed src="' +
                 this.config.website +
-                '/public/alarm/1.mp3" autostart="true" width="0" height="0"><span>' +
+                '/public/alarm/1.mp3" autostart="true" width="0" height="0"><span><b>' +
                 this.language.getTranslation(82) +
-                '</span>: <span>' +
+                '</b></span>: <span><b>' +
                 datetime.date +
                 ' ' +
                 datetime.time +
-                '</span><br /><span>' +
+                '</b></span><br /><span><b>' +
                 this.language.getTranslation(81) +
-                ':</span><br /><span>' +
-                datetime.caption +
-                '</span></div>',
+                ':</b></span><br /><div>' +
+                datetime.caption.replace(/\n/g, '<br />') +
+                '</div></div>',
             this.window.west.gui.Dialog.SYS_WARNING,
         );
         dialog.addButton('Ok').show();
