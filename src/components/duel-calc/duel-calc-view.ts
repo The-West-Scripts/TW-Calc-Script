@@ -84,7 +84,7 @@ export class DuelCalcView implements TW2WindowView<WestCalcWindowTab> {
 
         this.calcExperience = getDuelExperienceFunction(
             duelLevelInput1,
-            duelLevelInput1,
+            duelLevelInput2,
             motivationInput,
             output,
             this.language,
