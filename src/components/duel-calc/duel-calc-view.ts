@@ -68,7 +68,7 @@ export class DuelCalcView implements TW2WindowView<WestCalcWindowTab> {
         const duelLevelInput2 = new this.window.west.gui.Textfield()
             .setId('TWCalc_DuelLevel2')
             .setWidth(100)
-            .setLabel(this.language.getTranslation(66))
+            .setLabel(this.language.getTranslation(70))
             .onlyNumeric()
             .setValue(this.window.Character.duelLevel + 10);
 
