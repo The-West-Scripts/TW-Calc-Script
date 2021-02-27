@@ -65,7 +65,7 @@ export class Initializer {
         });
     }
 
-    @CatchErrors('Initializer.init')
+    @CatchErrors('Initializer.registerApi')
     registerApi(): void {
         const gameMin = '1.36';
         const gameMax = this.window.Game.version.toString();
