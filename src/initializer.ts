@@ -69,7 +69,7 @@ export class Initializer {
     registerApi(): void {
         const gameMin = '1.36';
         const gameMax = this.window.Game.version.toString();
-        const { scriptShortName, scriptName, website, author, contributors } = this.config;
+        const { scriptShortName, scriptName, website, author, contributors, githubUrl, discordUrl } = this.config;
         const authors = `${author}, ${contributors.join(', ')}`;
 
         const api = this.window.TheWestApi.register(scriptShortName, scriptName, gameMin, gameMax, authors, website);
@@ -77,12 +77,13 @@ export class Initializer {
             .$(
                 `<div style="font-size: 20px; font-family: Georgia, 'Times New Roman', serif; text-align: center; margin: 15px; text-shadow: 1px 1px 0 #FFCC66, 1px 1px 2px #000000;"></div>`,
             )
-            .append(`<a href="${website}">${website}</a>`)
-            .append(`</br></br>`)
+            .append(`<div style="margin-bottom: 8px"><a href="${website}" target="_blank">${website}</a></div>`)
+            .append(`<div style="margin-bottom: 8px"><a href="${discordUrl}" target="_blank">Discord</a></div>`)
+            .append(`<div style="margin-bottom: 32px"><a href="${githubUrl}" target="_blank">GitHub</a></div>`)
             .append(
-                `<a href="javascript: TW_Calc._window.open({ tab: 'settings' }); void(0)">${this.language.getTranslation(
+                `<div><a href="javascript: TW_Calc._window.open({ tab: 'settings' }); void(0)">${this.language.getTranslation(
                     3,
-                )}</a>`,
+                )}</a></div>`,
             );
 
         const content = this.window.$(`<div></div>`).append(links);

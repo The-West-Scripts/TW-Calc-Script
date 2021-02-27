@@ -8,6 +8,8 @@ export class Config {
     public readonly scriptName = 'The-West Calc';
     public readonly scriptShortName = 'tw-calc';
     public readonly updateUrl = 'https://tw-calc.net/script/TW-Calc.user.js';
+    public readonly githubUrl = 'https://github.com/The-West-Scripts/TW-Calc-Script';
+    public readonly discordUrl = 'https://discord.gg/vhNSGhvkwk';
     public readonly version = '<@VERSION@>';
     public readonly author = '<@AUTHOR@>';
     public readonly contributors = '<@CONTRIBUTORS@>'.split(', ');
