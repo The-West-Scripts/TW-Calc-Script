@@ -413,11 +413,12 @@ export interface Job {
     groupid: number;
     name: string;
     shortname: string;
+    level: number;
 }
 
 export interface JobList {
     dropsItem(itemId: number): boolean;
-    getJobById(id: number): Job;
+    getJobById(id: number): Job | undefined;
     getSortedJobs(prop: string): Array<Job>;
     getJobsIdsByItemId(itemId: number): Array<number>;
 }
@@ -500,7 +501,7 @@ export interface Town {
 
 export interface MapAjaxResponse {
     error: boolean;
-    job_groups: any;
+    job_groups: Record<number, Array<[number, number]>>;
     quest_locations: Record<number, Array<Array<number>>>;
     towns: Record<number, Town>;
 }

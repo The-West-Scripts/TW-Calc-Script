@@ -1,15 +1,17 @@
 import { CatchErrors } from '../error-tracker/catch-errors';
 import { ErrorTracker } from '../error-tracker/error-tracker';
 import { Language } from '../language/language';
+import { Logger } from '../logger/logger';
 import { NearestJobs } from './nearest-jobs';
 import { TheWestWindow } from '../../@types/the-west';
 
 export class NearestJobsList {
     constructor(
-        private nearestJobs: NearestJobs,
-        private window: TheWestWindow,
-        private language: Language,
-        public errorTracker: ErrorTracker,
+        private readonly nearestJobs: NearestJobs,
+        private readonly window: TheWestWindow,
+        private readonly language: Language,
+        private readonly logger: Logger,
+        public readonly errorTracker: ErrorTracker,
     ) {}
 
     @CatchErrors('NearestJobsList.appendTo')
@@ -24,7 +26,12 @@ export class NearestJobsList {
 
         const jobList = this.nearestJobs.getJobList();
         jobList.forEach(jobId => {
-            selectBox.addItem(jobId, this.window.JobList.getJobById(jobId).name);
+            const job = this.window.JobList.getJobById(jobId);
+            if (!job) {
+                this.logger.warn(`There is a job saved in the job list which does not exist! (jobId: ${jobId})`);
+                return;
+            }
+            selectBox.addItem(jobId, job.name);
         });
 
         selectBox.addListener(id => {

@@ -33,8 +33,8 @@ export class NearestJobs implements Component {
         public readonly errorTracker: ErrorTracker,
     ) {
         this.dialog = new NearestJobsDialog(this, window, language, this.logger);
-        this.bar = new NearestJobsBar(this, window, settings, language, this.errorTracker);
-        this.list = new NearestJobsList(this, window, language, this.errorTracker);
+        this.bar = new NearestJobsBar(this, window, settings, language, this.logger, this.errorTracker);
+        this.list = new NearestJobsList(this, window, language, this.logger, this.errorTracker);
     }
 
     @CatchErrors('NearestJobs.init')
@@ -66,6 +66,13 @@ export class NearestJobs implements Component {
                 jobIds
                     .map(jobId => JobList.getJobById(jobId))
                     .forEach(job => {
+                        if (!job) {
+                            return this.logger.warn('A job was expected to be found by its jobId, but it was not!');
+                        }
+                        // do not add the jobs which are still locked (job level is higher than character level)
+                        if (job.level > this.window.Character.level) {
+                            return;
+                        }
                         const nearestJob = findNearestJob(job, lastPosition, map);
                         if (!nearestJob) {
                             return;
@@ -73,7 +80,7 @@ export class NearestJobs implements Component {
                         jobPromiseList.push(this.getJobWindow(job.id, { x: nearestJob.x, y: nearestJob.y }));
                     });
                 if (!jobPromiseList.length) {
-                    throw new Error('Unable to find nearby jobs!');
+                    throw new Error(`Unable to find nearby jobs for item! (itemId: ${itemId})`);
                 }
                 const jobs = Promise.all(jobPromiseList);
                 jobs.then(jobViews => {
@@ -164,20 +171,22 @@ export class NearestJobs implements Component {
     }
 
     addTaskOrShowJobWindow(jobId: number, taskType: { type: 'startJob'; duration: number } | { type: 'window' }): void {
-        this.getMinimap(map => {
-            const jobPosition = this.find(jobId, map);
-            if (!jobPosition) {
-                this.logger.error('Unable to find the nearest job!', jobId, map, jobPosition);
-                return this.window.MessageError('Unable to find the nearest job!');
-            }
+        this.getMinimap(
+            this.errorTracker.catchErrors((map: MapAjaxResponse) => {
+                const jobPosition = this.find(jobId, map);
+                if (!jobPosition) {
+                    this.logger.error('Unable to find the nearest job!', jobId, map, jobPosition);
+                    return this.window.MessageError('Unable to find the nearest job!');
+                }
 
-            if (taskType && taskType.type === 'startJob') {
-                const taskJob = new this.window.TaskJob(jobId, jobPosition.x, jobPosition.y, taskType.duration);
-                return this.window.TaskQueue.add(taskJob);
-            }
+                if (taskType && taskType.type === 'startJob') {
+                    const taskJob = new this.window.TaskJob(jobId, jobPosition.x, jobPosition.y, taskType.duration);
+                    return this.window.TaskQueue.add(taskJob);
+                }
 
-            return this.window.JobWindow.open(jobId, jobPosition.x, jobPosition.y);
-        });
+                return this.window.JobWindow.open(jobId, jobPosition.x, jobPosition.y);
+            }),
+        );
     }
 
     onJobListChange(callback: (jobList: Array<number>) => void): void {
@@ -217,6 +226,9 @@ export class NearestJobs implements Component {
 
     getJobPopup(jobId: number): string {
         const job = this.window.JobList.getJobById(jobId);
+        if (typeof job === 'undefined') {
+            throw new Error(`There is no pop up for provided job id! (jobId: ${jobId})`);
+        }
         try {
             if (this.window.ItemManager.isLoaded()) {
                 return this.window.Map.PopupHandler.getJobPopup(job);
@@ -224,7 +236,7 @@ export class NearestJobs implements Component {
         } catch (_) {
             // pass
         }
-        return this.window.JobList.getJobById(jobId).name;
+        return job.name;
     }
 
     find(jobId: number, map: MapAjaxResponse): { x: number; y: number; distance: number } | null {
@@ -232,7 +244,11 @@ export class NearestJobs implements Component {
         if (!lastPosition) {
             return null;
         }
-        return findNearestJob(this.window.JobList.getJobById(jobId), lastPosition, map);
+        const job = this.window.JobList.getJobById(jobId);
+        if (typeof job === 'undefined') {
+            throw new Error(`Cannot find job by job id! (jobId: ${jobId})`);
+        }
+        return findNearestJob(job, lastPosition, map);
     }
 
     isPosition(position: 'up' | 'down' | 'right'): boolean {
@@ -288,11 +304,19 @@ function findNearestJob(
         return e.distance > t.distance ? 1 : -1;
     });
 
+    if (!jobs.length) {
+        throw new Error(`There are no jobs in this job group! (groupId: ${job.groupid}, jobId: ${job.id})`);
+    }
+
     return jobs[0];
 }
 
 function getJobProductLuck(job: JobViewWindowXHRResponse, productId: number): number | false {
-    const jobDurations = job.durations[2]; // 2 = is one-hour job chance
+    if (!job.durations.length) {
+        // TODO: find out if we should throw an error
+        return false; // no job durations (can this even happen?), we are not able to do that job I suppose
+    }
+    const jobDurations = job.durations[job.durations.length - 1]; // maximum possible job duration
     const jobProduct = jobDurations.items.find(item => item.itemid === productId);
     if (!jobProduct) {
         return false;

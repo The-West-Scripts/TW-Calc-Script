@@ -59,6 +59,17 @@ export class ErrorTracker {
     }
 
     /**
+     * Wrap function in other function and catch errors if they are thrown within it.
+     * @param fn
+     */
+    catchErrors<F extends Function>(fn: F): F {
+        const errorTracker = this;
+        return function (this: any, ...args: any[]) {
+            return errorTracker.execute(() => fn.apply(this, args));
+        } as any;
+    }
+
+    /**
      * Execute a function immediately and catch errors.
      * @param fn
      */

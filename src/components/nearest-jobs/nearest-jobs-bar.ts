@@ -2,6 +2,7 @@ import { CatchErrors } from '../error-tracker/catch-errors';
 import { ErrorTracker } from '../error-tracker/error-tracker';
 import { Job, TheWestWindow } from '../../@types/the-west';
 import { Language } from '../language/language';
+import { Logger } from '../logger/logger';
 import { NearestJobs } from './nearest-jobs';
 import { NearestJobsBarPosition } from './nearest-jobs.types';
 import { SettingNumber } from '../settings/settings.types';
@@ -12,11 +13,12 @@ const plusIcon =
 
 export class NearestJobsBar {
     constructor(
-        private nearestJobs: NearestJobs,
-        private window: TheWestWindow,
-        private settings: Settings,
-        private language: Language,
-        public errorTracker: ErrorTracker,
+        private readonly nearestJobs: NearestJobs,
+        private readonly window: TheWestWindow,
+        private readonly settings: Settings,
+        private readonly language: Language,
+        private readonly logger: Logger,
+        public readonly errorTracker: ErrorTracker,
     ) {}
 
     @CatchErrors('NearestJobsBar.appendTo')
@@ -53,6 +55,9 @@ export class NearestJobsBar {
         const list = this.nearestJobs.getJobList();
         list.forEach(jobId => {
             const job = this.window.JobList.getJobById(jobId);
+            if (!job) {
+                return this.logger.warn(`There is a job saved in the job list which does not exist! (jobId: ${jobId})`);
+            }
 
             const jobDiv = this.window.$(
                 `<div class="job tw-calc-job" style="position: relative !important; display: inline-block !important; margin-top: 5px; margin-bottom: 2px;"></div>`,
