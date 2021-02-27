@@ -47,7 +47,7 @@ export class Initializer {
     ) {
         this.errorTracker.execute(() => {
             this.logger.log('initializing tw-calc...');
-            this.init();
+            this.registerApi();
             this.patch(this.window);
             this.language.init(() => {
                 this.gui.init();
@@ -66,7 +66,7 @@ export class Initializer {
     }
 
     @CatchErrors('Initializer.init')
-    init(): void {
+    registerApi(): void {
         const gameMin = '1.36';
         const gameMax = this.window.Game.version.toString();
         const { scriptShortName, scriptName, website, author, contributors } = this.config;

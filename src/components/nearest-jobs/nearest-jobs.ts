@@ -197,7 +197,12 @@ export class NearestJobs implements Component {
         if (!this.storage.has(StorageKey.jobList)) {
             return [];
         }
-        return this.storage.getString(StorageKey.jobList).split(',').map(Number);
+        return this.storage
+            .getString(StorageKey.jobList)
+            .split(',')
+            .map(str => str.trim())
+            .filter(str => str.length) // if jobList is an empty string, we would end up with an array of [""]
+            .map(Number);
     }
 
     setJobList(jobList: Array<number>): void {
