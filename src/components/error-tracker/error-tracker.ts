@@ -21,7 +21,7 @@ export class ErrorTracker {
         private readonly logger: Logger,
         private readonly config: Config,
     ) {
-        this.errorWindow = new ErrorWindow(window, this, logger);
+        this.errorWindow = new ErrorWindow(window, this, logger, this.config);
         this.errorLogWindow = new ErrorLogWindow(window, this, logger);
     }
 
