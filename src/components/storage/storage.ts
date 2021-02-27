@@ -49,7 +49,7 @@ export class Storage {
 
     private getValue<T>(key: StorageKey, defaultValue: T | undefined, parseValue: (value: string) => T): T {
         const value = this.getItem(key);
-        if (value) {
+        if (value !== null) {
             return parseValue(value);
         }
         if (typeof defaultValue !== 'undefined') {

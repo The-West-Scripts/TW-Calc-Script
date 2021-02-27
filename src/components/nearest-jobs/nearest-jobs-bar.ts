@@ -1,3 +1,5 @@
+import { CatchErrors } from '../error-tracker/catch-errors';
+import { ErrorTracker } from '../error-tracker/error-tracker';
 import { Job, TheWestWindow } from '../../@types/the-west';
 import { Language } from '../language/language';
 import { NearestJobs } from './nearest-jobs';
@@ -14,8 +16,10 @@ export class NearestJobsBar {
         private window: TheWestWindow,
         private settings: Settings,
         private language: Language,
+        public errorTracker: ErrorTracker,
     ) {}
 
+    @CatchErrors('NearestJobsBar.appendTo')
     appendTo(element: JQuery): void {
         let mainDiv = this.getMainDiv();
         element.append(mainDiv);

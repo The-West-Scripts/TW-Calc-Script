@@ -33,8 +33,8 @@ export class NearestJobs implements Component {
         public readonly errorTracker: ErrorTracker,
     ) {
         this.dialog = new NearestJobsDialog(this, window, language, this.logger);
-        this.bar = new NearestJobsBar(this, window, settings, language);
-        this.list = new NearestJobsList(this, window, language);
+        this.bar = new NearestJobsBar(this, window, settings, language, this.errorTracker);
+        this.list = new NearestJobsList(this, window, language, this.errorTracker);
     }
 
     @CatchErrors('NearestJobs.init')

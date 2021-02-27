@@ -52,6 +52,7 @@ export class Gui implements Component {
         this.bankFeesCalculator.init();
     }
 
+    @CatchErrors('Gui.initUiMenu')
     private initUiMenu() {
         if (this.settings.get(SettingBoolean.WestCalc)) {
             const westCalcButton = this.window
@@ -103,6 +104,7 @@ export class Gui implements Component {
         this.window.$('#ui_menubar').append(this.uiMenuContainer);
     }
 
+    @CatchErrors('Gui.initTopBar')
     private initTopBar(): void {
         if (!this.nearestJobs.isPosition('up') && !this.duelBar.isPosition('up')) {
             return;
@@ -145,6 +147,7 @@ export class Gui implements Component {
         }
     }
 
+    @CatchErrors('Gui.initBottomBar')
     private initBottomBar() {
         if (!this.nearestJobs.isPosition('down') && !this.duelBar.isPosition('down')) {
             return;
@@ -188,6 +191,7 @@ export class Gui implements Component {
         }
     }
 
+    @CatchErrors('Gui.initCraftButton')
     private initCraftButton(): void {
         const hasProfession = this.window.Character.professionId != null;
 
