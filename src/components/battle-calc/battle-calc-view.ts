@@ -243,7 +243,7 @@ export class BattleCalcView implements TW2WindowView<WestCalcWindowTab>, Compone
             .append(bonusesFrame.getMainDiv());
 
         const rightHtmlDiv = new west.gui.Groupframe().appendToContentPane(
-            '<div style="font-weight: bold; font-size: 18px; color: darkred; width: 100px; margin: 6px 0">' +
+            '<div style="font-weight: bold; font-size: 18px; color: darkred; margin: 6px 0">' +
                 this.language.getTranslation(31) +
                 '</div>' +
                 '<div style="margin: 2px 0"><div style="font-weight: bold;">' +
@@ -264,7 +264,7 @@ export class BattleCalcView implements TW2WindowView<WestCalcWindowTab>, Compone
                 '<div><span style="display: inline-block; width: 24px; text-align: center"><img alt="resistance" src="' +
                 this.config.cdn +
                 '/images/fort/battle/resistance.png"></span></span><span id="TW_Calc_BattleCalc_AttackResistance">0</span></div></div>' +
-                '<div style="font-weight: bold; font-size: 18px; color: darkblue; width: 100px; margin: 6px 0">' +
+                '<div style="font-weight: bold; font-size: 18px; color: darkblue; margin: 6px 0">' +
                 this.language.getTranslation(33) +
                 '</div>' +
                 '<div style="margin: 2px 0"><div style="font-weight: bold;">' +
