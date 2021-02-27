@@ -109,11 +109,15 @@ export class Gui implements Component {
         if (!this.nearestJobs.isPosition('up') && !this.duelBar.isPosition('up')) {
             return;
         }
+        const { $ } = this.window;
+
         // remove that hanging premium thing
         setInterval(() => {
             this.window.$('.first-purchase').remove();
         }, 500);
 
+        // put top bar lower when there is a game event
+        const posTop = $('div.custom_unit_counter').length ? 58 : 44;
         const topBar = $(
             `<div id="TWCalc_TopBar" style="
                     text-align: center;                      
@@ -121,7 +125,7 @@ export class Gui implements Component {
                     margin-top: 10px;
                     max-width: 620px;
                     position: absolute;
-                    top: 44px;
+                    top: ${posTop}px;
                     z-index: 69;
                     -webkit-transform: translateX(-50%);
                     -moz-transform: translateX(-50%);
