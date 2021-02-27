@@ -1,7 +1,11 @@
 declare global {
-    interface Number {
+    export interface Number {
         formatDuration: () => number;
         formatDurationBuffWay(): () => string;
+    }
+
+    export interface JQuery {
+        addMousePopup(text: string): JQuery;
     }
 }
 

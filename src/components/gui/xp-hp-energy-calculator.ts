@@ -42,8 +42,7 @@ export class XpHpEnergyCalculator implements Component {
         if (!isNaN(nextLevelExperience) && Number(uiExperienceBar.data('experience')) !== characterExperience) {
             this.logger.log('updating xp indicator...');
             uiExperienceBar.data('experience', characterExperience);
-            uiExperienceBar.attr(
-                'title',
+            uiExperienceBar.addMousePopup(
                 this.language.getTranslation(103) +
                     ':' +
                     ' ' +
@@ -77,8 +76,7 @@ export class XpHpEnergyCalculator implements Component {
                         characterMaxHealth +
                         (healthPointsDifference < 0 ? ' (' + healthPointsDifference + ')' : ''),
                 )
-                .attr(
-                    'title',
+                .addMousePopup(
                     this.language.getTranslation(98) +
                         ': ' +
                         characterHealth +
@@ -121,8 +119,7 @@ export class XpHpEnergyCalculator implements Component {
                         characterMaxEnergy +
                         (energyDifference < 0 ? ' (' + energyDifference + ')' : ''),
                 )
-                .attr(
-                    'title',
+                .addMousePopup(
                     this.language.getTranslation(200) +
                         ': ' +
                         characterEnergy +
