@@ -706,6 +706,7 @@ export interface WestItemUtilities {
 export interface ItemUse {
     use(itemId: number, callback: () => void, type: string): void;
     doIt(itemId: number, callback: () => void): void;
+    doItOrigin?(itemId: number, callback: () => void): void;
 }
 
 export interface ItemUseWindowXHRResponse {

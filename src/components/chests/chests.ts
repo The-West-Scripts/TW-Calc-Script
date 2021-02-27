@@ -18,7 +18,11 @@ export class Chests implements Component {
 
     @CatchErrors('Chests.init')
     init(): any {
-        const originalFn = this.window.ItemUse.doIt;
+        const toolkit = this.window.ItemUse.doItOrigin ? 'doItOrigin' : 'doIt';
+        const originalFn = this.window.ItemUse[toolkit];
+        if (typeof originalFn === 'undefined') {
+            return;
+        }
         let newStr: string | undefined;
         try {
             const str = originalFn.toString();
@@ -30,7 +34,7 @@ export class Chests implements Component {
         } catch (e) {
             this.logger.error('error while patching the chest handler', newStr);
             // rollback
-            this.window.ItemUse.doIt = originalFn;
+            this.window.ItemUse[toolkit] = originalFn;
             // add the patched code to the error message
             e.message = `${e.message}\n\n${newStr}`;
             // propagate error, so it is caught and tracked later
