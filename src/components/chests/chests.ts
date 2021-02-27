@@ -22,7 +22,7 @@ export class Chests implements Component {
         let newStr: string | undefined;
         try {
             const str = originalFn.toString();
-            const pos = str.indexOf('Bag.updateChanges(res.msg.changes);');
+            const pos = str.indexOf("EventHandler.signal('item_used'");
             const body = str.substr(0, pos) + 'TW_Calc.trackChest(itemId,res);' + str.substr(pos);
             this.logger.log('patching the chest handler...', body);
             newStr = 'ItemUse.doIt = ' + body;
