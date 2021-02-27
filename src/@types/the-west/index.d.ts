@@ -710,11 +710,11 @@ export interface ItemUse {
 }
 
 export interface ItemUseWindowXHRResponse {
-    error: boolean;
-    msg: {
+    error: false;
+    msg?: {
         changes: Array<{ item_id: number; inv_id: number; count: number }>;
         cooldown: number;
-        effects: Array<{ type: string; items: Array<{ item_id: number; count: number }> }>;
+        effects?: Array<{ type: string; items?: Array<{ item_id: number; count: number }> }>;
         itemCooldown: number;
         itemLifetime: number;
     };

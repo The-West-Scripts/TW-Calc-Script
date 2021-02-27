@@ -46,7 +46,9 @@ export class Chests implements Component {
     trackChest(chestId: number, resObj: ItemUseWindowXHRResponse): void {
         this.logger.log('tracking chest...', chestId, resObj);
         const { Game, $ } = this.window;
-
+        if (!resObj.msg || !resObj.msg.effects) {
+            return this.logger.log('not tracking chest because there are no effect in response object');
+        }
         resObj.msg.effects.forEach(effect => {
             if (effect.type == 'lottery' || effect.type == 'content') {
                 const url = this.config.website + '/service/chest-export';
@@ -56,7 +58,7 @@ export class Chests implements Component {
                     content: {},
                     version: Game.version,
                 };
-                effect.items.forEach(item => {
+                (effect.items || []).forEach(item => {
                     data.content[item.item_id] = item.count;
                 });
                 this.logger.log('sending a request to ' + url + ' with data', data);
