@@ -73,7 +73,7 @@ export class NearestJobs implements Component {
                         if (job.level > this.window.Character.level) {
                             return;
                         }
-                        const nearestJob = findNearestJob(job, lastPosition, map);
+                        const nearestJob = findNearestJob(job, lastPosition, map, this.logger);
                         if (!nearestJob) {
                             return;
                         }
@@ -244,11 +244,14 @@ export class NearestJobs implements Component {
         if (!lastPosition) {
             return null;
         }
+        this.logger.log(`player's last position is x: ${lastPosition.x}, y: ${lastPosition.y}`);
         const job = this.window.JobList.getJobById(jobId);
         if (typeof job === 'undefined') {
             throw new Error(`Cannot find job by job id! (jobId: ${jobId})`);
         }
-        return findNearestJob(job, lastPosition, map);
+        const nearestJob = findNearestJob(job, lastPosition, map, this.logger);
+        this.logger.log(`found the nearest job location for job id: ${jobId}`, nearestJob, lastPosition);
+        return nearestJob;
     }
 
     isPosition(position: 'up' | 'down' | 'right'): boolean {
@@ -282,16 +285,18 @@ function findNearestJob(
     job: Job,
     lastPosition: { x: number; y: number },
     map: MapAjaxResponse,
+    logger: Logger,
 ): { x: number; y: number; distance: number } | null {
     const jobGroup = map.job_groups[job.groupid];
     if (!jobGroup) {
         return null;
     }
     const jobs: Array<{ x: number; y: number; distance: number }> = [];
+    logger.log(`found the job group for the job (jobId: ${job.id})`, jobGroup);
 
     for (let o = 0; o < jobGroup.length; o++) {
-        const a = jobGroup[o][0] - lastPosition[0];
-        const b = jobGroup[o][1] - lastPosition[1];
+        const a = jobGroup[o][0] - lastPosition.x;
+        const b = jobGroup[o][1] - lastPosition.y;
         const distance = Math.sqrt(a * a + b * b);
         jobs.push({
             distance,
@@ -303,6 +308,7 @@ function findNearestJob(
     jobs.sort((e, t) => {
         return e.distance > t.distance ? 1 : -1;
     });
+    logger.log('jobs were sorted by distance', jobs);
 
     if (!jobs.length) {
         throw new Error(`There are no jobs in this job group! (groupId: ${job.groupid}, jobId: ${job.id})`);
