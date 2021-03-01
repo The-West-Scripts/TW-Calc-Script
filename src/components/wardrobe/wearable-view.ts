@@ -32,7 +32,7 @@ export class WearableView implements TW2WindowFactoryView {
         const { $ } = this.window;
 
         this.content = this.window.$('<div></div>');
-        this.actions = $('<div></div>');
+        this.actions = $('<div style="display: flex; align-items: center; margin-left: -2px;"></div>');
         this.caption = $(
             '<div style="font-size: 16px; font-family: Georgia, \'Times New Roman\', serif; text-shadow: 1px 1px 0 #FFCC66, 1px 1px 2px #000000; text-transform: capitalize;"></div>',
         );
