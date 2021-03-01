@@ -126,7 +126,7 @@ export class Gui implements Component {
                     max-width: 620px;
                     position: absolute;
                     top: ${posTop}px;
-                    z-index: 69;
+                    z-index: 19;
                     -webkit-transform: translateX(-50%);
                     -moz-transform: translateX(-50%);
                     -ms-transform: translateX(-50%);
