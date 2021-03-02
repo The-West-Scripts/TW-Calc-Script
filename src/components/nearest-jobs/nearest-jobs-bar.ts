@@ -95,10 +95,28 @@ export class NearestJobsBar {
     }
 
     private getJobStartBtn(job: Job, className: string, duration: number): JQuery {
-        const jobStartBtn = $(`<div class="instantwork-${className}" title="15s - ${job.name}"></div>`);
+        const jobStartBtn = this.window.$(
+            `<div class="instantwork-${className}" title="${formatDuration(duration)} - ${job.name}"></div>`,
+        );
         jobStartBtn.on('click', () => {
             this.nearestJobs.start(job.id, duration);
         });
         return jobStartBtn;
+    }
+}
+
+function formatDuration(duration: number): string {
+    if (duration < 60) {
+        return `${duration}s`;
+    } else if (duration < 3600) {
+        if (duration % 60) {
+            return `${Math.floor(duration / 60)}m ${formatDuration(duration % 60)}`;
+        }
+        return `${Math.floor(duration / 60)}m`;
+    } else {
+        if (duration % 3600) {
+            return `${Math.floor(duration / 3600)}h ${formatDuration(duration % 3600)}`;
+        }
+        return `${Math.floor(duration / 3600)}h`;
     }
 }
