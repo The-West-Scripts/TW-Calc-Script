@@ -54,7 +54,7 @@ export class NearestJobs implements Component {
         this.getMinimap(map => {
             this.errorTracker.execute(() => {
                 this.logger.log(`finding the best nearby job for item = ${itemId}`);
-                const { JobList, MessageError } = this.window;
+                const { JobList, MessageError, MessageHint } = this.window;
                 const lastPosition = getPlayerLastPosition(this.window);
                 if (!lastPosition) {
                     return MessageError("Unable to get player's latest position!");
@@ -63,22 +63,35 @@ export class NearestJobs implements Component {
                 const jobIds = JobList.getJobsIdsByItemId(itemId);
                 // based on that job ids get data of those jobs nearest to the player
                 const jobPromiseList: Array<Promise<JobViewWindowXHRResponse>> = [];
+                let jobCount = 0;
+                const lockedJobCount = 0; // locked jobs by the level
                 jobIds
                     .map(jobId => JobList.getJobById(jobId))
                     .forEach(job => {
                         if (!job) {
                             return this.logger.warn('A job was expected to be found by its jobId, but it was not!');
                         }
+                        ++jobCount;
                         // do not add the jobs which are still locked (job level is higher than character level)
                         if (job.level > this.window.Character.level) {
                             return;
                         }
                         const nearestJob = findNearestJob(job, lastPosition, map, this.logger);
                         if (!nearestJob) {
+                            this.logger.warn(
+                                `Could not find a nearest job for (jobId: ${job.id})`,
+                                job,
+                                lastPosition,
+                                map,
+                            );
                             return;
                         }
                         jobPromiseList.push(this.getJobWindow(job.id, { x: nearestJob.x, y: nearestJob.y }));
                     });
+                // all job locations for this item are locked
+                if (jobCount === lockedJobCount && lockedJobCount > 0) {
+                    return MessageHint('There are no unlocked jobs for this product!');
+                }
                 if (!jobPromiseList.length) {
                     throw new Error(`Unable to find nearby jobs for item! (itemId: ${itemId})`);
                 }
