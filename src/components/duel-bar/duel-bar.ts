@@ -12,9 +12,11 @@ import { WestCalc } from '../west-calc/west-calc';
 
 @singleton()
 export class DuelBar implements Component {
+    private readonly updateInterval = 1000;
     private readonly lastPosition: { x: number; y: number } = { x: -1, y: -1 };
     private readonly onNearbyPlayersChangeCallbacks: Array<OnNearbyPlayersChangeCallback> = [];
     private nearbyPlayers: Array<DuelWindowPlayer> = [];
+    private updateInProgress = false;
 
     constructor(
         @inject('window') private window: TheWestWindow,
@@ -28,23 +30,28 @@ export class DuelBar implements Component {
     @CatchErrors('DuelBar.init')
     init(): void {
         if (this.isEnabled()) {
-            this.window.setInterval(() => this.update(), 1000);
+            // periodically update the duel bar
+            this.window.setInterval(() => this.update(), this.updateInterval);
         }
     }
 
     @CatchErrors('DuelBar.update')
     private update(): void {
-        // if player position changed, update the duel bar
         if (
+            // if player position changed, update the duel bar
             this.lastPosition.x !== this.window.Character.position.x &&
-            this.lastPosition.y !== this.window.Character.position.y
+            this.lastPosition.y !== this.window.Character.position.y &&
+            // do not try to updae it, if we are already updating it
+            !this.updateInProgress
         ) {
             this.logger.log('updating duel bar...');
-            this.loadNearbyPlayers();
-
-            this.lastPosition.x = this.window.Character.position.x;
-            this.lastPosition.y = this.window.Character.position.y;
-            this.logger.log('duel bar updated', this.lastPosition);
+            this.updateInProgress = true;
+            this.loadNearbyPlayers(players => {
+                this.lastPosition.x = this.window.Character.position.x;
+                this.lastPosition.y = this.window.Character.position.y;
+                this.updateInProgress = false;
+                this.logger.log('duel bar updated', this.lastPosition, players);
+            });
         }
     }
 
@@ -160,12 +167,13 @@ export class DuelBar implements Component {
         this.onNearbyPlayersChangeCallbacks.push(callback);
     }
 
-    private loadNearbyPlayers(): void {
+    private loadNearbyPlayers(callback: (players: Array<DuelWindowPlayer>) => void): void {
         this.logger.log('loading nearby players...');
 
         loadNearbyPlayers(this.window, 8, players => {
             this.nearbyPlayers = players;
             this.onNearbyPlayersChangeCallbacks.forEach(callback => callback(players));
+            callback(players);
         });
     }
 }
@@ -189,11 +197,15 @@ function loadNearbyPlayers(
                 const players = response.oplist.pclist;
 
                 players.forEach(player => {
-                    if (output.length < maxPlayers) {
+                    if (
+                        output.length < maxPlayers && // if we did not reach the maxPlayers limit
+                        !output.find(otherPlayer => otherPlayer.player_id === player.player_id) // and the player is not in the list already
+                    ) {
                         output.push(player);
                     }
                 });
 
+                // if we reached the maxPlayers limit or there are no players nearby call the callback
                 if (output.length >= maxPlayers || !players.length) {
                     sortPlayersByDistance(window, output);
                     callback(output);
