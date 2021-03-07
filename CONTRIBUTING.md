@@ -73,3 +73,13 @@ There will be a pipeline for your tag which will create a draft release if it su
 Update the created draft [release](https://github.com/timzatko/Sklearn-Nature-Inspired-Algorithms/releases) with release
 notes and publish it. This will trigger another pipeline that makes the update available to users (they will receive
 in-game dialog).
+
+## Debugging
+
+### Debug logs
+
+To view logs in the browser console you need to build the userscript in the development environment (`npm run build:dev`),
+or enable debug mode by one of the following options:
+
+-   Add `?tw-calc--debug=true` to the url (e.g. `https://sk9.the-west.sk/game.php?tw-calc--debug=true#`).
+-   Set item `TWCalc_DEBUG` with any value to local storage. (`localStorage.setItem("TWCalc_DEBUG", "1")`). To disable logging again, remove the item from local storage.

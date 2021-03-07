@@ -39,7 +39,10 @@ export class Logger {
     }
 
     private isDebugEnabled(): boolean {
-        return this.storage.getObject(StorageKey.debug, true);
+        if (this.storage.has(StorageKey.debug)) {
+            return true;
+        }
+        return !!this.window.location.href.match(/tw-calc--debug=true/);
     }
 
     private print(method: LogMethod, args: any[]): void {
