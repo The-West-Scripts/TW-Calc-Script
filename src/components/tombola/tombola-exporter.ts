@@ -68,14 +68,15 @@ export class TombolaExporter implements Component {
             if (!response.picked) {
                 throw new Error('Invalid tombola! (wofId = 1)');
             }
-            // TODO: change isFree from constant
+            // payid values: 1 - free, '1' - bonds, '2' - nuggets
+            const isFree = response.payid === 1;
             return this.save(
                 {
                     tombolaId,
                     prize: response.picked[0],
                     category: response.picked[1],
                 },
-                true,
+                isFree,
             );
         }
         // Valentine

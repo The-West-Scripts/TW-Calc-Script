@@ -288,6 +288,7 @@ export interface WheelofFortuneGambleXHRResponse {
     exchange_rewards: Array<Array<number>>;
     free: number;
     nuggets: number;
+    payid: string | number; // travelling circus
     // easter
     prize?: {
         itemEnchance: number;
