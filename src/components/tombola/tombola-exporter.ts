@@ -139,6 +139,8 @@ export class TombolaExporter implements Component {
                     true,
                 ); // TODO: change isFree from constant
             }
+        } else {
+            this.logger.warn('Unknown event type!', eventType);
         }
     }
 
