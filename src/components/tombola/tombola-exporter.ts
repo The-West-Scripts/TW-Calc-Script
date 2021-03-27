@@ -138,6 +138,8 @@ export class TombolaExporter implements Component {
                     },
                     true,
                 ); // TODO: change isFree from constant
+            } else {
+                this.logger.warn('Unable to process WOF response!', response);
             }
         } else {
             this.logger.warn('Unknown event type!', eventType);
