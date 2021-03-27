@@ -54,7 +54,7 @@ export class TombolaView {
                 .setWidth(250);
             tombolaList.forEach(tombola => {
                 // only if user has tombola
-                const tombolaName = `${tombola.year} - ${this.tombolaExporter.getEventTranslation(tombola.type)}`;
+                const tombolaName = getTombolaHeader(this.tombolaExporter, tombola);
                 combobox.addItem(tombola.id, tombolaName);
             });
             // if user has some tombola data
@@ -88,11 +88,11 @@ export class TombolaView {
         const tombolaInfo = allTombolaInfo[tombolaId];
         const tombola = this.tombolaExporter.getFromStorage()[tombolaInfo.id];
         this.logger.log('showing tombola id = ' + tombolaId, tombolaInfo);
-        const tombolaName = this.tombolaExporter.getEventTranslation(tombolaInfo.type);
         const link = $(
-            `<a href="${this.config.website}/tombola/${tombolaInfo.tombolaId}" target="_blank">${
-                tombolaInfo.year ? `${tombolaInfo.year} - ${tombolaName}` : tombolaName
-            }</a>`,
+            `<a href="${this.config.website}/tombola/${tombolaInfo.tombolaId}" target="_blank">${getTombolaHeader(
+                this.tombolaExporter,
+                tombolaInfo,
+            )}</a>`,
         );
         this.tombolaName.empty().append(link);
         // clear the content pane
@@ -169,4 +169,9 @@ function pluralize(count: number, word: string) {
         return word;
     }
     return word + 's';
+}
+
+function getTombolaHeader(tombolaExporter: TombolaExporter, tombolaInfo: TombolaInfo): string {
+    const tombolaName = tombolaExporter.getEventTranslation(tombolaInfo.type);
+    return Number.isInteger(tombolaInfo.year) ? `${tombolaInfo.year} - ${tombolaName}` : tombolaName;
 }
