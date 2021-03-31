@@ -66,6 +66,7 @@ export class TombolaView {
             if (tombolaList.length) {
                 this.actions.append(combobox.getMainDiv());
                 const tombolaId = tombolaList[tombolaList.length - 1].id;
+                combobox.select(tombolaId);
                 this.apply(tombolaInfo, tombolaId);
             } else {
                 this.scrollpane.appendContent(
