@@ -104,6 +104,7 @@ export class TombolaView {
         this.scrollpane.getContentPane().empty();
         // append a new content
         this.scrollpane.appendContent(this.getContent(tombolaInfo, tombola));
+        this.scrollpane.scrollToTop();
     }
 
     private getContent(tombolaInfo: TombolaInfo, tombola: Tombola): JQuery {
@@ -178,5 +179,5 @@ function pluralize(count: number, word: string) {
 
 function getTombolaHeader(tombolaExporter: TombolaExporter, tombolaInfo: TombolaInfo): string {
     const tombolaName = tombolaExporter.getEventTranslation(tombolaInfo.type);
-    return !!tombolaInfo.year ? `${tombolaInfo.year} - ${tombolaName}` : tombolaName;
+    return tombolaInfo.year ? `${tombolaInfo.year} - ${tombolaName}` : tombolaName;
 }
