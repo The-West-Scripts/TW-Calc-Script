@@ -36,7 +36,7 @@ export interface TombolaInfo {
     id: number;
     tombolaId: string; // tombola id for url
     type: TWCalcEventName;
-    year: number;
+    year: string;
 }
 
 export type AllTombolaInfo = Record<TombolaId, TombolaInfo>;

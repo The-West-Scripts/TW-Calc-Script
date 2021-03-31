@@ -48,7 +48,12 @@ export class TombolaView {
             const tombolaList = Object.values(tombolaInfo).filter(tombola =>
                 tombolaUserList.hasOwnProperty(tombola.id),
             );
-            tombolaList.sort((a, b) => a.year - b.year);
+            tombolaList.sort((a, b) => {
+                if (!!a.year || !!b.year) {
+                    return -1;
+                }
+                return Number(a.year) - Number(b.year);
+            });
             const combobox = new west.gui.Combobox<number>('TW_Calc_Tombola_list')
                 .addListener(value => this.apply(tombolaInfo, value))
                 .setWidth(250);
@@ -173,5 +178,5 @@ function pluralize(count: number, word: string) {
 
 function getTombolaHeader(tombolaExporter: TombolaExporter, tombolaInfo: TombolaInfo): string {
     const tombolaName = tombolaExporter.getEventTranslation(tombolaInfo.type);
-    return Number.isInteger(tombolaInfo.year) ? `${tombolaInfo.year} - ${tombolaName}` : tombolaName;
+    return !!tombolaInfo.year ? `${tombolaInfo.year} - ${tombolaName}` : tombolaName;
 }
