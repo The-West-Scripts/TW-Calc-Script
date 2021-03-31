@@ -305,7 +305,6 @@ export interface WheelofFortuneGambleXHRResponse {
     stages?: Array<{ rewards: { item: number } }>; // dotd
     itemId?: number;
     itemEnhance?: number;
-    enhance?: number;
 }
 
 export interface WheelofFortune {
@@ -325,6 +324,9 @@ export interface WheelofFortuneConsructor {
 
 export interface WofData {
     wofid: number;
+    action: string;
+    enhance: number;
+    payid: string | number;
 }
 
 export interface WofDotdCardgameWindow {

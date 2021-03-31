@@ -115,7 +115,7 @@ export class TombolaExporter implements Component {
             if (response && !response.failed && (response.itemId || response.outcome)) {
                 const categoryType = response.itemEnhance || (response.outcome && response.outcome.itemEnhance);
                 const prize = response.itemId || (response.outcome && response.outcome.itemId) || 0;
-                const level = response.construction_id || response.enhance;
+                const level = response.construction_id || data.enhance;
 
                 let category = 0;
                 switch (categoryType) {
@@ -140,7 +140,7 @@ export class TombolaExporter implements Component {
                     true,
                 ); // TODO: change isFree from constant
             } else {
-                this.logger.warn('Unable to process WOF response!', response);
+                this.logger.warn('Unable to process WoF response!', response);
             }
         } else {
             this.logger.warn('Unknown event type!', eventType);
@@ -181,7 +181,7 @@ export class TombolaExporter implements Component {
 
     private getCurrentEvent(): string | null {
         const eventIndex = events.findIndex(event => this.window.Game.sesData.hasOwnProperty(event));
-        return eventIndex ? eventIndex[eventIndex] : null;
+        return eventIndex ? events[eventIndex] : null;
     }
 
     private exportSpin(spin: Spin): void {
