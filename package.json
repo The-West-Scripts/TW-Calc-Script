@@ -1,6 +1,6 @@
 {
     "name": "tw-calc-script",
-    "version": "2.0.7",
+    "version": "2.0.8",
     "description": "UserScript for online browser game The-West.",
     "main": "src/index.ts",
     "scripts": {
