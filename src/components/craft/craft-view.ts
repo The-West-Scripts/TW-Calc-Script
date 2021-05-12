@@ -62,6 +62,17 @@ export class CraftView {
                 this.startCraft(recipeId, amount),
             ),
         );
+        this.recipes.sort(function (a, b) {
+            let cmp = a.getMinLevel() - b.getMinLevel();
+            if (cmp != 0) {
+                return cmp;
+            }
+            cmp = a.getMidLevel() - b.getMidLevel();
+            if (cmp != 0) {
+                return cmp;
+            }
+            return a.getMaxLevel() - b.getMaxLevel();
+        });
 
         this.noResults = $('<div style="margin: 8px; text-align: center; font-weight: bold;"><p>No results</p></divs>');
         this.noResults.hide();

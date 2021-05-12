@@ -67,7 +67,7 @@ export class Recipe {
                     '|&nbsp;<span style="color: rgb(196, 163, 103">' +
                     this.item.min_level +
                     '</span>/<span style="color: rgb(88, 185, 88)">' +
-                    this.getGreenLevel() +
+                    this.getMidLevel() +
                     '</span>/<span style="color: rgb(85, 205, 221)">' +
                     this.item.max_level +
                     '</span>',
@@ -263,6 +263,20 @@ export class Recipe {
         this.recipeName.css('color', this.isLearned() ? 'white' : 'gray');
     }
 
+    getMidLevel(): number {
+        return this.item.skillcolor
+            ? this.item.max_level
+            : this.item.min_level + Math.round((this.item.max_level - this.item.min_level) / 2);
+    }
+
+    getMinLevel(): number {
+        return this.item.min_level;
+    }
+
+    getMaxLevel(): number {
+        return this.item.max_level;
+    }
+
     private getResources(): { items: Array<Resource>; widgets: Array<tw2widget.CraftingItem> } {
         const { ItemManager, tw2widget } = this.window;
         const items = (this.item.resources || []).map(({ item, count }) => {
@@ -273,12 +287,6 @@ export class Recipe {
         });
         const widgets = items.map(resource => new tw2widget.CraftingItem(resource.item).setRequired(0, resource.count));
         return { items, widgets };
-    }
-
-    private getGreenLevel(): number {
-        return this.item.skillcolor
-            ? this.item.max_level
-            : this.item.min_level + Math.round((this.item.max_level - this.item.min_level) / 2);
     }
 
     private setIsLearned(): void {
