@@ -79,7 +79,7 @@ function banner() {
 }
 
 /**
- * Because The-West replaces global Map variable with the in-game Map, and our dependency (tysringe) is using it.
+ * Because The-West replaces global Map variable with the in-game Map, and our dependency (tsringe) is using it.
  * We expose _Map from the script to the global scope and then we replace all usages of new Map( with new _Map(.
  *
  * @return {{name: string, renderChunk(*): *}|*}

@@ -8,6 +8,7 @@ import { Logger } from '../logger/logger';
 import { SettingNumber } from '../settings/settings.types';
 import { Settings } from '../settings/settings';
 import { TheWestWindow } from '../../@types/the-west';
+import { WaitUntil } from '../../utils/wait-until.decorator';
 import { WestCalc } from '../west-calc/west-calc';
 
 @singleton()
@@ -21,12 +22,17 @@ export class DuelBar implements Component {
     constructor(
         @inject('window') private window: TheWestWindow,
         private readonly settings: Settings,
-        private readonly logger: Logger,
         private readonly language: Language,
         private readonly westCalc: WestCalc,
+        public readonly logger: Logger,
         public readonly errorTracker: ErrorTracker,
     ) {}
 
+    @WaitUntil<DuelBar>(function (this: DuelBar) {
+        const map = this.window.Map;
+        // Before the Map is injected by The-West, it is MapConstructor from the polyfill
+        return typeof map === 'object' && typeof map['calcWayTime'] === 'function';
+    })
     @CatchErrors('DuelBar.init')
     init(): void {
         if (this.isEnabled()) {
@@ -46,12 +52,14 @@ export class DuelBar implements Component {
         ) {
             this.logger.log('updating duel bar...');
             this.updateInProgress = true;
-            this.loadNearbyPlayers(players => {
-                this.lastPosition.x = this.window.Character.position.x;
-                this.lastPosition.y = this.window.Character.position.y;
-                this.updateInProgress = false;
-                this.logger.log('duel bar updated', this.lastPosition, players);
-            });
+            this.loadNearbyPlayers(
+                this.errorTracker.catchErrors(players => {
+                    this.lastPosition.x = this.window.Character.position.x;
+                    this.lastPosition.y = this.window.Character.position.y;
+                    this.updateInProgress = false;
+                    this.logger.log('duel bar updated', this.lastPosition, players);
+                }),
+            );
         }
     }
 
@@ -170,16 +178,22 @@ export class DuelBar implements Component {
     private loadNearbyPlayers(callback: (players: Array<DuelWindowPlayer>) => void): void {
         this.logger.log('loading nearby players...');
 
-        loadNearbyPlayers(this.window, 8, players => {
-            this.nearbyPlayers = players;
-            this.onNearbyPlayersChangeCallbacks.forEach(callback => callback(players));
-            callback(players);
-        });
+        loadNearbyPlayers(
+            this.errorTracker,
+            this.window,
+            8,
+            this.errorTracker.catchErrors(players => {
+                this.nearbyPlayers = players;
+                this.onNearbyPlayersChangeCallbacks.forEach(callback => callback(players));
+                callback(players);
+            }),
+        );
     }
 }
 
 function loadNearbyPlayers(
-    window: TheWestWindow,
+    errorTracker: ErrorTracker,
+    w: TheWestWindow,
     maxPlayers: number,
     callback: (players: Array<DuelWindowPlayer>) => void,
 ): void {
@@ -188,12 +202,12 @@ function loadNearbyPlayers(
     ////////////
 
     function loadRecursive(output: Array<DuelWindowPlayer>, page: number) {
-        window.$.post(
-            '/game.php?window=duel&action=search_op&h=' + window.Player.h,
+        w.$.post(
+            '/game.php?window=duel&action=search_op&h=' + w.Player.h,
             {
                 page,
             },
-            (response: { oplist: { pclist: Array<DuelWindowPlayer> } }) => {
+            errorTracker.catchErrors((response: { oplist: { pclist: Array<DuelWindowPlayer> } }) => {
                 const players = response.oplist.pclist;
 
                 players.forEach(player => {
@@ -207,24 +221,24 @@ function loadNearbyPlayers(
 
                 // if we reached the maxPlayers limit or there are no players nearby call the callback
                 if (output.length >= maxPlayers || !players.length) {
-                    sortPlayersByDistance(window, output);
+                    sortPlayersByDistance(w, output);
                     callback(output);
                 } else {
                     loadRecursive(output, page + 1);
                 }
-            },
+            }),
             'json',
         );
     }
 }
 
-function sortPlayersByDistance(window: TheWestWindow, players: Array<DuelWindowPlayer>) {
+function sortPlayersByDistance(w: TheWestWindow, players: Array<DuelWindowPlayer>) {
     players.sort((a, b) => {
-        const way_time_1 = window.Map.calcWayTime(window.Character.position, {
+        const way_time_1 = w.Map.calcWayTime(w.Character.position, {
             x: a.character_x,
             y: a.character_y,
         });
-        const way_time_2 = window.Map.calcWayTime(window.Character.position, {
+        const way_time_2 = w.Map.calcWayTime(w.Character.position, {
             x: b.character_x,
             y: b.character_y,
         });

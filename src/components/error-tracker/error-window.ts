@@ -20,7 +20,7 @@ export class ErrorWindow extends TW2Window {
 
         div.append(
             $(
-                '<p>The error below occurred during TW-Calc execution.' +
+                '<p>The error below occurred during TW-Calc execution. ' +
                     '<b>You can let us now on our <a href="' +
                     this.config.discordUrl +
                     '" target="_blank">Discord</a> server.</b></p><br /><hr><br />',
