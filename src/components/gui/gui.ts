@@ -106,7 +106,8 @@ export class Gui implements Component {
 
     @CatchErrors('Gui.initTopBar')
     private initTopBar(): void {
-        if (!this.nearestJobs.isPosition('up') && !this.duelBar.isPosition('up')) {
+        const initTopBar = this.nearestJobs.isPosition('up') || this.duelBar.isPosition('up');
+        if (!initTopBar) {
             return;
         }
         const { $ } = this.window;
@@ -153,7 +154,8 @@ export class Gui implements Component {
 
     @CatchErrors('Gui.initBottomBar')
     private initBottomBar() {
-        if (!this.nearestJobs.isPosition('down') && !this.duelBar.isPosition('down')) {
+        const initBottomBar = this.nearestJobs.isPosition('down') || this.duelBar.isPosition('down');
+        if (!initBottomBar) {
             return;
         }
 

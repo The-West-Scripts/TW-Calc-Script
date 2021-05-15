@@ -84,7 +84,7 @@ export class DuelBar implements Component {
     }
 
     isEnabled(): boolean {
-        return this.settings.get(SettingNumber.NearestJobsBar) != DuelBarPosition.hidden;
+        return this.settings.get(SettingNumber.DuelBar) != DuelBarPosition.hidden;
     }
 
     isPosition(position: 'up' | 'down'): boolean {
