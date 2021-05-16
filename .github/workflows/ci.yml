@@ -18,6 +18,10 @@ jobs:
             - run: npm ci
             - run: npm run lint
             - run: npm run tsc
+            # commitlint
+            - uses: wagoid/commitlint-github-action@v3
+              env:
+                NODE_PATH: ${{ github.workspace }}/node_modules
 
     test:
         runs-on: ubuntu-latest
