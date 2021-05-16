@@ -48,6 +48,26 @@ We use **eslint** for code linting nad **prettier** for code formatting.
 Run `npm run lint` to check if your code is formatted properly, if not, run
 `npm run lint:fix` to fix the issues automatically (however, some of them must be fixed manually).
 
+### Commiting
+
+We follow conventional commits based on the Angular convention.
+You can find list of rules [here](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional#type-enum).
+
+Correct commit messages examples:
+
+```shell
+git commit -m "feat: add duel bar"
+git commit -m "fix: fix crafting window"
+git commit -m "docs: update contributing guide"
+git commit -m "refactor: duel window"
+git commit -m "test: coverage for battle calc"
+git commit -m "style: redesign notepad"
+git commit -m "ci: fix build"
+# you can also add scope/multiple scopes
+git commit -m "test(unit): ..."
+git commit -m "ci(deploy) fix deploy url"
+```
+
 ### Branching strategy
 
 This repository follows _ trunk-based development branching strategy_. You can read more about it [here](https://trunkbaseddevelopment.com/).
