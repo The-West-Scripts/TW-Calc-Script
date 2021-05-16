@@ -15,7 +15,7 @@ jobs:
             - uses: actions/setup-node@v1
               with:
                   node-version: 14
-            - run: npm ci
+            - run: npm ci --only=production --ignore-scripts
             - run: npm run lint
             - run: npm run tsc
             # commitlint
@@ -46,7 +46,7 @@ jobs:
             - uses: actions/setup-node@v1
               with:
                   node-version: 14
-            - run: npm ci
+            - run: npm ci --only=production --ignore-scripts
             - run: npm run build
               env:
                   CI: true

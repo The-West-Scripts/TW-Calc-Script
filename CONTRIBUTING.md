@@ -60,7 +60,7 @@ if doing a bigger change (adding some new feature), increase minor version.
 The following command changes version to `v2.0.0`.
 
 ```shell
-npm version -m "Bump version to %s" 2.0.0
+npm version -m "v%s" 2.0.0
 ```
 
 Then push your local changes (new commit and tag).
