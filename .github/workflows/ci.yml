@@ -7,6 +7,21 @@ on:
         tags:
             - v*
 jobs:
+    commitlint:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                fetch-depth: 0
+            - uses: actions/setup-node@v1
+              with:
+                node-version: 14
+            - run: npm ci
+            - uses: wagoid/commitlint-github-action@v3
+              env:
+                  NODE_PATH: ${{ github.workspace }}/node_modules
+
     lint:
         runs-on: ubuntu-latest
 
@@ -15,13 +30,9 @@ jobs:
             - uses: actions/setup-node@v1
               with:
                   node-version: 14
-            - run: npm ci --only=production --ignore-scripts
+            - run: npm ci
             - run: npm run lint
             - run: npm run tsc
-            # commitlint
-            - uses: wagoid/commitlint-github-action@v3
-              env:
-                NODE_PATH: ${{ github.workspace }}/node_modules
 
     test:
         runs-on: ubuntu-latest
@@ -46,7 +57,7 @@ jobs:
             - uses: actions/setup-node@v1
               with:
                   node-version: 14
-            - run: npm ci --only=production --ignore-scripts
+            - run: npm ci
             - run: npm run build
               env:
                   CI: true
