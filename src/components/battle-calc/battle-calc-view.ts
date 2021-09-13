@@ -327,7 +327,15 @@ export class BattleCalcView implements TW2WindowView<WestCalcWindowTab>, Compone
             .setWidth(inputWidth)
             .onlyNumeric()
             .setValue(this.getCachedInputValue(key))
-            .addKeyUpListener(this.onInputChange(key, () => input.getValue()))
+            .addKeyUpListener(
+                this.onInputChange<number>(key, () => {
+                    const value = Number(input.getValue());
+                    if (!Number.isInteger(value)) {
+                        return 0;
+                    }
+                    return value;
+                }),
+            )
             .getMainDiv();
     }
 
