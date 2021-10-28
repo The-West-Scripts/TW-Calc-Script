@@ -57,7 +57,7 @@ function wofDotdCardgameWindowPatch(window: TheWestWindow, spinCallback: WofSpin
                         callback(response);
                     }
                 };
-                originalFn.apply(this,[action, data, newCallback]);
+                originalFn.apply(this, [action, data, newCallback]);
             };
         },
     );
