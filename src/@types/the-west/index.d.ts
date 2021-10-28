@@ -329,17 +329,19 @@ export interface WofData {
     payid: string | number;
 }
 
-export interface WofDotdCardgameWindow {
-    requestData(action: string, data: WofData, callback: (response: WheelofFortuneGambleXHRResponse) => void): void;
+interface WofDotdCardgameModel {
+    getWofId(): number;
 }
 
-export interface WofDotdCardgameWindowConstructor {
-    new (): WofDotdCardgameWindow;
+export interface WofDotdCardgameWindow {
+    model: WofDotdCardgameModel;
+
+    requestData(action: string, data: WofData, callback: (response: WheelofFortuneGambleXHRResponse) => void): void;
 }
 
 export interface WofObject {
     WheelofFortune: WheelofFortuneConsructor;
-    WofDotdCardgameWindow: WofDotdCardgameWindowConstructor;
+    WofDotdCardgameWindow: WofDotdCardgameWindow & tw2gui.Window;
 }
 
 export interface West {

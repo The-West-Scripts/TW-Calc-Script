@@ -42,20 +42,22 @@ function wofDotdCardgameWindowPatch(window: TheWestWindow, spinCallback: WofSpin
     const { west } = window;
     when(
         window,
-        () => west.wof.WofDotdCardgameWindow.prototype.requestData,
+        () => west.wof.WofDotdCardgameWindow.requestData,
         () => {
-            const originalFn = west.wof.WofDotdCardgameWindow.prototype.requestData;
-            west.wof.WofDotdCardgameWindow.prototype.requestData = function (
+            const originalFn = west.wof.WofDotdCardgameWindow.requestData;
+            west.wof.WofDotdCardgameWindow.requestData = function (
                 action: string,
                 data: WofData,
-                callback: (response: WheelofFortuneGambleXHRResponse) => void,
+                callback?: (response: WheelofFortuneGambleXHRResponse) => void,
             ) {
-                const id = this.id;
+                const wofId = this.model.getWofId();
                 const newCallback = function (response: WheelofFortuneGambleXHRResponse) {
-                    spinCallback(action, id, data, response);
-                    callback(response);
+                    spinCallback(action, wofId, data, response);
+                    if (typeof callback === 'function') {
+                        callback(response);
+                    }
                 };
-                originalFn.call(this, [action, data, newCallback]);
+                originalFn.apply(this,[action, data, newCallback]);
             };
         },
     );
