@@ -52,7 +52,7 @@
         "eslint": "^7.26.0",
         "eslint-config-prettier": "^6.15.0",
         "eslint-plugin-prettier": "^3.1.4",
-        "eslint-plugin-sort-imports-es6-autofix": "^0.5.0",
+        "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
         "glob": "^7.1.6",
         "husky": "^6.0.0",
         "jasmine-core": "^3.6.0",
