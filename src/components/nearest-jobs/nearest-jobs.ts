@@ -104,7 +104,7 @@ export class NearestJobs implements Component {
                         // find job with best luck for that item
                         jobViews.forEach((jobView, index) => {
                             const luck = getJobProductLuck(jobView, itemId);
-                            // the item id is not optainable from the job, this case should not happen
+                            // the item id is not obtainable from the job, this case should not happen
                             if (luck === false) {
                                 return;
                             }
