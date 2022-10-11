@@ -64,7 +64,7 @@ export class NearestJobs implements Component {
                 // based on that job ids get data of those jobs nearest to the player
                 const jobPromiseList: Array<Promise<JobViewWindowXHRResponse>> = [];
                 let jobCount = 0;
-                const lockedJobCount = 0; // locked jobs by the level
+                let lockedJobCount = 0; // locked jobs by the level
                 jobIds
                     .map(jobId => JobList.getJobById(jobId))
                     .forEach(job => {
@@ -74,6 +74,7 @@ export class NearestJobs implements Component {
                         ++jobCount;
                         // do not add the jobs which are still locked (job level is higher than character level)
                         if (job.level > this.window.Character.level) {
+                            ++lockedJobCount;
                             return;
                         }
                         const nearestJob = findNearestJob(job, lastPosition, map, this.logger);
@@ -90,7 +91,7 @@ export class NearestJobs implements Component {
                     });
                 // all job locations for this item are locked
                 if (jobCount === lockedJobCount && lockedJobCount > 0) {
-                    return MessageHint('There are no unlocked jobs for this product!');
+                    return MessageHint(this.language.getTranslation(222)).show();
                 }
                 if (!jobPromiseList.length) {
                     throw new Error(`Unable to find nearby jobs for item! (itemId: ${itemId})`);

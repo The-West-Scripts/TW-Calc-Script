@@ -167,4 +167,5 @@ export default {
     lang_219: 'No shop with this item found',
     lang_220: 'Search...',
     lang_221: 'No tombola spins were tacked so far',
+    lang_222: 'There are no unlocked jobs for this product!',
 };
