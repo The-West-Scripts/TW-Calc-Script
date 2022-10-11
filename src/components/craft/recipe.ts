@@ -22,10 +22,6 @@ export class Recipe {
     private readonly craftingItem: tw2widget.CraftingItem;
     private readonly unsubscribe: () => void;
 
-    get name(): string {
-        return this.item.name;
-    }
-
     constructor(
         public readonly recipeId: number,
         private readonly craftService: CraftService,
@@ -87,6 +83,10 @@ export class Recipe {
 
         // Subscribe to on bag change events and update recipes
         this.unsubscribe = this.craftService.onBagChange(() => this.initMainDiv());
+    }
+
+    get name(): string {
+        return this.item.name;
     }
 
     static of(

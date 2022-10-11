@@ -6,11 +6,11 @@ export class InvisibleError extends Error {
         super(fromError.message);
     }
 
-    static of(fromError: Error): InvisibleError {
-        return new InvisibleError(fromError);
-    }
-
     get stack(): string | undefined {
         return this.fromError.stack;
+    }
+
+    static of(fromError: Error): InvisibleError {
+        return new InvisibleError(fromError);
     }
 }

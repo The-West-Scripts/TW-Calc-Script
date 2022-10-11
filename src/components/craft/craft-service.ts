@@ -26,6 +26,10 @@ export class CraftService implements Component {
         public readonly errorTracker: ErrorTracker,
     ) {}
 
+    get maxProfessionSkill(): number {
+        return this.maxProfessionSkillValue;
+    }
+
     /**
      * Fetch when what was the last time recipes were crafted.
      * @private
@@ -55,10 +59,6 @@ export class CraftService implements Component {
                 this.maxProfessionSkillValue = response.profession_maxskill;
             },
         );
-    }
-
-    get maxProfessionSkill(): number {
-        return this.maxProfessionSkillValue;
     }
 
     isRecipeLearned(recipeId: number): boolean {

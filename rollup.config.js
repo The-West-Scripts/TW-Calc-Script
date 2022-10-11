@@ -49,7 +49,7 @@ module.exports = {
     ],
 };
 
-// Injector for combatibility with the Greasemonkey on Firefox
+// Injector for compatibility with the Greasemonkey on Firefox
 // https://stackoverflow.com/questions/13485122/accessing-variables-from-greasemonkey-to-page-vice-versa/13485650#13485650
 function injector() {
     return {

@@ -477,15 +477,15 @@ export interface GameScript {
 }
 
 export interface Ajax {
-    get<T extends any>(window: string, ajax: string, param: Record<string, string>, callback: (data: T) => void): void;
-    remoteCallMode<T extends any, D = Record<string, unknown>>(
+    get<T>(window: string, ajax: string, param: Record<string, string>, callback: (data: T) => void): void;
+    remoteCallMode<T, D = Record<string, unknown>>(
         window: string,
         mode: string,
         param: D,
         callback: (data: T) => void,
         view?: string,
     ): void;
-    remoteCall<T extends any, D = Record<string, unknown>>(
+    remoteCall<T, D = Record<string, unknown>>(
         window: string,
         action: string,
         param: D,

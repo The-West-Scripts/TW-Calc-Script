@@ -29,13 +29,6 @@ export class TW2Window<Tab extends string | number = string, TabInitOptions = un
 
     private win?: tw2gui.Window;
 
-    get tw2win(): tw2gui.Window {
-        if (!this.win) {
-            throw new Error('Window manipulation before initialization!');
-        }
-        return this.win;
-    }
-
     constructor(
         public readonly id: string,
         public readonly errorTracker: ErrorTracker,
@@ -46,6 +39,13 @@ export class TW2Window<Tab extends string | number = string, TabInitOptions = un
     ) {
         this.options = Object.assign({}, defaultOptions, options);
         this.$ = window.$;
+    }
+
+    get tw2win(): tw2gui.Window {
+        if (!this.win) {
+            throw new Error('Window manipulation before initialization!');
+        }
+        return this.win;
     }
 
     @CatchErrors('TW2Window.open')
