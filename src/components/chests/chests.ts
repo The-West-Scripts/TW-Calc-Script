@@ -31,14 +31,15 @@ export class Chests implements Component {
             this.logger.log('patching the chest handler...', body);
             newStr = 'ItemUse.doIt = ' + body;
             eval(newStr);
-        } catch (e) {
+        } catch (e: unknown) {
+            const error = e as Error;
             this.logger.error('error while patching the chest handler', newStr);
             // rollback
             this.window.ItemUse[toolkit] = originalFn;
             // add the patched code to the error message
-            e.message = `${e.message}\n\n${newStr}`;
+            error.message = `${error.message}\n\n${newStr}`;
             // propagate error, so it is caught and tracked later
-            throw InvisibleError.of(e);
+            throw InvisibleError.of(error);
         }
     }
 
