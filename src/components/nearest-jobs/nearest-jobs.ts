@@ -63,19 +63,11 @@ export class NearestJobs implements Component {
                 const jobIds = JobList.getJobsIdsByItemId(itemId);
                 // based on that job ids get data of those jobs nearest to the player
                 const jobPromiseList: Array<Promise<JobViewWindowXHRResponse>> = [];
-                let jobCount = 0;
-                let lockedJobCount = 0; // locked jobs by the level
                 jobIds
                     .map(jobId => JobList.getJobById(jobId))
                     .forEach(job => {
                         if (!job) {
                             return this.logger.warn('A job was expected to be found by its jobId, but it was not!');
-                        }
-                        ++jobCount;
-                        // do not add the jobs which are still locked (job level is higher than character level)
-                        if (job.level > this.window.Character.level) {
-                            ++lockedJobCount;
-                            return;
                         }
                         const nearestJob = findNearestJob(job, lastPosition, map, this.logger);
                         if (!nearestJob) {
@@ -89,10 +81,6 @@ export class NearestJobs implements Component {
                         }
                         jobPromiseList.push(this.getJobWindow(job.id, { x: nearestJob.x, y: nearestJob.y }));
                     });
-                // all job locations for this item are locked
-                if (jobCount === lockedJobCount && lockedJobCount > 0) {
-                    return MessageHint(this.language.getTranslation(222)).show();
-                }
                 if (!jobPromiseList.length) {
                     throw new Error(`Unable to find nearby jobs for item! (itemId: ${itemId})`);
                 }
@@ -104,16 +92,31 @@ export class NearestJobs implements Component {
                         let bestJobIndex = -1;
                         // find job with best luck for that item
                         jobViews.forEach((jobView, index) => {
+                            const job = JobList.getJobById(jobView.id);
+                            if (!job) {
+                                throw new Error('Job not found!');
+                            }
+                            const isPlayerLevelSatisfied = job.level > this.window.Character.level;
+                            const isWorkPointsSatisfied = job.malus < jobView.jobSkillPoints;
+                            if (!isPlayerLevelSatisfied || !isWorkPointsSatisfied) {
+                                this.logger.log(
+                                    `player does not have enough work points or level to start the job = ${jobView.id}`,
+                                );
+                                return;
+                            }
                             const luck = getJobProductLuck(jobView, itemId);
                             // the item id is not obtainable from the job, this case should not happen
                             if (luck === false) {
-                                return;
+                                throw new Error('Item is not obtainable from the job!');
                             }
                             if (luck > bestLuck) {
                                 bestLuck = luck;
                                 bestJobIndex = index;
                             }
                         });
+                        if (bestJobIndex == -1) {
+                            return MessageHint(this.language.getTranslation(222)).show();
+                        }
                         // finally open the window!
                         const bestJobView = jobViews[bestJobIndex];
                         this.logger.log(`found best job for item = ${itemId}`, bestJobView);

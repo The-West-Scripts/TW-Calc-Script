@@ -419,6 +419,7 @@ export interface Job {
     name: string;
     shortname: string;
     level: number;
+    malus: number;
 }
 
 export interface JobList {
