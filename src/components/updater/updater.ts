@@ -78,7 +78,7 @@ export class Updater implements Component {
                 }<br/></br><b>${this.language.getTranslation(112)}?</b></br>${updaterResponse.news}</div>`,
                 west.gui.Dialog.SYS_WARNING,
             )
-                .addButton('Download', () => this.window.open(this.config.updateUrl))
+                .addButton('Download', () => this.doUpdate())
                 .addButton(this.language.getTranslation(80), () => undefined)
                 .show();
         } else {
@@ -98,7 +98,13 @@ export class Updater implements Component {
                 return;
             }
 
-            this.window.open(this.config.updateUrl);
+            this.doUpdate();
         }
+    }
+
+    private doUpdate(): void {
+        const updateUrl = `${this.config.updateUrl}?t=${Date.now()}`;
+        this.logger.log(`opening update url... (${updateUrl})`);
+        this.window.open(updateUrl);
     }
 }
