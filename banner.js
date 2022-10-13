@@ -6,6 +6,7 @@
 // @homepageURL http://tw-calc.net
 // @include	https://*.the-west.*/game.php*
 // @include	https://*.the-west.com.*/game.php*
+// @include	https://*.the-west.*.com/game.php*
 // @include	https://*.tw.innogames.*/game.php*
 // @exclude https://classic.the-west.net*
 // @downloadURL https://tw-calc.net/script/TW-Calc.user.js
