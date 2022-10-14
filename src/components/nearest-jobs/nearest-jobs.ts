@@ -96,9 +96,9 @@ export class NearestJobs implements Component {
                             if (!job) {
                                 throw new Error('Job not found!');
                             }
-                            const isPlayerLevelSatisfied = job.level > this.window.Character.level;
-                            const isWorkPointsSatisfied = job.malus < jobView.jobSkillPoints;
-                            if (!isPlayerLevelSatisfied || !isWorkPointsSatisfied) {
+                            const isPlayerLevelSatisfied = job.level <= this.window.Character.level;
+                            const isWorkPointsSatisfied = job.malus <= jobView.jobSkillPoints;
+                            if (!(isPlayerLevelSatisfied || isWorkPointsSatisfied)) {
                                 this.logger.log(
                                     `player does not have enough work points or level to start the job = ${jobView.id}`,
                                 );
