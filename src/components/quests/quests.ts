@@ -118,7 +118,7 @@ function findItemShopRecursive(
             }
             findItemShopRecursive(itemId, shopType, towns, $, logger, success, error);
         })
-        .catch(() => error());
+        .catch(() => findItemShopRecursive(itemId, shopType, towns, $, logger, success, error));
 }
 
 function getTownsByDistance(towns: Record<number, Town>, map: Map, character: Character): Array<UserDistanceTown> {
