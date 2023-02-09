@@ -19,8 +19,8 @@ const itemTypeToShopType: Record<string, string> = {
  */
 export function getItemShopType(itemId: number, itemManager: ItemManager): string | null {
     const item = itemManager.get(itemId);
-    // traderlevel - 1 to 20 (max level of gunsmith)
-    if (!itemTypeToShopType.hasOwnProperty(item.type) || !item.traderlevel || item.traderlevel > 20) {
+    // traderlevel - 1 to 30 (max level of gunsmith)
+    if (!itemTypeToShopType.hasOwnProperty(item.type) || !item.traderlevel || item.traderlevel > 30) {
         return null;
     }
     return itemTypeToShopType[item.type];
