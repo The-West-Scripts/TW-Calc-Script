@@ -35,7 +35,7 @@ function questsGetMinimapLinkPath(window: HiddenTasksWindow, language: Language)
                     '<span class="tw2gui-iconset tw2gui-icon-hammer" style="display: inline-block; cursor: pointer; vertical-align: middle; margin-right: 2px;" onclick="TW_Calc.openNearestJobWindowByProductId(' +
                     item.item_id +
                     ')"></span>';
-            } else if (item.traderlevel && item.traderlevel < 21 && inShop) {
+            } else if (inShop) {
                 output +=
                     '<span class="tw2gui-iconset tw2gui-icon-home" style="display: inline-block; cursor: pointer; vertical-align: middle; margin-right: 2px;" onclick="TW_Calc.openShopWindowByItemId(' +
                     item.item_id +
