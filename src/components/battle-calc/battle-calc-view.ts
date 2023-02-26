@@ -93,7 +93,9 @@ export class BattleCalcView implements TW2WindowView<WestCalcWindowTab>, Compone
         this.window.$(prefix + 'DefenseDodge').text(output.defense.dodge);
         this.window.$(prefix + 'HealthOutput').text(output.health + ' HP');
         this.window.$(prefix + 'AttackResistance').text(output.attack.resistance);
+        this.window.$(prefix + 'AttackResistanceBonus').text(`(+${output.attack.resistance_bonus})`);
         this.window.$(prefix + 'DefenseResistance').text(output.defense.resistance);
+        this.window.$(prefix + 'DefenseResistanceBonus').text(`(+${output.defense.resistance_bonus})`);
         this.window.$(prefix + 'DamageOutput').text(output.damage);
     }
 
@@ -194,11 +196,15 @@ export class BattleCalcView implements TW2WindowView<WestCalcWindowTab>, Compone
         characterFrame.appendToContentPane(
             placeCombox
                 .addItem(0, this.language.getTranslation(21))
+                .addItem(10000, this.language.getTranslation(223))
+                .addItem(10001, this.language.getTranslation(224))
+                .addItem(100, this.language.getTranslation(22) + ' 0')
                 .addItem(1, this.language.getTranslation(22) + ' 1')
                 .addItem(2, this.language.getTranslation(22) + ' 2')
                 .addItem(3, this.language.getTranslation(22) + ' 3')
                 .addItem(4, this.language.getTranslation(22) + ' 4')
                 .addItem(5, this.language.getTranslation(22) + ' 5')
+                .addItem(1000, this.language.getTranslation(203) + ' 0')
                 .addItem(11, this.language.getTranslation(203) + ' 1')
                 .addItem(12, this.language.getTranslation(203) + ' 2')
                 .addItem(13, this.language.getTranslation(203) + ' 3')
@@ -263,7 +269,7 @@ export class BattleCalcView implements TW2WindowView<WestCalcWindowTab>, Compone
                 '</div>' +
                 '<div><span style="display: inline-block; width: 24px; text-align: center"><img alt="resistance" src="' +
                 this.config.cdn +
-                '/images/fort/battle/resistance.png"></span></span><span id="TW_Calc_BattleCalc_AttackResistance">0</span></div></div>' +
+                '/images/fort/battle/resistance.png"></span></span><span id="TW_Calc_BattleCalc_AttackResistance">0</span> <span id="TW_Calc_BattleCalc_AttackResistanceBonus">0</span></div></div>' +
                 '<div style="font-weight: bold; font-size: 18px; color: darkblue; margin: 6px 0">' +
                 this.language.getTranslation(33) +
                 '</div>' +
@@ -284,7 +290,7 @@ export class BattleCalcView implements TW2WindowView<WestCalcWindowTab>, Compone
                 '</div>' +
                 '<div><span style="display: inline-block; text-align: center; width: 24px;"><img alt="resistance" src="' +
                 this.config.cdn +
-                '/images/fort/battle/resistance.png"></span></span><span id="TW_Calc_BattleCalc_DefenseResistance">0</span></div></div>' +
+                '/images/fort/battle/resistance.png"></span></span><span id="TW_Calc_BattleCalc_DefenseResistance">0</span> <span id="TW_Calc_BattleCalc_DefenseResistanceBonus">0</span></div></div>' +
                 '<div style="margin-top: 12px">' +
                 '<div style="margin: 2px 0"><div style="font-size: 13px; font-weight: bold">' +
                 this.language.getTranslation(28) +

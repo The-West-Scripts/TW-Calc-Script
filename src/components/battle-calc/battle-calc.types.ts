@@ -21,11 +21,13 @@ interface BattleCalcOutput {
         hit: number;
         dodge: number;
         resistance: number;
+        resistance_bonus: number;
     };
     defense: {
         hit: number;
         dodge: number;
         resistance: number;
+        resistance_bonus: number;
     };
     health: number;
     damage: number;

@@ -57,9 +57,11 @@ export class CharacterView implements TW2WindowView<WestCalcWindowTab> {
         this.window.$(`#data-attack-hit`, battleCalcDiv).text(output.attack.hit);
         this.window.$(`#data-attack-dodge`, battleCalcDiv).text(output.attack.dodge);
         this.window.$(`#data-attack-resistance`, battleCalcDiv).text(output.attack.resistance);
+        this.window.$(`#data-attack-resistance-bonus`).text(`(+${output.attack.resistance_bonus})`);
         this.window.$(`#data-defense-hit`, battleCalcDiv).text(output.defense.hit);
         this.window.$(`#data-defense-dodge`, battleCalcDiv).text(output.defense.dodge);
         this.window.$(`#data-defense-resistance`, battleCalcDiv).text(output.defense.resistance);
+        this.window.$(`#data-defense-resistance-bonus`).text(`(+${output.defense.resistance_bonus})`);
         this.window.$(`#data-health`, battleCalcDiv).text(output.health);
         this.window.$(`#data-damage`, battleCalcDiv).text(output.damage);
     }
@@ -106,7 +108,7 @@ export class CharacterView implements TW2WindowView<WestCalcWindowTab> {
                     '</div><div id="data-attack-dodge"></div></div>' +
                     '<div style="margin: 4px 0"><div style="font-weight: bold; margin: 2px 0; font-size: 15px">' +
                     this.language.getTranslation(140) +
-                    '</div><div id="data-attack-resistance"></div></div>' +
+                    '</div><div><span id="data-attack-resistance"></span> <span id="data-attack-resistance-bonus"></span></div></div>' +
                     '</td><td style="width: 33%">' +
                     '<div style="margin: 6px 0; font-weight: bold; font-size: 18px; color: darkblue;">' +
                     this.language.getTranslation(33) +
@@ -119,7 +121,7 @@ export class CharacterView implements TW2WindowView<WestCalcWindowTab> {
                     '</div><div id="data-defense-dodge"></div></div>' +
                     '<div style="margin: 4px 0"><div style="font-weight: bold; margin: 2px 0; font-size: 15px">' +
                     this.language.getTranslation(140) +
-                    '</div><div id="data-defense-resistance"></div></div>' +
+                    '</div><div><span id="data-defense-resistance"></span> <span id="data-defense-resistance-bonus"></span></div></div>' +
                     '</td><td style="width: 33%">' +
                     '<div style="margin: 4px 0"><div style="font-weight: bold; margin: 2px 0; font-size: 15px">' +
                     this.language.getTranslation(28) +
