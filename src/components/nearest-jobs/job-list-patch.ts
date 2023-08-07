@@ -33,7 +33,7 @@ function jobListGetJobsIdsByItemIdPatch(window: HiddenTasksWindow): void {
             const jobs: Array<number> = [];
             // Nod idea how it is working, need to reverse engineer that later (and fix the structure of hidItems)
             for (const jobId in hidItemTasks) {
-                if (hidItemTasks.hasOwnProperty(jobId) && Number(jobId) < 161) {
+                if (hidItemTasks.hasOwnProperty(jobId) && Number(jobId) <= 205) {
                     jobs.push(Number(jobId));
                 }
             }
