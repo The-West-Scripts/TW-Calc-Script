@@ -75,7 +75,7 @@ export class Recipe {
         this.title.append(titleInner).append(this.craftAmount).append(this.craft);
 
         this.content = $(
-            '<div class="recipe_content" style="margin-left: 51px; display: none"></div>',
+            '<div class="recipe_content" style="margin-left: auto; margin-right: auto; display: none"></div>',
         );
 
         // Get title and content together
@@ -179,13 +179,11 @@ export class Recipe {
     getMainDiv(): JQuery {
         const { $, ItemPopup } = this.window;
         const craftItem = $('<div class="recipe_craftitem"></div>');
-        const resources = $('<div class="recipe_resources"></div>');
+        const resources = $('<div class="recipe_resources" style="overflow-x: auto; display: flex;"></div>');
 
-        // Add resouce item widgets
+        // Add resource item widgets
         this.resources.widgets.forEach(widget => {
             addMinimapLink(widget, this.window);
-            if (this.recipeId == 51621000)
-                widget.getMainDiv().css("width", "68px"); // fix for resources of compost
             resources.append(widget.getMainDiv());
         });
 
