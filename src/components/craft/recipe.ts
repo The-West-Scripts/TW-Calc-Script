@@ -179,7 +179,9 @@ export class Recipe {
     getMainDiv(): JQuery {
         const { $, ItemPopup } = this.window;
         const craftItem = $('<div class="recipe_craftitem"></div>');
-        const resources = $('<div class="recipe_resources" style="overflow-x: auto; display: flex;"></div>');
+        const resources = $(
+            '<div class="recipe_resources" style="overflow-x: auto; overflow-y: auto; display: flex;"></div>',
+        );
 
         // Add resource item widgets
         this.resources.widgets.forEach(widget => {
