@@ -180,7 +180,7 @@ export class Recipe {
         const { $, ItemPopup } = this.window;
         const craftItem = $('<div class="recipe_craftitem"></div>');
         const resources = $(
-            '<div class="recipe_resources" style="overflow-x: auto; overflow-y: auto; display: flex;"></div>',
+            '<div class="recipe_resources" style="overflow-x: auto; overflow-y: hidden; display: flex;"></div>',
         );
 
         // Add resource item widgets
