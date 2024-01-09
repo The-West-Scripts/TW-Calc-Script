@@ -37,7 +37,7 @@ export class LocalSettingsExporterWindow extends TW2Window {
                 const exportable = this.localSettingsExporter.getSerializedExportableSettings();
                 const textarea = new this.window.west.gui.Textarea()
                     .setHeight(260)
-                    .setWidth(675)
+                    .setWidth(650)
                     .setReadonly()
                     .setContent(exportable);
 
@@ -57,7 +57,7 @@ export class LocalSettingsExporterWindow extends TW2Window {
             title: 'Import',
             loader: false,
             getMainDiv: (): JQuery => {
-                const textarea = new this.window.west.gui.Textarea().setHeight(260).setWidth(675);
+                const textarea = new this.window.west.gui.Textarea().setHeight(260).setWidth(650);
                 const submitButton = new this.window.west.gui.Button()
                     .setCaption('Submit')
                     .click(() => this.importSettings(textarea));
