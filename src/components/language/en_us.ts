@@ -168,4 +168,7 @@ export default {
     lang_220: 'Search...',
     lang_221: 'No tombola spins were tacked so far',
     lang_222: 'There are no unlocked jobs for this product!',
+    lang_223: 'Flag',
+    lang_224: 'Flag ring',
+    lang_225: 'Import / Export local TW-Calc settings',
 };

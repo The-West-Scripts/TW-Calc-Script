@@ -4,6 +4,9 @@ import { ErrorTracker } from '../error-tracker/error-tracker';
 import { inject, singleton } from 'tsyringe';
 import { isBooleanSetting, isNumberSetting, Settings } from './settings';
 import { Language } from '../language/language';
+import { LocalSettingsExporter } from './local-settings-exporter';
+import { LocalSettingsExporterWindow } from './local-settings-exporter-window';
+import { Logger } from '../logger/logger';
 import { NearestJobs } from '../nearest-jobs/nearest-jobs';
 import { NearestJobsBarPosition } from '../nearest-jobs/nearest-jobs.types';
 import { SettingAppearance, SettingBoolean, SettingController, SettingNumber } from './settings.types';
@@ -19,6 +22,8 @@ export class SettingsView implements TW2WindowView<WestCalcWindowTab> {
         translation: 216,
     };
 
+    private settingsImporterWindow: LocalSettingsExporterWindow;
+
     constructor(
         @inject('window') private readonly window: TheWestWindow,
         private readonly language: Language,
@@ -26,7 +31,17 @@ export class SettingsView implements TW2WindowView<WestCalcWindowTab> {
         private readonly nearestJobs: NearestJobs,
         private readonly errorTracker: ErrorTracker,
         private readonly config: Config,
-    ) {}
+        logger: Logger,
+        localSettingsExporter: LocalSettingsExporter,
+    ) {
+        this.settingsImporterWindow = new LocalSettingsExporterWindow(
+            window,
+            language,
+            logger,
+            errorTracker,
+            localSettingsExporter,
+        );
+    }
 
     getMainDiv(): JQuery {
         const { west, $ } = this.window;
@@ -85,6 +100,12 @@ export class SettingsView implements TW2WindowView<WestCalcWindowTab> {
                 new west.gui.Button()
                     .setCaption(this.language.getTranslation(152))
                     .click(() => this.nearestJobs.dialog.open())
+                    .getMainDiv(),
+            )
+            .append(
+                new west.gui.Button()
+                    .setCaption(this.language.getTranslation(225))
+                    .click(() => this.settingsImporterWindow.open())
                     .getMainDiv(),
             )
             .append(
