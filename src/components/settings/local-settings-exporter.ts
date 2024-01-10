@@ -25,38 +25,38 @@ export class LocalSettingsExporter {
 
     public setSettings(serializedSettings: string): boolean {
         try {
-            const settings = JSON.parse(atob(serializedSettings));
-            if (!Array.isArray(settings)) throw new Error('Array expected!');
-            let failures = settings.length;
-            for (const item of settings) {
-                if (typeof item !== 'object') {
-                    this.logger.warn('Object expected!');
-                    continue;
-                }
-                const key = item['key'];
-                const value = item['value'];
-                if (!this.isValidKey(key)) {
-                    this.logger.warn('Invalid key!', item);
-                    continue;
-                }
-                try {
-                    this.storage.setString(key, value);
-                    failures--;
-                } catch (e) {
-                    this.logger.warn('Unable to set settings!', item, e);
-                }
-            }
-            if (!failures) {
-                this.window.MessageSuccess('Success!').show();
-            } else {
-                this.window.MessageHint(`Unable to import some settings! (${failures})`).show();
-            }
+            this.setSerializedSettings(serializedSettings);
         } catch (e) {
             this.logger.error(e);
             this.window.MessageError('Unable to deserialize settings!').show();
             return false;
         }
         return true;
+    }
+
+    public setSerializedSettings(serializedSettings: string) {
+        const settings = JSON.parse(atob(serializedSettings));
+        if (!Array.isArray(settings)) throw new Error('Array expected!');
+        let failures = settings.length;
+        for (const item of settings) {
+            if (typeof item !== 'object') {
+                this.logger.warn('Object expected!');
+                continue;
+            }
+            const key = item['key'];
+            const value = item['value'];
+            if (!this.isValidKey(key)) {
+                this.logger.warn('Invalid key!', item);
+                continue;
+            }
+            this.storage.setString(key, value);
+            failures--;
+        }
+        if (!failures) {
+            this.window.MessageSuccess('Successful!').show();
+        } else {
+            this.window.MessageHint(`Unable to import some settings! (${failures})`).show();
+        }
     }
 
     public getSerializedExportableSettings(): string {
