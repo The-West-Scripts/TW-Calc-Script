@@ -5,7 +5,7 @@ import { Logger } from '../logger/logger';
 import { Resource } from './craft.types';
 import { zip } from '../../utils/zip';
 
-export type RecipeOnStartCraft = (recipeId: number, amount: number) => void;
+export type RecipeOnStartCraft = (recipe: Recipe, amount: number) => void;
 
 export class Recipe {
     private readonly item: Item;
@@ -33,6 +33,7 @@ export class Recipe {
         const { $, ItemManager, Crafting, tw2widget } = this.window;
 
         this.item = ItemManager.get(recipeId);
+        this.window.Crafting.recipes[recipeId] = this.item;
 
         this.resources = this.getResources();
         this.craftingItem = new tw2widget.CraftingItem(ItemManager.get(this.item.craftitem));
@@ -105,22 +106,24 @@ export class Recipe {
     }
 
     isCraftable(): boolean {
-        return this.isLearned() && this.getMaxCraftable() > 0 && this.craftService.getLastCraft(this.recipeId) === null;
+        return this.isLearned() && this.getMaxCraftable() > 0 && this.isNotUnderCooldown();
+    }
+
+    isNotUnderCooldown(): boolean {
+        return this.craftService.getLastCraft(this.recipeId) === null;
     }
 
     getMaxCraftable(): number {
-        const { Bag } = this.window;
-        let maxAmount = Infinity;
-        this.resources.items.forEach(resource => {
-            const bagCount = Bag.getItemCount(resource.item.item_id);
-            const amount = Math.floor(bagCount / resource.count);
-            maxAmount = Math.min(maxAmount, amount);
-        });
+        const { maxCount } = this.window.Crafting.checkRequirementsForRecipe(this.recipeId);
         // If recipe has a cooldown, we can craft only one time
-        if (this.item.blocktime) {
-            return Math.min(1, maxAmount);
+        if (this.isWithCooldown()) {
+            return Math.min(1, maxCount);
         }
-        return maxAmount;
+        return maxCount;
+    }
+
+    isWithCooldown(): boolean {
+        return !!this.item.blocktime;
     }
 
     getDifficulty(): CraftingRecipeDifficulty | null {
@@ -228,7 +231,7 @@ export class Recipe {
         // Update crafting button
         if (isCraftable) {
             const craftButton = $('<span>' + this.language.getTranslation(177) + '</span>');
-            craftButton.on('click', () => this.onStartCraft(this.recipeId, plusMinusField.getValue()));
+            craftButton.on('click', () => this.onStartCraft(this, plusMinusField.getValue()));
             underline(craftButton);
             this.craft.append(craftButton);
             // Enable plus/minus

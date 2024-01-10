@@ -35,7 +35,7 @@ export class CraftService implements Component {
      * @private
      */
     @CatchErrors('CraftService.update')
-    update(): void {
+    update(callback?: Function): void {
         const { $, Character } = this.window;
 
         $.get(
@@ -57,6 +57,7 @@ export class CraftService implements Component {
                 }
                 Character.setProfessionSkill(response.profession_skill);
                 this.maxProfessionSkillValue = response.profession_maxskill;
+                if (callback) callback();
             },
         );
     }

@@ -572,11 +572,18 @@ export interface Bag {
 }
 
 export type CraftingRecipeDifficulty = 'easy' | 'medium' | 'hard';
+export interface CraftingRequirementsForRecipe {
+    maxCount: number;
+    dependent: number;
+    requirements: Record<number, JQuery>;
+}
 
 export interface Crafting {
     description: string;
+    recipes: Record<number, Item>;
     updateResources(): void;
     getRecipeColor(item: Item): CraftingRecipeDifficulty;
+    checkRequirementsForRecipe(itemID: number): CraftingRequirementsForRecipe;
 }
 
 export interface Player {

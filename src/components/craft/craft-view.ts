@@ -58,8 +58,8 @@ export class CraftView {
 
         // Create recipes
         this.recipes = recipes[this.profession].map(recipe =>
-            Recipe.of(recipe, this.craftService, this.window, this.language, this.logger, (recipeId, amount) =>
-                this.startCraft(recipeId, amount),
+            Recipe.of(recipe, this.craftService, this.window, this.language, this.logger, (recipe, amount) =>
+                this.startCraft(recipe, amount),
             ),
         );
         this.recipes.sort(function (a, b) {
@@ -229,31 +229,39 @@ export class CraftView {
         return mainDiv;
     }
 
-    private startCraft(recipeId: number, amount: number): void {
-        this.logger.log(`start craft recipe id ${recipeId} (amount = ${amount})`);
+    private startCraft(recipe: Recipe, amount: number): void {
+        this.logger.log(`start craft recipe id ${recipe.recipeId} (amount = ${amount})`);
         const { Ajax, Character, MessageError, EventHandler, MessageSuccess } = this.window;
+
+        const callback = (resp: CraftingWindowStartCraftXHRResponse) => {
+            Character.setProfessionSkill(resp.msg.profession_skill);
+            Character.updateDailyTask('crafts', resp.msg.count);
+            EventHandler.signal('inventory_changed');
+
+            this.progressBar.setValue(Character.professionSkill || 0);
+            // Reload recipes, their difficulty or product counts might have changed
+            this.recipes.forEach(recipe => recipe.initMainDiv());
+
+            MessageSuccess(resp.msg.msg).show();
+        };
 
         Ajax.remoteCall<CraftingWindowStartCraftXHRResponse | XHRErrorResponse, { recipe_id: number; amount: number }>(
             'crafting',
             'start_craft',
             {
-                recipe_id: recipeId,
+                recipe_id: recipe.recipeId,
                 amount: amount,
             },
             resp => {
                 if (resp.error) {
-                    return MessageError(resp.msg).show();
+                    MessageError(resp.msg).show();
+                    return;
                 }
-
-                Character.setProfessionSkill(resp.msg.profession_skill);
-                Character.updateDailyTask('crafts', resp.msg.count);
-                EventHandler.signal('inventory_changed');
-
-                this.progressBar.setValue(Character.professionSkill || 0);
-                // Reload recipes, their difficulty or product counts might have changed
-                this.recipes.forEach(recipe => recipe.initMainDiv());
-
-                return MessageSuccess(resp.msg.msg).show();
+                if (recipe.isWithCooldown()) {
+                    this.craftService.update(() => callback(resp));
+                    return;
+                }
+                callback(resp);
             },
         );
     }
