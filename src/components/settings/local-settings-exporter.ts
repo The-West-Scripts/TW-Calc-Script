@@ -35,7 +35,7 @@ export class LocalSettingsExporter {
     }
 
     public setSerializedSettings(serializedSettings: string) {
-        const settings = JSON.parse(atob(serializedSettings));
+        const settings = JSON.parse(serializedSettings);
         if (!Array.isArray(settings)) throw new Error('Array expected!');
         let failures = settings.length;
         for (const item of settings) {
@@ -60,7 +60,7 @@ export class LocalSettingsExporter {
     }
 
     public getSerializedExportableSettings(): string {
-        return btoa(JSON.stringify(this.getExportableSettings()));
+        return JSON.stringify(this.getExportableSettings());
     }
 
     private getExportableSettings(): { key: StorageKey; value: string }[] {
