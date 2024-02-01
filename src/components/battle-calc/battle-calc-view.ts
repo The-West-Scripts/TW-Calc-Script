@@ -13,6 +13,20 @@ import { TheWestWindow } from '../../@types/the-west';
 import { TW2WindowTranslation, TW2WindowView } from '../tw2-window/tw2-window.types';
 import { WestCalcWindowTab } from '../west-calc/west-calc-window.types';
 
+interface NumericInputOptions {
+    label?: string;
+    inputWidth: number;
+    labelWidth: number;
+    isIntegerOnly: boolean;
+}
+
+const numericInputOptionsDefaults: NumericInputOptions = {
+    label: undefined,
+    inputWidth: 100,
+    labelWidth: 180,
+    isIntegerOnly: true,
+};
+
 @singleton()
 export class BattleCalcView implements TW2WindowView<WestCalcWindowTab>, Component {
     key = WestCalcWindowTab.BattleCalc;
@@ -151,7 +165,7 @@ export class BattleCalcView implements TW2WindowView<WestCalcWindowTab>, Compone
         };
 
         Object.entries(skills).forEach(([key, label]) => {
-            skillsFrame.appendToContentPane($('<div></div>').append(this.getNumericInput(key, label)));
+            skillsFrame.appendToContentPane($('<div></div>').append(this.getNumericInput(key, { label })));
         });
 
         const characterFrame = new west.gui.Groupframe().appendToContentPane(
@@ -159,24 +173,30 @@ export class BattleCalcView implements TW2WindowView<WestCalcWindowTab>, Compone
         );
 
         characterFrame.appendToContentPane(
-            $('<div></div>').append(this.getNumericInput('level', this.language.getTranslation(30))),
+            $('<div></div>').append(this.getNumericInput('level', { label: this.language.getTranslation(30) })),
         );
         characterFrame.appendToContentPane(
             $('<div></div>')
-                .append(this.getNumericInput('weaponMin', this.language.getTranslation(201), 50, 140))
+                .append(
+                    this.getNumericInput('weaponMin', {
+                        label: this.language.getTranslation(201),
+                        inputWidth: 50,
+                        labelWidth: 140,
+                    }),
+                )
                 .append('&nbsp;-&nbsp;')
-                .append(this.getNumericInput('weaponMax', undefined, 50)),
+                .append(this.getNumericInput('weaponMax', { inputWidth: 50 })),
         );
 
         characterFrame.appendToContentPane(
             '<div style="font-weight: bold;">' + this.language.getTranslation(32) + '</div>',
         );
 
-        const characterCombox = new west.gui.Combobox<string>('TWCalc_Character').setWidth(100);
-        characterCombox.addListener(this.onInputChange('charClass', () => characterCombox.getValue()));
+        const characterCombobox = new west.gui.Combobox<string>('TWCalc_Character').setWidth(100);
+        characterCombobox.addListener(this.onInputChange('charClass', () => characterCombobox.getValue()));
 
         characterFrame.appendToContentPane(
-            characterCombox
+            characterCombobox
                 .addItem('greenhorn', this.language.getTranslation(38))
                 .addItem('soldier', this.language.getTranslation(41))
                 .addItem('worker', this.language.getTranslation(42))
@@ -190,11 +210,11 @@ export class BattleCalcView implements TW2WindowView<WestCalcWindowTab>, Compone
             '<div style="font-weight: bold;">' + this.language.getTranslation(18) + '</div>',
         );
 
-        const placeCombox = new west.gui.Combobox<number>('TWCalc_Place').setWidth(100);
-        placeCombox.addListener(this.onInputChange('mapPosition', () => placeCombox.getValue()));
+        const placeCombobox = new west.gui.Combobox<number>('TWCalc_Place').setWidth(100);
+        placeCombobox.addListener(this.onInputChange('mapPosition', () => placeCombobox.getValue()));
 
         characterFrame.appendToContentPane(
-            placeCombox
+            placeCombobox
                 .addItem(0, this.language.getTranslation(21))
                 .addItem(10000, this.language.getTranslation(223))
                 .addItem(10001, this.language.getTranslation(224))
@@ -240,7 +260,9 @@ export class BattleCalcView implements TW2WindowView<WestCalcWindowTab>, Compone
         };
 
         Object.entries(bonuses).forEach(([key, label]) => {
-            bonusesFrame.appendToContentPane($('<div></div>').append(this.getNumericInput(key, label)));
+            bonusesFrame.appendToContentPane(
+                $('<div></div>').append(this.getNumericInput(key, { label, isIntegerOnly: false })),
+            );
         });
 
         leftHtmlDiv
@@ -316,27 +338,31 @@ export class BattleCalcView implements TW2WindowView<WestCalcWindowTab>, Compone
         return html;
     }
 
-    private getNumericInput(key: string, label?: string, inputWidth = 100, labelWidth = 180): JQuery {
+    private getNumericInput(
+        key: string,
+        numericInputOptions: Partial<NumericInputOptions> = numericInputOptionsDefaults,
+    ): JQuery {
         const input = new this.window.west.gui.Textfield();
+        const options = Object.assign({ ...numericInputOptionsDefaults }, numericInputOptions) as NumericInputOptions;
 
-        if (typeof label !== 'undefined') {
+        if (typeof options.label !== 'undefined') {
             input.setLabel(
                 '<span style="display: inline-block; font-weight: bold; width: ' +
-                    labelWidth +
+                    options.labelWidth +
                     'px;">' +
-                    label +
+                    options.label +
                     '</span>',
             );
         }
+        if (options.isIntegerOnly) input.onlyNumeric();
 
         return input
-            .setWidth(inputWidth)
-            .onlyNumeric()
+            .setWidth(options.inputWidth)
             .setValue(this.getCachedInputValue(key))
             .addKeyUpListener(
                 this.onInputChange<number>(key, () => {
-                    const value = Number(input.getValue());
-                    if (!Number.isInteger(value)) {
+                    const value = Number(input.getValue().replace(/,/, '.'));
+                    if ((options.isIntegerOnly && !Number.isInteger(value)) || !Number.isFinite(value)) {
                         return 0;
                     }
                     return value;
