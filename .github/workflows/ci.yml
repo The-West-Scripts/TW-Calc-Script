@@ -16,7 +16,7 @@ jobs:
                 fetch-depth: 0
             - uses: actions/setup-node@v1
               with:
-                node-version: 14
+                node-version: 20
             - run: npm ci
             - uses: wagoid/commitlint-github-action@v3
               env:
@@ -29,7 +29,7 @@ jobs:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
               with:
-                  node-version: 14
+                  node-version: 20
             - run: npm ci
             - run: npm run lint
             - run: npm run tsc
@@ -41,9 +41,9 @@ jobs:
 
         steps:
             - uses: actions/checkout@v2
-            - uses: actions/setup-node@v1
+            - uses: actions/setup-node@v4
               with:
-                  node-version: 14
+                  node-version: 20
             - run: npm ci
             - run: npm run test
 
@@ -54,14 +54,14 @@ jobs:
 
         steps:
             - uses: actions/checkout@v2
-            - uses: actions/setup-node@v1
+            - uses: actions/setup-node@v4
               with:
-                  node-version: 14
+                  node-version: 20
             - run: npm ci
             - run: npm run build
               env:
                   CI: true
-            - uses: actions/upload-artifact@v1
+            - uses: actions/upload-artifact@v4
               with:
                   name: dist
                   path: dist

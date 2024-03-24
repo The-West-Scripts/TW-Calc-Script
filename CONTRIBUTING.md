@@ -6,7 +6,7 @@
 
 Install the node from their official site or using nvm.
 
-1. [NodeJS](https://nodejs.org/en/) v14
+1. [NodeJS](https://nodejs.org/en/) v20
 
 ### Local development
 
