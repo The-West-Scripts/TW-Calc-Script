@@ -80,8 +80,8 @@ jobs:
                   name: dist
             - name: Prepare Release
               run: |
-                  echo "USERSCRIPT_PATH=$(find dist -type f -name '*.user.js')" >> $GITHUB_ENV
-                  echo "USERSCRIPT_NAME=$(find dist -type f -name '*.user.js' -exec basename {} \;)" >> $GITHUB_ENV
+                  echo "USERSCRIPT_PATH=$(find . -type f -name '*.user.js')" >> $GITHUB_ENV
+                  echo "USERSCRIPT_NAME=$(find . -type f -name '*.user.js' -exec basename {} \;)" >> $GITHUB_ENV
             - name: Create Release
               id: create_release
               uses: actions/create-release@v1
