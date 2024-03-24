@@ -65,7 +65,7 @@ git commit -m "style: redesign notepad"
 git commit -m "ci: fix build"
 # you can also add scope/multiple scopes
 git commit -m "test(unit): ..."
-git commit -m "ci(deploy) fix deploy url"
+git commit -m "ci(deploy): fix deploy url"
 ```
 
 ### Branching strategy
