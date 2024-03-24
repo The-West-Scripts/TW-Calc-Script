@@ -117,7 +117,7 @@ export class WearableView implements TW2WindowFactoryView {
 
     @CatchErrors('WearableView.bindSelectBox()')
     private bindSelectBox(to: ClickEvent): void {
-        const selectBox = new this.window.west.gui.Selectbox().setHeader(this.language.getTranslation(170));
+        const selectBox = new this.window.west.gui.Selectbox().setHeader(this.language.getTranslation(170)).setWidth(300);
         this.config.list().forEach(item => {
             selectBox.addItem(item.id, getViewName(item.name));
         });
