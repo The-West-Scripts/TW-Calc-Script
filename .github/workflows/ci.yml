@@ -6,6 +6,8 @@ on:
             - '*'
         tags:
             - v*
+    pull_request:
+    merge_group:
 jobs:
     commitlint:
         runs-on: ubuntu-latest
@@ -13,10 +15,10 @@ jobs:
         steps:
             - uses: actions/checkout@v2
               with:
-                fetch-depth: 0
+                  fetch-depth: 0
             - uses: actions/setup-node@v1
               with:
-                node-version: 20
+                  node-version: 20
             - run: npm ci
             - uses: wagoid/commitlint-github-action@v3
               env:
