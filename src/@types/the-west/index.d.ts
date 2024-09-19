@@ -1,5 +1,3 @@
-import {TW2Window} from "../../components/tw2-window/tw2-window";
-
 declare global {
     export interface Number {
         formatDuration: () => number;
