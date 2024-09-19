@@ -2,6 +2,7 @@ import { TheWestWindow, tw2gui } from './@types/the-west';
 
 export function tw2patch(window: TheWestWindow): void {
     patchPlusminusField(window);
+    patchCraftingUpdateResources(window);
 }
 
 function patchPlusminusField(window: TheWestWindow): void {
@@ -11,5 +12,14 @@ function patchPlusminusField(window: TheWestWindow): void {
     ): tw2gui.Plusminusfield {
         this.enabled = isEnabled;
         return this;
+    };
+}
+
+function patchCraftingUpdateResources(window: TheWestWindow): void {
+    const updateResources = window.Crafting.updateResources;
+
+    window.Crafting.updateResources = function () {
+        if (!window.CharacterWindow.window) return;
+        updateResources.call(window.Crafting);
     };
 }

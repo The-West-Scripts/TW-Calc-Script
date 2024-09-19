@@ -32,7 +32,7 @@ export class CraftWindow extends TW2Window<CraftWindowTab, CraftWindowTabInitOpt
     @CatchErrors('CraftWindow.open')
     open(options?: Partial<TW2WindowOpenOptions<CraftWindowTab, CraftWindowTabInitOptions>>): void {
         super.open(options);
-        // update last crafted recipes, since we do it only on script init
+        // Update last crafted recipes, since we do it only on script init
         this.craftService.update();
     }
 }

@@ -78,13 +78,13 @@ export class CraftService implements Component {
 
     init(): any {
         const { ItemManager } = this.window;
-        // patch game on update changes caller
+        // Patch game on update changes caller
         patchBagUpdateChanges(this.window, changes => {
             this.onBagChangeCallbacks.forEach(callback => callback(changes));
         });
-        // update last craft
+        // Update last craft
         this.update();
-        // listen to bag changes and update recipes
+        // Listen to bag changes and update recipes
         this.onBagChange(changes => {
             changes.forEach(change => {
                 if (ItemManager.get(change.item_id).type === 'recipe' && change.count > 0) {
@@ -107,7 +107,7 @@ export class CraftService implements Component {
         // Be aware of memory leaks when window closes
         this.onBagChangeCallbacks.push(callback);
         return () => {
-            // filter callbacks
+            // Filter callbacks
             this.onBagChangeCallbacks = this.onBagChangeCallbacks.filter(otherCallback => otherCallback !== callback);
         };
     }

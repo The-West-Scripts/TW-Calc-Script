@@ -6,6 +6,7 @@
     "scripts": {
         "build": "cross-env ENV=prod rollup --config",
         "build:dev": "cross-env ENV=dev rollup --config",
+        "build:dev:copy-script": "npm run build:dev && pbcopy < dist/TW_Calc.user.js",
         "dev": "rollup -w --config",
         "karma": "karma start --single-run",
         "lint": "npm run prettier:lint && npm run eslint",

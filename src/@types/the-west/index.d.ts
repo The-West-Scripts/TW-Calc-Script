@@ -1,3 +1,5 @@
+import {TW2Window} from "../../components/tw2-window/tw2-window";
+
 declare global {
     export interface Number {
         formatDuration: () => number;
@@ -854,6 +856,10 @@ export interface ItemPopupConstructor {
     new (item: Item): ItemPopup;
 }
 
+export interface CharacterWindow {
+    window: tw2gui.Window;
+}
+
 export interface TheWestWindow extends Window {
     console: Console;
     Game: Game;
@@ -892,4 +898,5 @@ export interface TheWestWindow extends Window {
     MinimapWindow: MinimapWindow;
     EventHandler: EventHandler;
     ItemPopup: ItemPopupConstructor;
+    CharacterWindow: CharacterWindow;
 }
