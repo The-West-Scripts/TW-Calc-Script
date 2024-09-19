@@ -122,6 +122,11 @@ export class Recipe {
         return maxCount;
     }
 
+    isDependent(): boolean {
+        const { dependent } = this.window.Crafting.checkRequirementsForRecipe(this.recipeId);
+        return dependent > 0;
+    }
+
     isWithCooldown(): boolean {
         return !!this.item.blocktime;
     }
@@ -230,17 +235,22 @@ export class Recipe {
         this.craft.empty();
         // Update crafting button
         if (isCraftable) {
-            const craftButton = $('<span>' + this.language.getTranslation(177) + '</span>');
+            const isDependent = this.isDependent();
+            const cls = isDependent ? 'crafting_dependent' : 'crafting_independent';
+            const craftButton = $('<a class="' + cls + '">' + this.language.getTranslation(177) + '</a>');
             craftButton.on('click', () => this.onStartCraft(this, plusMinusField.getValue()));
             underline(craftButton);
+            if (isDependent && !this.window.Premium.hasBonus('automation')) {
+                this.craft.append('<img src="/images/premium/automation.png" alt="premium_automation">');
+            }
             this.craft.append(craftButton);
             // Enable plus/minus
         } else {
             const lastCraft = this.craftService.getLastCraft(this.recipeId);
-            // If has crafting cooldown, show remaining duration
+            // If it has crafting cooldown, show remaining duration
             if (lastCraft !== null) {
                 this.craft.append(
-                    '<span style="color: yellow; cursor: default;">' + lastCraft.formatDurationBuffWay() + '</span>',
+                    '<span style="crafting_independent">' + lastCraft.formatDurationBuffWay() + '</span>',
                 );
             } else if (this.isLearnable()) {
                 // Show learn button
