@@ -117,14 +117,14 @@ export class CraftView {
         filters.append(craftableCheckbox.getMainDiv());
         filters.append('&nbsp;|&nbsp;');
 
-        const difficultyFilters: Array<CraftingRecipeDifficulty | null> = [null, 'easy', 'medium', 'hard'];
+        const difficultyFilters: Array<CraftingRecipeDifficulty | null> = [null, 'hard', 'medium', 'easy'];
         difficultyFilters.forEach((value, index) => {
             const checkbox = new west.gui.Checkbox<CraftingRecipeDifficulty | null>('', 'TWCalc_CraftFilter')
                 .setValue(value)
                 .setSelected(value === null)
                 .setRadiobutton()
                 // add a tooltip for easy/medium/hard
-                .setTooltip(index ? difficultyTitle[index - 1] : '');
+                .setTooltip(index ? difficultyTitle[index - 1] : 'All');
 
             checkbox.setCallback(() => {
                 this.filters.difficulty = checkbox.getValue();
