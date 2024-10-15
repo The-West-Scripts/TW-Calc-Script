@@ -45,7 +45,7 @@ module.exports = {
         babel.babel({ babelHelpers: 'runtime', extensions, exclude: /node_modules/ }),
         ...(ENV !== 'test' ? [injector()] : []),
         ...(ENV === 'prod' ? [pluginTerser] : []),
-        ...(ENV !== 'test' ? [patchMap(), banner()] : []),
+        ...(ENV !== 'test' ? [banner()] : []),
     ],
 };
 
@@ -76,19 +76,4 @@ function banner() {
         }
         return banner;
     }
-}
-
-/**
- * Because The-West replaces global Map variable with the in-game Map, and our dependency (tsringe) is using it.
- * We expose _Map from the script to the global scope and then we replace all usages of new Map( with new _Map(.
- *
- * @return {{name: string, renderChunk(*): *}|*}
- */
-function patchMap() {
-    return {
-        name: 'banner',
-        renderChunk(code) {
-            return code.toString().replace(/new Map/g, 'new _Map');
-        },
-    };
 }

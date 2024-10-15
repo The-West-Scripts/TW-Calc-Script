@@ -248,7 +248,7 @@ export class NearestJobs implements Component {
         }
         try {
             if (this.window.ItemManager.isLoaded()) {
-                return this.window.Map.PopupHandler.getJobPopup(job);
+                return this.window.GameMap.PopupHandler.getJobPopup(job);
             }
         } catch (_) {
             // pass

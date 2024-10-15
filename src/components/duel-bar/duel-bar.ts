@@ -29,8 +29,7 @@ export class DuelBar implements Component {
     ) {}
 
     @WaitUntil<DuelBar>(function (this: DuelBar) {
-        const map = this.window.Map;
-        // Before the Map is injected by The-West, it is MapConstructor from the polyfill
+        const map = this.window.GameMap;
         return typeof map === 'object' && typeof map['calcWayTime'] === 'function';
     })
     @CatchErrors('DuelBar.init')
@@ -101,7 +100,7 @@ export class DuelBar implements Component {
         );
 
         players.forEach(player => {
-            const wayTime = this.window.Map.calcWayTime(this.window.Character.position, {
+            const wayTime = this.window.GameMap.calcWayTime(this.window.Character.position, {
                 x: player.character_x,
                 y: player.character_y,
             });
@@ -234,11 +233,11 @@ function loadNearbyPlayers(
 
 function sortPlayersByDistance(w: TheWestWindow, players: Array<DuelWindowPlayer>) {
     players.sort((a, b) => {
-        const way_time_1 = w.Map.calcWayTime(w.Character.position, {
+        const way_time_1 = w.GameMap.calcWayTime(w.Character.position, {
             x: a.character_x,
             y: a.character_y,
         });
-        const way_time_2 = w.Map.calcWayTime(w.Character.position, {
+        const way_time_2 = w.GameMap.calcWayTime(w.Character.position, {
             x: b.character_x,
             y: b.character_y,
         });

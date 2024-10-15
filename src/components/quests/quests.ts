@@ -1,7 +1,7 @@
 import { CatchErrors } from '../error-tracker/catch-errors';
 import {
     Character,
-    Map,
+    GameMap,
     TheWestWindow,
     Town,
     TownShopWindowXHRResponse,
@@ -36,22 +36,22 @@ export class Quests implements Component {
 
     @CatchErrors('Quests.findQuestEmployer')
     findQuestEmployer(questEmployer: number): void {
-        const { Map, UserMessage } = this.window;
+        const { GameMap, UserMessage } = this.window;
         this.nearestJobs.getMinimap(map => {
             const questLocation = map.quest_locations[questEmployer];
             if (!questLocation) {
                 return new UserMessage(this.language.getTranslation(204), 'hint').show();
             }
-            Map.center(questLocation[0][0], questLocation[0][1]);
+            GameMap.center(questLocation[0][0], questLocation[0][1]);
         });
     }
 
     @CatchErrors('Quests.openShopWindowByItemId')
     openShopWindowByItemId(itemId: number): void {
-        const { $, Map, MessageSuccess, MessageError, ItemManager, Character, Trader } = this.window;
+        const { $, GameMap, MessageSuccess, MessageError, ItemManager, Character, Trader } = this.window;
         this.nearestJobs.getMinimap(map => {
             MessageSuccess(this.language.getTranslation(143)).show();
-            const towns = getTownsByDistance(map.towns, Map, Character);
+            const towns = getTownsByDistance(map.towns, GameMap, Character);
             const shopType = getItemShopType(itemId, ItemManager);
             if (!shopType) {
                 return MessageError(this.language.getTranslation(219)).show();
@@ -121,7 +121,7 @@ function findItemShopRecursive(
         .catch(() => findItemShopRecursive(itemId, shopType, towns, $, logger, success, error));
 }
 
-function getTownsByDistance(towns: Record<number, Town>, map: Map, character: Character): Array<UserDistanceTown> {
+function getTownsByDistance(towns: Record<number, Town>, map: GameMap, character: Character): Array<UserDistanceTown> {
     const townsByDistance: Array<UserDistanceTown> = [];
     const homeTown = character.homeTown;
     Object.values(towns).forEach(town => {
