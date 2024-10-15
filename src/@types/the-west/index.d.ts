@@ -372,7 +372,7 @@ export interface Task {
     };
 }
 
-export type Map = {
+export type GameMap = {
     PopupHandler: {
         getJobPopup(job: Job): string;
     };
@@ -875,7 +875,7 @@ export interface TheWestWindow extends Window {
     JobList: JobList;
     Premium: Premium;
     ItemManager: ItemManager;
-    Map: Map;
+    GameMap: GameMap;
     JobWindow: JobWindow;
     TaskJob: TaskJobConstructor;
     OnGoingEntry: OnGoingEntryConstructor;
