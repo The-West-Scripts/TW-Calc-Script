@@ -40,7 +40,7 @@ export class NearestJobs implements Component {
     @CatchErrors('NearestJobs.init')
     init(): void {
         // monkey patch job list
-        jobListMonkeyPatch(this.window);
+        jobListMonkeyPatch(this.logger, this.window);
         // the nearest job bar is hidden
         if (this.settings.get(SettingNumber.NearestJobsBar) === 4) {
             return;

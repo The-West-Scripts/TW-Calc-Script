@@ -1,3 +1,5 @@
+import { hidTasks } from './hid-tasks';
+import { Logger } from '../logger/logger';
 import { TheWestWindow } from '../../@types/the-west';
 
 export interface HiddenTasksWindow extends TheWestWindow {
@@ -8,12 +10,11 @@ export interface HiddenTasksWindow extends TheWestWindow {
  * Path the original game so job list get items returns hidden items.
  * @param window
  */
-export function jobListMonkeyPatch(window: TheWestWindow): void {
-    const { $ } = window;
-    // TODO: move this to repository or host in on tw-calc.net
-    $.getScript('https://tomrobert.safe-ws.de/hidTasks.js');
+export function jobListMonkeyPatch(logger: Logger, window: TheWestWindow): void {
+    hidTasks(logger, window);
     jobListDropsItemPatch(window);
     jobListGetJobsIdsByItemIdPatch(window);
+    logger.log('jobList monkey patch is finished!');
 }
 
 function jobListDropsItemPatch(window: HiddenTasksWindow): void {
