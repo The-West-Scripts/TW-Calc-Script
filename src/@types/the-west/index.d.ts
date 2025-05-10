@@ -239,6 +239,10 @@ export namespace tw2gui {
             callbackPlus: (event: JQuery.ClickEvent<JQuery, { obj: Plusminusfield }>) => void,
             callbackMinus: (event: JQuery.ClickEvent<JQuery, { obj: Plusminusfield }>) => void,
             callbackWheel: (event: Event, delte: number, button: Plusminusfield) => void,
+            callbackInput: (
+                event: JQuery.ClickEvent<JQuery, { obj: tw2gui.Plusminusfield }>,
+                button: tw2gui.Plusminusfield,
+            ) => void,
         ): Plusminusfield;
     }
 }

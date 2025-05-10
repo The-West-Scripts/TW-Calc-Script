@@ -328,6 +328,7 @@ export class Recipe {
             event => callbackPlusminusButton(this.window, event),
             event => callbackPlusminusButton(this.window, event),
             (_, delta, button) => callbackWheel(this.window, delta, button),
+            callbackInput,
         );
         plusMinusField.setEnabled(isCraftable);
         plusMinusField.divMain.on('mouseover', () =>
@@ -356,6 +357,13 @@ function callbackWheel(window: TheWestWindow, delta: number, button: tw2gui.Plus
     button.setValue(nextValue);
     window.$('span.displayValue', button.getMainDiv()).text(button.getValue());
     return true;
+}
+
+function callbackInput(
+    event: JQuery.ClickEvent<JQuery, { obj: tw2gui.Plusminusfield }>,
+    button: tw2gui.Plusminusfield,
+) {
+    button.setValue(event.currentTarget.value * 1);
 }
 
 function addMinimapLink(tw2item: tw2widget.CraftingItem, window: TheWestWindow) {
