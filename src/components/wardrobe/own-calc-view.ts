@@ -119,7 +119,7 @@ export class OwnCalcView {
                 } else if ($(event.currentTarget).hasClass('butMinus')) {
                     value = Math.max(0, value - 1);
                 }
-                $(displayValue).html(value.toString());
+                $(displayValue).val(value.toString());
                 defaults[skillKey] = value;
             };
             // skillBox
