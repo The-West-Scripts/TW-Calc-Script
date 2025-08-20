@@ -47,7 +47,7 @@ export class Recipe {
         this.collapse.on('click', () => this.setCollapsedToggle());
         this.difficulty = $('<div class="recipe_difficult hasMousePopup"></div>');
         this.recipeName = $(
-            '<div class="recipe_name" style="width: 235px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">' +
+            '<div class="recipe_name" style="width: 230px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">' +
                 this.name.split(':').pop() +
                 '</div>',
         );
