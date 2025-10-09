@@ -4,6 +4,7 @@ import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
 import { Resource } from './craft.types';
 import { zip } from '../../utils/zip';
+import { wrapError } from '../error-tracker/wrap-error';
 
 export type RecipeOnStartCraft = (recipe: Recipe, amount: number) => void;
 
@@ -193,12 +194,20 @@ export class Recipe {
 
         // Add resource item widgets
         this.resources.widgets.forEach(widget => {
-            addMinimapLink(widget, this.window);
-            resources.append(widget.getMainDiv());
+            try {
+                addMinimapLink(widget, this.window);
+                resources.append(widget.getMainDiv());
+            } catch (e) {
+                throw wrapError(e, `Error while adding resource #${widget.obj.item_id}!`);
+            }
         });
 
         // Add craft item
-        craftItem.append(this.craftingItem.getMainDiv());
+        try {
+            craftItem.append(this.craftingItem.getMainDiv());
+        } catch (e) {
+            throw wrapError(e, `Error while adding the crafting item #${this.craftingItem.obj.item_id}!`);
+        }
 
         // If not my profession, hide crafting button
         if (!this.isMyProfession()) {

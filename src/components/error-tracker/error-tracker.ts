@@ -6,6 +6,7 @@ import { inject, registry, singleton } from 'tsyringe';
 import { InvisibleError } from './invisible-error';
 import { Logger } from '../logger/logger';
 import { OnGoingEntry, TheWestWindow } from '../../@types/the-west';
+import { wrapError } from './wrap-error';
 
 @singleton()
 @registry([{ token: 'onGoingEntry', useValue: onGoingEntry }])
@@ -73,11 +74,12 @@ export class ErrorTracker {
      * Execute a function immediately and catch errors.
      * @param fn
      */
-    execute<T>(fn: () => T): T | undefined {
+    execute<T>(fn: () => T, message?: string): T | undefined {
         try {
             return fn();
         } catch (e: any) {
-            const error = asErrorObject(e);
+            let error = asErrorObject(e);
+            if (typeof message === 'string') error = wrapError(error, message);
             this.track(error);
             return undefined;
         }

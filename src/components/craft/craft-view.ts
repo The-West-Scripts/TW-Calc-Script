@@ -270,7 +270,12 @@ export class CraftView {
         // Get recipes divs
         const { $ } = this.window;
         const recipesDiv = $('<div></div>');
-        this.recipes.forEach(recipe => recipesDiv.append(recipe.getMainDiv()));
+        this.recipes.forEach(recipe => {
+            this.errorTracker.execute(
+                () => recipesDiv.append(recipe.getMainDiv()),
+                `Error while adding recipe #${recipe.recipeId}!`,
+            );
+        });
         return recipesDiv;
     }
 
