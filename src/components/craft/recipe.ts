@@ -3,8 +3,8 @@ import { CraftService } from './craft-service';
 import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
 import { Resource } from './craft.types';
-import { zip } from '../../utils/zip';
 import { wrapError } from '../error-tracker/wrap-error';
+import { zip } from '../../utils/zip';
 
 export type RecipeOnStartCraft = (recipe: Recipe, amount: number) => void;
 
