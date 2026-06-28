@@ -26,7 +26,13 @@ export class Chests implements Component {
         let newStr: string | undefined;
         try {
             const str = originalFn.toString();
-            const pos = str.indexOf("EventHandler.signal('item_used'");
+            // quote-agnostic anchor: some minified builds emit the signal with double quotes
+            const match = str.match(/EventHandler\.signal\(['"]item_used['"]/);
+            if (!match || match.index === undefined) {
+                // fail loudly & harmlessly instead of building broken code from a -1 position
+                throw new Error('item_used anchor not found in ItemUse.doIt');
+            }
+            const pos = match.index;
             const body = str.substr(0, pos) + 'TW_Calc.trackChest(itemId,res);' + str.substr(pos);
             this.logger.log('patching the chest handler...', body);
             newStr = 'ItemUse.doIt = ' + body;
