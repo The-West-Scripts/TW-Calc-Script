@@ -1,6 +1,6 @@
 # TW-Calc-Script
 
-[![CI](https://github.com/The-West-Scripts/TW-Calc-Script/workflows/CI/badge.svg?branch=v2)](https://github.com/The-West-Scripts/TW-Calc-Script/actions?query=workflow%3ACI)
+[![CI](https://github.com/The-West-Scripts/TW-Calc-Script/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/The-West-Scripts/TW-Calc-Script/actions/workflows/ci.yml)
 
 [![](./docs/logo.png)](https://tw-calc.net)
 
