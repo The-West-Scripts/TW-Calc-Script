@@ -27,16 +27,25 @@ grep -m1 '@version' dist/TW_Calc.user.js     # MUST equal the target version
 
 If `@version` ≠ target you're on the wrong checkout — `git checkout vX.Y.Z` (or fix `package.json`), rebuild.
 
-### 2. Publish — the user runs this (it needs the secret)
+### 2. Publish
 
-`ci/deploy.sh` reads `./dist/TW_Calc.user.js`, derives the version from `REF`, and POSTs it with the API key:
+`ci/deploy.sh` reads `./dist/TW_Calc.user.js`, derives the version from `REF`, and POSTs it with `$TW_CALC_API_KEY` — the same value as the GitHub `TW_CALC_API_KEY` secret.
+
+First check whether the key is already exported in the shell (it often is), **without revealing it**:
 
 ```shell
-REF=refs/tags/vX.Y.Z TW_CALC_API_KEY='<key>' ./ci/deploy.sh
+if [ -n "$TW_CALC_API_KEY" ]; then echo "TW_CALC_API_KEY is set (length ${#TW_CALC_API_KEY})"; else echo "TW_CALC_API_KEY is NOT set"; fi
 ```
 
+-   **If set:** Claude runs the publish directly — the key comes from the env, so it's never exposed:
+
+    ```shell
+    REF=refs/tags/vX.Y.Z ./ci/deploy.sh
+    ```
+
+-   **If NOT set:** alert the user — the publish needs the secret. Have them either `export TW_CALC_API_KEY=...` in this session's shell and rerun the skill, or run `REF=refs/tags/vX.Y.Z TW_CALC_API_KEY='<key>' ./ci/deploy.sh` **in their own terminal**. Never ask for the key in chat, echo it, or commit it (avoid the `!`-prefix — it lands in the transcript).
+
 -   `REF` MUST be `refs/tags/vX.Y.Z` — the script does `cut -d '/' -f3`, so anything else yields the wrong/empty version field.
--   `TW_CALC_API_KEY` is the same value as the GitHub `TW_CALC_API_KEY` secret. Claude does **not** have it: prepare everything up to this command, then have the user run it **in their own terminal**. Never ask for the key in chat, echo it, or commit it (avoid the `!`-prefix — it lands in the transcript).
 -   The hardened `ci/deploy.sh` (`--fail-with-body` + challenge detection) prints `Publish accepted (HTTP …)` on success, or fails loudly with an `::error::` line on an HTTP error or an intercepted challenge page.
 
 ### 3. Verify it's live
