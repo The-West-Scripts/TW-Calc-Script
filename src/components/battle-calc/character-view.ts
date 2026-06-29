@@ -68,7 +68,9 @@ export class CharacterView implements TW2WindowView<WestCalcWindowTab> {
 
     getMainDiv(): JQuery {
         if (!this.battleCalc.isAvailable()) {
-            return $('<div>Battle calc core script is not loaded, try refreshing the game.</div>');
+            // kick off a (re)load in the background so reopening this window recovers it
+            this.battleCalc.load();
+            return $('<div>Battle calc core script is not loaded yet, reopen this window in a few seconds.</div>');
         }
 
         const html = $('<div id="BattleCalcCharacterView"></div>');
