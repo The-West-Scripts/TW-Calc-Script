@@ -35,7 +35,7 @@ export class Chests implements Component {
             const pos = match.index;
             const body = str.substr(0, pos) + 'TW_Calc.trackChest(itemId,res);' + str.substr(pos);
             this.logger.log('patching the chest handler...', body);
-            newStr = 'ItemUse.doIt = ' + body;
+            newStr = `ItemUse.${toolkit} = ${body}`;
             eval(newStr);
         } catch (e: unknown) {
             const error = e as Error;
