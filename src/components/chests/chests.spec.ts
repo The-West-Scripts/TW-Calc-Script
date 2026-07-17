@@ -60,6 +60,20 @@ describe('Chests', () => {
         expect(errorTrackerMock.Object.track).not.toHaveBeenCalled();
     });
 
+    it('patches doItOrigin without replacing an existing toolkit wrapper', () => {
+        setup('function toolkitWrapper() {}');
+        const wrapper = itemUse.doIt;
+        itemUse.doItOrigin = doItWithSource(
+            "function (itemId, itemCount) { EventHandler.signal('item_used', [itemId]); }",
+        );
+
+        chests.init();
+
+        expect(itemUse.doIt).toBe(wrapper);
+        expect(itemUse.doItOrigin.toString()).toContain('TW_Calc.trackChest(itemId,res);');
+        expect(errorTrackerMock.Object.track).not.toHaveBeenCalled();
+    });
+
     it('tracks an error and leaves the handler untouched when the anchor is missing', () => {
         setup("function (itemId, itemCount) { EventHandler.signal('something_else', [itemId]); }");
         const original = itemUse.doIt;
