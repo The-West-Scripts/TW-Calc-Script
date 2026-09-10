@@ -12,6 +12,7 @@ import { Component } from '../component.types';
 import { Config } from '../config/config';
 import { ErrorTracker } from '../error-tracker/error-tracker';
 import { inject, singleton } from 'tsyringe';
+import { InvisibleError } from '../error-tracker/invisible-error';
 import { Language } from '../language/language';
 import { Logger } from '../logger/logger';
 import { StorageKey } from '../storage/storage.types';
@@ -115,7 +116,7 @@ export class TombolaExporter implements Component {
             if (response && !response.failed && (response.itemId || response.outcome)) {
                 const categoryType = response.itemEnhance || (response.outcome && response.outcome.itemEnhance);
                 const prize = response.itemId || (response.outcome && response.outcome.itemId) || 0;
-                const level = response.construction_id || data.enhance;
+                const level = getLevel(data, response);
 
                 let category = 0;
                 switch (categoryType) {
@@ -130,15 +131,24 @@ export class TombolaExporter implements Component {
                         break;
                 }
 
-                this.save(
-                    {
-                        tombolaId,
-                        prize,
-                        category,
-                        level,
-                    },
-                    true,
-                ); // TODO: change isFree from constant
+                const spin = { tombolaId, prize, category, level };
+
+                if (typeof level === 'undefined') {
+                    // Every event that reaches this branch is exported with a level, and jQuery
+                    // drops an undefined value from the query string instead of sending it empty,
+                    // so the export would fail with "Level is not defined!". Keep the player's own
+                    // stats - those do not use the level - and report where the level went instead
+                    // of firing a request that cannot succeed.
+                    this.addSpinToStorage(spin, true);
+                    throw InvisibleError.of(
+                        new Error(
+                            `Unable to resolve the tombola level! event=${eventType} ` +
+                                `data=${JSON.stringify(data)} response=[${Object.keys(response).join(', ')}]`,
+                        ),
+                    );
+                }
+
+                this.save(spin, true); // TODO: change isFree from constant
             } else {
                 this.logger.warn('Unable to process WoF response!', response);
             }
@@ -186,14 +196,21 @@ export class TombolaExporter implements Component {
 
     private exportSpin(spin: Spin): void {
         const { $ } = this.window;
-        $.get(
-            this.config.website + '/service/tombola-export',
-            spin,
-            resp => {
+        $.get(this.config.website + '/service/tombola-export', spin, null, 'jsonp')
+            .done(resp => {
                 this.logger.log('tombola exported', resp);
-            },
-            'jsonp',
-        );
+            })
+            .fail((_jqXHR, textStatus: string, error: unknown) => {
+                this.logger.warn('unable to export the tombola spin', spin, textStatus, error);
+                this.errorTracker.track(
+                    InvisibleError.of(
+                        new Error(
+                            `Unable to export the tombola spin! status=${textStatus} ` + `spin=${JSON.stringify(spin)}`,
+                        ),
+                    ),
+                    'TombolaExporter.exportSpin',
+                );
+            });
     }
 
     private addSpinToStorage(spin: Spin, isFree: boolean): void {
@@ -287,6 +304,27 @@ export class TombolaExporter implements Component {
         this.storage.setObject<Record<number, Tombola>>(StorageKey.tombola, data);
         this.logger.log('migration finished!', data);
     }
+}
+
+/**
+ * Reads the tombola level, which is the enhance the spin was played at - every event exported with
+ * a level has only ever recorded 0, 25, 150 or 800. It is normally in the spin request, but an
+ * octoberfest bribe/upgrade request carries no `enhance` and reports it on the response instead.
+ *
+ * A level of 0 is the un-enhanced spin, so the two sources are tried by *first defined*: a `||`
+ * chain would fall through a real 0 to the next source. `construction_id` is deliberately not a
+ * source - it is 0 on every octoberfest spin, and no recorded level has ever come from it.
+ *
+ * Returns undefined when neither source carries a level.
+ */
+function getLevel(data: WofData, response: WheelofFortuneGambleXHRResponse): number | undefined {
+    for (const level of [data.enhance, response.enhance]) {
+        if (typeof level !== 'undefined' && level !== null) {
+            return level;
+        }
+    }
+
+    return undefined;
 }
 
 function getId(key: number | TombolaKey): number {

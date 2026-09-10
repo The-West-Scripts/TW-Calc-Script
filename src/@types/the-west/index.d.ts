@@ -304,6 +304,7 @@ export interface WheelofFortuneGambleXHRResponse {
     failed?: boolean;
     outcome?: { itemEnhance: number; itemId: number };
     construction_id?: number; // independence day
+    enhance?: number; // octoberfest, reported here instead of in the request data after a bribe
     streak?: number; // easter
     cost?: unknown; // dotd
     stages?: Array<{ rewards: { item: number } }>; // dotd
@@ -329,7 +330,7 @@ export interface WheelofFortuneConsructor {
 export interface WofData {
     wofid: number;
     action: string;
-    enhance: number;
+    enhance?: number; // absent on some actions, e.g. an octoberfest bribe
     payid: string | number;
 }
 
