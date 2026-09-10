@@ -38,7 +38,15 @@ module.exports = {
             browser: true,
             extensions,
         }),
-        typescript({ sourceMap: false, tsconfig: 'tsconfig.json' }),
+        // `include` is spelled out explicitly (rather than left to the plugin's default
+        // `*.ts+(|x)` extglob) because picomatch >=2.3.2 no longer matches that pattern
+        // against plain .ts files, which silently drops TS compilation from the pipeline.
+        // See https://github.com/micromatch/picomatch/issues (POSIX character class fix regression).
+        typescript({
+            sourceMap: false,
+            tsconfig: 'tsconfig.json',
+            include: ['*.ts', '*.tsx', '**/*.ts', '**/*.tsx'],
+        }),
         commonjs({
             include: /node_modules/,
         }),
