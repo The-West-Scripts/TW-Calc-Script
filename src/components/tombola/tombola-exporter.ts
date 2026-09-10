@@ -201,15 +201,17 @@ export class TombolaExporter implements Component {
                 this.logger.log('tombola exported', resp);
             })
             .fail((_jqXHR, textStatus: string, error: unknown) => {
+                // The service never calls the jsonp callback jQuery generated - it answers with a
+                // script of its own (tombola-list replies with a bare `TW_Calc.addTombolaInfo(...)`
+                // call) - so a spin the server accepted still lands here as a `parsererror`. An
+                // export the server turns down is an HTTP error, which the script transport reports
+                // as `error` instead, so only the other statuses are worth a warning.
+                if (textStatus === 'parsererror') {
+                    this.logger.log('tombola exported', spin);
+                    return;
+                }
+
                 this.logger.warn('unable to export the tombola spin', spin, textStatus, error);
-                this.errorTracker.track(
-                    InvisibleError.of(
-                        new Error(
-                            `Unable to export the tombola spin! status=${textStatus} ` + `spin=${JSON.stringify(spin)}`,
-                        ),
-                    ),
-                    'TombolaExporter.exportSpin',
-                );
             });
     }
 

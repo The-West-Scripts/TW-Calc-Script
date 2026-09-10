@@ -11,14 +11,19 @@ type Response = Partial<WheelofFortuneGambleXHRResponse>;
 
 const tombolaId = 60;
 
-/** Minimal stand-in for the jqXHR that `$.get` returns. */
-function fakeJqXHR(): unknown {
+/** Minimal stand-in for the jqXHR that `$.get` returns, resolved or rejected with `failStatus`. */
+function fakeJqXHR(failStatus?: string): unknown {
     const xhr = {
         done(cb: (resp: unknown) => void) {
-            cb({ saved: true });
+            if (!failStatus) {
+                cb({ saved: true });
+            }
             return xhr;
         },
-        fail() {
+        fail(cb: (jqXHR: unknown, textStatus: string, error: unknown) => void) {
+            if (failStatus) {
+                cb(undefined, failStatus, new Error(failStatus));
+            }
             return xhr;
         },
     };
@@ -30,6 +35,7 @@ describe('TombolaExporter', () => {
 
     let get: jasmine.Spy;
     let track: jasmine.Spy;
+    let warn: jasmine.Spy;
     let wheelPrototype: { process: Function };
 
     /**
@@ -37,11 +43,12 @@ describe('TombolaExporter', () => {
      * `process` hands `response` straight to its callback, which is the seam the exporter
      * patches itself into, so a call to `spin()` drives the real export path end to end.
      */
-    function setup(event: string, response: Response): void {
+    function setup(event: string, response: Response, exportFailure?: string): void {
         const polls: Array<() => void> = [];
 
-        get = jasmine.createSpy('get').and.callFake(() => fakeJqXHR());
+        get = jasmine.createSpy('get').and.callFake(() => fakeJqXHR(exportFailure));
         track = jasmine.createSpy('track');
+        warn = jasmine.createSpy('warn');
 
         wheelPrototype = {
             process(_action: string, _data: WofData, callback: Function, context: WofContext) {
@@ -70,7 +77,7 @@ describe('TombolaExporter', () => {
                 getObject: <T>() => ({} as T),
                 setObject: Mock.ANY_FUNC,
             }).Object,
-            new Mock<Logger>({ log: Mock.ANY_FUNC, warn: Mock.ANY_FUNC, error: Mock.ANY_FUNC }).Object,
+            new Mock<Logger>({ log: Mock.ANY_FUNC, warn, error: Mock.ANY_FUNC }).Object,
             new Mock<Config>({ website }).Object,
             new Mock<Language>().Object,
             new Mock<ErrorTracker>({ track, execute: <T>(fn: () => T) => fn() }).Object,
@@ -137,5 +144,28 @@ describe('TombolaExporter', () => {
         spin('main', { enhance: 25, payid: 2 });
 
         expect(exportedSpin()).toEqual({ tombolaId, prize: 54931000, category: 1, level: 25 });
+    });
+
+    it('keeps quiet about the parsererror an accepted export answers with', () => {
+        // the service replies with a script of its own instead of calling the jsonp callback jQuery
+        // generated, so every exported spin - this one included - is a parsererror to jQuery
+        setup('Octoberfest', { outcome: { itemId: 54931000, itemEnhance: 25 }, enhance: 25 }, 'parsererror');
+
+        spin('bribe', { payid: 2 });
+
+        expect(exportedSpin()).toEqual({ tombolaId, prize: 54931000, category: 1, level: 25 });
+        expect(track).not.toHaveBeenCalled();
+        expect(warn).not.toHaveBeenCalled();
+    });
+
+    it('warns about an export the server turned down', () => {
+        // a rejected export is an HTTP error, which the script transport reports as `error`
+        setup('Octoberfest', { construction_id: 0, itemId: 2354000, itemEnhance: 0 }, 'error');
+
+        spin('main', { enhance: 0, payid: 2 });
+
+        expect(warn).toHaveBeenCalled();
+        expect(warn.calls.mostRecent().args).toContain('error');
+        expect(track).not.toHaveBeenCalled();
     });
 });
